@@ -157,6 +157,8 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 .teal { color: var(--teal); } .sea { color: var(--sea); } .plum { color: var(--plum); } .purple { color: var(--purple-lt); } .blue { color: var(--blue-lt); } .muted { color: var(--ink-3); } .white { color: var(--white); }
 .ar { direction: rtl; font-family: var(--font); }
 em.hl { font-style: normal; color: var(--teal); }
+.arr { display: inline-block; width: .92em; height: .5em; margin: 0 .06em; vertical-align: .08em; }
+.arr svg { display: block; width: 100%; height: 100%; overflow: visible; }
 
 /* ── layout helpers ───────────────────────────────────────────────────── */
 .abs { position: absolute; }

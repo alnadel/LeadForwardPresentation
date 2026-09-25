@@ -117,6 +117,24 @@
     el.textContent = '';
   }
 
+  // Somar has no "→": swap every arrow in scene copy for a drawn one
+  const ARROW = '<svg viewBox="0 0 24 12" aria-hidden="true"><path d="M1 6h20M16 1.5 21 6l-5 4.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function arrows(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => (n.nodeValue.indexOf('\u2192') >= 0 && !n.parentNode.closest('svg') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+    });
+    const hits = [];
+    while (walker.nextNode()) hits.push(walker.currentNode);
+    hits.forEach((t) => {
+      const frag = document.createDocumentFragment();
+      t.nodeValue.split('\u2192').forEach((part, k) => {
+        if (k) { const a = document.createElement('span'); a.className = 'arr'; a.innerHTML = ARROW; frag.appendChild(a); }
+        if (part) frag.appendChild(document.createTextNode(part));
+      });
+      t.replaceWith(frag);
+    });
+  }
+
   function splitWords(el) {
     const walk = (node, idx) => {
       for (const ch of Array.from(node.childNodes)) {
@@ -154,6 +172,7 @@
       el.dataset.scene = def.id;
       el.innerHTML = def.html || '';
       scenesEl.appendChild(el);
+      arrows(el);
       $$('[data-split]', el).forEach(splitWords);
       $$('[data-stagger]', el).forEach((p) => {
         let i2 = 0;
