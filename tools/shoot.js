@@ -52,7 +52,6 @@ fs.mkdirSync(out, { recursive: true });
       const a = await page.screenshot({ path: path.join(out, name) });
       let moved = null;
       if (opt('motion', false)) {
-        await page.waitForTimeout(1200);
         // three quick JPEG samples ~0.6 s apart: a loop that happens to be in
         // phase with one gap still shows up in another
         fs.mkdirSync(path.join(out, '_motion'), { recursive: true });
