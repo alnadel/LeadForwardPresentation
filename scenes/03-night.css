@@ -9,8 +9,13 @@
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 70px, #000 450px, transparent 520px); mask-image: linear-gradient(180deg, transparent 0, #000 70px, #000 450px, transparent 520px); }
 #s-night .nt-photo { background-size: 1920px 640px; background-position: 0 -30px; background-repeat: no-repeat; transform-origin: 30% 40%; }
 #s-night .nt-veil { background:
-  linear-gradient(90deg, rgba(4, 22, 40, .28) 0%, rgba(4, 22, 40, .22) 34%, rgba(4, 22, 40, .6) 56%, rgba(4, 22, 40, .86) 72%, rgba(4, 22, 40, .9) 100%),
+  linear-gradient(90deg, rgba(4, 22, 40, .28) 0%, rgba(4, 22, 40, .22) 34%, rgba(4, 22, 40, .42) 60%, rgba(4, 22, 40, .6) 100%),
   linear-gradient(0deg, rgba(3, 10, 20, .55) 0%, transparent 30%); }
+/* from stop 1 the right side darkens behind the handover card (stacked on the
+   base veil this gives .6 / .86 / .9 at 56 / 72 / 100%) */
+#s-night .nt-veil-card { opacity: 0; transition: opacity .5s var(--ease-soft);
+  background: linear-gradient(90deg, transparent 34%, rgba(4, 22, 40, .35) 56%, rgba(4, 22, 40, .73) 72%, rgba(4, 22, 40, .75) 100%); }
+#s-night.st-1 .nt-veil-card { opacity: 1; transition: opacity .8s var(--ease-soft); }
 /* the operations screens keep glowing */
 #s-night .nt-screens i { position: absolute; left: calc(var(--x) - var(--w) / 2); top: calc(var(--y) - 70px); width: var(--w); height: 140px; border-radius: 50%; background: radial-gradient(closest-side, rgba(110, 200, 235, .46), rgba(37, 199, 188, .14) 60%, transparent); mix-blend-mode: screen; animation: ntGlow 5.5s ease-in-out var(--dl, 0s) infinite; }
 @keyframes ntGlow { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
@@ -21,14 +26,16 @@
 
 #s-night .nt-kicker { position: absolute; left: 144px; top: 150px; }
 #s-night .nt-clock { position: absolute; left: 132px; top: 200px; font: 300 264px/.82 var(--font); letter-spacing: -.03em; color: var(--white); white-space: nowrap; }
-#s-night .nt-colon { display: inline-block; animation: ntBlink 2s ease-in-out infinite; }
-@keyframes ntBlink { 0%, 40% { opacity: 1; } 50%, 90% { opacity: .12; } 100% { opacity: 1; } }
+#s-night .nt-colon { display: inline-block; animation: ntBlink 3.2s ease-in-out infinite; }
+@keyframes ntBlink { 0%, 45% { opacity: 1; } 55%, 90% { opacity: .4; } 100% { opacity: 1; } }
 #s-night.st-3 .nt-colon { animation: none; }
+/* stops 1–2: the clock steps back so the statement leads */
+#s-night.st-1 .nt-clock, #s-night.st-2 .nt-clock { opacity: .35; transition: opacity .9s var(--ease-soft); }
 
 /* one caption slot, top right, bottom-aligned with the clock */
 #s-night .nt-cap { position: absolute; left: 820px; bottom: 694px; width: 956px; margin: 0; }
 #s-night .nt-s0 { font: 400 36px/1.36 var(--font); color: var(--ink-2); max-width: 880px; }
-#s-night .nt-head { font: 700 56px/1.04 var(--font); letter-spacing: -.02em; color: var(--white); text-wrap: wrap; }
+#s-night .nt-head { font: 700 64px/1.04 var(--font); letter-spacing: -.02em; color: var(--white); text-wrap: wrap; }
 
 #s-night .nt-ba-k { color: var(--ink-3); }
 #s-night .nt-ba-row { display: flex; align-items: center; gap: 36px; margin-top: 22px; }
@@ -50,7 +57,7 @@
   transition: opacity .2s linear calc(var(--i) * .025s), transform .75s cubic-bezier(.55, 0, .25, 1) calc(.32s + var(--i) * .035s); }
 #s-night.st-1 .nt-scrap-p { opacity: 0; transition: opacity .22s linear calc(.86s + var(--i) * .035s); }
 
-#s-night .nt-card-w { position: absolute; left: 1170px; top: 430px; width: 560px; transition: opacity .8s var(--ease-soft), transform .9s var(--ease-out); }
+#s-night .nt-card-w { position: absolute; left: 1216px; top: 430px; width: 560px; transition: opacity .8s var(--ease-soft), transform .9s var(--ease-out); }
 #s-night .nt-card { padding: 30px 36px 22px; opacity: 0; transform: scale(.9); transition: opacity .2s var(--ease-soft), transform .3s var(--ease-soft); }
 #s-night.st-1 .nt-card { opacity: 1; transform: none; transition: opacity .45s var(--ease-soft) .72s, transform .7s var(--ease-back) .72s; }
 #s-night .nt-card-h { display: flex; align-items: center; justify-content: space-between; padding-bottom: 16px; border-bottom: 2px solid rgba(6, 33, 61, .12); font: 700 22px/1 var(--font); letter-spacing: .16em; color: var(--navy); }
@@ -61,16 +68,18 @@
 #s-night.st-1 .nt-box { background: var(--teal); border-color: var(--teal); transition-delay: calc(1.05s + var(--k) * .12s); }
 #s-night.st-1 .nt-box svg { stroke-dashoffset: 0; transition-delay: calc(1.12s + var(--k) * .12s); }
 /* stop 2: the handover steps back so the change reads first */
-#s-night .nt-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: rgba(4, 18, 34, .4); opacity: 0; transition: opacity .8s var(--ease-soft); pointer-events: none; }
-#s-night .nt-card { position: relative; }
-#s-night.st-2 .nt-card::after { opacity: 1; }
-#s-night.st-2 .nt-card-w { transform: scale(.96); }
+#s-night.st-2 .nt-card-w { opacity: .25; transform: scale(.92) translateY(16px); }
 
 /* ── stop 3: two lit squares in a vast field ── */
+/* the soft light between them (positioned at their midpoint) … */
 #s-night .nt-pair { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 #s-night.st-3 .nt-pair { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
-#s-night .nt-pair .light { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; animation: ambBreathe 3.4s ease-in-out infinite; }
-#s-night .nt-pair .nt-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .2), rgba(37, 199, 188, .07) 55%, transparent); animation: ambBreathe 3.4s ease-in-out infinite; }
+#s-night .nt-pair .nt-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: ambBreathe 3.4s ease-in-out infinite; }
+/* … and one light on each colleague (the wrapper is placed per frame; the light breathes) */
+#s-night .nt-p { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
+#s-night.st-3 .nt-p { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
+#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; animation: ambBreathe 3.4s ease-in-out infinite; }
+#s-night .nt-p + .nt-p .light { animation-delay: -1.7s; }
 
 #s-night .nt-know { position: absolute; width: 760px; text-align: center; }
 #s-night .nt-know-h { margin: 0; font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }

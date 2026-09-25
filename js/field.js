@@ -211,7 +211,7 @@
         ctx.fillRect(n.x - s / 2, n.y - s / 2, s, s);
       }
       if (L > .02) {
-        const la = L * (.55 + .45 * tw) * Math.max(dim, .35) * (.35 + .65 * cm);
+        const la = L * (.55 + .45 * tw) * Math.max(dim, .35) * (.1 + .9 * cm);
         const gs = (26 + n.d * 10) * (n.pin ? 2.1 : 1);
         ctx.globalAlpha = la * .9;
         ctx.drawImage(spriteSm, n.x - gs / 2, n.y - gs / 2, gs, gs);

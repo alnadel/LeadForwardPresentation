@@ -3,7 +3,7 @@
    lit squares in a vast field. Two people know. */
 (function () {
   const OFFSET = Deck.NIGHT_OFFSET;   // this scene's camera pan, held on every stop (shared with 17)
-  const CARD = { x: 1170, y: 430, w: 560, h: 432 };
+  const CARD = { x: 1216, y: 430, w: 560, h: 432 };   // right edge on the margin (1776)
   const ROWS = [
     'Overnight incidents · timestamped',
     'Signal faults still open',
@@ -41,7 +41,8 @@
   }
 
   /* The two colleagues who know: the field pins the squares nearest
-     Deck.NIGHT_PAIR; the DOM light sits exactly between them. */
+     Deck.NIGHT_PAIR; one DOM light sits on each of them, with only a soft
+     halo between. Scene 17 reuses this exact image. */
   const REST = Field.restOf(Deck.NIGHT_PAIR, OFFSET);
   const MID = [(REST[0][0] + REST[1][0]) / 2, (REST[0][1] + REST[1][1]) / 2];
   // the words sit centred under the pair, kept inside the margins
@@ -58,10 +59,10 @@
     cues: ['03:12 · the night shift', 'Nouf rebuilt the night handover', 'Before → after', 'Pull back · two people know'],
     holds: [8, 9, 7, 8],
     notes: [
-      'One thing first: this is an illustrative story. Nouf is not a specific colleague, but anyone who has worked a night shift here will recognise the situation. It is 03:12 in the traffic operations centre. Every morning, the day shift spent its first hour rebuilding what happened overnight.',
-      'Nouf fixed it. Nobody asked her to. In one afternoon she rebuilt the night handover into one clean page: overnight incidents with timestamps, signal faults still open, diversions in force at handover, camera outages by zone and ticket, anything the day shift must call, and a sign-off by the night supervisor.',
-      'What changed is the first hour of the morning shift. They no longer spend it rebuilding the night. They are on live incidents from minute one. We are deliberately not putting a number on this story; the change in how the morning starts is the point.',
-      'Now pull back. Across the whole organisation, who knows this happened? Two people. Nouf, and the colleague who sat next to her. Pause here and let the room take in the empty field.',
+      'A reminder: this story is illustrative. It is 03:12 in the traffic operations centre. Every morning, the day shift spent its first hour rebuilding what happened overnight.',
+      'Nouf fixed it. Nobody asked her to. In one afternoon she rebuilt the night handover into one clean page: incidents timestamped, open signal faults, diversions, camera outages, what the day shift must call, and a supervisor sign-off.',
+      'So the morning shift no longer spends its first hour rebuilding the night. They are on live incidents from minute one. No number on purpose: how the morning starts is the point.',
+      'Now pull back. Across the whole organisation, who knows this happened? Two people: Nouf, and the colleague who sat next to her. Pause. Let the empty field land.',
     ],
     field: [
       { dim: .24, lit: 0, travel: 0, offset: OFFSET, pins: [], calm: [[100, 110, 1820, 420, .6], [1120, 400, 1780, 900, .7]] },
@@ -75,6 +76,7 @@
           <div class="photo nt-photo amb-ken-2" style="background-image:url('assets/photos/nouf.jpg')"></div>
           <div class="nt-screens"><i style="--x:790px;--y:230px;--w:220px"></i><i style="--x:915px;--y:232px;--w:220px;--dl:-2.2s"></i><i style="--x:1225px;--y:222px;--w:260px;--dl:-3.4s"></i><i style="--x:40px;--y:216px;--w:170px;--dl:-4.6s"></i></div>
           <div class="fill nt-veil"></div>
+          <div class="fill nt-veil-card"></div>
         </div>
 
         <div class="nt-ui">
@@ -104,18 +106,22 @@
         </div>
       </div>
 
-      <div class="nt-pair"><i class="nt-halo"></i><i class="light"></i></div>
+      <div class="nt-pair"><i class="nt-halo"></i></div>
+      <b class="nt-p"><i class="light"></i></b><b class="nt-p"><i class="light"></i></b>
       <div class="nt-know" style="left:${KNOW.x}px;top:${KNOW.y}px">
-        <h2 class="nt-know-h" data-in="3" data-split style="--d:1.05s">Two people know.</h2>
-        <p class="nt-know-s" data-in="3" style="--d:1.4s">Nouf, and the colleague who sat next to her.</p>
+        <h2 class="nt-know-h" data-in="3" data-split style="--d:.8s">Two people know.</h2>
+        <p class="nt-know-s" data-in="3" style="--d:1s;--dur:.5s">Nouf, and the colleague who sat next to her.</p>
       </div>
     `,
     init(ctx) {
       ctx.pairEl = ctx.$('.nt-pair');
+      ctx.lightEls = ctx.$$('.nt-p');
+      // the halo sits between the two colleagues; each light sits on one of them
       ctx.placePair = (live) => {
         const lp = live && window.Field ? Field.pinned() : [];
         const p = lp.length === 2 ? lp : REST;
         ctx.pairEl.style.transform = 'translate(' + ((p[0][0] + p[1][0]) / 2).toFixed(1) + 'px,' + ((p[0][1] + p[1][1]) / 2).toFixed(1) + 'px)';
+        ctx.lightEls.forEach((el, i) => { el.style.transform = 'translate(' + p[i][0].toFixed(1) + 'px,' + p[i][1].toFixed(1) + 'px)'; });
       };
       ctx.placePair(null);
     },

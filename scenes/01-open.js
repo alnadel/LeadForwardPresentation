@@ -28,8 +28,8 @@ Deck.scene({
 
     <div class="op-rule a-wipe" data-in="1"></div>
     <p class="op-tag" data-in="1" data-split style="--d:.2s">Real stories. Visible values. Repeatable impact.</p>
-    <div class="op-line" data-in="1" style="--d:1.5s">
-      <span class="op-light"><i class="light"></i><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.6s"></b></span>
+    <div class="op-line" data-in="1" style="--d:.9s;--dur:.6s">
+      <span class="op-light"><i class="light"></i><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-.8s"></b></span>
       <span class="op-line-t">One person’s story can light the way for others.</span>
     </div>
   `,
