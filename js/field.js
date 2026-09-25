@@ -19,6 +19,8 @@
    Field.burst(x, y, {radius, dur})   a ripple of light from one point
    Field.send(x0, y0, x1, y1, dur)     one story travelling between two points
    Field.setLit(v)                     set the lit share directly (per-frame drives)
+   Field.restOf(points, offset)        rest positions of the colleagues nearest points
+   Field.pinned()                      live positions of pinned colleagues
    Field.lite(on) / Field.boost(k)     weak-laptop mode / projector brightness */
 (function () {
   const W = 1920, H = 1080;
@@ -52,6 +54,9 @@
     g.fillRect(0, 0, size, size);
     return c;
   }
+
+  let built = false;
+  function ensure() { if (!built) { build(); built = true; } }
 
   function build() {
     nodes.length = 0;
@@ -181,7 +186,7 @@
     ctx.fillStyle = base;
     let li = 0;
     for (const n of nodes) {
-      if (lite && (li++ & 1)) continue;
+      if (lite && !n.pin && (li++ & 1)) continue;
       const par = .45 + n.d * .35;
       n.x = n.bx + Math.sin(t * n.fx * 6.28 + n.px) * n.ax + (P.ox + autoX) * par;
       n.y = n.by + Math.cos(t * n.fy * 6.28 + n.py) * n.ay + (P.oy + autoY) * par;
@@ -260,7 +265,7 @@
       ctx = canvas.getContext('2d');
       sprite = makeSprite(64, .08);
       spriteSm = makeSprite(48, .05);
-      build();
+      ensure();
       resize(1);
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(frame);
@@ -291,6 +296,14 @@
     burst(x, y, o) { o = o || {}; bursts.push({ x, y, radius: o.radius || 900, dur: o.dur || 2.4, age: 0 }); },
     send(x0, y0, x1, y1, dur) { pulses.push({ free: true, x0, y0, x1, y1, t: 0, dur: dur || 1.6 }); },
     setLit(v) { T.lit = P.lit = clamp(v, 0, 1); },      // direct, un-eased control (driven per frame)
+    // where the colleagues nearest these points sit at rest for a camera offset
+    restOf(points, offset) {
+      ensure();
+      const o = offset || [0, 0];
+      return points.map((p) => { const n = nearest(p[0], p[1]); const par = .45 + n.d * .35; return [n.bx + o[0] * par, n.by + o[1] * par]; });
+    },
+    // live on-screen positions of the pinned colleagues (drift included)
+    pinned() { return nodes.filter((n) => n.pin).map((n) => [n.x, n.y]); },
     lite(on) { lite = !!on; },
     boost(k2) { boost = k2 || 1; },
     get params() { return Object.assign({}, T); },

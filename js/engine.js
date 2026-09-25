@@ -30,7 +30,8 @@
   Deck.ACT_TARGETS = [2.5, 6.5, 8.5, 12.5, 15];
   // The two colleagues who knew (03 · One night, stop 3). Scene 17 starts the
   // nomination chain from exactly these field positions. Stage px.
-  Deck.NIGHT_PAIR = [[1030, 520], [1122, 546]];
+  Deck.NIGHT_PAIR = [[1084, 548], [1169, 572]];   // two same-layer colleagues, 88px apart
+  Deck.NIGHT_OFFSET = [120, 40];                   // the field's camera offset in both scenes
   const defs = [];
   Deck.scene = (def) => defs.push(def);
   Deck.defs = defs;

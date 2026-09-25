@@ -4,7 +4,8 @@
    frame holds the decision on screen for Q&A. */
 (function () {
   const PAIR = Deck.NIGHT_PAIR;
-  const MID = [(PAIR[0][0] + PAIR[1][0]) / 2, (PAIR[0][1] + PAIR[1][1]) / 2];
+  const REST = Field.restOf(PAIR, Deck.NIGHT_OFFSET);          // where 03 left them
+  const MID = [(REST[0][0] + REST[1][0]) / 2, (REST[0][1] + REST[1][1]) / 2];
   const CHAIN_DELAY = 1.3;   // s after the click, once the words have landed
   const CHAIN_DUR = 5.2;     // s for the chain to reach everyone
   let chainT0 = null;        // performance.now() when the chain starts; -1 = already complete
@@ -23,7 +24,7 @@
       'Leave this on screen for questions: the decision is one quarterly pilot — open nominations, run one full cycle, report what changed. To answer a question with a slide, type its number and press Enter; press End to come back here.',
     ],
     field: [
-      { dim: .78, travel: .6, offset: [0, 0], pins: PAIR, litFrom: MID, chain: true, warm: 0, calm: [[100, 380, 900, 720, .55]] },
+      { dim: .78, travel: .6, offset: Deck.NIGHT_OFFSET, pins: PAIR, litFrom: PAIR[0], chain: true, warm: 0, calm: [[100, 380, 900, 720, .55]] },
       { dim: .9, lit: 1, travel: 2.2, warm: .15, calm: [[260, 60, 1660, 700, .55]] },
       { travel: 1.4, calm: [[260, 60, 1660, 700, .55], [300, 760, 1620, 930, .7]] },
     ],
@@ -60,8 +61,11 @@
       </div>
     `,
     enter(ctx) {
+      const pairEl = ctx.$('.cl-pair');
       ctx.loop(() => {
         if (!window.Field) return;
+        const lp = Field.pinned();
+        if (lp.length === 2) pairEl.style.transform = 'translate(' + ((lp[0][0] + lp[1][0]) / 2 - MID[0]).toFixed(1) + 'px,' + ((lp[0][1] + lp[1][1]) / 2 - MID[1]).toFixed(1) + 'px)';
         if (ctx.step >= 1 || chainT0 === -1) { Field.setLit(1); return; }
         if (chainT0 == null) { Field.setLit(0); return; }
         const u = (performance.now() - chainT0) / 1000 / CHAIN_DUR;
