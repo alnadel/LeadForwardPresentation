@@ -1,6 +1,6 @@
 /* 05 · Survey */
-#s-survey .sv-left { width: 760px; }
-#s-survey .sv-h { margin-top: 30px; font-size: 76px; }
+#s-survey .sv-left { width: 790px; }
+#s-survey .sv-h { margin-top: 30px; font-size: 72px; }
 
 #s-survey .sv-stage { position: absolute; left: var(--m); top: 520px; width: 760px; height: 420px; }
 #s-survey .sv-metric { position: absolute; left: 0; top: 0; width: 700px; }
@@ -8,47 +8,56 @@
 #s-survey .sv-big small { font-size: 96px; line-height: 1.1; margin-left: 6px; letter-spacing: -.02em; }
 #s-survey .sv-big.gap { color: var(--purple-lt); }
 #s-survey .sv-big.go { color: var(--teal); }
-#s-survey .sv-big.hero { color: var(--sea); text-shadow: 0 0 60px rgba(3, 255, 203, .35); }
-#s-survey .sv-lab.hero { color: var(--sea); }
 #s-survey .sv-lab { margin-top: 26px; }
 #s-survey .sv-lab.gap { color: var(--purple-lt); }
 #s-survey .sv-lab.go { color: var(--teal); }
+/* 8% is a gap figure: the numeral takes the gap colour (as in 06 and 14); the
+   13 squares stay sea green as the frame's one hero */
+#s-survey .sv-big.hero, #s-survey .sv-lab.hero, #s-survey .sv-sum-i b.hero { color: var(--purple-lt); text-shadow: 0 0 60px rgba(201, 166, 211, .3); }
 #s-survey .sv-txt { margin-top: 14px; max-width: 640px; }
 
 /* stop 5: the four figures together */
-#s-survey .sv-sum { position: absolute; left: 0; top: -10px; display: grid; grid-template-columns: repeat(2, 330px); gap: 34px 40px; }
+#s-survey .sv-sum { position: absolute; left: 0; top: -10px; display: grid; grid-template-columns: repeat(2, 350px); gap: 34px 40px; }
 #s-survey .sv-sum-i b { display: block; font: 700 92px/.9 var(--font); letter-spacing: -.04em; }
 #s-survey .sv-sum-i b.gap { color: var(--purple-lt); }
 #s-survey .sv-sum-i b.go { color: var(--teal); }
-#s-survey .sv-sum-i b.hero { color: var(--sea); }
-#s-survey .sv-sum-i span { display: block; margin-top: 10px; font: 700 19px/1.2 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
+/* ambient at stop 5: the four figures shimmer slowly in turn, as the lit squares did */
+#s-survey.st-5 .sv-sum-i b { animation: svShimmer 5s ease-in-out calc(var(--i, 0) * -1.25s) infinite; }
+#s-survey .sv-sum-i span { display: block; margin-top: 10px; font: 700 22px/1.2 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
 
-/* the waffle: 18 × 9 squares, filled column by column */
-#s-survey .sv-waffle { position: absolute; left: 944px; top: 190px; width: 832px; height: 410px; display: grid; grid-template-rows: repeat(9, 1fr); grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; }
+/* the waffle: 16 × 10 squares, filled column by column */
+#s-survey .sv-waffle { position: absolute; left: 944px; top: 214px; width: 832px; height: 520px; display: grid; grid-template-rows: repeat(var(--rows, 10), 1fr); grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; }
 #s-survey .sv-waffle i { display: block; border-radius: 26%; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .08); transform: scale(0); opacity: 0;
   transition: transform .7s var(--ease-back) calc(var(--rd) * 1.3s + .2s), opacity .5s var(--ease-soft) calc(var(--rd) * 1.3s + .2s), background .6s var(--ease-soft) calc(var(--c) * 28ms), box-shadow .6s var(--ease-soft) calc(var(--c) * 28ms), border-color .6s var(--ease-soft) calc(var(--c) * 28ms); }
 #s-survey .sv-waffle.built i { transform: scale(1); opacity: 1; }
 #s-survey .sv-waffle.tone-go i.lit { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 18px rgba(37, 199, 188, .45); animation: svShimmer 4s ease-in-out calc(var(--rd) * -4s) infinite; }
 #s-survey .sv-waffle.tone-gap i.lit { background: var(--purple); border-color: var(--purple-lt); box-shadow: 0 0 18px rgba(157, 103, 170, .45); animation: svShimmer 4s ease-in-out calc(var(--rd) * -4s) infinite; }
 #s-survey .sv-waffle.tone-hero i { background: transparent; border-color: rgba(201, 166, 211, .28); }
-#s-survey .sv-waffle.tone-hero i.lit { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .7); animation: svShimmer 4s ease-in-out calc(var(--rd) * -4s) infinite; }
-#s-survey .sv-waffle.rest i { background: rgba(255, 255, 255, .14); animation: svShimmer 5s ease-in-out calc(var(--rd) * -5s) infinite; }
-/* ambient while parked: a faint wave of light drifts across the respondents */
+#s-survey .sv-waffle.tone-hero i.lit { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .7); animation: svHeroGlow 3.2s ease-in-out calc(var(--rd) * -3.2s) infinite; }
+/* stop 5: the waffle steps aside for the conclusion */
+#s-survey.st-5 .sv-waffle { opacity: 0; transition: opacity .6s var(--ease-soft); }
+/* ambient while parked: a faint wave of light drifts across the other
+   respondents (lit squares shimmer instead; at stop 2 the wave all but stops) */
 #s-survey .sv-waffle i { position: relative; }
-#s-survey .sv-waffle.built i::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; background: rgba(255, 255, 255, .16); opacity: 0;
-  animation: svWave 7.5s ease-in-out infinite; animation-delay: calc(var(--c) * .2s + var(--r) * .05s - 7.5s); }
-@keyframes svWave { 0%, 100% { opacity: 0; } 10% { opacity: 1; } 26% { opacity: 0; } }
-@keyframes svShimmer { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.35); } }
+#s-survey .sv-waffle.built i:not(.lit)::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; background: rgba(255, 255, 255, .14); opacity: 0;
+  animation: svWave 6s ease-in-out infinite; animation-delay: calc(var(--c) * .33s + var(--r) * .05s - 6s); }
+#s-survey .sv-waffle.tone-hero i:not(.lit)::after { background: rgba(255, 255, 255, .06); }
+@keyframes svWave { 0%, 100% { opacity: 0; } 20% { opacity: 1; } 45% { opacity: 0; } }
+@keyframes svShimmer { 0%, 100% { opacity: .82; } 50% { opacity: 1; } }
+@keyframes svHeroGlow { 0%, 100% { box-shadow: 0 0 14px rgba(3, 255, 203, .8); } 50% { box-shadow: 0 0 30px rgba(3, 255, 203, .8); } }
 
-#s-survey .sv-legend { position: absolute; left: 944px; top: 632px; display: flex; gap: 40px; font: 400 22px/1 var(--font); color: var(--ink-3); }
+#s-survey .sv-legend { position: absolute; left: 944px; top: 770px; display: flex; gap: 40px; font: 400 22px/1 var(--font); color: var(--ink-3); }
 #s-survey .sv-key { display: inline-flex; align-items: center; gap: 12px; }
 #s-survey .sv-key i { width: 18px; height: 18px; border-radius: 26%; background: rgba(255, 255, 255, .14); }
 #s-survey .sv-key i.k-lit { background: var(--teal); }
 #s-survey.st-5 .sv-legend { opacity: 0; }
 #s-survey[data-step="1"] .sv-key i.k-lit { background: var(--purple); }
 #s-survey[data-step="2"] .sv-key i.k-lit { background: var(--sea); }
+#s-survey[data-step="2"] .sv-key i:not(.k-lit) { background: transparent; border: 1px solid rgba(201, 166, 211, .5); }
 
-#s-survey .sv-else { position: absolute; left: 944px; top: 650px; width: 832px; }
-#s-survey .sv-chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
-#s-survey .sv-chips .chip { font-size: 17px; letter-spacing: .08em; height: 42px; }
-#s-survey .sv-punch { position: absolute; left: 944px; top: 836px; width: 860px; margin: 0; font: 700 50px/1.12 var(--font); letter-spacing: -.02em; color: var(--white); }
+#s-survey .sv-else { position: absolute; left: 944px; top: 230px; width: 832px; }
+/* two rows of two: the width wraps after "Monthly" */
+#s-survey .sv-chips { display: flex; flex-wrap: wrap; gap: 14px 16px; margin-top: 18px; }
+#s-survey .sv-chips .chip { font-size: 22px; letter-spacing: .1em; height: 52px; padding: 0 22px; }
+#s-survey .sv-punch { position: absolute; left: 944px; top: 520px; width: 832px; margin: 0; font: 700 64px/1.12 var(--font); letter-spacing: -.02em; color: var(--white); }
+#s-survey .sv-punch em.hl { color: var(--purple-lt); }

@@ -20,15 +20,21 @@
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 240px); mask-image: linear-gradient(90deg, transparent 0, #000 240px); }
 #s-question .qs-panel[data-in]:not(.is-in) { opacity: 1; transform: none; clip-path: inset(0 0 0 100%); }
 #s-question .qs-panel.is-in { clip-path: inset(0 0 0 0); }
-#s-question .qs-photo { background-position: 17% 30%; transform-origin: 60% 35%; }
+/* the drift runs a little faster than the stock 44 s so it still reads once the photo is dimmed at stop 3 */
+#s-question .qs-photo { background-position: 17% 30%; transform-origin: 60% 35%; animation-duration: 32s; transition: filter 1.2s var(--ease-soft); }
+/* stop 3: the photo steps back so the teal line is the only bright element */
+#s-question.st-3 .qs-photo { filter: saturate(.6) brightness(.8); }
+/* the first layer shades the bright window behind the mark and the illustrative tag */
 #s-question .qs-veil { background:
+  radial-gradient(300px 220px at 93% 7%, rgba(20, 8, 18, .62), transparent 72%),
   linear-gradient(90deg, rgba(30, 12, 26, .7) 0%, rgba(30, 12, 26, .3) 30%, rgba(30, 12, 26, 0) 55%),
   linear-gradient(0deg, rgba(20, 8, 18, .9) 0%, rgba(20, 8, 18, 0) 24%),
   linear-gradient(180deg, rgba(20, 8, 18, .35) 0%, rgba(20, 8, 18, 0) 18%); }
-#s-question .qs-dim { background: rgba(20, 8, 18, .38); opacity: 0; transition: opacity 1.2s var(--ease-soft); }
+#s-question .qs-dim { background: rgba(20, 8, 18, .62); opacity: 0; transition: opacity 1.2s var(--ease-soft); }
 #s-question.st-3 .qs-dim { opacity: 1; }
 
-#s-question .qs-lead { position: absolute; left: 144px; bottom: 150px; width: 820px; padding-top: 28px; font-size: 40px; line-height: 1.32; color: var(--ink-1); }
+/* the prompt sits right under the question it follows */
+#s-question .qs-lead { position: absolute; left: 144px; top: 350px; bottom: auto; width: 820px; padding-top: 28px; font-size: 40px; line-height: 1.32; color: var(--ink-1); }
 #s-question .qs-lead::before { content: ''; position: absolute; left: 0; top: 0; width: 96px; height: 3px; background: var(--teal); }
 
 /* ── the four moments ── */
@@ -45,9 +51,10 @@
 #s-question.st-3 .qs-row { transform: translateY(calc(var(--k) * -79px)) scale(.72); }
 #s-question.st-3 .qs-sent { opacity: 0; }
 #s-question.st-3 .qs-word { opacity: .3; }
+#s-question.st-3 .qs-row.keep .qs-word { opacity: .8; }
 #s-question.st-3 .qs-row:not(.keep) .qs-lt { transform: translateY(14px) scale(.7); opacity: .55; }
 #s-question.st-3 .qs-row:not(.keep) .qs-lt .light { animation: none; background: rgba(255, 255, 255, .28); box-shadow: 0 0 0 rgba(3, 255, 203, 0), 0 0 0 rgba(3, 255, 203, 0), 0 0 0 rgba(37, 199, 188, 0); }
 #s-question.st-3 .qs-row.keep .qs-lt .amb-ring { animation: ambRing 3.2s var(--ease-out) 1.2s infinite; }
 
-#s-question .qs-l1 { position: absolute; left: 144px; top: 640px; width: 880px; margin: 0; font: 400 32px/1.36 var(--font); color: var(--ink-2); text-wrap: balance; }
+#s-question .qs-l1 { position: absolute; left: 144px; top: 640px; width: 880px; margin: 0; font: 400 32px/1.36 var(--font); color: var(--ink-2); }
 #s-question .qs-l2 { position: absolute; left: 144px; top: 760px; width: 900px; margin: 0; font: 700 70px/1.04 var(--font); letter-spacing: -.028em; color: var(--teal); text-shadow: 0 0 40px rgba(37, 199, 188, .25); }

@@ -1,8 +1,9 @@
 /* 14 · Measure — a measurement lane with four sensor gantries, the kind this
    audience runs every day. The story light drives the lane and each gantry's
    readout blinks BASELINE as it passes: we are measuring the starting point,
-   so the readouts never show a number. All motion is CSS, keyed off .st-1, so
-   back navigation lands on exactly the same frame. */
+   so the readouts never show a number. At stop 0 the rig waits as a faint
+   skeleton under the headline; stop 1 powers it on. All motion is CSS, keyed
+   off .st-1, so back navigation lands on exactly the same frame. */
 (function () {
   // gantry centres on the stage; the lane runs the full width of the frame
   const GANTRIES = [
@@ -27,7 +28,7 @@
     const tf = r2(FIRST_AT + f * FIRST);          // first pass arrival
     const ts = r2(FIRST_AT + FIRST + f * SLOW);   // slow pass arrival
     return `
-    <div class="ms-g" data-in="1" style="left:${g.x - 130}px;--d:${r2(0.3 + i * 0.06)}s;--tf:${tf}s;--ts:${ts}s">
+    <div class="ms-g" style="left:${g.x - 130}px;--on:${r2(0.2 + i * 0.07)}s;--tf:${tf}s;--ts:${ts}s">
       <svg class="ms-frame" viewBox="0 0 260 144" aria-hidden="true">
         <rect x="14" y="40" width="7" height="100" rx="2"/><rect x="239" y="40" width="7" height="100" rx="2"/>
         <rect x="8" y="138" width="19" height="4" rx="1"/><rect x="233" y="138" width="19" height="4" rx="1"/>
@@ -55,12 +56,12 @@
     cues: ['Measure whether visibility becomes behaviour', 'Four gantries · baseline', 'Baseline → after one quarter'],
     holds: [6, 9, 8],
     notes: [
-      'A pilot is only worth approving if it can prove something. So we measure one thing: whether visibility becomes behaviour. That means participation, reach, recognition and repeatable learning.',
-      'Think of it as a measurement lane, like the sensor gantries on our own roads. Each story passes four gantries. Participation: nominations, completion and whether every group is represented. Reach: views, completion, shares and channel reach. Recognition: who is featured, whether it feels fair, whether people feel valued. Repeatable behaviour: do people remember the story, intend to repeat it, and report acting on it. For now every readout says baseline: the pilot has not started, so there is nothing to report yet, and we will not put a number on it before there is one.',
-      'We already have a baseline. Recognition reach is 8% today, and the visibility gap is 56%. At the end of the quarter we re-ask the same eight questions and compare. The results go on a quarterly dashboard, we review the trend, and we use it to improve the design.',
+      'A pilot is only worth approving if it can prove something. So we measure one thing: whether visibility becomes behaviour.',
+      'Think of a measurement lane, like the sensor gantries on our roads. Every story passes four: participation, reach, recognition and repeatable behaviour. Each readout says baseline, because the pilot has not started and we will not put a number on it before there is one.',
+      'We already have the baseline: recognition reach is 8% today, and the visibility gap is 56%. At quarter end we re-ask the same eight questions. The results feed a quarterly dashboard, a trend review and design improvements.',
     ],
     field: [
-      { dim: .5, lit: .07, travel: 1, offset: [-200, -90], litFrom: [960, 820], calm: [[100, 370, 1800, 610, .8]] },
+      { dim: .5, lit: .07, travel: 1, offset: [-200, -90], litFrom: [960, 820], calm: [[100, 110, 1800, 360, .8], [80, 390, 1840, 610, .7]] },
       { dim: .26, lit: .04, travel: .15, calm: [[100, 110, 1800, 360, .8], [80, 380, 1840, 800, .75]] },
       { calm: [[100, 110, 1800, 360, .8], [80, 380, 1840, 960, .8]] },
     ],
@@ -71,18 +72,20 @@
         <p class="lead ms-sub" data-in="0" style="--d:.7s">The pilot should prove participation, reach, recognition and repeatable learning.</p>
       </div>
 
-      <div class="ms-lane a-wipe" data-in="1" style="--d:.25s;--dur:.9s">
-        <i class="ms-edge t"></i><i class="ms-edge b"></i>
-        <svg class="ms-dash" viewBox="0 0 1920 4" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="2" x2="1920" y2="2"/></svg>
+      <div class="ms-rig a-wipe" data-in="0" style="--d:.9s;--dur:1.6s">
+        <div class="ms-lane">
+          <i class="ms-edge t"></i><i class="ms-edge b"></i>
+          <svg class="ms-dash" viewBox="0 0 1920 4" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="2" x2="1920" y2="2"/></svg>
+        </div>
+        ${GANTRIES.map(gantry).join('')}
       </div>
-      ${GANTRIES.map(gantry).join('')}
       <div class="ms-car" aria-hidden="true"><b class="ms-tail"></b><i class="light lg"></i></div>
       ${GANTRIES.map(col).join('')}
 
       <div class="ms-strip" data-in="2">
         <div class="ms-strip-rule a-wipe" data-in="2" style="--dur:1s"></div>
         <div class="label ms-strip-l" data-in="2" style="--d:.1s">Baseline <span class="ms-arr">→</span> After one quarter</div>
-        <p class="ms-strip-t" data-in="2" style="--d:.25s">Recognition reach <b>8%</b> today · Visibility gap <b>56%</b> today <span class="ms-arr">→</span> the same eight questions, re-asked at quarter end.</p>
+        <p class="ms-strip-t" data-in="2" style="--d:.25s">Recognition reach <b>8%</b> today · visibility gap <b>56%</b> today <span class="ms-arr">→</span> same eight questions, re-asked at quarter end.</p>
         <p class="ms-strip-b" data-in="2" style="--d:.5s">Quarterly dashboard <span>·</span> trend review <span>·</span> design improvements</p>
       </div>
     `,

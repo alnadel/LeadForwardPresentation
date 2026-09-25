@@ -3,20 +3,20 @@
    cycle runs month by month while a playhead sweeps the quarter. */
 (function () {
   const MONTHS = [
-    { n: '02', m: 'Month 1', k: 'Curate', t: 'Review relevance, evidence, consent and value alignment.' },
-    { n: '03', m: 'Month 2', k: 'Feature', t: 'Prepare and publish selected stories; encourage team discussion.' },
-    { n: '04', m: 'Month 3', k: 'Reinforce', t: 'Recognise contributors, capture learning and review trends.' },
+    { m: 'Month 1', k: 'Curate', t: 'Review relevance, evidence, consent and value alignment.' },
+    { m: 'Month 2', k: 'Feature', t: 'Prepare and publish selected stories; encourage team discussion.' },
+    { m: 'Month 3', k: 'Reinforce', t: 'Recognise contributors, capture learning and review trends.' },
   ];
   // nominations drifting into the lane: start x (stage px), one every 3 s on an 18 s loop
   const DROPS = [1250, 1420, 1310, 1500, 1200, 1370];
   const TRAY_X = 1690;
 
-  const drops = DROPS.map((x, k) => `<span class="rh-drop" style="--x0:${x - 144}px;--xt:${TRAY_X - 144}px;--dl:${-k * 3}s"><span><i class="light sm"></i></span></span>`).join('');
+  const drops = DROPS.map((x, k) => `<span class="rh-drop" style="--x0:${x - 144}px;--xt:${TRAY_X - 144}px;--dl:${-k * 3}s"><span><i class="light"></i></span></span>`).join('');
   const weeks = Array.from({ length: 12 }, (_, k) => `<i style="left:${((k + 1) / 13 * 100).toFixed(3)}%"></i>`).join('');
 
   const months = MONTHS.map((m, k) => `
     <div class="rh-m" data-in="1" style="--k:${k}">
-      <span class="node rh-node">${m.n}</span>
+      <span class="rh-mk rh-node"></span>
       <div class="rh-m-lab">${m.m}<b>·</b><em>${m.k}</em></div>
       <p class="rh-m-t">${m.t}</p>
     </div>`).join('');
@@ -28,9 +28,9 @@
     bg: 'navy',
     cues: ['Always open · capture', 'The quarter · curate, feature, reinforce', 'Every quarter · annual collection'],
     notes: [
-      'How does it run week to week? Two tempos. Nominations never close: any peer or leader can nominate a colleague through a simple form, on any day of the quarter. Around that, one clear governance cycle runs each quarter.',
-      'Month one, we curate: we review relevance, evidence, consent and value alignment. Month two, we feature: we prepare and publish the selected stories and encourage teams to discuss them. Month three, we reinforce: we recognise the contributors, capture the learning and review the trends.',
-      'These are the same four stages you saw in the ring: capture, curate, feature, reinforce. They run every quarter. At the end of the year, the featured stories become one curated story collection.',
+      'How does it run? Two tempos. Nominations never close: any peer or leader can nominate a colleague through a simple form, any day of the quarter. Around that, one clear governance cycle runs each quarter.',
+      'Month one, we curate: relevance, evidence, consent and value alignment. Month two, we feature: publish the selected stories and get teams discussing them. Month three, we reinforce: recognise contributors, capture the learning, review trends.',
+      'These are the same four stages you saw in the ring: capture, curate, feature, reinforce, running every quarter. At the end of the year, the featured stories become one curated story collection.',
     ],
     field: [
       { dim: .36, lit: .02, travel: .14, offset: [-200, 70], litFrom: null, warm: 0, calm: [[80, 120, 1300, 360, .8], [100, 370, 1800, 520, .6]] },
@@ -46,7 +46,7 @@
 
       <div class="rh-lanewrap"><div class="rh-lane" data-in="0" style="--d:.7s">
         <div class="rh-drops">${drops}</div>
-        <span class="node on rh-lane-n">01</span>
+        <span class="rh-mk rh-lane-n"></span>
         <div class="rh-lane-t">
           <div class="rh-lane-lab">Always open<b>·</b>Capture</div>
           <p class="rh-lane-s">Accept peer and leader nominations through a simple form.</p>

@@ -9,16 +9,17 @@
 #s-risks .rk-cols .label { color: var(--ink-3); }
 #s-risks .rk-cols .rk-c-risk { color: var(--purple-lt); }
 #s-risks .rk-cols .rk-c-mit { padding-left: 46px; }
-#s-risks .rk-cols .rk-c-own { color: var(--teal); }
+#s-risks .rk-cols .rk-c-own { color: var(--ink-3); }
 
 #s-risks .rk-rows { position: relative; z-index: 1; }
-#s-risks .rk-row { align-items: center; min-height: 102px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, .1); }
+#s-risks .rk-row { align-items: center; min-height: 92px; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, .1); }
 #s-risks .rk-row[data-in]:not(.is-in) { transform: translateX(-40px); }
 #s-risks .rk-risk { margin: 0; font: 700 29px/1.26 var(--font); letter-spacing: -.005em; color: var(--purple-lt); text-wrap: balance; transition: opacity .8s var(--ease-soft); }
 #s-risks .rk-mit { display: flex; align-items: flex-start; gap: 20px; }
 #s-risks .rk-mit p { margin: 0; font: 400 28px/1.3 var(--font); color: var(--white); text-wrap: pretty; }
-#s-risks .rk-own span { display: inline-block; padding: 10px 16px 9px; border-radius: 10px; font: 700 24px/1.2 var(--font); letter-spacing: .08em; text-transform: uppercase; color: var(--teal);
-  border: 1.5px solid rgba(37, 199, 188, .55); background: rgba(37, 199, 188, .1); }
+/* owners are a proposal, not a strength: neutral, not teal */
+#s-risks .rk-own span { display: inline-block; padding: 10px 16px 9px; border-radius: 10px; font: 700 24px/1.2 var(--font); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-1);
+  border: 1.5px solid var(--line-2); background: rgba(255, 255, 255, .05); }
 
 /* a small squircle beside each mitigation; at stop 1 each one lights: "already in the design" */
 #s-risks .rk-tick { position: relative; flex: none; width: 26px; height: 26px; margin-top: 4px; border-radius: 28%; border: 2px solid rgba(37, 199, 188, .5);
@@ -28,16 +29,21 @@
 #s-risks.st-1 .rk-tick { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 18px rgba(37, 199, 188, .55); }
 #s-risks.st-1 .rk-tick::after { border-color: var(--navy); }
 #s-risks.st-1 .rk-risk { opacity: .72; }
+/* parked on stop 1, the lit ticks breathe out of phase (scale, opacity and glow) */
+#s-risks.st-1 .rk-tick { animation: rkTick 4.8s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -1.2s); }
+@keyframes rkTick {
+  0%, 100% { transform: scale(1); opacity: .88; box-shadow: 0 0 8px rgba(37, 199, 188, .35); }
+  50% { transform: scale(1.12); opacity: 1; box-shadow: 0 0 26px rgba(37, 199, 188, .8), 0 0 54px rgba(37, 199, 188, .3); } }
 
-/* ambient: a slow, faint scan reading down the rows */
+/* ambient: a slow, faint full-width sheen reading down the rows */
 #s-risks .rk-scan { position: absolute; left: -40px; right: -40px; top: 56px; height: 410px; z-index: 0; overflow: hidden; pointer-events: none;
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 50px, #000 calc(100% - 50px), transparent); mask-image: linear-gradient(180deg, transparent, #000 50px, #000 calc(100% - 50px), transparent); }
 #s-risks .rk-scan i { position: absolute; left: 0; right: 0; top: 0; height: 130px; opacity: 0;
-  background: radial-gradient(ellipse 55% 50% at 38% 50%, rgba(37, 199, 188, .1), transparent 72%); animation: rkScan 10s linear infinite; }
-#s-risks .rk-scan i::before { content: ''; position: absolute; left: 12px; top: 40px; width: 3px; height: 50px; border-radius: 2px; background: var(--teal); box-shadow: 0 0 14px rgba(37, 199, 188, .7); opacity: .7; }
+  background: linear-gradient(180deg, transparent, rgba(37, 199, 188, .07), transparent); animation: rkScan 16s linear infinite;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
 @keyframes rkScan { 0% { transform: translateY(-110px); opacity: 0; } 4% { opacity: 1; } 95% { opacity: 1; } 100% { transform: translateY(400px); opacity: 0; } }
 
 /* stop 1 */
-#s-risks .rk-foot { position: absolute; left: var(--m); right: var(--m); top: 856px; }
+#s-risks .rk-foot { position: absolute; left: var(--m); right: var(--m); top: 832px; }
 #s-risks .rk-punch { position: absolute; left: 0; top: 0; margin: 0; font: 700 42px/1.1 var(--font); letter-spacing: -.018em; color: var(--white); white-space: nowrap; }
 #s-risks .rk-note { position: absolute; right: 0; top: 10px; width: 412px; text-align: left; }

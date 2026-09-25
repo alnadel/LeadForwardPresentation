@@ -9,15 +9,15 @@
 
 /* the individual's light, breathing in a soft halo */
 #s-link .lk-halo { position: absolute; width: 380px; height: 380px; pointer-events: none; }
-#s-link .lk-halo i, #s-link .lk-halo b { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .26), rgba(37, 199, 188, .08) 45%, transparent 100%); animation: lkHalo 4.4s ease-in-out infinite; }
-/* a second, slower layer out of phase, so the glow never sits still */
-#s-link .lk-halo b { inset: 70px; background: radial-gradient(closest-side, rgba(3, 255, 203, .22), rgba(37, 199, 188, .06) 60%, transparent 100%); animation-duration: 6.3s; animation-delay: -2.1s; }
+#s-link .lk-halo i, #s-link .lk-halo b { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .34), rgba(37, 199, 188, .1) 45%, transparent 100%); animation: lkHalo 5.3s ease-in-out infinite; }
+/* a second, slower layer out of phase (and off the ripples' beat), so the glow never sits still */
+#s-link .lk-halo b { inset: 70px; background: radial-gradient(closest-side, rgba(3, 255, 203, .22), rgba(37, 199, 188, .06) 60%, transparent 100%); animation-duration: 7.7s; animation-delay: -3.1s; }
 @keyframes lkHalo { 0%, 100% { opacity: .3; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.06); } }
 
 /* the faint skeleton (stops 0–1) */
 #s-link .lk-ghost { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
-#s-link .lk-ghost path { fill: none; stroke: rgba(255, 255, 255, .22); stroke-width: 1.6; stroke-dasharray: 5 11; animation: lkDash 4s linear infinite; }
-#s-link .lk-ghost path.c { stroke: rgba(37, 199, 188, .38); }
+#s-link .lk-ghost path { fill: none; stroke: rgba(255, 255, 255, .26); stroke-width: 2; stroke-dasharray: 5 11; animation: lkDash 4s linear infinite; }
+#s-link .lk-ghost path.c { stroke: rgba(37, 199, 188, .46); }
 @keyframes lkDash { to { stroke-dashoffset: -32; } }
 
 /* node → prism connector, lit at stop 2 */
@@ -35,8 +35,9 @@
 #s-link .lk-glint { position: absolute; overflow: visible; pointer-events: none; }
 #s-link .lk-glint path { fill: url(#lkGlint); }
 #s-link .lk-glint { -webkit-mask-image: linear-gradient(90deg, transparent, #000 50%, transparent); mask-image: linear-gradient(90deg, transparent, #000 50%, transparent);
-  -webkit-mask-size: 150px 100%; mask-size: 150px 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; animation: lkGlint 5.2s cubic-bezier(.45, .05, .55, .95) infinite; }
-@keyframes lkGlint { 0% { -webkit-mask-position: -170px 0; mask-position: -170px 0; } 70%, 100% { -webkit-mask-position: 300px 0; mask-position: 300px 0; } }
+  -webkit-mask-size: 150px 100%; mask-size: 150px 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; animation: lkGlint 4.6s cubic-bezier(.3, .1, .7, .9) infinite; }
+/* one glint after another, with no idle gap, so the beams never sit still */
+@keyframes lkGlint { 0% { -webkit-mask-position: -170px 0; mask-position: -170px 0; } 100% { -webkit-mask-position: 300px 0; mask-position: 300px 0; } }
 #s-link .lk-flow { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 #s-link .lk-dot { position: absolute; left: 0; top: 0; width: 13px; height: 13px; border-radius: 28%; offset-rotate: 0deg; offset-distance: 0%;
   background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%);
@@ -58,31 +59,34 @@
 #s-link .lk-emp { width: 100%; border-color: rgba(37, 199, 188, .3); background: linear-gradient(160deg, rgba(37, 199, 188, .1), rgba(255, 255, 255, .025)); }
 #s-link .lk-emp .lk-list li { margin-top: 12px; }
 
-#s-link .lk-org { position: absolute; padding-left: 60px; border-color: rgba(201, 166, 211, .28);
-  background: linear-gradient(160deg, rgba(201, 166, 211, .13), rgba(255, 255, 255, .03)); }
-#s-link .lk-org .lk-list li::before { background: var(--purple-lt); }
+/* the organisation benefits: teal like the individual (purple is kept for gaps) */
+#s-link .lk-org { position: absolute; padding-left: 60px; border-color: rgba(37, 199, 188, .28);
+  background: linear-gradient(160deg, rgba(37, 199, 188, .10), rgba(255, 255, 255, .03)); }
+#s-link .lk-org .lk-list li::before { background: var(--teal); }
 /* where each beam lands: an org port on the card's edge */
-#s-link .lk-port { position: absolute; display: grid; place-items: center; border-radius: 28%; background: #151A2C; border: 2px solid rgba(201, 166, 211, .75); color: var(--purple-lt);
-  box-shadow: 0 0 30px rgba(201, 166, 211, .3); }
-#s-link .lk-port-ic { font-size: 40px; }
+#s-link .lk-port { position: absolute; display: grid; place-items: center; border-radius: 28%; background: #151A2C; border: 2px solid rgba(37, 199, 188, .75); color: var(--white);
+  box-shadow: 0 0 30px rgba(37, 199, 188, .3); }
+#s-link .lk-port-ic { font-size: 44px; }
 
 /* the individual */
-#s-link .lk-node { position: absolute; }
+#s-link .lk-node { position: absolute; z-index: 1; }   /* above the ripples it sends out */
 #s-link .lk-node-sq { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 28%; border: 2px solid var(--line-2); background: rgba(10, 18, 32, .7); color: var(--ink-3);
   transition: border-color .8s var(--ease-soft), color .8s var(--ease-soft), box-shadow .8s var(--ease-soft), background .8s var(--ease-soft); }
 #s-link .lk-node-ic { font-size: 44px; }
 #s-link.st-1 .lk-node-sq { border-color: var(--teal); color: var(--white); background: rgba(12, 40, 52, .85); box-shadow: 0 0 30px rgba(37, 199, 188, .35); }
 #s-link .lk-home { position: absolute; display: grid; place-items: center; }
 #s-link .lk-home .light { width: 20px; height: 20px; animation: ambBreathe 3.2s ease-in-out infinite; }
-/* stops 0–1: slow squircle ripples leave the individual's light */
+/* stops 0–1: slow squircle ripples leave the individual's light. They stop short
+   of the shared-story box and the 01 card (max 104px across: the old 240px ring at .45),
+   drawn at their final size so the 2px border stays crisp */
 #s-link .lk-rips { position: absolute; left: 15px; top: 15px; width: 0; height: 0; transition: opacity .6s var(--ease-soft); }
-#s-link .lk-rips b { position: absolute; left: -120px; top: -120px; width: 240px; height: 240px; border-radius: 28%; opacity: 0; pointer-events: none;
-  border: 3px solid rgba(37, 199, 188, .75); box-shadow: 0 0 34px rgba(37, 199, 188, .42), inset 0 0 44px rgba(37, 199, 188, .3);
+#s-link .lk-rips b { position: absolute; left: -52px; top: -52px; width: 104px; height: 104px; border-radius: 28%; opacity: 0; pointer-events: none;
+  border: 2px solid rgba(37, 199, 188, .6); box-shadow: 0 0 20px rgba(37, 199, 188, .4), inset 0 0 20px rgba(37, 199, 188, .22);
   background: radial-gradient(closest-side, transparent 50%, rgba(37, 199, 188, .1) 100%);
   animation: lkRip 4.4s cubic-bezier(.3, .5, .5, 1) infinite; }
 /* two ripples on different periods, so the pattern never repeats */
 #s-link .lk-rips b + b { animation-duration: 6.3s; animation-delay: -2.9s; }
-@keyframes lkRip { 0% { transform: scale(.1); opacity: 0; } 12% { opacity: .95; } 60% { opacity: .5; } 100% { transform: scale(1); opacity: 0; } }
+@keyframes lkRip { 0% { transform: scale(.22); opacity: 0; } 12% { opacity: .95; } 60% { opacity: .5; } 100% { transform: scale(1); opacity: 0; } }
 #s-link.st-2 .lk-rips { opacity: 0; }
 
 /* the shared story */

@@ -9,14 +9,15 @@
   // Three team districts, in stage px. Lights are relative to their district;
   // the first light is where the stop-2 ripple starts.
   const DISTRICTS = [
-    { x: 144, y: 660, w: 410, h: 278, lights: [[132, 146], [236, 80], [352, 124], [262, 214]] },
-    { x: 755, y: 646, w: 410, h: 292, lights: [[206, 164], [108, 90], [360, 136], [128, 228]] },
-    { x: 1366, y: 666, w: 410, h: 272, lights: [[212, 140], [318, 70], [98, 186], [330, 214]] },
+    { x: 144, y: 656, w: 410, h: 282, lights: [[132, 150], [236, 84], [352, 128], [262, 218]] },
+    { x: 755, y: 656, w: 410, h: 282, lights: [[206, 154], [108, 80], [360, 126], [128, 218]] },
+    { x: 1366, y: 656, w: 410, h: 282, lights: [[212, 150], [318, 80], [98, 196], [330, 224]] },
   ];
   const R = 76; // wall corner radius
 
   // Bridges run wall to wall across the gaps. A story sets out from the left end
-  // and fades at the middle, where a small purple mark shows it failing.
+  // and fades at the middle, where a small purple mark shows it failing; the
+  // bridge itself gives out past the middle, so a parked frame reads as broken.
   const BRIDGES = [
     { p0: [554, 782], c: [655, 648], p1: [755, 776] },
     { p0: [1165, 780], c: [1266, 648], p1: [1366, 790] },
@@ -83,11 +84,11 @@
     cues: ['Inspiration is not always visible', '01 · Good work happens', '02 · Visibility stays local', '03 · Learning does not travel', 'We close the gap · today’s ask'],
     holds: [7, 7, 8, 8, 9],
     notes: [
-      'Here is the gap we found. Inspiration is happening at Tahakom every day, but it is not always visible. Positive behaviours happen, yet many of them are not consistently recognised or shared across the company. Think of each shape as one team.',
-      'First, good work happens. Colleagues help each other, solve problems and go the extra mile in their daily work. Every team has these moments. Each light is one of them.',
-      'Second, visibility stays local. A contribution is usually noticed by the immediate team or the manager, and that is where it stops: at the edge of the team.',
-      'Third, learning does not travel. Useful behaviours are not consistently shared across departments, so other teams never get the chance to repeat them. The story sets out, and it fades before it reaches anyone else.',
-      'So the contributions already exist. The gap is making them visible, recognised and shared across Tahakom. Behind a Better Life closes that gap through real employee stories. And so the decision is clear from the start: today we are asking you to approve a one-quarter pilot.',
+      'Inspiration is happening at Tahakom every day, but it is not always visible. Many positive behaviours are not consistently recognised or shared. Each shape is one team.',
+      'First, good work happens. Colleagues help, solve problems and go the extra mile. Each light is one such moment.',
+      'Second, visibility stays local. The immediate team or manager notices, and it stops at the edge of the team.',
+      'Third, learning does not travel. Useful behaviours are not consistently shared across departments, so others never repeat them. The story fades halfway.',
+      'The contributions exist; the gap is making them visible, recognised and shared. Behind a Better Life closes that gap through real employee stories. So, from the start, today’s ask: approve a one-quarter pilot.',
     ],
     field: [
       { dim: .34, lit: 0, travel: 0, warm: 0, offset: [150, -80], calm: [[100, 120, 1820, 360, .65], [100, 370, 1820, 620, .45]] },
@@ -97,8 +98,8 @@
     html: `
       <div class="pad gp-head">
         <div class="kicker" data-in="0">The gap</div>
-        <h2 class="h2 gp-h" data-in="0" data-split style="--d:.15s">Inspiration is happening — but it is not always visible.</h2>
-        <p class="gp-lead" data-in="0" data-dim="4" style="--d:.6s">Positive behaviours happen every day, yet many are not consistently recognised or shared across Tahakom.</p>
+        <h2 class="h2 gp-h" data-in="0" data-dim="4" data-split style="--d:.15s">Inspiration is happening — but it is not always visible.</h2>
+        <p class="gp-lead" data-in="0" data-out="4" style="--d:.6s">Positive behaviours happen every day, yet many are not consistently recognised or shared across Tahakom.</p>
       </div>
 
       ${points.map((p, k) => `
@@ -114,20 +115,21 @@
           <defs>
             <linearGradient id="gpBridgeInk" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0" stop-color="#25C7BC" stop-opacity=".9"/>
-              <stop offset=".46" stop-color="#25C7BC" stop-opacity=".55"/>
-              <stop offset=".56" stop-color="#9D67AA" stop-opacity=".6"/>
-              <stop offset="1" stop-color="#9D67AA" stop-opacity=".35"/>
+              <stop offset=".46" stop-color="#25C7BC" stop-opacity=".9"/>
+              <stop offset=".5" stop-color="#9D67AA" stop-opacity=".5"/>
+              <stop offset=".62" stop-color="#9D67AA" stop-opacity="0"/>
+              <stop offset="1" stop-color="#9D67AA" stop-opacity="0"/>
             </linearGradient>
           </defs>
           ${BRIDGES.map((b) => `
             <path class="gp-br" d="${qd(b)}"/>
-            <rect class="gp-gate" x="${b.p0[0] - 6}" y="${b.p0[1] - 6}" width="12" height="12" rx="3.4"/>
-            <rect class="gp-gate far" x="${b.p1[0] - 6}" y="${b.p1[1] - 6}" width="12" height="12" rx="3.4"/>`).join('')}
+            <rect class="gp-gate" x="${b.p0[0] - 6}" y="${b.p0[1] - 6}" width="12" height="12" rx="3.4"/>`).join('')}
         </svg>
         <div class="gp-bls">
           ${BRIDGES.map((b, k) => `
             <i class="light sm gp-bl b p${k + 1}" style="offset-path:path('${qd(b)}')"></i>
             <i class="light sm gp-bl a p${k + 1}" style="offset-path:path('${qd(b)}')"></i>
+            <i class="gp-x m p${k + 1}" style="left:${mid(b)[0]}px;top:${mid(b)[1]}px"></i>
             <i class="gp-x b p${k + 1}" style="left:${mid(b)[0]}px;top:${mid(b)[1]}px"></i>
             <i class="gp-x a p${k + 1}" style="left:${mid(b)[0]}px;top:${mid(b)[1]}px"></i>`).join('')}
         </div>

@@ -16,8 +16,8 @@
 
   // stop 3: the four teams, and the takeaway's lights that reach just those four
   const TEAMS = ['Traffic Ops · Shift B', 'Enforcement Ops', 'Field Operations', 'Data Centre'];
-  const TILE = { x: 572, y: 606, w: 280, h: 200, gap: 24 };
-  const CERT_OUT = [1168, 426];
+  const TILE = { x: 584, y: 606, w: 280, h: 200, gap: 24 };   // the row ends on the right margin (1776)
+  const CERT_OUT = [1326, 426];                               // the certificate's bottom centre
   const tileX = (i) => TILE.x + i * (TILE.w + TILE.gap);
   const reachPath = (i) => {
     const ex = tileX(i) + TILE.w - 34, ey = TILE.y + 34;
@@ -25,7 +25,7 @@
   };
 
   // stop 4: the pill sits on the path that leaves the ring; the next colleague waits after it
-  const PILL = { x: 600, w: 700, h: 84 };
+  const PILL = { x: 584, w: 700, h: 84 };
   const NEXT = [PILL.x + PILL.w + 74, N1[1]];
   const SPLIT = `M${N1[0].toFixed(1)} ${N1[1].toFixed(1)} C${N1[0] + 60} ${N1[1] + 44} ${PILL.x - 110} ${N1[1]} ${PILL.x} ${N1[1]} L${NEXT[0]} ${NEXT[1]}`;
 
@@ -39,7 +39,7 @@
   }).join('');
 
   const tiles = TEAMS.map((t, i) => {
-    const name = t.replace(' · ', ' ·<br>').replace(/^(Enforcement|Field|Data) /, '$1<br>');
+    const name = t.replace(' · ', '<br>').replace(/^(Enforcement|Field|Data) /, '$1<br>');
     return `<div class="jn-tile" style="left:${tileX(i)}px;top:${TILE.y}px;--f:${(1.05 + i * 0.14).toFixed(2)}s">
         <div class="jn-face front"><b>${name}</b><i class="jn-hollow"></i></div>
         <div class="jn-face back"><b>${name}</b><span class="jn-adopt">${svgCheck}Adopted</span></div>
@@ -55,18 +55,18 @@
     cues: ['Capture · Faisal nominates Nouf', 'Curate · three checks', 'Feature · the channel post', 'Reinforce · certificate and four teams', 'The chain · the light divides'],
     holds: [11, 8, 9, 10, 9],
     notes: [
-      'Now follow Nouf’s story through it. A reminder: Nouf and Faisal are an illustrative story, not a real case. Faisal, a shift supervisor, opens the nomination form. It takes thirty seconds. Who changed how you work? Nouf Al-Harbi. What changed? In his own words: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.” He presses send, and the nomination enters the cycle as a story.',
-      'Curate. Before anything is shared, three checks: the facts are checked with the shift lead, Nouf gives her consent, and the story is linked to one value — Excellence. Nothing is published without the employee’s consent.',
-      'Feature. The story goes out on a channel we already have, as a short post: she rebuilt the night handover in one afternoon. We show reactions, not reach numbers. What matters is that other teams can now see what she did, and how.',
-      'Reinforce. Her leader acknowledges the contribution with a personal certificate. Then the takeaway travels: in this example four teams adopt the new handover — Shift B, Enforcement, Field Operations and the Data Centre. The light reaches those four and no further; we are not claiming more than the story shows.',
-      'And this is the part that matters most. Nouf nominates the next colleague, and the cycle starts again. For the first time, the light divides: one story has become two. Recognition becomes behaviour. Once more, the story is illustrative — the mechanism is what we are asking you to pilot.',
+      'Now one story through it: an illustrative one, not a real case. Faisal, a shift supervisor, takes thirty seconds to nominate Nouf: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.” Sent.',
+      'Curate: facts checked with the shift lead, Nouf’s consent, and one value, Excellence. Nothing goes out without consent.',
+      'Feature: a short post on a channel we already have. Reactions, not reach numbers; what matters is that other teams can see what she did.',
+      'Reinforce: her leader acknowledges her with a certificate, and the takeaway travels. Here four teams adopt the new handover, and we claim no more than that.',
+      'Then Nouf nominates the next colleague, and the cycle starts again. The light divides: recognition becomes behaviour. Again, the story is illustrative; the mechanism is what we ask you to pilot.',
     ],
     field: [
       { dim: .2, lit: .02, travel: 0, offset: [-190, -110], litFrom: null, calm: [[520, 130, 1800, 940, .85], [110, 130, 470, 940, .45]] },
       {},
       {},
       {},
-      { dim: .28, lit: .07, litFrom: NEXT, travel: .32, calm: [[540, 480, 1700, 760, .75], [110, 130, 470, 940, .45]] },
+      { dim: .28, lit: .03, litFrom: NEXT, travel: .32, calm: [[540, 460, 1760, 740, .9], [110, 130, 470, 940, .45]] },
     ],
     html: `
       <!-- the rail: the cycle in miniature -->
@@ -80,7 +80,7 @@
           <circle class="jn-rprog" cx="150" cy="150" r="${RR}" pathLength="100" transform="rotate(-45 150 150)"/>
         </svg>
         ${railNodes}
-        <div class="jn-orb"><div class="jn-orb-i"><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.6s"></b><i class="light amb-breathe"></i></div></div>
+        <div class="jn-orb"><div class="jn-orb-i"><b class="jn-halo"></b><i class="light amb-breathe"></i></div></div>
       </div>
       <ol class="jn-list" data-stagger style="--stagger:.06s">
         ${STAGES.map((s, i) => `<li class="jn-li" data-in="0" style="--d:.3s"><b>0${i + 1}</b><span>${s}</span></li>`).join('')}
@@ -152,7 +152,7 @@
       </div>
       <div class="label jn-tl a-fade" data-in="3" data-out="4" style="--d:.4s">Takeaway shared with</div>
       <div class="jn-tiles a-fade" data-in="3" data-out="4" style="--d:.35s">${tiles}</div>
-      <svg class="jn-links a-fade" data-in="3" data-out="4" style="--d:1.2s;--dur:1s" viewBox="0 0 1920 1080" aria-hidden="true">${TEAMS.map((t, i) => `<path class="amb-flow-slow" d="${reachPath(i)}"/>`).join('')}</svg>
+      <svg class="jn-links a-fade" data-in="3" data-out="4" style="--d:1.2s;--dur:1s" viewBox="0 0 1920 1080" aria-hidden="true">${TEAMS.map((t, i) => `<path d="${reachPath(i)}"/>`).join('')}</svg>
       <div class="jn-reach a-fade" data-out="4">
         ${TEAMS.map((t, i) => `<i class="light sm jn-rt" style="offset-path:path('${reachPath(i)}');--k:${i}"></i>`).join('')}
       </div>
@@ -179,9 +179,11 @@
       ctx.orb.style.transform = `rotate(${a}deg)`;
       ctx.orbI.style.transform = `translateX(${RR}px) rotate(${-a}deg)`;
       ctx.prog.style.strokeDasharray = (k * 25) + ' 100';
-      const cur = k === 4 ? 0 : k;
-      ctx.nds.forEach((d, i) => { d.classList.toggle('cur', i === cur); d.classList.toggle('done', k === 4 ? i !== 0 : i < cur); });
-      ctx.lis.forEach((d, i) => { d.classList.toggle('cur', i === cur); d.classList.toggle('done', k === 4 ? i !== 0 : i < cur); });
+      // stop 4: the lap is complete, so every stage is done and none is current;
+      // the light rests on node 01 again (.held hides its numeral under the light)
+      const cur = k === 4 ? -1 : k;
+      ctx.nds.forEach((d, i) => { d.classList.toggle('cur', i === cur); d.classList.toggle('done', k === 4 || i < cur); d.classList.toggle('held', k === 4 && i === 0); });
+      ctx.lis.forEach((d, i) => { d.classList.toggle('cur', i === cur); d.classList.toggle('done', k === 4 || i < cur); });
 
       // stop 0, played forward: the sent nomination becomes a light and flies to Capture
       // (set the class before any layout read, so the rail light picks up its delay)
@@ -195,7 +197,7 @@
         ctx.fly.classList.add('go');
       }
 
-      if (n === 4 && !ctx.instant) ctx.after(2050, () => window.Field && Field.burst(NEXT[0], NEXT[1], { radius: 520, dur: 2 }));
+      if (n === 4 && !ctx.instant) ctx.after(2050, () => window.Field && Field.burst(NEXT[0], NEXT[1], { radius: 300, dur: 1.6 }));
     },
   });
 

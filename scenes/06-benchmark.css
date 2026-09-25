@@ -3,7 +3,7 @@
 #s-benchmark .bm-chart { position: absolute; inset: 0; pointer-events: none; }
 
 /* ── the shared 0–100% axis ─────────────────────────────────────────── */
-#s-benchmark .bm-grid { position: absolute; top: 292px; height: 338px; width: 0; border-left: 1px dashed rgba(255, 255, 255, .1); }
+#s-benchmark .bm-grid { position: absolute; top: 334px; height: 296px; width: 0; border-left: 1px dashed rgba(255, 255, 255, .1); }
 #s-benchmark .bm-grid.major { border-left-color: rgba(255, 255, 255, .17); }
 #s-benchmark .bm-grid[data-in] { clip-path: inset(0 0 0 0); }
 #s-benchmark .bm-grid[data-in]:not(.is-in) { transform: none; opacity: 1; clip-path: inset(100% 0 0 0); }
@@ -53,10 +53,10 @@
 #s-benchmark .will .bm-t u { background: var(--teal); border: 2px solid #8BF0E7; box-shadow: 0 0 22px rgba(37, 199, 188, .7); }
 @keyframes bmBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.13); } }
 /* a soft halo breathes behind each Tahakom dot, in step with it */
-#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -32px; top: -32px; width: 64px; height: 64px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out var(--bp, 0s) infinite; }
+#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -46px; top: -46px; width: 92px; height: 92px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out var(--bp, 0s) infinite; }
 #s-benchmark .mech .bm-t i::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .55), transparent); }
 #s-benchmark .will .bm-t i::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .55), transparent); }
-@keyframes bmHalo { 0%, 100% { opacity: .3; transform: scale(.75); } 50% { opacity: 1; transform: scale(1.3); } }
+@keyframes bmHalo { 0%, 100% { opacity: .25; transform: scale(.62); } 50% { opacity: 1; transform: scale(1.1); } }
 
 /* value labels sit on the outer side of each dot */
 #s-benchmark .bm-dot b { position: absolute; top: -15px; font: 700 26px/30px var(--font); white-space: nowrap; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity .5s var(--ease-soft) calc(var(--delay) + .15s); }
@@ -68,15 +68,13 @@
 #s-benchmark .mech .bm-t b { color: var(--purple-lt); }
 #s-benchmark .will .bm-t b { color: var(--teal); }
 
-/* ambient: a small light slowly travels each segment, benchmark to Tahakom */
-#s-benchmark .bm-glint { position: absolute; top: 35px; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 28%; background: #fff; opacity: 0; }
-#s-benchmark .bm-glint::before { content: ''; position: absolute; top: 5px; height: 4px; width: var(--tl); border-radius: 2px; }
-#s-benchmark .mech .bm-glint { box-shadow: 0 0 10px var(--purple-lt), 0 0 30px rgba(157, 103, 170, .95), 0 0 60px rgba(157, 103, 170, .45); }
-#s-benchmark .mech .bm-glint::before { left: 8px; background: linear-gradient(to right, rgba(201, 166, 211, .85), transparent); }
-#s-benchmark .will .bm-glint { box-shadow: 0 0 10px var(--teal), 0 0 30px rgba(37, 199, 188, .95), 0 0 60px rgba(37, 199, 188, .45); }
-#s-benchmark .will .bm-glint::before { right: 8px; background: linear-gradient(to left, rgba(37, 199, 188, .9), transparent); }
+/* ambient: a small dash in the row's tone slowly travels each segment, benchmark
+   to Tahakom, keeping clear of both dots so it never reads as a data point */
+#s-benchmark .bm-glint { position: absolute; top: 35px; width: 14px; height: 4px; margin: -2px 0 0 -7px; border-radius: 2px; background: currentColor; box-shadow: 0 0 10px currentColor; opacity: 0; }
+#s-benchmark .mech .bm-glint { color: var(--purple-lt); }
+#s-benchmark .will .bm-glint { color: #8BF0E7; }
 #s-benchmark .bm-row.is-in .bm-glint { animation: bmGlint var(--gt, 6s) ease-in-out calc(var(--delay) + 1.6s + var(--gp, 0s)) infinite; }
-@keyframes bmGlint { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 58% { opacity: 1; } 68% { transform: translateX(var(--dx)); opacity: 0; } 100% { transform: translateX(var(--dx)); opacity: 0; } }
+@keyframes bmGlint { 0% { transform: translateX(var(--g0)); opacity: 0; } 10% { opacity: .7; } 58% { opacity: .7; } 68% { transform: translateX(var(--g1)); opacity: 0; } 100% { transform: translateX(var(--g1)); opacity: 0; } }
 
 /* the difference, printed large beside the segment */
 #s-benchmark .bm-delta { position: absolute; top: 50%; transform: translateY(-50%); display: flex; align-items: baseline; gap: 8px; white-space: nowrap; opacity: 0; transition: opacity .55s var(--ease-out) calc(var(--delay) + .95s); }
@@ -88,12 +86,15 @@
 #s-benchmark .will .bm-delta { color: var(--teal); }
 #s-benchmark .hero .bm-delta { color: var(--sea); text-shadow: 0 0 28px rgba(3, 255, 203, .45); }
 
-/* stop 2: focus moves to the willingness */
-#s-benchmark[data-step="2"] .bm-row.mech, #s-benchmark[data-step="2"] .bm-grp.mech { opacity: .42; }
+/* stop 2: focus moves to the willingness; the mechanism recedes to a grey-purple, never dark plum */
+#s-benchmark[data-step="2"] .bm-row.mech, #s-benchmark[data-step="2"] .bm-grp.mech { opacity: .6; filter: saturate(.35); }
 
 /* ── caveat, reading, sources ───────────────────────────────────────── */
-#s-benchmark .bm-cav { position: absolute; left: var(--m); top: 688px; margin: 0; font: 400 27px/1.3 var(--font); color: rgba(255, 255, 255, .8); }
+#s-benchmark .bm-cav { position: absolute; left: var(--m); top: 688px; margin: 0; font: 400 28px/1.3 var(--font); color: rgba(255, 255, 255, .8); }
 #s-benchmark .bm-read-k { position: absolute; left: var(--m); top: 778px; }
-#s-benchmark .bm-read { position: absolute; left: 600px; top: 758px; margin: 0; font: 700 50px/1.08 var(--font); letter-spacing: -.022em; color: var(--white); }
-#s-benchmark .bm-src { position: absolute; left: var(--m); top: 896px; margin: 0; font: 400 23px/1.32 var(--font); color: rgba(255, 255, 255, .8); }
+/* the second line opens with the dash, hung left so "build" lines up under "Behind" at x 600
+   (a first-line indent, because the split-word masks would clip a dash hung inside them) */
+#s-benchmark .bm-read { position: absolute; left: calc(600px - 1.14em); top: 758px; margin: 0; text-indent: 1.14em; font: 700 50px/1.08 var(--font); letter-spacing: -.022em; color: var(--white); }
+#s-benchmark .bm-read .w { text-indent: 0; }
+#s-benchmark .bm-src { position: absolute; left: var(--m); top: 892px; margin: 0; font: 400 24px/1.32 var(--font); color: rgba(255, 255, 255, .8); }
 #s-benchmark .bm-src b { font-weight: 700; }

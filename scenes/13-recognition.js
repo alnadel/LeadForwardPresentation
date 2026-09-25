@@ -18,7 +18,8 @@
     for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) {
       if (r === 1 && c === 1) continue;
       const on = lit && lit.includes(r * 3 + c);
-      h += `<i class="rc-cell ${cls}${on ? ' f' : ''}" style="left:${pos(c)};top:${pos(r)}">${on ? '<b class="light"></b>' : ''}</i>`;
+      // every cell holds a faint story of its own; the featured ones light up at stop 4
+      h += `<i class="rc-cell ${cls}${on ? ' f' : ''}" style="left:${pos(c)};top:${pos(r)}"><b class="rc-dot"></b>${on ? '<b class="light"></b>' : ''}</i>`;
     }
     return h;
   };
@@ -40,7 +41,7 @@
       'Recognition should make the employee feel seen. The story and its impact come first. The reward supports the moment; it is not the point.',
       'Recognition works at three scales. The first is immediate: the leader acknowledges the contribution, and the colleague receives a personal certificate.',
       'Each quarter, featured stories reach the whole organisation, through a newsletter or an internal-channel spotlight across Tahakom. The same story, now seen far beyond the desk.',
-      'Once a year, selected stories are featured at a company event or gathered in an annual collection.',
+      'Once a year, selected stories are featured at a company event or gathered in an annual collection. It is still the same story, now seen by the whole company.',
       'One principle protects all of this. We use Featured Story, not Best Story. Selection follows clear criteria, and popularity does not decide the outcome. There are no rankings and no podium.',
     ],
     field: [
@@ -50,6 +51,7 @@
     ],
     html: `
       <div class="rc-hd">
+        <div class="kicker" data-in="0" data-out="4">Recognition</div>
         <h2 class="h2 rc-h" data-in="0" data-out="4" data-split style="--d:.1s">Recognition should make the employee feel seen.</h2>
         <p class="rc-sub" data-in="0" data-out="4" style="--d:.55s">The story and its impact come first; the reward supports the moment.</p>
       </div>

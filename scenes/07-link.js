@@ -5,12 +5,13 @@
 (function () {
   // Geometry in stage px. The flow runs along y = FY.
   const FY = 685;
-  const NODE = { x: 680, r: 38 };          // the individual: 76px squircle
-  const PRISM = { x: 870, r: 70 };         // shared story: 140px squircle
-  const X0 = PRISM.x + PRISM.r;            // beams leave the prism's right face (940)
+  const NODE = { x: 700, r: 38 };          // the individual: 76px squircle
+  const PRISM = { x: 890, r: 70 };         // shared story: 140px squircle
+  const X0 = PRISM.x + PRISM.r;            // beams leave the prism's right face (960)
   const X1 = 1210;                         // …and land on the org cards' left edge
   const CARD_A = [450, 664], CARD_B = [706, 920];
-  const LIGHT_X = NODE.x + NODE.r + 22;    // where the story light waits (740)
+  const LIGHT_X = NODE.x + NODE.r + 22;    // where the story light waits (760)
+  const EMP_W = NODE.x - NODE.r - 48 - 144; // the 01 card keeps 48px clear of the node
   const BAND = [440, 930];                 // the diagram's vertical band
 
   const cx1 = X0 + 118, cx2 = X1 - 116;
@@ -36,7 +37,7 @@
   const EMP = ['Feel seen and valued', 'Stay motivated to contribute', 'Participate, nominate and share', 'Learn from colleagues'];
   const ORG = [
     { k: '02A', cls: 'lk-a', y: CARD_A, icon: 'users-connected', label: 'Org: Culture &amp; values', items: ['Stronger recognition culture', 'Tahakom’s values shown in action'], d: .62 },
-    { k: '02B', cls: 'lk-b', y: CARD_B, icon: 'hands-teamwork', label: 'Org: Engagement &amp; experience', items: ['Higher engagement and collaboration', 'Stronger employee experience'], d: .76 },
+    { k: '02B', cls: 'lk-b', y: CARD_B, icon: 'handshake', label: 'Org: Engagement &amp; experience', items: ['Higher engagement and collaboration', 'Stronger employee experience'], d: .76 },
   ];
 
   Deck.scene({
@@ -46,10 +47,10 @@
     bg: 'night',
     cues: ['Recognition creates value at two levels', '01 · Employee level', 'Shared story · two beams to the organisation', 'Recognition becomes organisational value'],
     notes: [
-      'Why does this matter to Tahakom, and not only to the person being recognised? Because recognition creates value at two connected levels. The employee experiences it. Tahakom benefits when the behaviour becomes visible and can be repeated.',
-      'Start with the individual. When a colleague is recognised, they feel seen and valued, and they stay motivated to contribute. They are more likely to take part, to nominate and to share, and they learn from the people around them.',
-      'The link is the shared story. When that one moment is shared, it reaches the organisation in two ways. First, culture and values: a stronger recognition culture, with Tahakom’s values shown in action. Second, engagement and experience: more engagement and collaboration, and a stronger employee experience.',
-      'So this is the link: employee recognition becomes organisational value when the story is shared. One honest caveat. Retention may follow in the long term, but it is not a direct outcome of the pilot, and we will not claim it as one.',
+      'Why does this matter to Tahakom, and not only to the person recognised? Because recognition creates value at two connected levels.',
+      'For the employee: they feel seen and valued, stay motivated, take part, nominate, share, and learn from colleagues.',
+      'The link is the shared story. Once shared, it reaches the organisation twice: a stronger recognition culture with our values in action, and more engagement, collaboration and a better employee experience.',
+      'So recognition becomes organisational value when the story is shared. One honest caveat: retention may follow in the long term, but it is not a direct outcome of the pilot, and we will not claim it.',
     ],
     field: [
       { dim: .26, lit: 0, travel: 0, offset: [170, -80], warm: .1,
@@ -89,14 +90,14 @@
         <path d="M${NODE.x + NODE.r} ${FY} L${PRISM.x - PRISM.r} ${FY}"/>
       </svg>
 
-      <!-- two broad beams (teal → purple) -->
+      <!-- two broad beams (teal → queen blue: the organisation benefits, never a gap) -->
       <svg class="lk-beams a-wipe" data-in="2" ${beamBox};--d:.4s;--dur:1s" aria-hidden="true">
         <defs>
           <linearGradient id="lkBeamFill" gradientUnits="userSpaceOnUse" x1="${X0}" y1="0" x2="${X1}" y2="0">
-            <stop offset="0" stop-color="#25C7BC" stop-opacity=".6"/><stop offset=".5" stop-color="#5FB9C2" stop-opacity=".22"/><stop offset="1" stop-color="#C9A6D3" stop-opacity=".16"/>
+            <stop offset="0" stop-color="#25C7BC" stop-opacity=".6"/><stop offset=".5" stop-color="#25C7BC" stop-opacity=".24"/><stop offset="1" stop-color="#8FC2DC" stop-opacity=".14"/>
           </linearGradient>
           <linearGradient id="lkBeamLine" gradientUnits="userSpaceOnUse" x1="${X0}" y1="0" x2="${X1}" y2="0">
-            <stop offset="0" stop-color="#25C7BC"/><stop offset="1" stop-color="#C9A6D3"/>
+            <stop offset="0" stop-color="#25C7BC"/><stop offset="1" stop-color="#8FC2DC"/>
           </linearGradient>
         </defs>
         <path class="w" d="${wedgeA}"/><path class="w" d="${wedgeB}"/>
@@ -107,7 +108,7 @@
 
       <!-- ambient: a slow glint travels out through both beams, stories ride them -->
       <svg class="lk-glint a-fade" data-in="2" ${beamBox};--d:1.4s;--dur:1s" aria-hidden="true">
-        <defs><linearGradient id="lkGlint" gradientUnits="userSpaceOnUse" x1="${X0}" y1="0" x2="${X1}" y2="0"><stop offset="0" stop-color="#03FFCB" stop-opacity=".5"/><stop offset="1" stop-color="#C9A6D3" stop-opacity=".35"/></linearGradient></defs>
+        <defs><linearGradient id="lkGlint" gradientUnits="userSpaceOnUse" x1="${X0}" y1="0" x2="${X1}" y2="0"><stop offset="0" stop-color="#03FFCB" stop-opacity=".5"/><stop offset="1" stop-color="#25C7BC" stop-opacity=".3"/></linearGradient></defs>
         <path d="${wedgeA}"/><path d="${wedgeB}"/>
       </svg>
       <div class="lk-flow a-fade" data-in="2" style="--d:1.3s;--dur:1s">
@@ -117,7 +118,7 @@
       </div>
 
       <!-- 01 · the individual -->
-      <div class="lk-emp-wrap" style="${box(144, BAND[0], NODE.x - NODE.r - 24 - 144, BAND[1] - BAND[0])}">
+      <div class="lk-emp-wrap" style="${box(144, BAND[0], EMP_W, BAND[1] - BAND[0])}">
         <div class="card lk-card lk-emp a-left" data-in="1" style="--d:.1s">
           <div class="lk-num teal">01</div>
           <div class="label lk-lab">Employee level</div>
@@ -142,7 +143,7 @@
       <!-- 02 · the organisation -->
       ${ORG.map((o) => `
       <div class="card lk-card lk-org ${o.cls} a-right" data-in="2" style="--d:${o.d}s;${box(X1, o.y[0], 1776 - X1, o.y[1] - o.y[0])}">
-        <div class="lk-num purple">${o.k}</div>
+        <div class="lk-num teal">${o.k}</div>
         <div class="label lk-lab">${o.label}</div>
         <ul class="lk-list">${o.items.map((t) => `<li>${t}</li>`).join('')}</ul>
       </div>

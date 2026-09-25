@@ -24,8 +24,8 @@
     cues: ['Four risks · the guard already in the design · an owner', 'Owners to confirm · every mitigation is already in the design'],
     holds: [12, 7],
     notes: [
-      'Before you approve anything, here is what could break it, and what already guards against it. First, it turns into a popularity contest or a leadership broadcast: peers nominate, and the Featured Story criteria are published. Second, nominations dry up after launch: nominations stay open, and every featured colleague nominates the next. Third, a sensitive or contested story is published: facts are checked and the employee consents before anything is shared. Fourth, stories cluster in two departments: we track representation from month one. Team, confirm before presenting: these owners are our proposal and have not yet been agreed with the curation panel, Internal Communications, HR, Legal or People Analytics.',
-      'The owners still need to be confirmed with each team before launch. The point is simple: every mitigation on this list is something you have already seen in the design. (Skippable when time is short.)',
+      'Before you approve anything: what could break this, and what already guards against it. A popularity contest or a leadership broadcast: peers nominate, and the Featured Story criteria are published. Nominations drying up: they stay open, and every featured colleague nominates the next. A sensitive or contested story: facts and consent are checked before anything is shared. Stories clustering in two departments: we track representation from month one. Team, confirm before presenting: these owners are our proposal, not yet agreed with the curation panel, Internal Communications, HR, Legal or People Analytics.',
+      'The owners still need confirming with each team before launch. The point: every mitigation here is something you have already seen in the design. (Skippable when time is short.)',
     ],
     field: [
       { dim: .3, lit: .03, travel: .45, offset: [120, 170], warm: .15, litFrom: [1500, 200], calm: [[100, 110, 1820, 960, .7]] },

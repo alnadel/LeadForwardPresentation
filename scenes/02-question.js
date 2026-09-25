@@ -15,13 +15,15 @@
     title: 'The question',
     act: 0,
     bg: 'plum',
+    tag: 'illustrative',
+    tagFrom: 1,              // Nouf's photo arrives at stop 1; the question stands alone at stop 0
     cues: ['When was the last time a colleague inspired you?', 'Think of one moment', 'Helped · supported · improved · inspired', 'What if one story could travel further?'],
     holds: [6, 7, 9, 8],
     notes: [
-      'Let the question sit. Ask it, then stay quiet for a few seconds: “When was the last time a colleague inspired you?” Give the room time to think of someone.',
-      'Think of one moment that made work better. Then ask yourself one more thing: who else ever heard about it?',
-      'Moments like this tend to look like one of four things. Someone helped. Someone supported another person or team. Someone improved how the work gets done. And some of them could inspire others, if only people could see them.',
-      'Every day, these moments happen. Most stay visible only to the people who were there. So here is the question behind this proposal: what if one story could travel further?',
+      'Ask it, then stay quiet for a few seconds: “When was the last time a colleague inspired you?” Give the room time to think of someone.',
+      'One thing first: Nouf, whom you will follow today, is an illustrative story, not a specific colleague. Now think of one moment that made work better. Who else ever heard about it?',
+      'These moments tend to look like four things. Someone helped. Someone supported another person or team. Someone improved how the work gets done. And some could inspire others, if people could see them.',
+      'Every day, these moments happen, yet most stay visible only to the people who were there. So here is the question behind this proposal: what if one story could travel further?',
     ],
     field: [
       { dim: .42, lit: 0, travel: 0, offset: [170, -90], calm: [[220, 340, 1700, 700, .55]] },
@@ -56,7 +58,7 @@
         </div>`).join('')}
       </div>
 
-      <p class="qs-l1" data-in="3" style="--d:.35s">Every day, these moments happen. Most stay visible only to the people who were there.</p>
+      <p class="qs-l1" data-in="3" style="--d:.35s">Every day, these moments happen.<br>Most stay visible only to the people who were there.</p>
       <p class="qs-l2" data-in="3" data-split style="--d:.75s">What if one story could<br>travel further?</p>
     `,
   });

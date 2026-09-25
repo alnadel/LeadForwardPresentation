@@ -6,12 +6,12 @@
 #s-cycle .cy-lanes, #s-cycle .cy-lane, #s-cycle .cy-lanelights { position: absolute; inset: 0; }
 #s-cycle .cy-track-p { stroke: rgba(157, 103, 170, .75); stroke-width: 3; stroke-linecap: round; }
 #s-cycle .cy-track-t { stroke: var(--teal); stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(37, 199, 188, .45)); }
-#s-cycle .cy-ret { fill: none; stroke: rgba(37, 199, 188, .5); stroke-width: 2.5; stroke-dasharray: 3 11; stroke-linecap: round; }
+#s-cycle .cy-ret { fill: none; stroke: rgba(37, 199, 188, .8); stroke-width: 3; stroke-dasharray: 8 10; stroke-linecap: round; }
 #s-cycle .cy-geo { fill: none; stroke: none; }
 #s-cycle .cy-chev-p, #s-cycle .cy-chev-t, #s-cycle .cy-chev-r { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 #s-cycle .cy-chev-p { stroke: var(--purple-lt); }
 #s-cycle .cy-chev-t { stroke: var(--teal); }
-#s-cycle .cy-chev-r { stroke: rgba(37, 199, 188, .8); }
+#s-cycle .cy-chev-r { stroke: var(--teal); }
 
 #s-cycle .cy-st { position: absolute; transform: translateX(-50%); white-space: nowrap; font: 700 36px/1.2 var(--font); letter-spacing: -.01em; }
 #s-cycle .cy-st.p { color: var(--purple-lt); }
@@ -37,7 +37,7 @@
 #s-cycle .cy-ring { position: absolute; inset: 0; }
 #s-cycle .cy-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .18), rgba(37, 199, 188, .06) 55%, transparent); }
 #s-cycle .cy-rtrack { fill: none; stroke: rgba(255, 255, 255, .1); stroke-width: 2; }
-#s-cycle .cy-rdraw { fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-dasharray: 100 100; stroke-dashoffset: 100; filter: drop-shadow(0 0 8px rgba(37, 199, 188, .5)); transition: stroke-dashoffset 1s linear .3s; }
+#s-cycle .cy-rdraw { fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-dasharray: 100 100; stroke-dashoffset: 100; filter: drop-shadow(0 0 8px rgba(37, 199, 188, .5)); transition: stroke-dashoffset .7s linear .1s; }
 #s-cycle.st-1 .cy-rdraw { stroke-dashoffset: 0; }
 #s-cycle .cy-trail { fill: none; stroke: var(--sea); stroke-width: 7; stroke-linecap: butt; stroke-dasharray: 0 100; }
 #s-cycle .cy-trail.t0 { opacity: .08; }

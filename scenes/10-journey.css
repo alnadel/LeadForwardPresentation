@@ -13,30 +13,30 @@
 #s-journey .jn-nd span { transition: opacity .4s var(--ease-soft); }
 #s-journey .jn-nd.done { border-color: var(--teal); color: var(--teal); }
 #s-journey .jn-nd.cur { border-color: var(--teal); background: #0C3440; box-shadow: 0 0 34px rgba(37, 199, 188, .5); }
-#s-journey .jn-nd.cur span { opacity: 0; }
+#s-journey .jn-nd.cur span, #s-journey .jn-nd.held span { opacity: 0; }
 
 /* the story light rides a rotating arm, counter-rotated so it stays upright */
 #s-journey .jn-orb { position: absolute; left: 150px; top: 150px; width: 0; height: 0; transform: rotate(-45deg); transition: transform 1.1s var(--ease-io); }
 #s-journey .jn-orb-i { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transform: translateX(104px) rotate(45deg); transition: transform 1.1s var(--ease-io), opacity .4s var(--ease-soft); }
-#s-journey .jn-orb-i .light { position: absolute; left: -11px; top: -11px; }
-#s-journey .jn-orb-i .amb-ring { width: 52px; height: 52px; left: -26px; top: -26px; border-width: 1.5px; animation-duration: 3.2s; }
+#s-journey .jn-orb-i .light { position: absolute; left: -11px; top: -11px; animation-duration: 5s; }
+/* the one parked motion on every stop: the stage light breathes slowly on the rail, and
+   at the top of each breath a soft band of light swells out of it (linear, so a parked
+   frame is never still; -2.5s puts the emission on the peak of the 5s breath) */
+#s-journey .jn-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, transparent 50%, rgba(37, 199, 188, .34) 74%, transparent); opacity: 0; animation: jnHalo 5s linear -2.5s infinite; pointer-events: none; }
+@keyframes jnHalo { 0% { opacity: 0; transform: scale(.34); } 12% { opacity: 1; } 60% { opacity: .8; } 100% { opacity: 0; transform: scale(1); } }
 #s-journey.st-0 .jn-orb-i { opacity: 1; transition: transform 1.1s var(--ease-io), opacity .5s var(--ease-soft) calc(var(--enter, 0s) + .35s); }
 #s-journey.st-0:not(.jn-flown) .jn-orb-i { transition: transform 1.1s var(--ease-io), opacity .35s var(--ease-soft) calc(var(--enter, 0s) + 2.2s); }
 
 #s-journey .jn-list { position: absolute; left: var(--m); top: 664px; width: 330px; margin: 0; padding: 0; list-style: none; }
-#s-journey .jn-li { display: flex; align-items: baseline; gap: 18px; height: 60px; font: 400 32px/1 var(--font); color: var(--ink-4); transition: color .6s var(--ease-soft); }
+#s-journey .jn-li { display: flex; align-items: baseline; gap: 18px; height: 60px; font: 400 32px/1 var(--font); color: rgba(255, 255, 255, .58); transition: color .6s var(--ease-soft); }
 #s-journey .jn-li b { width: 36px; font: 700 22px/1 var(--font); letter-spacing: .08em; color: inherit; transition: color .6s var(--ease-soft); }
 #s-journey .jn-li.done { color: var(--ink-3); }
 #s-journey .jn-li.done b { color: var(--teal); }
 #s-journey .jn-li.cur { color: var(--white); font-weight: 700; }
-#s-journey .jn-li.cur b { color: var(--sea); }
+#s-journey .jn-li.cur b { color: var(--teal); }
 
-/* heroes leave to the left as the next one arrives from the right; while parked
-   they float very gently (the individual translate property, so the build
-   transforms are untouched) */
-#s-journey .jn-form, #s-journey .jn-cur, #s-journey .jn-post, #s-journey .jn-cert { animation: jnBob 9s ease-in-out infinite; }
-#s-journey .jn-faisal { animation: jnBob 9s ease-in-out -3s infinite; }
-@keyframes jnBob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+/* heroes leave to the left as the next one arrives from the right. Every hero
+   ends on the right margin (x 1776), so the right edge holds still between stops. */
 #s-journey .jn-faisal.is-out, #s-journey .jn-form.is-out, #s-journey .jn-cur.is-out, #s-journey .jn-post.is-out { transform: translateX(-80px) scale(.97); }
 
 /* ── 0 · capture ───────────────────────────────────────────────────── */
@@ -88,7 +88,7 @@
 }
 
 /* ── 1 · curate ────────────────────────────────────────────────────── */
-#s-journey .jn-cur { position: absolute; left: 690px; top: 180px; width: 956px; padding: 42px 52px 34px; }
+#s-journey .jn-cur { position: absolute; left: 820px; top: 180px; width: 956px; padding: 42px 52px 34px; }
 #s-journey .jn-cur-h { display: flex; align-items: baseline; justify-content: space-between; }
 #s-journey .jn-cur-h b { font: 700 42px/1.1 var(--font); letter-spacing: -.015em; color: var(--navy); }
 #s-journey .jn-draft { font: 400 28px/1 var(--font); color: #56627A; }
@@ -104,7 +104,7 @@
 #s-journey .jn-value { font-style: normal; display: inline-block; margin-left: 6px; padding: 6px 20px 7px; border-radius: 999px; background: var(--plum); color: #fff; font: 700 30px/1.2 var(--font); }
 
 /* ── 2 · feature ───────────────────────────────────────────────────── */
-#s-journey .jn-post { position: absolute; left: 648px; top: 158px; width: 1040px; padding: 32px 44px 28px; overflow: hidden; }
+#s-journey .jn-post { position: absolute; left: 736px; top: 158px; width: 1040px; padding: 32px 44px 28px; overflow: hidden; }
 #s-journey .jn-ph { display: flex; align-items: center; gap: 22px; }
 #s-journey .jn-pav { width: 72px; height: 72px; border-radius: 28%; flex: none; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, #7C3C6B, #602650); }
 #s-journey .jn-pav svg { width: 42px; display: block; }
@@ -121,14 +121,14 @@
 #s-journey .jn-react .icon { font-size: 36px; color: var(--plum); }
 
 /* ── 3 · reinforce ─────────────────────────────────────────────────── */
-#s-journey .jn-cert { position: absolute; left: 718px; top: 176px; width: 900px; height: 250px; display: flex; align-items: center; gap: 42px; padding: 0 56px; }
+#s-journey .jn-cert { position: absolute; left: 876px; top: 176px; width: 900px; height: 250px; display: flex; align-items: center; gap: 42px; padding: 0 56px; }
 #s-journey .jn-cert::after { content: ''; position: absolute; inset: 12px; border: 2px solid rgba(96, 38, 80, .16); border-radius: 12px; pointer-events: none; }
 #s-journey .jn-cert-i { width: 150px; height: 150px; border-radius: 28%; flex: none; display: grid; place-items: center; font-size: 92px; color: #fff; background: linear-gradient(135deg, #7C3C6B, #602650); box-shadow: 0 12px 30px rgba(96, 38, 80, .35); }
 #s-journey .jn-cert-k { display: block; font: 700 28px/1.2 var(--font); letter-spacing: .12em; text-transform: uppercase; color: var(--plum); }
 #s-journey .jn-cert-t b { display: block; margin-top: 10px; font: 700 56px/1.08 var(--font); letter-spacing: -.02em; color: var(--navy); }
 #s-journey .jn-cert-l { display: block; margin-top: 10px; font: 400 30px/1.3 var(--font); color: #3D4A5C; }
 
-#s-journey .jn-tl { position: absolute; left: 572px; top: 488px; color: var(--ink-3); }
+#s-journey .jn-tl { position: absolute; left: 584px; top: 488px; color: var(--ink-3); }
 #s-journey .jn-tiles { position: absolute; inset: 0; pointer-events: none; }
 #s-journey .jn-tile { position: absolute; width: 280px; height: 200px; perspective: 1100px; }
 #s-journey .jn-face { position: absolute; inset: 0; border-radius: 16px; padding: 24px 26px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform .75s var(--ease-out) var(--f); }
@@ -144,7 +144,7 @@
 #s-journey.st-3 .jn-face.back { transform: rotateY(0deg); }
 
 #s-journey .jn-links { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
-#s-journey .jn-links path { fill: none; stroke: rgba(37, 199, 188, .42); stroke-width: 2; stroke-linecap: round; }
+#s-journey .jn-links path { fill: none; stroke: rgba(37, 199, 188, .7); stroke-width: 3; stroke-linecap: round; }
 #s-journey .jn-reach { position: absolute; inset: 0; pointer-events: none; }
 #s-journey .jn-rt { position: absolute; left: 0; top: 0; opacity: 0; offset-distance: 0%; offset-rotate: 0deg; transition: offset-distance .3s var(--ease-soft), opacity .25s var(--ease-soft); }
 #s-journey.st-3 .jn-rt { animation: jnPulse 2.8s ease-in-out calc(var(--k) * -.7s) infinite; opacity: 1; offset-distance: 100%; transition: offset-distance .75s var(--ease-io) calc(.45s + var(--k) * .14s), opacity .25s linear calc(.45s + var(--k) * .14s); }
@@ -169,4 +169,4 @@
 #s-journey .jn-rings .amb-ring { width: 30px; height: 30px; left: -15px; top: -15px; }
 #s-journey.st-4 .jn-rings { opacity: 1; transition: opacity .6s var(--ease-soft) 2.1s; }
 
-#s-journey .jn-big { position: absolute; left: 600px; top: 516px; width: 1160px; margin: 0; font: 700 104px/1 var(--font); letter-spacing: -.035em; color: var(--white); }
+#s-journey .jn-big { position: absolute; left: 584px; top: 516px; width: 1160px; margin: 0; font: 700 104px/1 var(--font); letter-spacing: -.035em; color: var(--white); }

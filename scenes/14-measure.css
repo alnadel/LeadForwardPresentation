@@ -1,9 +1,18 @@
 /* 14 · Measure */
-/* stop 0 holds the statement near the optical centre; stop 1 lifts it to make room for the lane */
-#s-measure .ms-head { transform: translateY(250px); transition: transform 1s var(--ease-io) .3s; }
-#s-measure.st-1 .ms-head { transform: none; transition: transform .9s var(--ease-out) 0s; }
 #s-measure .ms-h { margin-top: 30px; font-size: 74px; }
 #s-measure .ms-sub { margin-top: 20px; }
+
+/* the rig (lane + gantries) is drawn at stop 0 as a faint, unpowered skeleton;
+   stop 1 powers it on. Only the lane markings drift while it waits. */
+#s-measure .ms-rig { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+#s-measure .ms-lane { opacity: .5; transition: opacity .9s var(--ease-soft) .1s; }
+#s-measure.st-1 .ms-lane { opacity: 1; }
+#s-measure:not(.st-1) .ms-dash line { animation: msDrift 5s linear infinite; }
+@keyframes msDrift { to { stroke-dashoffset: -60; } }
+#s-measure .ms-g { opacity: .34; transition: opacity .6s var(--ease-soft); }
+#s-measure.st-1 .ms-g { opacity: 1; transition-delay: var(--on); }
+#s-measure .ms-lens { opacity: .3; box-shadow: none; transition: opacity .6s var(--ease-soft), box-shadow .6s var(--ease-soft); }
+#s-measure.st-1 .ms-lens { opacity: .6; box-shadow: 0 0 8px var(--teal); transition-delay: var(--on); }
 
 /* the lane: full-bleed, fading out at both edges so the light never hits a wall */
 #s-measure .ms-lane { position: absolute; left: 0; right: 0; top: 544px; height: 56px;
@@ -18,21 +27,24 @@
 
 /* a gantry: two posts, a truss, a variable-message readout and a sensor head */
 #s-measure .ms-g { position: absolute; top: 400px; width: 260px; height: 144px; }
-#s-measure .ms-g[data-in]:not(.is-in) { transform: translateY(24px); }
 #s-measure .ms-frame { position: absolute; inset: 0; width: 260px; height: 144px; overflow: visible; }
 #s-measure .ms-frame rect { fill: rgba(214, 226, 240, .5); }
 #s-measure .ms-frame .ms-truss { fill: none; stroke: rgba(214, 226, 240, .46); stroke-width: 1.6; stroke-linejoin: round; }
 #s-measure .ms-frame .ms-head { fill: rgba(214, 226, 240, .78); }
-#s-measure .ms-lens { position: absolute; left: 126px; top: 66px; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); opacity: .6; }
+#s-measure .ms-lens { position: absolute; left: 126px; top: 66px; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
 #s-measure .ms-vms { position: absolute; left: 42px; top: 6px; width: 176px; height: 48px; border-radius: 7px; display: grid; place-items: center;
   background: radial-gradient(rgba(37, 199, 188, .12) 1px, transparent 1.4px) 0 0 / 5px 5px, #041320;
   border: 1.5px solid rgba(37, 199, 188, .38); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); }
-#s-measure .ms-vms span { font: 700 22px/1 var(--font); letter-spacing: .2em; margin-right: -.2em; text-transform: uppercase; color: var(--teal); opacity: .62; }
-#s-measure .ms-beam { position: absolute; left: 75px; top: 74px; width: 110px; height: 98px; opacity: .1;
+#s-measure .ms-vms span { font: 700 22px/1 var(--font); letter-spacing: .2em; margin-right: -.2em; text-transform: uppercase; color: var(--teal); opacity: 0; }
+#s-measure.st-1 .ms-vms span { opacity: .62; }
+#s-measure .ms-beam { position: absolute; left: 75px; top: 74px; width: 110px; height: 98px; opacity: 0;
   background: linear-gradient(180deg, rgba(37, 199, 188, .9), rgba(37, 199, 188, .15));
   clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); }
-#s-measure .ms-foot { position: absolute; left: 65px; top: 162px; width: 130px; height: 20px; border-radius: 50%; opacity: .12;
+#s-measure .ms-foot { position: absolute; left: 65px; top: 162px; width: 130px; height: 20px; border-radius: 50%; opacity: 0;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .8), transparent); }
+#s-measure .ms-beam, #s-measure .ms-foot { transition: opacity .6s var(--ease-soft); }
+#s-measure.st-1 .ms-beam { opacity: .1; transition-delay: var(--on); }
+#s-measure.st-1 .ms-foot { opacity: .12; transition-delay: var(--on); }
 
 /* the story light on the lane */
 #s-measure .ms-car { position: absolute; left: 0; top: 572px; width: 0; height: 0; opacity: 0; transform: translateX(-60px); transition: opacity .4s var(--ease-soft); }
@@ -44,7 +56,7 @@
 @keyframes msDrive { from { transform: translateX(-60px); } to { transform: translateX(1980px); } }
 
 /* each readout blinks BASELINE as the light passes beneath its gantry */
-#s-measure.st-1 .ms-vms span { animation: msTxtOnce 1s linear var(--tf) 1, msTxt 10s linear var(--ts) infinite; }
+#s-measure.st-1 .ms-vms span { animation: msTxtOnce 1s linear var(--tf) 1 backwards, msTxt 10s linear var(--ts) infinite; }
 #s-measure.st-1 .ms-vms { animation: msVmsOnce 1s linear var(--tf) 1, msVms 10s linear var(--ts) infinite; }
 #s-measure.st-1 .ms-beam { animation: msBeamOnce 1s linear var(--tf) 1, msBeam 10s linear var(--ts) infinite; }
 #s-measure.st-1 .ms-foot { animation: msBeamOnce 1s linear var(--tf) 1, msBeam 10s linear var(--ts) infinite; }
@@ -55,7 +67,8 @@
   4%, 9% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
   13%, 100% { opacity: .62; text-shadow: none; color: var(--teal); } }
 @keyframes msTxtOnce {
-  0%, 18% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
+  0% { opacity: 0; text-shadow: none; color: var(--teal); }
+  1%, 18% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
   19%, 30% { opacity: .3; text-shadow: none; color: var(--teal); }
   31%, 70% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
   100% { opacity: .62; text-shadow: none; color: var(--teal); } }
@@ -76,13 +89,13 @@
 #s-measure .ms-txt { margin: 16px 0 0; font: 400 28px/1.34 var(--font); color: var(--ink-2); text-wrap: balance; }
 
 /* stop 2: baseline → after one quarter */
-#s-measure .ms-strip { position: absolute; left: var(--m); right: var(--m); top: 792px; height: 160px; }
+#s-measure .ms-strip { position: absolute; left: var(--m); right: var(--m); top: 780px; height: 164px; }
 #s-measure .ms-strip[data-in]:not(.is-in) { transform: none; }
 #s-measure .ms-strip-rule { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: linear-gradient(90deg, var(--teal), rgba(37, 199, 188, .25) 45%, rgba(255, 255, 255, .06)); }
 #s-measure .ms-strip-l { position: absolute; left: 0; top: 30px; color: var(--teal); }
 #s-measure .ms-arr { display: inline-block; margin: 0 .25em; letter-spacing: 0; }
-#s-measure .ms-strip-t { position: absolute; left: 0; top: 66px; margin: 0; font: 400 30px/1.3 var(--font); color: var(--ink-2); white-space: nowrap; }
-#s-measure .ms-strip-t b { font-weight: 700; color: var(--purple-lt); }
+#s-measure .ms-strip-t { position: absolute; left: 0; top: 67px; margin: 0; font: 400 30px/1.3 var(--font); color: var(--ink-2); white-space: nowrap; }
+#s-measure .ms-strip-t b { font-weight: 700; font-size: 52px; line-height: 1; vertical-align: -5px; color: var(--purple-lt); }
 #s-measure .ms-strip-t .ms-arr { color: var(--teal); font-weight: 700; }
-#s-measure .ms-strip-b { position: absolute; left: 0; top: 112px; margin: 0; font: 700 40px/1.1 var(--font); letter-spacing: -.015em; color: var(--white); white-space: nowrap; }
-#s-measure .ms-strip-b span { color: var(--teal); margin: 0 .12em; }
+#s-measure .ms-strip-b { position: absolute; left: 0; top: 128px; margin: 0; font: 400 28px/1.2 var(--font); letter-spacing: 0; color: var(--ink-3); white-space: nowrap; }
+#s-measure .ms-strip-b span { color: var(--ink-4); margin: 0 .12em; }

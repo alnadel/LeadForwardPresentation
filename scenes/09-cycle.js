@@ -18,7 +18,7 @@
   const TOP = TX[4] - TX[0];
   const PERIOD = 10;          // one lap of the story lane, seconds
   const LAP = 9;              // one orbit of the ring, seconds
-  const SWEEP = [0.3, 0.55, 0.8, 1.05]; // the four nodes land as the ring draws past them
+  const SWEEP = [0.15, 0.3, 0.45, 0.6]; // the four nodes land as the ring draws past them
 
   const STAGES = [
     { n: '01', t: 'Capture', s: 'Peer or leader nomination through a short, clear form.', p: 'Employee voice', a: -45 },
@@ -33,7 +33,8 @@
   // the ring's direction chevrons sit mid-arc between the nodes
   const ringChevs = [0, 90, 180, 270].map((a, i) => {
     const [x, y] = at(a, R);
-    return chev(x, y, a + 90, 'cy-chev a-fade', `data-in="1" style="--d:${(0.42 + i * 0.25).toFixed(2)}s"`);
+    // the ring draws from node 01 (-45°) in .7s after a .1s beat: each chevron lands as the stroke passes it
+    return chev(x, y, a + 90, 'cy-chev a-fade', `data-in="1" style="--d:${(0.19 + i * 0.175).toFixed(2)}s;--dur:.5s"`);
   }).join('');
 
   const nodes = STAGES.map((s, i) => {
@@ -45,7 +46,7 @@
     const [, y] = at(s.a, R);
     const right = i < 2;
     const pos = right ? `left:${BX}px` : `right:${BX}px`;
-    return `<div class="cy-blk ${right ? 'r' : 'l'}" data-in="1" style="${pos};top:${(y - 22).toFixed(0)}px;--d:${(SWEEP[i] + 0.05).toFixed(2)}s">
+    return `<div class="cy-blk ${right ? 'r' : 'l'}" data-in="1" style="${pos};top:${(y - 22).toFixed(0)}px;--d:${(SWEEP[i] + 0.05).toFixed(2)}s;--dur:.6s">
         <div class="cy-t">${s.t}</div>
         <p class="cy-s">${s.s}</p>
         <div class="cy-p a-fade" data-in="2" style="--d:${(0.35 + i * 0.14).toFixed(2)}s"><i></i>${s.p}</div>
@@ -60,14 +61,14 @@
     cues: ['What is new · two lanes', 'The cycle · four stages', 'The cycle repeats'],
     holds: [9, 12, 9],
     notes: [
-      'Here is what is new. Most recognition follows the top lane: an achievement earns recognition, and that is good — we keep all of it. But it ends there. The person is thanked, and the behaviour stays where it happened. The bottom lane keeps going: an experience becomes a story, the story shows a behaviour, the behaviour inspires someone else, and that brings more stories. Then it comes back round.',
-      'That loop is the solution: a simple story-to-impact cycle in four steps. Capture — a peer or a leader nominates through a short, clear form. Curate — we verify the facts, secure consent and link the story to one value. Feature — we publish a short, authentic story on the channels people already use. Reinforce — we recognise the contribution, share the takeaway and track the response.',
-      'And then the cycle repeats. Each step carries one design principle: capture protects employee voice, curation keeps selection fair, featuring makes recognition visible, and reinforcing turns one story into organisational learning. Next, we follow one story all the way round.',
+      'Most recognition runs the top lane: an achievement earns recognition, and we keep that. But it ends there; the behaviour stays where it happened. The bottom lane keeps going: an experience becomes a story, the story shows a behaviour, that inspires someone, and more stories follow.',
+      'That loop is the solution, in four steps. Capture: a peer or leader nominates through a short form. Curate: we check facts, secure consent and link one value. Feature: a short story on channels we already have. Reinforce: we recognise the person and share the takeaway.',
+      'Then it repeats. Each step protects a principle: employee voice, fair selection, visible recognition, organisational learning. Next, one story all the way round.',
     ],
     field: [
       { dim: .26, lit: .02, travel: .1, offset: [150, -70], litFrom: null, calm: [[100, 120, 1500, 380, .85], [140, 420, 1720, 900, .55]] },
       { dim: .3, lit: .04, litFrom: [CX, CY], travel: .18, calm: [[100, 120, 1300, 300, .85], [120, 400, 740, 920, .75], [1180, 400, 1800, 920, .75]] },
-      { lit: .07, travel: .3, calm: [[100, 120, 1300, 300, .85], [120, 400, 740, 940, .75], [1180, 400, 1800, 940, .75], [800, 530, 1120, 680, .8]] },
+      { lit: .04, travel: .3, calm: [[100, 120, 1300, 300, .85], [120, 400, 740, 940, .75], [1180, 400, 1800, 940, .75], [800, 530, 1120, 680, .8]] },
     ],
     html: `
       <!-- stop 0 · two lanes -->
@@ -119,7 +120,7 @@
           ${[56, 38, 24, 12].map((sp, i) => `<circle class="cy-trail t${i}" cx="${CX}" cy="${CY}" r="${R}" pathLength="100" data-span="${sp}"/>`).join('')}
         </svg>
       </div>
-      <div class="cy-orbit a-fade" data-in="1" style="--d:1.3s;--dur:.6s"><i class="light cy-olight"></i></div>
+      <div class="cy-orbit a-fade" data-in="1" style="--d:1s;--dur:.6s"><i class="light cy-olight"></i></div>
       ${nodes}
       ${blocks}
 
@@ -149,10 +150,11 @@
     step(n, prev, ctx) {
       // the orbit starts at node 01 once the ring has drawn; walking back from
       // stop 2 to stop 1 keeps it running where it is
-      if (n >= 1 && (prev < 1 || !ctx.orbit0)) ctx.orbit0 = performance.now() + (ctx.instant ? 0 : 1300);
+      if (n >= 1 && (prev < 1 || !ctx.orbit0)) ctx.orbit0 = performance.now() + (ctx.instant ? 0 : 1000);
       if (n < 1) ctx.orbit0 = 0;
       if (n >= 1) orbit(ctx);
-      if (n === 2 && !ctx.instant) ctx.after(300, () => window.Field && Field.burst(CX, CY, { radius: 620, dur: 2.2 }));
+      // the cycle repeats: one small ripple from the centre that stays inside the ring
+      if (n === 2 && !ctx.instant) ctx.after(300, () => window.Field && Field.burst(CX, CY, { radius: 250, dur: 1.4 }));
     },
   });
 

@@ -2,25 +2,21 @@
    show how the stories serve the strategy; the six values take turns in the light. */
 (function () {
   const VALUES = ['Commitment', 'Collaboration', 'Innovation', 'Impact', 'Learning', 'Excellence'];
-  const CYCLE = 2500;           // ms between highlight moves
-  const FIRST = 3400;           // the first value holds a little longer while the pillars build
+  const CYCLE = 4000;           // ms between highlight moves (each chip cross-fades, it never slides)
+  const FIRST = 4600;           // the first value holds a little longer while the pillars build
   // city lights that shimmer over the photo (stage px, on the photo's bright districts)
   const GLINTS = [[1560, 575, 1], [1742, 338, .8], [1640, 282, .7], [1402, 500, .8], [1286, 222, .6], [1208, 655, .7], [1812, 842, .9], [1700, 470, .9], [1480, 350, .6], [1860, 610, .8]];
 
   const pillar = (n, title, text, extra) => `
     <div class="al-p" data-in="1">
-      <div class="al-p-head"><span class="al-n num">${n}</span><i class="al-p-rule"></i></div>
+      <div class="al-p-head"><span class="al-n num">${String(n).padStart(2, '0')}</span><i class="al-p-rule"></i></div>
       <h3 class="al-p-t">${title}</h3>
       <p class="al-p-s">${text}</p>
       ${extra || ''}
     </div>`;
 
+  // the light moves by cross-fading chip to chip, so a parked frame never catches it between two
   function place(ctx, i) {
-    const c = ctx.chips[i];
-    if (!c) return;
-    ctx.hi.style.transform = 'translate(' + c.offsetLeft + 'px,' + c.offsetTop + 'px)';
-    ctx.hi.style.width = c.offsetWidth + 'px';
-    ctx.hi.style.height = c.offsetHeight + 'px';
     ctx.chips.forEach((x, k) => x.classList.toggle('on', k === i));
   }
 
@@ -32,8 +28,8 @@
     cues: ['Stories connect to purpose, values and people priorities', 'Three pillars · purpose · values · learning', 'Strategic value'],
     notes: [
       'Tahakom’s strategy is not delivered through technology alone. It is also delivered through the people and behaviours behind it. Behind a Better Life supports the strategy in three practical ways: it connects daily work to our purpose, shows our values through real examples, and allows useful behaviours to move across departments.',
-      'First, purpose: each story shows how a daily contribution supports Urban Intelligence for a Better Life. Second, values: the stories show Commitment, Collaboration, Innovation, Impact, Learning and Excellence in action, in real work. Third, learning: peer stories make useful behaviours visible, understood and repeatable across teams.',
-      'The important point: we are not inventing new values. The initiative helps employees recognise and apply the values Tahakom already has. It makes the culture behind the strategy easier to see in everyday work.',
+      'First, purpose: each story shows how daily work supports Urban Intelligence for a Better Life. Second, values: all six, seen in real work. Third, learning: peer stories make useful behaviours visible and repeatable across teams.',
+      'The key point: we are not inventing new values. The initiative helps employees recognise and apply the values Tahakom already has, so the culture behind the strategy is easier to see in everyday work.',
     ],
     field: [
       { dim: .18, lit: 0, travel: 0, offset: [-200, 110], warm: .35, calm: [[80, 100, 1300, 460, .9], [80, 440, 1820, 960, .7]] },
@@ -66,18 +62,17 @@
       <div class="al-pillars" data-stagger style="--stagger:.2s;--d:.1s">
         ${pillar(1, 'Purpose is connected to work', 'Each story shows how daily contributions support <em class="hl">Urban Intelligence for a Better Life.</em>')}
         ${pillar(2, 'Values become visible', 'Stories show Commitment, Collaboration, Innovation, Impact, Learning and Excellence in action.',
-          `<div class="al-chips"><span class="al-hi"></span>${VALUES.map((v) => `<span class="al-chip">${v}</span>`).join('')}</div>`)}
+          `<div class="al-chips">${VALUES.map((v) => `<span class="al-chip">${v}</span>`).join('')}</div>`)}
         ${pillar(3, 'Learning moves across teams', 'Peer stories make useful behaviours visible, understood and repeatable.')}
       </div>
     `,
     init(ctx) {
       ctx.chips = ctx.$$('.al-chip');
-      ctx.hi = ctx.$('.al-hi');
       ctx.idx = 0;
       ctx.nextMove = 0;
     },
     enter(ctx) {
-      // one value in the light at a time; the highlight glides to the next every 2.5 s.
+      // one value in the light at a time; the light moves to the next every 4 s.
       // A fine tick keeps the rhythm anchored to the moment the pillars arrived.
       ctx.every(200, () => {
         const now = performance.now();

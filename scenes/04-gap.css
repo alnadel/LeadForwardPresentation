@@ -1,7 +1,8 @@
 /* 04 · The gap — district map */
 #s-gap .gp-h { margin-top: 30px; font-size: 72px; white-space: nowrap; }
 #s-gap .gp-lead { margin: 20px 0 0; font: 400 32px/1.4 var(--font); color: var(--ink-2); }
-#s-gap .gp-lead.is-dim { opacity: .5 !important; filter: none; }
+/* stop 4: the headline steps back so the payoff outranks it; the lead leaves */
+#s-gap .gp-h.is-dim { opacity: .4 !important; filter: none; }
 
 /* the three points, each above its own district */
 #s-gap .gp-pt { position: absolute; top: 386px; width: 410px; }
@@ -15,8 +16,9 @@
 #s-gap[data-step="2"] .gp-pt.p1, #s-gap[data-step="3"] .gp-pt.p1, #s-gap[data-step="3"] .gp-pt.p2 { opacity: .5; }
 
 /* ── the map ─────────────────────────────────────────────────────────── */
-#s-gap .gp-map { position: absolute; inset: 0; pointer-events: none; transform-origin: 50% 100%; transition: opacity .9s var(--ease-soft), transform 1.3s var(--ease-out); }
-#s-gap .gp-map.is-dim { opacity: .42 !important; filter: none; transform: translateY(16px) scale(.97); transition: opacity .9s var(--ease-soft), transform 1.3s var(--ease-out) !important; }
+#s-gap .gp-map { position: absolute; inset: 0; pointer-events: none; transform-origin: 50% 88%; transition: opacity .9s var(--ease-soft), transform 1.3s var(--ease-out); }
+/* recedes in place: scaling about the districts' own bottom keeps them clear of the chrome and inside the margins */
+#s-gap .gp-map.is-dim { opacity: .42 !important; filter: none; transform: scale(.97); transition: opacity .9s var(--ease-soft), transform 1.3s var(--ease-out) !important; }
 
 #s-gap .gp-d { position: absolute; }
 #s-gap .gp-wall { position: absolute; inset: 0; border-radius: 76px; border: 2px solid rgba(255, 255, 255, .24);
@@ -66,11 +68,10 @@
 #s-gap.st-2 .gp-flash.b { animation: gpFlash 1.1s var(--ease-soft) calc(1.2s + var(--di) * .2s) both; }
 #s-gap .gp-d.go .gp-flash.a { animation: gpFlash 1.2s var(--ease-soft) 1.42s both; }
 
-/* stop 3: dashed bridges; a story sets out and fades halfway */
+/* stop 3: dashed bridges that give out halfway; a story sets out and fades there */
 #s-gap .gp-bridges { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
 #s-gap .gp-br { fill: none; stroke: url(#gpBridgeInk); stroke-width: 2.5; stroke-dasharray: 7 7; }
 #s-gap .gp-gate { fill: rgba(37, 199, 188, .9); }
-#s-gap .gp-gate.far { fill: rgba(201, 166, 211, .6); }
 #s-gap .gp-bls { position: absolute; inset: 0; }
 #s-gap .gp-bl { position: absolute; left: 0; top: 0; width: 18px; height: 18px; offset-rotate: 0deg; offset-distance: 0%; opacity: 0; }
 @keyframes gpSend { 0% { offset-distance: 0%; opacity: 0; } 14% { opacity: 1; } 58% { opacity: .85; } 100% { offset-distance: 50%; opacity: 0; } }
@@ -79,13 +80,16 @@
 #s-gap .gp-map.f1 .gp-bl.a.p1, #s-gap .gp-map.f2 .gp-bl.a.p2 { animation: gpSend 2.2s cubic-bezier(.3, .5, .45, 1) both; }
 
 #s-gap .gp-x { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 28%; border: 2px solid var(--purple-lt); box-shadow: 0 0 14px rgba(157, 103, 170, .8); opacity: 0; }
+/* the break stays marked once the first story has failed there; the pulses play on top */
+#s-gap.st-3 .gp-x.m { opacity: .7; transition: opacity .6s var(--ease-soft) 1.75s; }
+#s-gap.st-3 .gp-x.m.p2 { transition-delay: 1.9s; }
 @keyframes gpFail { 0% { opacity: 0; transform: scale(.5); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(2.4); } }
 #s-gap.st-3 .gp-x.b.p1 { animation: gpFail 1s var(--ease-out) 1.6s both; }
 #s-gap.st-3 .gp-x.b.p2 { animation: gpFail 1s var(--ease-out) 1.75s both; }
 #s-gap .gp-map.f1 .gp-x.a.p1, #s-gap .gp-map.f2 .gp-x.a.p2 { animation: gpFail 1.2s var(--ease-out) 1.55s both; }
 
 /* ── stop 4: the conclusion and the ask ─────────────────────────────── */
-#s-gap .gp-close { position: absolute; left: var(--m); right: var(--m); top: 394px; }
+#s-gap .gp-close { position: absolute; left: var(--m); right: var(--m); top: 330px; }
 #s-gap .gp-c1 { margin: 0; font: 400 32px/1.4 var(--font); color: var(--ink-2); }
 #s-gap .gp-c2 { margin: 18px 0 0; font: 700 56px/1.08 var(--font); letter-spacing: -.022em; color: var(--white); }
 #s-gap .gp-ask { display: inline-flex; align-items: center; gap: 18px; margin-top: 38px; padding: 15px 30px 15px 24px; border-radius: 14px; border: 1px solid rgba(37, 199, 188, .4); background: rgba(37, 199, 188, .07); }

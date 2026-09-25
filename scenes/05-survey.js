@@ -1,7 +1,7 @@
 /* 05 · Survey — 158 respondents, one square each. Every figure relights the
    waffle to its share, so the room sees the proportion, not just the number. */
 (function () {
-  const COLS = 18, ROWS = 9, N = 158;
+  const ROWS = 10, N = 158; // 16 columns × 10 rows; the last column holds 8
   const METRICS = [
     null,
     { v: 56, tone: 'gap', label: 'Visibility gap', text: 'Rarely or never hear about another department’s achievement.' },
@@ -40,12 +40,12 @@
     field: [
       { dim: .22, lit: 0, travel: 0, offset: [-120, 40], calm: [[80, 100, 900, 1000, .85]] },
       {}, {}, {}, {},
-      { dim: .32 },
+      { dim: .32, travel: .25 },
     ],
     html: `
       <div class="pad sv-left">
         <div class="kicker" data-in="0">Employee feedback</div>
-        <h2 class="h2 sv-h" data-in="0" data-split style="--d:.15s">Employee feedback validates the opportunity.</h2>
+        <h2 class="h2 sv-h" data-in="0" data-split style="--d:.15s">Employee feedback<br>validates the opportunity.</h2>
       </div>
 
       <div class="sv-stage">
@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <div class="sv-waffle" data-in="0" style="--d:.3s">${cells}</div>
+      <div class="sv-waffle" data-in="0" style="--d:.3s;--rows:${ROWS}">${cells}</div>
       <div class="sv-legend" data-in="1">
         <span class="sv-key"><i class="k-lit"></i><span class="sv-key-t"></span></span>
         <span class="sv-key"><i></i>Other respondents</span>
@@ -85,7 +85,6 @@
       w.classList.toggle('tone-gap', !!m && m.tone === 'gap');
       w.classList.toggle('tone-go', !!m && m.tone === 'go');
       w.classList.toggle('tone-hero', !!m && m.tone === 'hero');
-      w.classList.toggle('rest', n >= 5);
       const lit = m ? Math.round(N * m.v / 100) : 0;
       ctx.cells.forEach((c, i) => c.classList.toggle('lit', i < lit));
       if (m) ctx.$('.sv-key-t').textContent = lit + ' of 158 · ' + m.label.toLowerCase();

@@ -4,7 +4,7 @@
    Ambient: the story light walks down the four fields. */
 (function () {
   // stage y of each field row (top of the label line); the card slots align to these
-  const ROWS = [470, 576, 682, 788];
+  const ROWS = [458, 568, 678, 788];
   const CARD_Y = 180;
   const FIELDS = [
     { k: 'Purpose', q: 'What did this contribution enable?', a: 'The day shift starts on live incidents from minute one.', c: 'Each selected story explains why the contribution mattered.' },
@@ -15,7 +15,7 @@
   const nn = (i) => String(i + 1).padStart(2, '0');
 
   const callouts = FIELDS.map((f, i) => `
-    <div class="fm-f" style="top:${ROWS[i]}px;--k:${i}">
+    <div class="fm-f${f.c ? '' : ' fm-nocap'}" style="top:${ROWS[i]}px;--k:${i}">
       <div class="fm-row">
         <span class="fm-key a-fade" data-in="0" style="--d:1.05s">${nn(i)}<b>${f.k}</b></span>
         <p class="fm-q" data-in="0" style="--d:1.1s">${f.q}</p>
@@ -39,12 +39,11 @@
     act: 3,
     bg: 'night',
     tag: 'illustrative',
-    tagFrom: 1,
     cues: ['The card turns over · four fields', 'Nouf’s answers fill the fields (skippable)', 'The principle · design decisions'],
     notes: [
-      'This is the same story card, turned over. Every featured story is built on four fields: purpose, value, impact, and one thing others can repeat. The alignment with our strategy is built into the format. We do not add it after a story is selected.',
-      'Still the illustrative story. Nouf’s answers fill the fields. Purpose: the day shift starts on live incidents from minute one. Value: Excellence, a recurring gap fixed without being asked. Impact: the morning no longer starts by rebuilding the night. Repeat: write the one page you wish you had been handed.',
-      'So the rule is simple. A selected story must show purpose, value, impact, and one action others can repeat. Each field is a design decision: why it mattered, one value and one behaviour you can see, and one practical takeaway shared across departments. Employees nominate; leaders validate and reinforce the learning. And every story carries the same signature: Inspired by You.',
+      'Here is Nouf’s story card again, turned over. Every featured story is built on four fields: purpose, value, impact, and one thing others can repeat. Alignment with strategy is built into the format, not added after selection.',
+      'Nouf’s answers fill the fields. Purpose: the day shift starts on live incidents from minute one. Value: Excellence. Impact: the morning no longer starts by rebuilding the night. Repeat: write the one page you wish you had been handed.',
+      'A selected story must show purpose, value, impact, and one action others can repeat. It names one value and one visible behaviour, and carries one practical takeaway. Employees nominate; leaders validate. Every story carries one signature: Inspired by You.',
     ],
     field: [
       { dim: .26, lit: .03, travel: .1, offset: [170, -80], litFrom: null, warm: 0, calm: [[80, 120, 1180, 900, .85], [1190, 150, 1800, 960, .9]] },
