@@ -362,7 +362,8 @@
       const count = S.filter((r) => (r.def.act || 0) === a).length || 1;
       const b = document.createElement('b'); b.style.flex = count; b.innerHTML = '<i></i>';
       track.appendChild(b); trackBars.push(b);
-      const s = document.createElement('span'); s.style.flex = count; s.textContent = String(a + 1).padStart(2, '0') + '  ' + name;
+      const s = document.createElement('span'); s.style.flex = count;
+      s.innerHTML = '<em>' + String(a + 1).padStart(2, '0') + '</em><span class="nm">' + name + '</span>';
       acts.appendChild(s); actLabels.push(s);
     });
     // leave room on the right for the pips
@@ -385,7 +386,7 @@
     });
     pipsEl.innerHTML = '';
     if (rec.n > 1) for (let k = 0; k < rec.n; k++) { const p = document.createElement('i'); if (k < step) p.className = 'done'; if (k === step) p.className = 'on'; pipsEl.appendChild(p); }
-    const tw = pipsEl.offsetWidth ? pipsEl.offsetWidth + 28 : 0;
+    const tw = 94 + 28;   // pips column has a fixed width, so the track never jumps between scenes
     $('.track', chrome).style.right = tw + 'px';
     $('.acts', chrome).style.right = tw + 'px';
     // spark position across the whole track
@@ -638,6 +639,11 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
       clearTimeout(cursorTimer); cursorTimer = setTimeout(() => viewport.classList.add('hide-cursor'), 1800);
     });
     window.addEventListener('resize', () => { fit(); updateChrome(); });
+    // typing #survey (or #5, #survey.2) in the address bar jumps there
+    window.addEventListener('hashchange', () => {
+      const h = readHash();
+      if (h && (h.i !== cur || h.st !== step)) go(h.i, h.st, { instant: true });
+    });
     window.addEventListener('beforeunload', () => { if (presenter && !presenter.closed) presenter.close(); });
   }
 

@@ -239,11 +239,15 @@ em.hl { font-style: normal; color: var(--teal); }
 #chrome .track b { display: block; height: 2px; background: rgba(255, 255, 255, .13); position: relative; overflow: hidden; }
 #chrome .track b i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(90deg, rgba(37, 199, 188, .35), var(--teal)); transition: width 1.2s var(--ease-out); }
 #chrome .acts { position: absolute; left: 0; right: 0; bottom: 14px; display: flex; gap: 10px; }
-#chrome .acts span { display: block; font: 700 14px/1 var(--font); letter-spacing: .2em; text-transform: uppercase; color: rgba(255, 255, 255, .26); transition: color .8s var(--ease-soft); white-space: nowrap; overflow: hidden; }
-#chrome .acts span.on { color: rgba(255, 255, 255, .75); }
+#chrome .acts > span { display: block; min-width: 285px; font: 700 18px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(255, 255, 255, .34); transition: color .8s var(--ease-soft); white-space: nowrap; overflow: hidden; }
+#chrome .acts > span em { font-style: normal; }
+#chrome .acts > span .nm { margin-left: .7em; opacity: 0; transition: opacity .8s var(--ease-soft); }
+#chrome .acts > span.on { color: rgba(255, 255, 255, .8); }
+#chrome .acts > span.on .nm { opacity: 1; }
+#chrome .track > b { min-width: 285px; }
 #chrome .spark { position: absolute; bottom: -10px; left: 0; width: 22px; height: 22px; margin-left: -11px; transition: left 1.2s var(--ease-out); }
 #chrome .spark .light { width: 12px; height: 12px; margin: 5px; animation: ambBreathe 2.6s ease-in-out infinite; }
-#chrome .pips { position: absolute; right: 0; bottom: 14px; display: flex; gap: 8px; }
+#chrome .pips { position: absolute; right: 0; bottom: 14px; width: 94px; display: flex; justify-content: flex-end; gap: 8px; }
 #chrome .pips i { width: 9px; height: 9px; border-radius: 28%; background: rgba(255, 255, 255, .2); transition: background .4s var(--ease-soft), box-shadow .4s var(--ease-soft); }
 #chrome .pips i.done { background: rgba(37, 199, 188, .55); }
 #chrome .pips i.on { background: var(--sea); box-shadow: 0 0 10px var(--sea); }
