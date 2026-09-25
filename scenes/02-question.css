@@ -1,9 +1,13 @@
 /* 02 · The question */
 
-/* a slow warm glow behind the question keeps the breathing frame alive */
-#s-question .qs-glow { position: absolute; left: 460px; top: 230px; width: 1000px; height: 600px; border-radius: 50%; background: radial-gradient(closest-side, rgba(124, 60, 107, .42), rgba(96, 38, 80, .14) 55%, transparent); pointer-events: none; transition: opacity 1.2s var(--ease-soft); animation: qsGlow 16s ease-in-out infinite; }
-@keyframes qsGlow { 0%, 100% { transform: translate(-90px, 20px) scale(1); opacity: .75; } 50% { transform: translate(90px, -24px) scale(1.12); opacity: 1; } }
+/* a slow warm glow behind the question keeps the breathing frame alive: it circles at a
+   steady pace (no turnaround), so the frame never sits still */
+#s-question .qs-glow { position: absolute; left: 460px; top: 230px; width: 1000px; height: 600px; border-radius: 50%; background: radial-gradient(closest-side, rgba(124, 60, 107, .52), rgba(96, 38, 80, .16) 55%, transparent); pointer-events: none; transition: opacity 1.2s var(--ease-soft), translate 1.2s var(--ease-soft); animation: qsGlow 24s linear infinite; }
+@keyframes qsGlow { from { transform: rotate(0deg) translateX(110px) rotate(0deg); } to { transform: rotate(360deg) translateX(110px) rotate(-360deg); } }
 #s-question.st-1 .qs-glow { opacity: 0; }
+/* stop 3: the glow returns, lower left, behind the closing question — the breathing
+   frame of stop 0 comes back as the scene ends */
+#s-question.st-3 .qs-glow { opacity: 1; translate: -400px 190px; }
 
 /* ── the question: centred at display scale, then it glides to the top left ──
    Each line sits in a 1520px box; at stop 0 it is shifted to the box's centre,
@@ -57,4 +61,6 @@
 #s-question.st-3 .qs-row.keep .qs-lt .amb-ring { animation: ambRing 3.2s var(--ease-out) 1.2s infinite; }
 
 #s-question .qs-l1 { position: absolute; left: 144px; top: 640px; width: 880px; margin: 0; font: 400 32px/1.36 var(--font); color: var(--ink-2); }
-#s-question .qs-l2 { position: absolute; left: 144px; top: 760px; width: 900px; margin: 0; font: 700 70px/1.04 var(--font); letter-spacing: -.028em; color: var(--teal); text-shadow: 0 0 40px rgba(37, 199, 188, .25); }
+#s-question .qs-l2 { position: absolute; left: 144px; top: 760px; width: 900px; margin: 0; font: 700 70px/1.04 var(--font); letter-spacing: -.028em; color: var(--teal);
+  /* the glow sits on the whole line: a text-shadow would be clipped into boxes by the word masks */
+  text-shadow: none; filter: drop-shadow(0 0 26px rgba(37, 199, 188, .3)); }
