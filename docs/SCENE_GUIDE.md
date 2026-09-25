@@ -102,4 +102,4 @@ Photos in `assets/photos/`: `ops-centre-night.jpg` (2560×1440), `nouf.jpg` (240
    - the frame looks finished and intentional
 4. `shots/<id>/report.json` must have an empty `errors` array.
 5. Also test going back: open `index.html#<id>.<last>` with `Deck.prev()` a few times, or reason carefully that `step()` is idempotent.
-Iterate until it is right, then delete your `shots/<id>` folder.
+Iterate until it is right. Leave your final screenshots in `shots/<id>/` for review (the folder is git-ignored).

@@ -28,6 +28,9 @@
   Deck.ACTS = ['The moment', 'The gap', 'Why it matters', 'The cycle', 'The pilot'];
   // pace targets for the speaker view: minutes elapsed by the end of each act
   Deck.ACT_TARGETS = [2.5, 6.5, 8.5, 12.5, 15];
+  // The two colleagues who knew (03 · One night, stop 3). Scene 17 starts the
+  // nomination chain from exactly these field positions. Stage px.
+  Deck.NIGHT_PAIR = [[1030, 520], [1122, 546]];
   const defs = [];
   Deck.scene = (def) => defs.push(def);
   Deck.defs = defs;
