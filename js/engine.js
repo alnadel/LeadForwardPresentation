@@ -497,6 +497,8 @@
       d.getElementById('stop').textContent = 'Stop ' + (step + 1) + ' of ' + rec.n;
       d.getElementById('next').innerHTML = nx || '';
       d.getElementById('notes').innerHTML = notesFor(rec, step);
+      const nowP = d.querySelector('#notes p.now');
+      if (nowP) nowP.scrollIntoView({ block: 'center' });
       const all = S.reduce((a, r) => a + r.n, 0);
       const done = S.slice(0, cur).reduce((a, r) => a + r.n, 0) + step + 1;
       d.getElementById('bar').style.width = (done / all * 100) + '%';
