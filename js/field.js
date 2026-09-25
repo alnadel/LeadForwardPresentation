@@ -18,6 +18,7 @@
      pins     [[x,y],…] the colleagues nearest these points stay lit and larger
    Field.burst(x, y, {radius, dur})   a ripple of light from one point
    Field.send(x0, y0, x1, y1, dur)     one story travelling between two points
+   Field.setLit(v)                     set the lit share directly (per-frame drives)
    Field.lite(on) / Field.boost(k)     weak-laptop mode / projector brightness */
 (function () {
   const W = 1920, H = 1080;
@@ -289,6 +290,7 @@
     snap() { Object.assign(P, T); for (const n of nodes) { n.litT = n.pin || n.rr < T.lit ? 1 : 0; n.lit = n.litT; } },
     burst(x, y, o) { o = o || {}; bursts.push({ x, y, radius: o.radius || 900, dur: o.dur || 2.4, age: 0 }); },
     send(x0, y0, x1, y1, dur) { pulses.push({ free: true, x0, y0, x1, y1, t: 0, dur: dur || 1.6 }); },
+    setLit(v) { T.lit = P.lit = clamp(v, 0, 1); },      // direct, un-eased control (driven per frame)
     lite(on) { lite = !!on; },
     boost(k2) { boost = k2 || 1; },
     get params() { return Object.assign({}, T); },

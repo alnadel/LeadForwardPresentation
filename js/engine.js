@@ -231,13 +231,13 @@
 
   function fieldFor(rec, n) {
     const f = rec.def.field;
-    if (!f) return { dim: .5, lit: 0, travel: 0, calm: [], litFrom: null, warm: 0, offset: [0, 0] };
+    if (!f) return { dim: .5, lit: 0, travel: 0, calm: [], litFrom: null, chain: false, pins: [], warm: 0, offset: [0, 0] };
     if (Array.isArray(f)) {
-      const out = { dim: .5, lit: 0, travel: 0, calm: [], litFrom: null, warm: 0, offset: [0, 0] };
+      const out = { dim: .5, lit: 0, travel: 0, calm: [], litFrom: null, chain: false, pins: [], warm: 0, offset: [0, 0] };
       for (let k = 0; k <= Math.min(n, f.length - 1); k++) Object.assign(out, f[k] || {});
       return out;
     }
-    return Object.assign({ dim: .5, lit: 0, travel: 0, calm: [], litFrom: null, warm: 0, offset: [0, 0] }, f, (rec.def.fieldSteps || [])[n] || {});
+    return Object.assign({ dim: .5, lit: 0, travel: 0, calm: [], litFrom: null, chain: false, pins: [], warm: 0, offset: [0, 0] }, f, (rec.def.fieldSteps || [])[n] || {});
   }
   function applyField(rec, n, instant) {
     if (!window.Field) return;

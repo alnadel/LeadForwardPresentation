@@ -32,7 +32,7 @@ fs.mkdirSync(out, { recursive: true });
   page.on('requestfailed', (r) => errors.push('requestfailed: ' + r.url()));
   await page.goto('file://' + file);
   await page.waitForFunction(() => document.body.classList.contains('ready'), null, { timeout: 15000 });
-  const defs = await page.evaluate(() => Deck.defs.map((d) => ({ id: d.id, n: Math.max(1, (d.cues || []).length) })));
+  const defs = await page.evaluate(() => Deck.defs.map((d) => ({ id: d.id, title: d.title, n: Math.max(1, (d.cues || []).length), cues: d.cues || [], notes: d.notes || '' })));
   const report = [];
   for (let si = 0; si < defs.length; si++) {
     const d = defs[si];
@@ -58,7 +58,8 @@ fs.mkdirSync(out, { recursive: true });
         moved = true;
       }
       const state = await page.evaluate(() => Deck.state());
-      report.push({ shot: name, state, moved });
+      const notes = Array.isArray(d.notes) ? (d.notes[st] || '') : (st === 0 ? d.notes : '');
+      report.push({ shot: name, state, moved, scene: si + 1, title: d.title, stop: st + 1, stops: d.n, cue: d.cues[st] || '', notes });
       process.stdout.write(name + '\n');
     }
   }

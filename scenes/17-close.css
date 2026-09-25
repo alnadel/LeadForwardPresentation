@@ -1,1 +1,35 @@
-/* Close */
+/* 17 · Close */
+/* the dusk skyline rises under the lit field; the sky fades out so the
+   colleague field reads above the city like its lights */
+#s-close .cl-sky { position: absolute; left: 0; right: 0; bottom: 0; height: 640px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .55) 34%, #000 62%);
+          mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .55) 34%, #000 62%); }
+#s-close .cl-sky .photo { background-position: 60% 100%; background-size: cover; opacity: .82; transform-origin: 60% 100%; }
+#s-close .cl-sky::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(3, 8, 16, .88) 0%, rgba(3, 8, 16, .35) 42%, transparent 70%); }
+
+#s-close .cl-pair { position: absolute; width: 0; height: 0; }
+#s-close .cl-pair .light { position: absolute; left: -11px; top: -11px; animation: ambBreathe 3.4s ease-in-out infinite; }
+#s-close .cl-pair .amb-ring { width: 22px; height: 22px; left: -11px; top: -11px; }
+
+#s-close .cl-knew { position: absolute; left: var(--m); top: 400px; width: 860px; }
+#s-close .cl-knew .h1 { font-size: 104px; }
+#s-close .cl-knew-sub { margin: 30px 0 0; font: 400 38px/1.3 var(--font); color: var(--teal); max-width: 860px; }
+
+#s-close .cl-logo { position: absolute; left: 50%; top: 56px; width: 128px; margin-left: -64px; color: #fff; }
+#s-close .cl-logo svg { width: 100%; display: block; }
+#s-close .cl-main { position: absolute; left: 0; right: 0; top: 232px; text-align: center; }
+#s-close .cl-title { font-size: 136px; }
+#s-close .cl-ar { margin-top: 26px; font: 700 64px/1.2 var(--font); color: var(--teal); letter-spacing: 0; }
+#s-close .cl-make { margin: 44px auto 0; font: 700 46px/1.2 var(--font); letter-spacing: -.015em; color: var(--white); }
+#s-close .cl-way { margin: 26px 0 0; display: inline-flex; align-items: center; gap: 18px; font: 400 36px/1 var(--font); color: var(--sea); }
+#s-close .cl-way .light { animation: ambBreathe 3s ease-in-out infinite; }
+#s-close .cl-thanks { margin-top: 44px; font: 700 26px/1 var(--font); letter-spacing: .42em; text-transform: uppercase; color: var(--ink-1); padding-left: .42em; }
+
+/* Q&A hold: the decision stays in view */
+#s-close.st-2 .cl-make, #s-close.st-2 .cl-way, #s-close.st-2 .cl-thanks { opacity: .55; transition: opacity .8s var(--ease-soft); }
+#s-close .cl-ask { position: absolute; left: 50%; top: 810px; width: 1560px; margin-left: -780px; display: flex; align-items: center; justify-content: space-between; gap: 40px;
+  padding: 30px 44px; border-radius: 18px; background: rgba(4, 12, 24, .78); border: 1px solid rgba(37, 199, 188, .45); box-shadow: 0 0 60px rgba(37, 199, 188, .12); }
+#s-close .cl-ask-h { margin-top: 14px; font: 700 44px/1.05 var(--font); letter-spacing: -.02em; color: var(--white); white-space: nowrap; }
+#s-close .cl-ask-r { display: flex; gap: 14px; }
+#s-close .cl-step { display: inline-flex; align-items: center; gap: 12px; height: 58px; padding: 0 20px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .05); font: 700 23px/1 var(--font); color: var(--ink-1); white-space: nowrap; }
+#s-close .cl-step b { font-size: 18px; color: var(--teal); letter-spacing: .1em; }
