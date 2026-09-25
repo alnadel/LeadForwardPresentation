@@ -285,7 +285,7 @@ em.hl { font-style: normal; color: var(--teal); }
 #stage.hc { --ink-2: rgba(255, 255, 255, .96); --ink-3: rgba(255, 255, 255, .86); --line: rgba(255, 255, 255, .26); --line-2: rgba(255, 255, 255, .4); }
 #stage.hc #vignette { display: none; }
 #stage.hc .photo { filter: brightness(1.18); }
-#stage.hc [class*="veil"] { opacity: .82; }
+#stage.hc [class*="veil"]:not([data-in]):not([data-out]) { opacity: .82; }
 /* Lite mode for weak laptops (press L): no large blurs or blends. */
 #stage.lite #glow { display: none; }
 #stage.lite .scene.leaving { filter: none; }
