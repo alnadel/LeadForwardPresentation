@@ -32,6 +32,8 @@
 #s-cycle .cy-plight, #s-cycle .cy-tlight { position: absolute; left: 0; top: 0; margin: -11px 0 0 -11px; will-change: transform; }
 #s-cycle .cy-plight { width: 22px; height: 22px; border-radius: 28%; background: radial-gradient(circle at 35% 30%, #fff 0 10%, var(--purple-lt) 40%, var(--purple) 85%); box-shadow: 0 0 12px rgba(201, 166, 211, .9), 0 0 36px rgba(157, 103, 170, .6); transform: translate(300px, 516px); }
 #s-cycle .cy-tlight { transform: translate(300px, 742px); }
+/* a soft pool of light travels with the story light, so the lanes never read as parked */
+#s-cycle .cy-tglow { position: absolute; left: 0; top: 0; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .3), rgba(37, 199, 188, .1) 50%, transparent); will-change: transform; transform: translate(300px, 742px); pointer-events: none; }
 
 /* ── stop 1 · the ring ──────────────────────────────────────────────── */
 #s-cycle .cy-ring { position: absolute; inset: 0; }

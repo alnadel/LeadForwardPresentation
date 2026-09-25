@@ -101,6 +101,7 @@
 
         <div class="cy-lanelights a-fade" data-in="0" style="--d:1.5s;--dur:.6s">
           <i class="cy-plight"></i>
+          <i class="cy-tglow"></i>
           <i class="light cy-tlight"></i>
         </div>
       </div>
@@ -130,6 +131,7 @@
     init(ctx) {
       ctx.geo = ctx.$('.cy-geo');
       ctx.tl = ctx.$('.cy-tlight');
+      ctx.tg = ctx.$('.cy-tglow');
       ctx.pl = ctx.$('.cy-plight');
       ctx.ol = ctx.$('.cy-olight');
       ctx.tDots = ctx.$$('.cy-dot.t');
@@ -165,7 +167,7 @@
     // the story light: along the lane, round the return arc, back to its start
     const s = tt * v;
     const p = ctx.geo.getPointAtLength(s);
-    ctx.tl.style.transform = `translate(${p.x.toFixed(1)}px,${p.y.toFixed(1)}px)`;
+    ctx.tl.style.transform = ctx.tg.style.transform = `translate(${p.x.toFixed(1)}px,${p.y.toFixed(1)}px)`;
     ctx.tDots.forEach((d, i) => {
       const at0 = TX[i] - TX[0];
       d.classList.toggle('hit', (s < TOP + 30 && Math.abs(s - at0) < 34) || (i === 0 && s > L - 24));

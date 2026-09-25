@@ -72,7 +72,7 @@
 #s-recognition .rc-wave { position: absolute; left: 50%; top: 50%; width: 0; height: 0; opacity: 0; transition: opacity .8s var(--ease-soft); }
 #s-recognition.st-0 .rc-wave { opacity: 1; transition-delay: calc(var(--enter, 0s) + .8s); }
 /* the pulse always travels well past the frame the light sits in (--pw is its final size) */
-#s-recognition .rc-pulse { --pw: 340px; position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 28%; pointer-events: none;
+#s-recognition .rc-pulse { --pw: 380px; position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 28%; pointer-events: none;
   border: 2.5px solid rgba(3, 255, 203, .8); background: radial-gradient(closest-side, rgba(3, 255, 203, 0) 60%, rgba(3, 255, 203, .16));
   opacity: 0; animation: rcPulse 6s linear infinite; }
 #s-recognition.st-1 .rc-pulse { --pw: 500px; }
@@ -80,8 +80,8 @@
 @keyframes rcPulse {
   0%        { width: 22px; height: 22px; margin: -11px 0 0 -11px; opacity: 0; }
   3%        { opacity: .9; }
-  60%       { opacity: .5; }
-  92%, 100% { width: var(--pw); height: var(--pw); margin: calc(var(--pw) / -2) 0 0 calc(var(--pw) / -2); opacity: 0; }
+  75%       { opacity: .5; }
+  97%, 100% { width: var(--pw); height: var(--pw); margin: calc(var(--pw) / -2) 0 0 calc(var(--pw) / -2); opacity: 0; }
 }
 #s-recognition .rc-halo { position: absolute; left: 50%; top: 50%; width: 380px; height: 380px; margin: -190px 0 0 -190px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(37, 199, 188, .5), rgba(37, 199, 188, .14) 55%, rgba(37, 199, 188, 0)); animation: rcHalo 6s infinite; }

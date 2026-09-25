@@ -42,7 +42,7 @@
 #s-benchmark .bm-dot u { position: absolute; display: block; }
 #s-benchmark .bm-b i { transform: scale(0); transition: transform .6s var(--ease-back) calc(var(--delay) + .08s); }
 #s-benchmark .bm-row.is-in .bm-b i { transform: scale(1); }
-#s-benchmark .bm-b u { width: 24px; height: 24px; left: -12px; top: -12px; border-radius: 50%; background: var(--blue); border: 3px solid var(--blue-lt); box-shadow: 0 0 16px rgba(59, 128, 170, .6); animation: bmBreathe 4.6s ease-in-out infinite; }
+#s-benchmark .bm-b u { width: 24px; height: 24px; left: -12px; top: -12px; border-radius: 50%; background: var(--blue); border: 3px solid var(--blue-lt); box-shadow: 0 0 16px rgba(59, 128, 170, .6); animation: bmBreathe 3.4s ease-in-out calc(var(--bp, 0s) - 1.7s) infinite; }
 /* the Tahakom dot leaves the benchmark value and travels to ours */
 #s-benchmark .bm-t { transition: transform .85s var(--ease-io) calc(var(--delay) + .28s); }
 #s-benchmark .bm-row.is-in .bm-t { transform: translateX(var(--dx)); }
@@ -52,8 +52,12 @@
 #s-benchmark .mech .bm-t u { background: var(--purple); border: 2px solid var(--purple-lt); box-shadow: 0 0 20px rgba(157, 103, 170, .7); }
 #s-benchmark .will .bm-t u { background: var(--teal); border: 2px solid #8BF0E7; box-shadow: 0 0 22px rgba(37, 199, 188, .7); }
 @keyframes bmBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.13); } }
-/* a soft halo breathes behind each Tahakom dot, in step with it */
-#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -46px; top: -46px; width: 92px; height: 92px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out var(--bp, 0s) infinite; }
+/* a soft halo breathes behind every dot, in step with it: the benchmark's half a
+   breath after Tahakom's, and each row a quarter breath after the one above, so
+   some dot is always mid-breath */
+#s-benchmark .bm-b i::before { content: ''; position: absolute; left: -50px; top: -50px; width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(59, 128, 170, .6), transparent); animation: bmHalo 3.4s ease-in-out calc(var(--bp, 0s) - 1.7s) infinite; }
+#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -56px; top: -56px; width: 112px; height: 112px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out var(--bp, 0s) infinite; }
 #s-benchmark .mech .bm-t i::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .55), transparent); }
 #s-benchmark .will .bm-t i::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .55), transparent); }
 @keyframes bmHalo { 0%, 100% { opacity: .25; transform: scale(.62); } 50% { opacity: 1; transform: scale(1.1); } }
