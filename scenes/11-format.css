@@ -48,24 +48,31 @@
 #s-format .fm-walk { position: absolute; left: -11px; top: 0; width: 22px; height: 22px; z-index: 3; }
 #s-format .fm-walk .light { display: block; animation: fmWalk 16s var(--ease-io) infinite; }
 @keyframes fmWalk {
-  0%        { transform: translateY(299px) scale(.3); opacity: 0; }
+  0%        { transform: translateY(259px) scale(.5); opacity: 0; }
   4%, 10%   { transform: translateY(299px) scale(1); opacity: 1; }
   24%, 30%  { transform: translateY(405px); }
   44%, 50%  { transform: translateY(511px); }
   64%, 72%  { transform: translateY(617px) scale(1); opacity: 1; }
-  80%, 100% { transform: translateY(617px) scale(.3); opacity: 0; }
+  82%       { opacity: .9; }
+  96%, 100% { transform: translateY(735px) scale(.5); opacity: 0; }
 }
 /* a soft reading band travels with the light, behind the field it is on */
+#s-format .fm-band, #s-format .fm-rowband::before { -webkit-mask-image: linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent); mask-image: linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent); }
 #s-format .fm-band { position: absolute; left: 0; right: 0; top: 0; height: 104px; pointer-events: none;
-  background: linear-gradient(90deg, rgba(37, 199, 188, .16), rgba(37, 199, 188, .05) 60%, rgba(37, 199, 188, 0));
+  background: linear-gradient(90deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 60%, rgba(37, 199, 188, .02));
+  animation: fmBand 16s var(--ease-io) infinite; }
+/* …and faintly across the callout, so question and answer read as one row */
+#s-format .fm-rowband { position: absolute; left: var(--m); top: 180px; width: 1072px; height: 104px; pointer-events: none; }
+#s-format .fm-rowband::before { content: ''; position: absolute; inset: 0; border-radius: 14px 0 0 14px;
+  background: linear-gradient(90deg, rgba(37, 199, 188, 0), rgba(37, 199, 188, .03) 40%, rgba(37, 199, 188, .10));
   animation: fmBand 16s var(--ease-io) infinite; }
 @keyframes fmBand {
-  0%        { transform: translateY(274px); opacity: 0; }
+  0%        { transform: translateY(234px); opacity: 0; }
   4%, 10%   { transform: translateY(274px); opacity: 1; }
   24%, 30%  { transform: translateY(380px); }
   44%, 50%  { transform: translateY(486px); }
   64%, 72%  { transform: translateY(592px); opacity: 1; }
-  80%, 100% { transform: translateY(592px); opacity: 0; }
+  96%, 100% { transform: translateY(690px); opacity: 0; }
 }
 @keyframes fmChip { 0%, 16%, 100% { background: rgba(37, 199, 188, .06); color: var(--teal); box-shadow: none; } 3%, 11% { background: var(--teal); color: var(--navy); box-shadow: 0 0 22px rgba(37, 199, 188, .55); } }
 @keyframes fmPing { 0%, 16%, 100% { background: rgba(37, 199, 188, .35); box-shadow: none; transform: scale(1); } 3%, 11% { background: var(--sea); box-shadow: 0 0 16px var(--sea); transform: scale(1.25); } }

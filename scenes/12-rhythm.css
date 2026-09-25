@@ -22,7 +22,7 @@
 #s-rhythm .rh-drops { position: absolute; inset: 0; pointer-events: none; }
 #s-rhythm .rh-drop { position: absolute; left: 0; top: 62px; width: 0; height: 0; animation: rhX 18s var(--dl) infinite; }
 #s-rhythm .rh-drop > span { position: absolute; left: 0; top: 0; animation: rhY 18s var(--dl) infinite; }
-#s-rhythm .rh-drop .light { position: absolute; left: -7px; top: -7px; animation: rhO 18s var(--dl) infinite; }
+#s-rhythm .rh-drop .light { position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; animation: rhO 18s var(--dl) infinite; }
 @keyframes rhX { 0% { transform: translateX(var(--x0)); animation-timing-function: ease-in-out; } 30% { transform: translateX(calc(var(--x0) + 36px)); animation-timing-function: cubic-bezier(.45, 0, .55, 1); } 60%, 100% { transform: translateX(var(--xt)); } }
 @keyframes rhY { 0% { transform: translateY(-100px); animation-timing-function: cubic-bezier(.3, 0, .2, 1); } 30%, 100% { transform: translateY(0); } }
 @keyframes rhO { 0% { opacity: 0; transform: scale(.4); } 6% { opacity: 1; transform: scale(1); } 56% { opacity: 1; transform: scale(1); } 61%, 100% { opacity: 0; transform: scale(.2); } }

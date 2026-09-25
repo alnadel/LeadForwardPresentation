@@ -86,6 +86,7 @@
         <div class="fm-walk a-fade" data-in="0" style="--d:1.7s"><i class="light"></i></div>
       </div>
 
+      <i class="fm-rowband a-fade" data-in="0" style="--d:1.7s"></i>
       <div class="fm-fields" data-stagger style="--stagger:.12s">${callouts}</div>
     `,
   });
