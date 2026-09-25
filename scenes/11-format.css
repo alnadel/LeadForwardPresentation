@@ -44,36 +44,36 @@
 #s-format .fm-sig::before { left: 0; right: 0; top: -18px; }
 #s-format .fm-sig span { font: 700 28px/1 var(--font); letter-spacing: -.005em; color: var(--teal); }
 
-/* the story light walks down the four fields, along the card's edge: one 4 s beat per
-   field (a short rest on the field, then the glide to the next), and it fades out on the
-   last field. The loop's only still moment is the .8 s before it fades back in on 01. */
+/* the story light walks down the four fields, along the card's edge: one 4 s beat per field.
+   It glides without ever stopping (it only slows as it reaches each field, where the chip lights),
+   then fades out on the last field and fades back in on 01. */
 #s-format .fm-walk { position: absolute; left: -11px; top: 0; width: 22px; height: 22px; z-index: 3; }
-#s-format .fm-walk .light { display: block; animation: fmWalk 16s var(--ease-io) infinite; }
+#s-format .fm-walk .light { display: block; animation: fmWalk 16s linear infinite; }
 @keyframes fmWalk {
-  0%        { transform: translateY(287px) scale(.5); opacity: 0; }
-  3%, 7%    { transform: translateY(287px) scale(1); opacity: 1; }
-  25%, 32%  { transform: translateY(397px) scale(1); }
-  50%, 57%  { transform: translateY(507px) scale(1); }
-  75%, 82%  { transform: translateY(617px) scale(1); opacity: 1; }
-  95%, 100% { transform: translateY(617px) scale(.5); opacity: 0; }
+  0%        { transform: translateY(287px) scale(.5); opacity: 0; animation-timing-function: ease-out; }
+  4%        { transform: translateY(287px) scale(1); opacity: 1; animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  25%       { transform: translateY(397px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  50%       { transform: translateY(507px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  75%       { transform: translateY(617px) scale(1); opacity: 1; }
+  97%, 100% { transform: translateY(617px) scale(.5); opacity: 0; }
 }
 /* a soft reading band travels with the light, behind the field it is on */
 #s-format .fm-band, #s-format .fm-rowband::before { -webkit-mask-image: linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent); mask-image: linear-gradient(180deg, transparent, #000 24%, #000 76%, transparent); }
 #s-format .fm-band { position: absolute; left: 0; right: 0; top: 0; height: 104px; pointer-events: none;
   background: linear-gradient(90deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 60%, rgba(37, 199, 188, .02));
-  animation: fmBand 16s var(--ease-io) infinite; }
+  animation: fmBand 16s linear infinite; }
 /* …and faintly across the callout, so question and answer read as one row */
 #s-format .fm-rowband { position: absolute; left: var(--m); top: 180px; width: 1072px; height: 104px; pointer-events: none; }
 #s-format .fm-rowband::before { content: ''; position: absolute; inset: 0; border-radius: 14px 0 0 14px;
   background: linear-gradient(90deg, rgba(37, 199, 188, 0), rgba(37, 199, 188, .03) 40%, rgba(37, 199, 188, .10));
-  animation: fmBand 16s var(--ease-io) infinite; }
+  animation: fmBand 16s linear infinite; }
 @keyframes fmBand {
-  0%        { transform: translateY(262px); opacity: 0; }
-  3%, 7%    { transform: translateY(262px); opacity: 1; }
-  25%, 32%  { transform: translateY(372px); }
-  50%, 57%  { transform: translateY(482px); }
-  75%, 82%  { transform: translateY(592px); opacity: 1; }
-  95%, 100% { transform: translateY(592px); opacity: 0; }
+  0%        { transform: translateY(262px); opacity: 0; animation-timing-function: ease-out; }
+  4%        { transform: translateY(262px); opacity: 1; animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  25%       { transform: translateY(372px); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  50%       { transform: translateY(482px); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  75%       { transform: translateY(592px); opacity: 1; }
+  97%, 100% { transform: translateY(592px); opacity: 0; }
 }
 @keyframes fmChip { 0%, 12%, 100% { background: rgba(37, 199, 188, .06); color: var(--teal); box-shadow: none; } 2%, 8% { background: var(--teal); color: var(--navy); box-shadow: 0 0 22px rgba(37, 199, 188, .55); } }
 @keyframes fmPing { 0%, 12%, 100% { background: rgba(37, 199, 188, .35); box-shadow: none; transform: scale(1); } 2%, 8% { background: var(--sea); box-shadow: 0 0 16px var(--sea); transform: scale(1.25); } }

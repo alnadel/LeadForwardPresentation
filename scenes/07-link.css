@@ -9,11 +9,12 @@
 
 /* the individual's light, breathing in a soft halo */
 #s-link .lk-halo { position: absolute; width: 380px; height: 380px; pointer-events: none; }
-#s-link .lk-halo i, #s-link .lk-halo b { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .4), rgba(37, 199, 188, .12) 45%, transparent 100%); animation: lkHalo 5.2s ease-in-out infinite; }
-/* a second, inner layer a quarter beat behind: while one layer turns, the other is mid-breath,
-   so the glow never sits still */
-#s-link .lk-halo b { inset: 70px; background: radial-gradient(closest-side, rgba(3, 255, 203, .26), rgba(37, 199, 188, .07) 60%, transparent 100%); animation-delay: -1.3s; }
+#s-link .lk-halo i { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .4), rgba(37, 199, 188, .12) 45%, transparent 100%); animation: lkHalo 5.2s ease-in-out infinite; }
 @keyframes lkHalo { 0%, 100% { opacity: .3; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.06); } }
+/* an inner glow, a little off-centre, turns slowly round the light at a constant speed:
+   it keeps moving while the breathing layer turns, so the glow never sits still */
+#s-link .lk-halo b { position: absolute; inset: 30px; border-radius: 50%; background: radial-gradient(140px circle at 62% 50%, rgba(3, 255, 203, .28), rgba(37, 199, 188, .08) 60%, transparent 100%); animation: lkOrbit 12s linear infinite; }
+@keyframes lkOrbit { to { transform: rotate(360deg); } }
 
 /* the faint skeleton (stops 0–1) */
 #s-link .lk-ghost { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
