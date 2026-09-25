@@ -11,9 +11,9 @@
 #s-benchmark .bm-lane { position: absolute; height: 1px; margin-top: -.5px; background: linear-gradient(to right, rgba(255, 255, 255, .15) 50%, transparent 50%) 0 0 / 8px 1px repeat-x; }
 #s-benchmark .bm-ticks span { position: absolute; top: 644px; width: 100px; text-align: center; font: 700 22px/1 var(--font); letter-spacing: .04em; color: var(--ink-3); }
 /* stop 0 ambient: a soft scan runs the empty axis */
-#s-benchmark .bm-scan { position: absolute; top: 600px; left: 600px; width: 220px; height: 60px; margin-left: -110px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .38), rgba(37, 199, 188, .1) 60%, transparent); opacity: 0; }
+#s-benchmark .bm-scan { position: absolute; top: 586px; left: 600px; width: 260px; height: 88px; margin-left: -130px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .4), rgba(37, 199, 188, .12) 60%, transparent); opacity: 0; }
 #s-benchmark[data-step="0"] .bm-scan { animation: bmScan 8s ease-in-out 2s infinite; }
-@keyframes bmScan { 0% { transform: translateX(0); opacity: 0; } 12% { opacity: 1; } 80% { opacity: 1; } 92%, 100% { transform: translateX(960px); opacity: 0; } }
+@keyframes bmScan { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 84% { opacity: 1; } 94%, 100% { transform: translateX(960px); opacity: 0; } }
 
 #s-benchmark .bm-legend { position: absolute; right: var(--m); top: 694px; display: flex; gap: 36px; font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
 #s-benchmark .bm-legend span { display: inline-flex; align-items: center; gap: 12px; }

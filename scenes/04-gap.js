@@ -45,7 +45,7 @@
         if (rnd(s + 7.7) > 1.02 - Math.hypot(ex, ey) * .5) continue;
         if (d.lights.some(([lx, ly]) => Math.hypot(lx - jx, ly - jy) < 34)) continue;
         const sz = 11 + rnd(s + 3.1) * 7, a = .1 + rnd(s + 5.5) * .12, r = rnd(s + 9.9);
-        const tw = r < .5 ? ` tw" style="--tt:${4.5 + r * 12}s;--td:${-r * 23}s;` : '" style="';
+        const tw = r < .7 ? ` tw" style="--tt:${3.6 + r * 6}s;--td:${-r * 23}s;` : '" style="';
         out += `<i class="gp-sq${tw}left:${jx.toFixed(1)}px;top:${jy.toFixed(1)}px;--s:${sz.toFixed(1)}px;--a:${a.toFixed(3)};--rd:${r.toFixed(3)}"></i>`;
       }
     }

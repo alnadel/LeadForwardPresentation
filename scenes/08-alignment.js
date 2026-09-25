@@ -5,7 +5,9 @@
   const CYCLE = 4000;           // ms between highlight moves (each chip cross-fades, it never slides)
   const FIRST = 4600;           // the first value holds a little longer while the pillars build
   // city lights that shimmer over the photo (stage px, on the photo's bright districts)
-  const GLINTS = [[1560, 575, 1], [1742, 338, .8], [1640, 282, .7], [1402, 500, .8], [1286, 222, .6], [1208, 655, .7], [1812, 842, .9], [1700, 470, .9], [1480, 350, .6], [1860, 610, .8]];
+  // the last eight sit on the interchange in the lower right, which stays in view at stop 2
+  const GLINTS = [[1560, 575, 1], [1742, 338, .8], [1640, 282, .7], [1402, 500, .8], [1286, 222, .6], [1208, 655, .7], [1812, 842, .9], [1700, 470, .9], [1480, 350, .6], [1860, 610, .8],
+    [1590, 640, 1.4], [1740, 700, 1.5], [1450, 625, 1.2], [1325, 752, 1.1], [1680, 800, 1.3], [1850, 735, 1.2], [1530, 715, 1.1], [1395, 680, 1]];
 
   const pillar = (n, title, text, extra) => `
     <div class="al-p" data-in="1">
@@ -44,6 +46,7 @@
       <div class="fill al-veil"></div>
       <div class="fill al-veil-b a-fade" data-in="1" style="--dur:1.4s"></div>
       <div class="fill al-veil-t a-fade" data-in="2" style="--dur:1.2s"></div>
+      <div class="fill al-veil-p a-fade" data-in="2" style="--dur:1.2s"></div>
 
       <div class="pad al-head">
         <div class="al-swap">

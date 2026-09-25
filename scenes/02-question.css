@@ -21,7 +21,7 @@
 #s-question .qs-panel[data-in]:not(.is-in) { opacity: 1; transform: none; clip-path: inset(0 0 0 100%); }
 #s-question .qs-panel.is-in { clip-path: inset(0 0 0 0); }
 /* the drift runs a little faster than the stock 44 s so it still reads once the photo is dimmed at stop 3 */
-#s-question .qs-photo { background-position: 17% 30%; transform-origin: 60% 35%; animation-duration: 32s; transition: filter 1.2s var(--ease-soft); }
+#s-question .qs-photo { background-position: 17% 30%; transform-origin: 60% 35%; animation-duration: 28s; transition: filter 1.2s var(--ease-soft); }
 /* stop 3: the photo steps back so the teal line is the only bright element */
 #s-question.st-3 .qs-photo { filter: saturate(.6) brightness(.8); }
 /* the first layer shades the bright window behind the mark and the illustrative tag */

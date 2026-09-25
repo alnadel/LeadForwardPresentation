@@ -26,7 +26,7 @@
       'Every day, these moments happen, yet most stay visible only to the people who were there. So here is the question behind this proposal: what if one story could travel further?',
     ],
     field: [
-      { dim: .42, lit: 0, travel: 0, offset: [170, -90], calm: [[220, 340, 1700, 700, .55]] },
+      { dim: .55, lit: 0, travel: 0, offset: [170, -90], calm: [[220, 340, 1700, 700, .55]] },
       { dim: .3, calm: [[80, 110, 1080, 960, .7]] },
       {},
       { dim: .36 },

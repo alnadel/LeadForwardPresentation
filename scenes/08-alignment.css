@@ -17,7 +17,9 @@
 /* stop 2: the upper band deepens so the wide statement reads over the skyline */
 /* stop 2: the pillar sentences are gone, so the floor can lift a little and let the
    city's lights (the frame's ambient) show again under the statement */
-#s-alignment.st-2 .al-veil-b.is-in { opacity: .6; }
+#s-alignment.st-2 .al-veil-b.is-in { opacity: .5; }
+/* …while a band keeps the receded pillar titles on dark */
+#s-alignment .al-veil-p { background: linear-gradient(180deg, transparent 420px, rgba(14, 7, 18, .62) 480px, rgba(14, 7, 18, .62) 612px, transparent 690px); }
 #s-alignment .al-veil-t { background: linear-gradient(180deg, rgba(20, 8, 20, .78) 0%, rgba(20, 8, 20, .62) 32%, rgba(20, 8, 20, .16) 46%, transparent 54%); }
 
 /* header: the alignment sentence swaps for the strategic value at stop 2 */
