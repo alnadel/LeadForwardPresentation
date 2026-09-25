@@ -33,7 +33,7 @@
 #s-survey .sv-waffle.tone-go i.lit { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 18px rgba(37, 199, 188, .45); animation: svShimmer 4s ease-in-out calc(var(--rd) * -4s) infinite; }
 #s-survey .sv-waffle.tone-gap i.lit { background: var(--purple); border-color: var(--purple-lt); box-shadow: 0 0 18px rgba(157, 103, 170, .45); animation: svShimmer 4s ease-in-out calc(var(--rd) * -4s) infinite; }
 #s-survey .sv-waffle.tone-hero i { background: transparent; border-color: rgba(201, 166, 211, .28); }
-#s-survey .sv-waffle.tone-hero i.lit { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .7); animation: svHeroGlow 3.2s ease-in-out calc(var(--rd) * -3.2s) infinite; }
+#s-survey .sv-waffle.tone-hero i.lit { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .7); animation: svHeroGlow 3.2s ease-in-out infinite; }
 /* stop 5: the waffle steps aside for the conclusion */
 #s-survey.st-5 .sv-waffle { opacity: 0; transition: opacity .6s var(--ease-soft); }
 /* ambient while parked: a faint wave of light drifts across the other
