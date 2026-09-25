@@ -26,11 +26,12 @@ The result is one 17-scene, 62-stop talk of about 15 minutes. It runs fully offl
 | **F** | full screen (a clicker's F5 key also only enters full screen) |
 | **C** | projector contrast mode (brighter text and photos, stronger field) |
 | **L** | lite mode for weak laptops |
+| **T** | tech-check screen: palette, smallest text sizes, safe areas (use it on the real projector) |
 | **H** | hide the progress bar |
 | **G** / **O** | scene overview |
 | **A** | autoplay (unattended loop) |
 
-The deck remembers where you are in the address bar (`#survey.2`), so a reload comes back to the same stop.
+The deck keeps your position in the address bar (`#survey.2`), so a reload comes back to the same stop. Typing `#survey` or `#5` there jumps straight to a scene.
 
 ## The talk
 
