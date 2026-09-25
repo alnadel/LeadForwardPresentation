@@ -66,8 +66,9 @@
         <div class="rc-s2" style="${centre}">
           ${cells('c2')}
           <div class="rc-s1" style="${centre}">
+            <span class="rc-wave"><b class="rc-halo"></b><b class="rc-pulse"></b></span>
             <span class="rc-cert">${Deck.icon('document-certified')}</span>
-            <span class="rc-lt"><b class="rc-halo"></b><b class="rc-pulse"></b><i class="light"></i></span>
+            <span class="rc-lt"><i class="light"></i></span>
           </div>
         </div>
       </div>

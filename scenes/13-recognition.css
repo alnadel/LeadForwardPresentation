@@ -64,7 +64,10 @@
 #s-recognition .rc-lt .light { flex: none; animation: ambBreathe 3.6s ease-in-out infinite; transition: width 1.4s var(--ease-io), height 1.4s var(--ease-io); }
 #s-recognition.st-2 .rc-lt .light { width: 18px; height: 18px; }
 #s-recognition.st-3 .rc-lt .light { width: 13px; height: 13px; }
-/* one soft outward pulse about every 6 s; the light's glow swells with it, then settles */
+/* one soft outward pulse about every 6 s from the light's frame, concentric with every tier;
+   the glow swells with it, then settles */
+#s-recognition .rc-wave { position: absolute; left: 50%; top: 50%; width: 0; height: 0; opacity: 0; transition: opacity .8s var(--ease-soft); }
+#s-recognition.st-0 .rc-wave { opacity: 1; transition-delay: calc(var(--enter, 0s) + .8s); }
 #s-recognition .rc-pulse { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 28%; pointer-events: none;
   border: 2px solid rgba(3, 255, 203, .75); background: radial-gradient(closest-side, rgba(3, 255, 203, 0) 60%, rgba(3, 255, 203, .16));
   opacity: 0; animation: rcPulse 6s linear infinite; }
