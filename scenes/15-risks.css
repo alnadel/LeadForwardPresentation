@@ -33,7 +33,7 @@
 #s-risks.st-1 .rk-tick { animation: rkTick 4.8s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -1.2s); }
 @keyframes rkTick {
   0%, 100% { transform: scale(1); opacity: .88; box-shadow: 0 0 8px rgba(37, 199, 188, .35); }
-  50% { transform: scale(1.12); opacity: 1; box-shadow: 0 0 26px rgba(37, 199, 188, .8), 0 0 54px rgba(37, 199, 188, .3); } }
+  50% { transform: scale(1.12); opacity: 1; box-shadow: 0 0 26px rgba(37, 199, 188, .8), 0 0 64px rgba(37, 199, 188, .4); } }
 
 /* ambient: a slow, faint full-width sheen reading down the rows */
 #s-risks .rk-scan { position: absolute; left: -40px; right: -40px; top: 56px; height: 410px; z-index: 0; overflow: hidden; pointer-events: none;
