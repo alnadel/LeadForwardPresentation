@@ -7,7 +7,7 @@ It merges the two earlier cuts:
 - the **Story Cycle** film (Nouf and Faisal)
 - the **Executive Cut** (the final PowerPoint content)
 
-The result is one 17-scene, 62-stop talk of about 15 minutes. It runs fully offline in Chrome or Edge.
+The result is one 17-scene, 62-stop talk. The speaker notes run about 14 minutes at a steady pace, so the talk lands at about 15 minutes. It runs fully offline in Chrome or Edge.
 
 ## Present it
 1. Open **`dist/Behind-a-Better-Life.html`** in Chrome or Edge. It is a single self-contained file (fonts and photos are embedded), so it can go on a USB stick. You can also double-click `Present (Windows).bat` or `Present (Mac).command`.
