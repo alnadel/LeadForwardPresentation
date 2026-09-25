@@ -33,9 +33,11 @@ fs.mkdirSync(out, { recursive: true });
       await page.screenshot({ path: path.join(out, tag + '-' + st + '-fwd.png') });
     }
     // go one past the end (next scene), then walk back
-    if (si < defs.length - 1) { await page.keyboard.press('ArrowRight'); await page.waitForTimeout(1500); }
+    const last = si === defs.length - 1;
+    if (!last) { await page.keyboard.press('ArrowRight'); await page.waitForTimeout(1500); }
     for (let st = d.n - 1; st >= 0; st--) {
-      await page.keyboard.press('ArrowLeft');
+      // the last scene has no next scene to step back from: its final stop is already on screen
+      if (!(last && st === d.n - 1)) await page.keyboard.press('ArrowLeft');
       await page.waitForTimeout(2500);
       await page.screenshot({ path: path.join(out, tag + '-' + st + '-back.png') });
     }

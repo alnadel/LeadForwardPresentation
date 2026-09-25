@@ -33,6 +33,11 @@
 #s-survey .sv-waffle.tone-hero i { background: transparent; border-color: rgba(201, 166, 211, .28); }
 #s-survey .sv-waffle.tone-hero i.lit { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .7); animation: svShimmer 4s ease-in-out calc(var(--rd) * -4s) infinite; }
 #s-survey .sv-waffle.rest i { background: rgba(255, 255, 255, .14); animation: svShimmer 5s ease-in-out calc(var(--rd) * -5s) infinite; }
+/* ambient while parked: a faint wave of light drifts across the respondents */
+#s-survey .sv-waffle i { position: relative; }
+#s-survey .sv-waffle.built i::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; background: rgba(255, 255, 255, .16); opacity: 0;
+  animation: svWave 7.5s ease-in-out infinite; animation-delay: calc(var(--c) * .2s + var(--r) * .05s - 7.5s); }
+@keyframes svWave { 0%, 100% { opacity: 0; } 10% { opacity: 1; } 26% { opacity: 0; } }
 @keyframes svShimmer { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.35); } }
 
 #s-survey .sv-legend { position: absolute; left: 944px; top: 632px; display: flex; gap: 40px; font: 400 22px/1 var(--font); color: var(--ink-3); }
