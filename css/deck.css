@@ -131,6 +131,7 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 [data-out].a-fade.is-out             { transform: none; }
 
 .is-dim { opacity: .28 !important; filter: saturate(.4); transition: opacity .7s var(--ease-soft), filter .7s var(--ease-soft) !important; }
+[data-out].is-out.is-dim { opacity: 0 !important; }  /* leaving beats receding */
 
 /* split headlines: words rise out of a mask */
 [data-split] .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }

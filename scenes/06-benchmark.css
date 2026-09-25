@@ -32,7 +32,7 @@
 #s-benchmark .bm-lab { position: absolute; left: var(--m); top: 50%; transform: translateY(-50%); font: 700 27px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-1); white-space: nowrap; }
 
 /* the segment draws from the benchmark towards Tahakom */
-#s-benchmark .bm-seg { position: absolute; top: 32px; height: 6px; border-radius: 3px; transition: clip-path .95s var(--ease-io) calc(var(--delay) + .3s); }
+#s-benchmark .bm-seg { position: absolute; top: 32px; height: 6px; border-radius: 3px; transition: clip-path .85s var(--ease-io) calc(var(--delay) + .28s); }
 #s-benchmark .bm-seg.to-l { background: linear-gradient(to left, var(--blue), var(--purple)); clip-path: inset(0 0 0 100%); }
 #s-benchmark .bm-seg.to-r { background: linear-gradient(to right, var(--blue), var(--teal)); clip-path: inset(0 100% 0 0); }
 #s-benchmark .bm-row.is-in .bm-seg { clip-path: inset(0 0 0 0); }
@@ -44,7 +44,7 @@
 #s-benchmark .bm-row.is-in .bm-b i { transform: scale(1); }
 #s-benchmark .bm-b u { width: 24px; height: 24px; left: -12px; top: -12px; border-radius: 50%; background: var(--blue); border: 3px solid var(--blue-lt); box-shadow: 0 0 16px rgba(59, 128, 170, .6); animation: bmBreathe 4.6s ease-in-out infinite; }
 /* the Tahakom dot leaves the benchmark value and travels to ours */
-#s-benchmark .bm-t { transition: transform .95s var(--ease-io) calc(var(--delay) + .3s); }
+#s-benchmark .bm-t { transition: transform .85s var(--ease-io) calc(var(--delay) + .28s); }
 #s-benchmark .bm-row.is-in .bm-t { transform: translateX(var(--dx)); }
 #s-benchmark .bm-t i { opacity: 0; transition: opacity .3s var(--ease-soft) calc(var(--delay) + .25s); }
 #s-benchmark .bm-row.is-in .bm-t i { opacity: 1; }
@@ -62,7 +62,7 @@
 #s-benchmark .bm-dot b { position: absolute; top: -15px; font: 700 26px/30px var(--font); white-space: nowrap; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity .5s var(--ease-soft) calc(var(--delay) + .15s); }
 #s-benchmark .bm-dot b.r { left: 24px; }
 #s-benchmark .bm-dot b.l { right: 24px; }
-#s-benchmark .bm-t b { transition-delay: calc(var(--delay) + .95s); }
+#s-benchmark .bm-t b { transition-delay: calc(var(--delay) + .92s); }
 #s-benchmark .bm-row.is-in .bm-dot b { opacity: 1; }
 #s-benchmark .bm-b b { color: var(--blue-lt); }
 #s-benchmark .mech .bm-t b { color: var(--purple-lt); }
@@ -79,7 +79,7 @@
 @keyframes bmGlint { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 58% { opacity: 1; } 68% { transform: translateX(var(--dx)); opacity: 0; } 100% { transform: translateX(var(--dx)); opacity: 0; } }
 
 /* the difference, printed large beside the segment */
-#s-benchmark .bm-delta { position: absolute; top: 50%; transform: translateY(-50%); display: flex; align-items: baseline; gap: 8px; white-space: nowrap; opacity: 0; transition: opacity .6s var(--ease-out) calc(var(--delay) + .8s); }
+#s-benchmark .bm-delta { position: absolute; top: 50%; transform: translateY(-50%); display: flex; align-items: baseline; gap: 8px; white-space: nowrap; opacity: 0; transition: opacity .55s var(--ease-out) calc(var(--delay) + .95s); }
 #s-benchmark .bm-row.is-in .bm-delta { opacity: 1; }
 #s-benchmark .bm-delta .num { font: 700 54px/1 var(--font); letter-spacing: -.02em; }
 #s-benchmark .bm-delta small { font: 700 26px/1 var(--font); letter-spacing: .02em; }

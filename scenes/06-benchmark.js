@@ -23,7 +23,8 @@
     const tx = X(r.t), bx = X(r.b);
     const behind = r.t < r.b;                // Tahakom dot sits left of the benchmark
     const diff = r.t - r.b;
-    // the difference sits just beyond the right-hand value label
+    // the difference sits beyond the right-hand value label:
+    // half a dot (14) + label gap (10) + widest label, "89%" at 26px (61) + gap (26)
     const deltaX = Math.max(tx, bx) + 14 + 10 + 61 + 26;
     return `
       <div class="bm-row ${r.g}${r.hero ? ' hero' : ''} a-fade" data-in="${r.stop}" style="top:${r.y - 35}px;--dx:${(tx - bx).toFixed(1)}px;--d:${r.d}s;--gp:${(i % 2) * 1.3}s;--gt:${[6, 6.8, 6.2, 7.2][i]}s;--tl:${Math.min(70, Math.abs(tx - bx) * .45).toFixed(0)}px;--bp:${(-i * .85 - .4).toFixed(2)}s">
@@ -45,8 +46,8 @@
     holds: [8, 10, 10, 8],
     notes: [
       'Now let’s read our survey against outside benchmarks. The short version is the headline: willingness is strong; the mechanism is weak. One caveat before any number: this is a directional comparison only. The benchmarks come from Gallup and Workhuman’s 2024 research, the Achievers Workforce Institute and Globoforce/Workhuman. Their measures and populations are not the same as ours, and they are not Saudi norms.',
-      'First, the mechanism: how recognition actually travels. Org-wide recognition: 8% of our colleagues, against a benchmark of 22%. That is 14 points behind, and it is the same 8% you just saw as recognition reach. Choice in recognition: 49% against 64%, 15 points behind.',
-      'Now the willingness. Peer recognition: 89% of our colleagues, against a benchmark of 41%. That is 48 points ahead, the standout number on this slide. Connection and loyalty: 80% against 77%. Three points, so broadly aligned. Read these as direction, not as precise scores.',
+      'First, the mechanism: how recognition actually travels. Org-wide recognition: we are at 8%, against a benchmark of 22%. That is 14 points behind. Choice in recognition: 49% against 64%, 15 points behind.',
+      'Now the willingness. Peer recognition: we are at 89%, against a benchmark of 41%. That is 48 points ahead, the standout number on this slide. Connection and loyalty: 80% against 77%. Three points, so broadly aligned. Read these as direction, not as precise scores.',
       'So the reading is simple. We are behind on the mechanism and ahead on the willingness. People are ready to recognise each other; what is missing is the channel that carries it. Build the channel, then test it. That is what the pilot does.',
     ],
     field: [
