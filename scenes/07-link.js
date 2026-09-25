@@ -112,8 +112,8 @@
       </svg>
       <div class="lk-flow a-fade" data-in="2" style="--d:1.3s;--dur:1s">
         ${dots(feed, 1, 2.6, 'in')}
-        ${dots(coreA, 4, 4.6)}
-        ${dots(coreB, 4, 4.6)}
+        ${dots(coreA, 3, 5.1)}
+        ${dots(coreB, 3, 5.1)}
       </div>
 
       <!-- 01 · the individual -->

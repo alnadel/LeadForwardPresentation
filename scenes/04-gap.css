@@ -28,7 +28,7 @@
   background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .08) 45%, rgba(37, 199, 188, .03) 70%, transparent);
   opacity: 0; transition: opacity 1.4s var(--ease-soft); }
 #s-gap.st-2 .gp-in::before { opacity: 1; transition-delay: calc(.45s + var(--di) * .26s); }
-#s-gap.st-2 .gp-wall { border-color: rgba(201, 166, 211, .5); transition-delay: calc(.7s + var(--di) * .26s); }
+#s-gap.st-2 .gp-wall { border-color: rgba(201, 166, 211, .62); transition-delay: calc(.7s + var(--di) * .26s); }
 
 /* colleagues: pop in at stop 0; a few twinkle slowly */
 #s-gap .gp-sq { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 28%; background: rgba(255, 255, 255, var(--a));

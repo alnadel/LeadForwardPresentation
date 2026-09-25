@@ -48,12 +48,12 @@
 #s-benchmark .bm-row.is-in .bm-t { transform: translateX(var(--dx)); }
 #s-benchmark .bm-t i { opacity: 0; transition: opacity .3s var(--ease-soft) calc(var(--delay) + .25s); }
 #s-benchmark .bm-row.is-in .bm-t i { opacity: 1; }
-#s-benchmark .bm-t u { width: 28px; height: 28px; left: -14px; top: -14px; border-radius: 28%; animation: bmBreathe 3.4s ease-in-out -1.2s infinite; }
+#s-benchmark .bm-t u { width: 28px; height: 28px; left: -14px; top: -14px; border-radius: 28%; animation: bmBreathe 3.4s ease-in-out var(--bp, 0s) infinite; }
 #s-benchmark .mech .bm-t u { background: var(--purple); border: 2px solid var(--purple-lt); box-shadow: 0 0 20px rgba(157, 103, 170, .7); }
 #s-benchmark .will .bm-t u { background: var(--teal); border: 2px solid #8BF0E7; box-shadow: 0 0 22px rgba(37, 199, 188, .7); }
 @keyframes bmBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.13); } }
 /* a soft halo breathes behind each Tahakom dot, in step with it */
-#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -30px; top: -30px; width: 60px; height: 60px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out -1.2s infinite; }
+#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -32px; top: -32px; width: 64px; height: 64px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out var(--bp, 0s) infinite; }
 #s-benchmark .mech .bm-t i::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .55), transparent); }
 #s-benchmark .will .bm-t i::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .55), transparent); }
 @keyframes bmHalo { 0%, 100% { opacity: .3; transform: scale(.75); } 50% { opacity: 1; transform: scale(1.3); } }
@@ -69,12 +69,12 @@
 #s-benchmark .will .bm-t b { color: var(--teal); }
 
 /* ambient: a small light slowly travels each segment, benchmark to Tahakom */
-#s-benchmark .bm-glint { position: absolute; top: 35px; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 28%; background: #fff; opacity: 0; }
-#s-benchmark .bm-glint::before { content: ''; position: absolute; top: 4px; height: 4px; width: var(--tl); border-radius: 2px; }
-#s-benchmark .mech .bm-glint { box-shadow: 0 0 10px var(--purple-lt), 0 0 26px rgba(157, 103, 170, .95); }
+#s-benchmark .bm-glint { position: absolute; top: 35px; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 28%; background: #fff; opacity: 0; }
+#s-benchmark .bm-glint::before { content: ''; position: absolute; top: 5px; height: 4px; width: var(--tl); border-radius: 2px; }
+#s-benchmark .mech .bm-glint { box-shadow: 0 0 10px var(--purple-lt), 0 0 30px rgba(157, 103, 170, .95), 0 0 60px rgba(157, 103, 170, .45); }
 #s-benchmark .mech .bm-glint::before { left: 8px; background: linear-gradient(to right, rgba(201, 166, 211, .85), transparent); }
-#s-benchmark .will .bm-glint { box-shadow: 0 0 10px var(--sea), 0 0 26px rgba(37, 199, 188, .95); }
-#s-benchmark .will .bm-glint::before { right: 8px; background: linear-gradient(to left, rgba(3, 255, 203, .85), transparent); }
+#s-benchmark .will .bm-glint { box-shadow: 0 0 10px var(--teal), 0 0 30px rgba(37, 199, 188, .95), 0 0 60px rgba(37, 199, 188, .45); }
+#s-benchmark .will .bm-glint::before { right: 8px; background: linear-gradient(to left, rgba(37, 199, 188, .9), transparent); }
 #s-benchmark .bm-row.is-in .bm-glint { animation: bmGlint var(--gt, 6s) ease-in-out calc(var(--delay) + 1.6s + var(--gp, 0s)) infinite; }
 @keyframes bmGlint { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 58% { opacity: 1; } 68% { transform: translateX(var(--dx)); opacity: 0; } 100% { transform: translateX(var(--dx)); opacity: 0; } }
 

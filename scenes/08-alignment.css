@@ -1,6 +1,7 @@
 /* 08 · Strategic alignment */
 /* the city: slow push-in towards the interchange, city lights shimmer */
-#s-alignment .al-plate { position: absolute; inset: 0; transform-origin: 72% 46%; }
+/* steady (linear) push-in so a parked frame never sits at the turnaround; lite mode still stops it */
+#s-alignment .al-plate { position: absolute; inset: 0; transform-origin: 72% 46%; animation-duration: 48s; animation-timing-function: linear; }
 #s-alignment .al-photo { opacity: .9; }
 #s-alignment .al-glints i { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 226, 170, .75), rgba(255, 190, 110, .22) 45%, transparent);

@@ -26,7 +26,7 @@
     // the difference sits just beyond the right-hand value label
     const deltaX = Math.max(tx, bx) + 14 + 10 + 61 + 26;
     return `
-      <div class="bm-row ${r.g}${r.hero ? ' hero' : ''} a-fade" data-in="${r.stop}" style="top:${r.y - 35}px;--dx:${(tx - bx).toFixed(1)}px;--d:${r.d}s;--gp:${(i % 2) * 1.3}s;--gt:${[6, 6.8, 6.2, 7.2][i]}s;--tl:${Math.min(70, Math.abs(tx - bx) * .45).toFixed(0)}px">
+      <div class="bm-row ${r.g}${r.hero ? ' hero' : ''} a-fade" data-in="${r.stop}" style="top:${r.y - 35}px;--dx:${(tx - bx).toFixed(1)}px;--d:${r.d}s;--gp:${(i % 2) * 1.3}s;--gt:${[6, 6.8, 6.2, 7.2][i]}s;--tl:${Math.min(70, Math.abs(tx - bx) * .45).toFixed(0)}px;--bp:${(-i * .85 - .4).toFixed(2)}s">
         <div class="bm-lab">${r.label}</div>
         <i class="bm-seg ${behind ? 'to-l' : 'to-r'}" style="left:${Math.min(tx, bx)}px;width:${Math.abs(tx - bx)}px"></i>
         <span class="bm-dot bm-b" style="left:${bx}px"><i><u></u></i><b class="${behind ? 'r' : 'l'}">${r.b}%</b></span>
