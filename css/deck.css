@@ -88,7 +88,7 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 /* ── scenes ───────────────────────────────────────────────────────────── */
 .scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; pointer-events: none; transition: opacity .8s var(--ease-soft), transform 1.1s var(--ease-out), filter .8s var(--ease-soft); }
 .scene.active { visibility: visible; opacity: 1; pointer-events: auto; }
-.scene.leaving { visibility: visible; opacity: 0; transform: scale(.985); filter: blur(4px); transition-duration: .7s, .9s, .7s; }
+.scene.leaving { visibility: visible; opacity: 0; transform: scale(.985); filter: blur(4px); transition-duration: .5s, .7s, .5s; }
 .scene.entering-fwd { transform: scale(1.012); }
 .scene.entering-back { transform: scale(.988); }
 .scene.no-anim, .scene.no-anim * { transition: none !important; }
@@ -101,7 +101,7 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
    Delay:  style="--d:.4s".  Stagger: parent style="--stagger:.12s" +
    data-stagger; the engine numbers children with --i. */
 [data-in], [data-out] {
-  --delay: calc(var(--d, 0s) + var(--i, 0) * var(--stagger, 0s));
+  --delay: calc(var(--enter, 0s) + var(--d, 0s) + var(--i, 0) * var(--stagger, 0s));
   transition:
     opacity var(--dur, .9s) var(--ease-out) var(--delay),
     transform var(--dur, 1.1s) var(--ease-out) var(--delay),
@@ -250,7 +250,7 @@ em.hl { font-style: normal; color: var(--teal); }
 #blackout.on { opacity: 1; pointer-events: auto; }
 
 /* ── overview & help ──────────────────────────────────────────────────── */
-#overview { position: absolute; inset: 0; z-index: 40; background: rgba(3, 8, 16, .94); opacity: 0; pointer-events: none; transition: opacity .35s var(--ease-soft); padding: 110px var(--m); }
+#overview { position: absolute; inset: 0; z-index: 40; background: rgba(4, 9, 17, .985); opacity: 0; pointer-events: none; transition: opacity .35s var(--ease-soft); padding: 110px var(--m); }
 #overview.on { opacity: 1; pointer-events: auto; }
 #overview h2 { font: 700 22px/1 var(--font); letter-spacing: .24em; text-transform: uppercase; color: var(--teal); margin: 0 0 40px; }
 #overview .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
@@ -263,6 +263,21 @@ em.hl { font-style: normal; color: var(--teal); }
 #overview .keys { position: absolute; left: var(--m); right: var(--m); bottom: 70px; font: 400 20px/1.6 var(--font); color: var(--ink-3); }
 #overview .keys b { color: var(--ink-1); font-weight: 700; display: inline-block; min-width: 1.6em; padding: 0 8px; border: 1px solid var(--line-2); border-radius: 6px; text-align: center; margin-right: 6px; }
 
+#techcheck { position: absolute; inset: 0; z-index: 46; background: #050A14; display: none; }
+#techcheck.on { display: block; }
+#techcheck .tc-safe { position: absolute; inset: 54px 96px; border: 2px dashed rgba(3, 255, 203, .5); pointer-events: none; }
+#techcheck .tc-low { position: absolute; left: 0; right: 0; top: 972px; border-top: 2px dashed rgba(201, 166, 211, .7); padding: 10px 96px; font: 700 18px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; color: var(--purple-lt); }
+#techcheck .tc-in { position: absolute; left: 144px; right: 144px; top: 110px; }
+#techcheck .tc-sw { display: flex; gap: 18px; margin-top: 30px; }
+#techcheck .tc-sw div { flex: 1; }
+#techcheck .tc-sw i { display: block; height: 90px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, .2); }
+#techcheck .tc-sw span { display: block; margin-top: 10px; font: 700 20px/1 var(--font); color: var(--ink-2); }
+#techcheck .tc-type p { margin: 16px 0 0; font-family: var(--font); color: var(--ink-2); line-height: 1.2; }
+#techcheck .tc-type { margin-top: 26px; }
+#techcheck .tc-pair { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 30px; }
+#techcheck .tc-pair div { padding: 24px; border-radius: 12px; }
+#techcheck .tc-pair b { font: 700 26px/1.2 var(--font); }
+#techcheck .tc-tip { margin-top: 28px; font: 400 24px/1.4 var(--font); color: var(--ink-1); }
 #toast { position: absolute; left: 50%; top: 40px; z-index: 45; transform: translateX(-50%); padding: 12px 22px; border-radius: 10px; background: rgba(3, 8, 16, .85); border: 1px solid var(--line-2); font: 700 18px/1 var(--font); letter-spacing: .1em; color: var(--ink-1); opacity: 0; transition: opacity .3s var(--ease-soft); pointer-events: none; }
 #toast.on { opacity: 1; }
 

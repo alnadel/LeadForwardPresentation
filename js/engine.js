@@ -65,6 +65,7 @@
   };
 
   function ease(t) { return 1 - Math.pow(1 - t, 3); }
+  function enterDelay(el) { const v = parseFloat(getComputedStyle(el).getPropertyValue('--enter')); return isNaN(v) ? 0 : v; }
   function fmt(v, dec, sep) {
     let s = v.toFixed(dec);
     if (sep) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -73,7 +74,7 @@
   function runCount(el, instant) {
     const to = parseFloat(el.dataset.count), from = parseFloat(el.dataset.from || 0);
     const dec = parseInt(el.dataset.decimals || 0, 10), dur = parseFloat(el.dataset.dur || 1.4) * 1000;
-    const delay = parseFloat(el.dataset.delay || 0) * 1000;
+    const delay = (parseFloat(el.dataset.delay || 0) + enterDelay(el)) * 1000;
     const sep = el.dataset.sep !== undefined;
     cancelAnimationFrame(el._raf); clearTimeout(el._to);
     if (instant) { el.textContent = fmt(to, dec, sep); return; }
@@ -98,7 +99,7 @@
     el.classList.remove('typing');
     if (instant) { el.textContent = full; return; }
     el.textContent = '';
-    const cps = parseFloat(el.dataset.cps || 34), delay = parseFloat(el.dataset.delay || 0) * 1000;
+    const cps = parseFloat(el.dataset.cps || 34), delay = (parseFloat(el.dataset.delay || 0) + enterDelay(el)) * 1000;
     el._to = setTimeout(() => {
       let i = 0;
       el.classList.add('typing');
@@ -288,6 +289,8 @@
       rec.t0 = performance.now();
       stage.dataset.bg = rec.def.bg || 'night';
       try { rec.def.enter && rec.def.enter(rec.ctx); } catch (e) { console.error('enter ' + rec.def.id, e); }
+      // the outgoing scene clears first; the new one starts building a beat later
+      rec.el.style.setProperty('--enter', landSettled ? '0s' : '.4s');
       if (!landSettled) { void rec.el.offsetWidth; applyStep(rec, st, -1, false, 'ease'); }
       step = st;
     } else if (st !== step) {
@@ -297,6 +300,7 @@
       if (!instant && performance.now() - lastBuild < 1300) {
         rec.el.classList.add('no-anim'); void rec.el.offsetWidth; rec.el.classList.remove('no-anim'); void rec.el.offsetWidth;
       }
+      rec.el.style.setProperty('--enter', '0s');
       applyStep(rec, st, prev, instant, instant ? 'snap' : 'ease');
     }
     lastBuild = performance.now();
@@ -402,7 +406,7 @@
   function buildOverview() {
     const o = $('#overview');
     o.innerHTML = '<h2>Behind a Better Life · scenes</h2><div class="grid"></div>' +
-      '<div class="keys"><b>→</b> <b>Space</b> <b>PgDn</b> next stop &nbsp; <b>←</b> <b>PgUp</b> back &nbsp; <b>]</b> <b>[</b> next / previous scene &nbsp; <b>S</b> speaker view &nbsp; <b>B</b> blackout &nbsp; <b>F</b> fullscreen &nbsp; <b>H</b> hide progress &nbsp; <b>C</b> projector contrast &nbsp; <b>A</b> autoplay &nbsp; <b>G</b> this overview &nbsp; type a number + <b>Enter</b> to jump</div>';
+      '<div class="keys"><b>→</b> <b>Space</b> <b>PgDn</b> next stop &nbsp; <b>←</b> <b>PgUp</b> back &nbsp; <b>]</b> <b>[</b> next / previous scene &nbsp; <b>S</b> speaker view &nbsp; <b>B</b> blackout &nbsp; <b>F</b> fullscreen &nbsp; <b>H</b> hide progress &nbsp; <b>C</b> projector contrast &nbsp; <b>A</b> autoplay &nbsp; <b>L</b> lite mode &nbsp; <b>T</b> tech check &nbsp; <b>G</b> this overview &nbsp; type a number + <b>Enter</b> to jump</div>';
     const grid = $('.grid', o);
     S.forEach((r, i) => {
       const it = document.createElement('div'); it.className = 'it';
@@ -416,6 +420,24 @@
     const show = on == null ? !o.classList.contains('on') : on;
     o.classList.toggle('on', show);
     $$('.it', o).forEach((it, i) => it.classList.toggle('cur', i === cur));
+  }
+
+  /* ── tech check (T): judge the real projector before the session ───── */
+  function toggleTech() {
+    let t = $('#techcheck');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'techcheck';
+      const sw = [['Plum', '#602650'], ['Navy', '#06213D'], ['Teal', '#25C7BC'], ['Sea green', '#03FFCB'], ['Purple', '#9D67AA'], ['Queen blue', '#3B80AA'], ['Silver', '#D0D0D0'], ['White', '#FFFFFF']];
+      t.innerHTML = '<div class="tc-safe"></div><div class="tc-low">Keep essential content above this line (bottom 10%)</div>' +
+        '<div class="tc-in"><div class="kicker">Tech check · press T to close</div>' +
+        '<div class="tc-sw">' + sw.map((c) => '<div><i style="background:' + c[1] + '"></i><span>' + c[0] + '</span></div>').join('') + '</div>' +
+        '<div class="tc-type"><p style="font-size:20px">20px — progress labels and kickers must stay readable from the back row</p><p style="font-size:24px">24px — captions, sources and caveats</p><p style="font-size:31px">31px — body sentences</p><p style="font-size:36px">36px — lead lines</p><p style="font-size:70px;font-weight:700;color:#fff">70px headline</p></div>' +
+        '<div class="tc-pair"><div style="background:#06213D"><b style="color:#602650">Plum on navy — should NOT be used for meaning</b></div><div style="background:#06213D"><b style="color:#C9A6D3">Purple-lt on navy — gaps</b></div><div style="background:#06213D"><b style="color:#25C7BC">Teal on navy — stories</b></div><div style="background:#06213D"><b style="color:#03FFCB">Sea green — the 8% moment</b></div></div>' +
+        '<p class="tc-tip">If the colours look washed out or the 24px line is hard to read from the back, press C (projector contrast). If motion stutters, press L (lite mode).</p></div>';
+      stage.appendChild(t);
+    }
+    t.classList.toggle('on');
   }
 
   /* ── speaker view ──────────────────────────────────────────────────── */
@@ -550,9 +572,10 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
       case 'f': case 'F': e.preventDefault(); toggleFullscreen(); break;
       case 'l': case 'L': stage.classList.toggle('lite'); if (window.Field) Field.lite(stage.classList.contains('lite')); toast(stage.classList.contains('lite') ? 'Lite mode on' : 'Lite mode off'); break;
       case 'o': case 'O': toggleOverview(); break;
+      case 't': case 'T': toggleTech(); break;
       case 's': case 'S': openPresenter(); break;
       case 'g': case 'G': toggleOverview(); break;
-      case 'Escape': toggleOverview(false); break;
+      case 'Escape': toggleOverview(false); { const tc = $('#techcheck'); if (tc) tc.classList.remove('on'); } break;
       case 'h': case 'H': chrome.classList.toggle('hidden'); break;
       case 'c': case 'C': stage.classList.toggle('hc'); if (window.Field) Field.boost(stage.classList.contains('hc') ? 1.35 : 1); toast(stage.classList.contains('hc') ? 'Projector contrast on' : 'Projector contrast off'); break;
       case 'a': case 'A': auto = !auto; toast(auto ? 'Autoplay on' : 'Autoplay off'); scheduleAuto(); break;
