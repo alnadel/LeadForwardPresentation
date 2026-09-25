@@ -1,1 +1,66 @@
-/* Operating rhythm */
+/* 12 · Operating rhythm */
+#s-rhythm .rh-h { margin-top: 30px; font-size: 72px; }
+#s-rhythm .rh-sub { margin: 20px 0 0; font: 400 32px/1.35 var(--font); color: var(--ink-2); }
+
+/* ── the always-open lane (CAPTURE): centred on stop 0, it rises to make room for the quarter ── */
+#s-rhythm .rh-lanewrap { position: absolute; left: 0; top: 0; width: 0; height: 0; transform: translateY(150px); transition: transform 1.1s var(--ease-io); }
+#s-rhythm.st-1 .rh-lanewrap { transform: none; }
+#s-rhythm .rh-lane { position: absolute; left: var(--m); top: 384px; width: 1632px; height: 124px; border-radius: 24px;
+  background: linear-gradient(90deg, rgba(37, 199, 188, .10), rgba(37, 199, 188, .04) 60%, rgba(37, 199, 188, .08));
+  border: 1.5px solid rgba(37, 199, 188, .38); }
+#s-rhythm .rh-lane-n { position: absolute; left: 30px; top: 28px; }
+#s-rhythm .rh-lane-t { position: absolute; left: 124px; top: 24px; }
+#s-rhythm .rh-lane-lab { font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--teal); }
+#s-rhythm .rh-lane-lab b, #s-rhythm .rh-m-lab b { margin: 0 .5em; font-weight: 700; color: var(--ink-4); }
+#s-rhythm .rh-lane-s { margin: 12px 0 0; font: 400 30px/1.3 var(--font); color: var(--ink-1); white-space: nowrap; }
+#s-rhythm .rh-track { position: absolute; left: 1000px; right: 118px; top: 61px; height: 2px; background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .55)); }
+#s-rhythm .rh-tray { position: absolute; right: 36px; top: 28px; width: 64px; height: 64px; border-radius: 28%; display: grid; place-items: center; font-size: 34px; color: var(--teal);
+  border: 1.5px solid rgba(37, 199, 188, .6); background: rgba(6, 33, 61, .8); animation: rhTray 3s ease-in-out infinite; }
+@keyframes rhTray { 0%, 44%, 100% { box-shadow: 0 0 0 rgba(37, 199, 188, 0); border-color: rgba(37, 199, 188, .6); } 56% { box-shadow: 0 0 28px rgba(37, 199, 188, .55); border-color: var(--sea); } }
+
+/* nominations drift down from the field into the lane, then glide to the tray */
+#s-rhythm .rh-drops { position: absolute; inset: 0; pointer-events: none; }
+#s-rhythm .rh-drop { position: absolute; left: 0; top: 62px; width: 0; height: 0; animation: rhX 18s var(--dl) infinite; }
+#s-rhythm .rh-drop > span { position: absolute; left: 0; top: 0; animation: rhY 18s var(--dl) infinite; }
+#s-rhythm .rh-drop .light { position: absolute; left: -7px; top: -7px; animation: rhO 18s var(--dl) infinite; }
+@keyframes rhX { 0% { transform: translateX(var(--x0)); animation-timing-function: ease-in-out; } 30% { transform: translateX(calc(var(--x0) + 36px)); animation-timing-function: cubic-bezier(.45, 0, .55, 1); } 60%, 100% { transform: translateX(var(--xt)); } }
+@keyframes rhY { 0% { transform: translateY(-100px); animation-timing-function: cubic-bezier(.3, 0, .2, 1); } 30%, 100% { transform: translateY(0); } }
+@keyframes rhO { 0% { opacity: 0; transform: scale(.4); } 6% { opacity: 1; transform: scale(1); } 56% { opacity: 1; transform: scale(1); } 61%, 100% { opacity: 0; transform: scale(.2); } }
+
+/* ── one quarter, month by month ── */
+#s-rhythm .rh-q { position: absolute; left: var(--m); top: 552px; width: 1632px; height: 240px; }
+#s-rhythm .rh-q-lab { position: absolute; left: 0; top: 0; font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
+#s-rhythm .rh-axis { position: absolute; left: 0; right: 0; top: 66px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .7), rgba(37, 199, 188, .35)); }
+#s-rhythm .rh-weeks i { position: absolute; top: -6px; width: 2px; height: 14px; margin-left: -1px; background: rgba(255, 255, 255, .22); }
+#s-rhythm .rh-months { position: absolute; left: 0; right: 0; top: 38px; }
+#s-rhythm .rh-m { position: absolute; top: 0; left: calc(var(--k) * 544px); width: 510px; }
+#s-rhythm .rh-node { width: 56px; height: 56px; font-size: 22px; background: #0A2440; animation: rhNode 15s ease-in-out infinite; animation-delay: calc(var(--k) * 5s); }
+@keyframes rhNode {
+  0%, 30%, 100% { background: var(--teal); border-color: var(--teal); color: var(--navy); box-shadow: 0 0 34px rgba(37, 199, 188, .5); }
+  36%, 94% { background: #0A2440; border-color: rgba(255, 255, 255, .24); color: var(--white); box-shadow: none; }
+}
+#s-rhythm .rh-m-lab { margin-top: 26px; font: 700 26px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+#s-rhythm .rh-m-lab em { font-style: normal; color: var(--teal); }
+#s-rhythm .rh-m-t { margin: 14px 0 0; font: 400 30px/1.35 var(--font); color: var(--ink-2); }
+
+/* the playhead sweeps the quarter */
+#s-rhythm .rh-play { position: absolute; left: 0; top: 0; width: 1632px; height: 120px; pointer-events: none; }
+#s-rhythm .rh-play-x { position: absolute; left: 0; top: 26px; width: 2px; height: 80px; background: linear-gradient(180deg, transparent, rgba(3, 255, 203, .7), transparent); animation: rhPlay 15s linear infinite; }
+#s-rhythm .rh-play-x .light { position: absolute; left: -10px; top: 29px; }
+@keyframes rhPlay { 0% { transform: translateX(0); opacity: 0; } 3%, 97% { opacity: 1; } 100% { transform: translateX(1632px); opacity: 0; } }
+
+/* ── every quarter · annual ── */
+#s-rhythm .rh-strip { position: absolute; left: var(--m); right: var(--m); top: 852px; height: 84px; display: flex; align-items: center; gap: 30px; }
+#s-rhythm .rh-strip::before { content: ''; position: absolute; left: 0; right: 0; top: -30px; height: 1px; background: var(--line); opacity: 0; transition: opacity .8s var(--ease-soft); }
+#s-rhythm.st-2 .rh-strip::before { opacity: 1; }
+#s-rhythm .rh-cycle { margin: 0; font: 700 44px/1.1 var(--font); letter-spacing: -.015em; color: var(--white); white-space: nowrap; }
+#s-rhythm .rh-cycle em { font-style: normal; font-weight: 700; color: var(--teal); }
+#s-rhythm .rh-every { font-weight: 400; color: var(--teal); }
+#s-rhythm .rh-link { flex: 1; height: 14px; position: relative; }
+#s-rhythm .rh-link::before { content: ''; position: absolute; left: 0; right: 4px; top: 6px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .08), rgba(37, 199, 188, .6)); }
+#s-rhythm .rh-link::after { content: ''; position: absolute; right: 2px; top: 2px; width: 9px; height: 9px; border-top: 2px solid rgba(37, 199, 188, .7); border-right: 2px solid rgba(37, 199, 188, .7); transform: rotate(45deg); }
+#s-rhythm .rh-annual { flex: none; display: flex; align-items: center; gap: 22px; }
+#s-rhythm .rh-coll { width: 76px; height: 76px; border-radius: 28%; border: 1.5px solid rgba(37, 199, 188, .6); background: rgba(37, 199, 188, .08); display: grid; grid-template-columns: repeat(2, 16px); gap: 10px; place-content: center; }
+#s-rhythm .rh-coll i { width: 16px; height: 16px; border-radius: 28%; background: var(--teal); box-shadow: 0 0 12px rgba(37, 199, 188, .6); }
+#s-rhythm .rh-an-lab { font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--teal); }
+#s-rhythm .rh-an-t { margin: 10px 0 0; font: 400 30px/1.2 var(--font); color: var(--ink-1); white-space: nowrap; }

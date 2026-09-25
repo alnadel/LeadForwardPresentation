@@ -1,1 +1,78 @@
-/* Recognition */
+/* 13 · Recognition */
+/* headline column, top left; the principle swaps in at stop 4 */
+#s-recognition .rc-hd { position: absolute; left: var(--m); top: var(--top); width: 790px; }
+#s-recognition .rc-h { font-size: 68px; }
+#s-recognition .rc-pr { margin-top: 30px; }
+#s-recognition .rc-sub { margin: 22px 0 0; font: 400 30px/1.38 var(--font); color: var(--ink-2); max-width: 740px; text-wrap: balance; }
+#s-recognition .rc-nw { white-space: nowrap; }
+
+/* the three tiers: labels stay upright, outside the frames */
+#s-recognition .rc-tiers { position: absolute; left: var(--m); top: 506px; width: 790px; }
+#s-recognition .rc-t { display: flex; gap: 26px; align-items: flex-start; margin-bottom: 32px; }
+#s-recognition .rc-n { flex: none; width: 56px; height: 56px; font-size: 22px; margin-top: 2px; }
+#s-recognition .rc-t.at .rc-n { background: var(--teal); border-color: var(--teal); color: var(--navy); box-shadow: 0 0 34px rgba(37, 199, 188, .5); }
+#s-recognition .rc-tt { margin: 0; font: 700 34px/1.15 var(--font); letter-spacing: -.012em; color: var(--white); }
+#s-recognition .rc-ts { margin: 8px 0 0; max-width: 680px; font: 400 30px/1.35 var(--font); color: var(--ink-2); text-wrap: balance; }
+#s-recognition .rc-t.past { opacity: .55; }
+#s-recognition .rc-t.past, #s-recognition .rc-t.at { transition: opacity .8s var(--ease-soft), transform var(--dur, 1.1s) var(--ease-out) var(--delay); }
+
+/* ── the nested frames. Only .rc-s3 is resized; everything inside is in %. ── */
+#s-recognition .rc-s3 { position: absolute; left: 31.5px; top: -790.5px; width: 2677px; height: 2677px;
+  --zoom: 1.9s cubic-bezier(.25, .8, .3, 1);
+  transition: left var(--zoom), top var(--zoom), width var(--zoom), height var(--zoom); }
+#s-recognition.st-1 .rc-s3 { left: -637.75px; top: -1459.75px; width: 4015.5px; height: 4015.5px; }
+#s-recognition.st-2 .rc-s3 { left: 272.45px; top: -549.55px; width: 2195.1px; height: 2195.1px; }
+#s-recognition.st-3 .rc-s3 { left: 1010px; top: 188px; width: 720px; height: 720px; }
+
+#s-recognition .rc-s2, #s-recognition .rc-s1 { position: absolute; }
+#s-recognition .rc-s3::before, #s-recognition .rc-s2::before, #s-recognition .rc-s1::before {
+  content: ''; position: absolute; inset: 0; border-radius: 28%; opacity: 0; transition: opacity .9s var(--ease-soft), border-color .9s var(--ease-soft), background .9s var(--ease-soft); }
+#s-recognition .rc-s3::before { border: 2px solid rgba(37, 199, 188, .55); background: rgba(10, 30, 52, .35); }
+#s-recognition .rc-s2::before { border: 2px solid rgba(37, 199, 188, .7); background: rgba(6, 26, 48, .55); }
+#s-recognition .rc-s1::before { border: 2px solid var(--teal); background: rgba(37, 199, 188, .08); box-shadow: 0 0 60px rgba(37, 199, 188, .18); }
+
+#s-recognition .rc-cell { position: absolute; width: 27.333%; height: 27.333%; border-radius: 28%; border: 1.5px solid rgba(255, 255, 255, .13); background: rgba(255, 255, 255, .035);
+  display: grid; place-items: center; opacity: 0; transition: opacity .9s var(--ease-soft), border-color .9s var(--ease-soft), background .9s var(--ease-soft); }
+#s-recognition .rc-cell .light { width: 12px; height: 12px; opacity: 0; transform: scale(.4); transition: opacity .8s var(--ease-soft), transform .8s var(--ease-back); }
+
+/* stop 0: the small frame and its light */
+#s-recognition.st-0 .rc-s1::before { opacity: 1; transition-delay: calc(var(--enter, 0s) + .5s); }
+/* stop 1: it is a certificate on a desk */
+#s-recognition .rc-cert { position: absolute; left: 26%; top: 24%; width: 44%; height: 44%; color: var(--teal); opacity: 0; transform: scale(.8); transition: opacity .8s var(--ease-soft), transform 1s var(--ease-out); }
+#s-recognition .rc-cert .icon { width: 100%; height: 100%; }
+#s-recognition.st-1 .rc-cert { opacity: 1; transform: none; transition-delay: .35s; }
+#s-recognition.st-1 .rc-s1::before { background: rgba(37, 199, 188, .12); }
+/* stop 2: one square inside the internal channel */
+#s-recognition.st-2 .rc-s2::before, #s-recognition.st-2 .c2 { opacity: 1; transition-delay: .55s; }
+#s-recognition.st-2 .rc-s1::before { background: rgba(37, 199, 188, .16); }
+/* stop 3: one square inside the annual collection */
+#s-recognition.st-3 .rc-s3::before, #s-recognition.st-3 .c3 { opacity: 1; transition-delay: .85s; }
+#s-recognition.st-3 .rc-s2::before { border-color: rgba(37, 199, 188, .5); }
+#s-recognition.st-3 .c2 { opacity: .75; }
+/* stop 4: featured, not ranked — several stories carry the light, all the same size */
+#s-recognition.st-4 .rc-cell.f { border-color: rgba(37, 199, 188, .55); background: rgba(37, 199, 188, .08); }
+#s-recognition.st-4 .rc-cell.f .light { opacity: 1; transform: none; }
+#s-recognition.st-4 .rc-cell.f:nth-child(3) .light { transition-delay: .5s; }
+#s-recognition.st-4 .rc-cell.f:nth-child(4) .light { transition-delay: .7s; }
+#s-recognition.st-4 .rc-cell.f:nth-child(7) .light { transition-delay: .9s; }
+
+/* the light: centred in the small frame, then the seal on the certificate */
+#s-recognition .rc-lt { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .8s var(--ease-soft), left 1s var(--ease-io), top 1s var(--ease-io); }
+#s-recognition.st-0 .rc-lt { opacity: 1; transition-delay: calc(var(--enter, 0s) + .8s), 0s, 0s; }
+#s-recognition.st-1 .rc-lt { left: 69%; top: 68%; }
+#s-recognition .rc-lt .light { flex: none; animation: ambBreathe 3.6s ease-in-out infinite; transition: width 1.4s var(--ease-io), height 1.4s var(--ease-io); }
+#s-recognition.st-2 .rc-lt .light { width: 18px; height: 18px; }
+#s-recognition.st-3 .rc-lt .light { width: 13px; height: 13px; }
+/* one soft outward pulse about every 6 s; the light's glow swells with it, then settles */
+#s-recognition .rc-pulse { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 28%; pointer-events: none;
+  border: 2px solid rgba(3, 255, 203, .75); background: radial-gradient(closest-side, rgba(3, 255, 203, 0) 60%, rgba(3, 255, 203, .16));
+  opacity: 0; animation: rcPulse 6s cubic-bezier(.2, .55, .35, 1) infinite; }
+@keyframes rcPulse {
+  0%        { width: 22px; height: 22px; margin: -11px 0 0 -11px; opacity: 0; }
+  4%        { opacity: .85; }
+  62%, 100% { width: 230px; height: 230px; margin: -115px 0 0 -115px; opacity: 0; }
+}
+#s-recognition .rc-halo { position: absolute; left: 50%; top: 50%; width: 380px; height: 380px; margin: -190px 0 0 -190px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .36), rgba(37, 199, 188, .10) 55%, rgba(37, 199, 188, 0)); animation: rcHalo 6s infinite; }
+@keyframes rcHalo { 0% { opacity: .3; transform: scale(.8); animation-timing-function: ease-out; } 14% { opacity: 1; transform: scale(1); animation-timing-function: linear; } 100% { opacity: .3; transform: scale(.8); } }

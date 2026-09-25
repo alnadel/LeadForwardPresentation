@@ -1,1 +1,51 @@
-/* Strategic alignment */
+/* 08 · Strategic alignment */
+/* the city: slow push-in towards the interchange, city lights shimmer */
+#s-alignment .al-plate { position: absolute; inset: 0; transform-origin: 72% 46%; }
+#s-alignment .al-photo { opacity: .9; }
+#s-alignment .al-glints i { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 226, 170, .75), rgba(255, 190, 110, .22) 45%, transparent);
+  transform: scale(var(--s)); opacity: .2; animation-name: alGlint; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+@keyframes alGlint { 0%, 100% { opacity: .12; } 50% { opacity: .95; } }
+
+/* plum on the left for the copy, a deep floor for the pillars from stop 1 */
+#s-alignment .al-veil { background:
+  linear-gradient(90deg, rgba(30, 12, 26, .96) 0%, rgba(30, 12, 26, .9) 30%, rgba(30, 12, 26, .58) 54%, rgba(30, 12, 26, .2) 78%, rgba(30, 12, 26, .08) 100%),
+  linear-gradient(180deg, rgba(16, 7, 18, .6) 0%, transparent 30%),
+  linear-gradient(0deg, rgba(10, 6, 16, .9) 0%, rgba(10, 6, 16, .55) 10%, transparent 24%); }
+#s-alignment .al-veil-b { background: linear-gradient(0deg, rgba(14, 7, 18, .97) 0%, rgba(14, 7, 18, .92) 42%, rgba(14, 7, 18, .68) 58%, rgba(14, 7, 18, .25) 70%, transparent 80%); }
+/* stop 2: the upper band deepens so the wide statement reads over the skyline */
+#s-alignment .al-veil-t { background: linear-gradient(180deg, rgba(20, 8, 20, .78) 0%, rgba(20, 8, 20, .62) 32%, rgba(20, 8, 20, .16) 46%, transparent 54%); }
+
+/* header: the alignment sentence swaps for the strategic value at stop 2 */
+#s-alignment .al-swap { position: relative; }
+#s-alignment .al-intro, #s-alignment .al-final { position: absolute; left: 0; top: 0; }
+#s-alignment .al-h { margin-top: 32px; font-size: 72px; max-width: 1180px; }
+#s-alignment .al-intro { width: 1280px; }
+#s-alignment .al-final { width: 1632px; }
+#s-alignment .al-st { margin-top: 32px; font-size: 62px; line-height: 1.06; max-width: 1600px; }
+#s-alignment .al-sub { margin: 24px 0 0; font: 400 32px/1.35 var(--font); color: var(--ink-2); }
+
+/* the three pillars */
+#s-alignment .al-pillars { position: absolute; left: 144px; top: 482px; width: 1632px; display: grid; grid-template-columns: 480px 560px 480px; column-gap: 56px; align-items: start; }
+#s-alignment .al-p-head { display: flex; align-items: center; gap: 20px; height: 56px; }
+#s-alignment .al-n { font: 300 64px/1 var(--font); color: var(--teal); letter-spacing: -.02em; }
+#s-alignment .al-p-rule { flex: 1; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .7), rgba(255, 255, 255, .06)); }
+#s-alignment .al-p-t { margin: 20px 0 0; font: 700 38px/1.12 var(--font); letter-spacing: -.015em; color: var(--white); }
+#s-alignment .al-p-s { margin: 12px 0 0; font: 400 29px/1.36 var(--font); color: var(--ink-2); text-wrap: pretty; }
+
+/* the six values: one in the light at a time */
+#s-alignment .al-chips { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; margin-top: 24px; }
+#s-alignment .al-chip { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; height: 46px; border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .2); background: rgba(255, 255, 255, .035);
+  font: 700 20px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3);
+  transition: color .8s var(--ease-soft), border-color .8s var(--ease-soft); }
+#s-alignment .al-chip.on { color: var(--white); border-color: transparent; transition-delay: .35s; }
+#s-alignment .al-hi { position: absolute; left: 0; top: 0; z-index: 0; border-radius: 999px; background: rgba(37, 199, 188, .24); border: 2px solid var(--teal);
+  box-shadow: 0 0 26px rgba(37, 199, 188, .45), inset 0 0 14px rgba(3, 255, 203, .15);
+  transition: transform 1s var(--ease-io), width 1s var(--ease-io), height 1s var(--ease-io); }
+
+/* stop 2: the pillars recede behind the statement; the values keep turning, half-lit,
+   under "the values Tahakom already has" */
+#s-alignment .al-p > * { transition: opacity .8s var(--ease-soft), filter .8s var(--ease-soft); }
+#s-alignment.st-2 .al-p > * { opacity: .22; filter: saturate(.4); }
+#s-alignment.st-2 .al-p > .al-chips { opacity: .55; filter: none; }
