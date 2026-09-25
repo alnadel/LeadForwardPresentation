@@ -80,7 +80,8 @@
   border: 3px solid rgba(37, 199, 188, .75); box-shadow: 0 0 34px rgba(37, 199, 188, .42), inset 0 0 44px rgba(37, 199, 188, .3);
   background: radial-gradient(closest-side, transparent 50%, rgba(37, 199, 188, .1) 100%);
   animation: lkRip 4.4s cubic-bezier(.3, .5, .5, 1) infinite; }
-#s-link .lk-rips b + b { animation-delay: -2.2s; }
+/* two ripples on different periods, so the pattern never repeats */
+#s-link .lk-rips b + b { animation-duration: 6.3s; animation-delay: -2.9s; }
 @keyframes lkRip { 0% { transform: scale(.1); opacity: 0; } 12% { opacity: .95; } 60% { opacity: .5; } 100% { transform: scale(1); opacity: 0; } }
 #s-link.st-2 .lk-rips { opacity: 0; }
 

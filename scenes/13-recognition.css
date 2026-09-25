@@ -67,12 +67,13 @@
 /* one soft outward pulse about every 6 s; the light's glow swells with it, then settles */
 #s-recognition .rc-pulse { position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 28%; pointer-events: none;
   border: 2px solid rgba(3, 255, 203, .75); background: radial-gradient(closest-side, rgba(3, 255, 203, 0) 60%, rgba(3, 255, 203, .16));
-  opacity: 0; animation: rcPulse 6s cubic-bezier(.3, .45, .5, 1) infinite; }
+  opacity: 0; animation: rcPulse 6s linear infinite; }
 @keyframes rcPulse {
   0%        { width: 22px; height: 22px; margin: -11px 0 0 -11px; opacity: 0; }
   3%        { opacity: .85; }
-  80%, 100% { width: 320px; height: 320px; margin: -160px 0 0 -160px; opacity: 0; }
+  55%       { opacity: .42; }
+  90%, 100% { width: 340px; height: 340px; margin: -170px 0 0 -170px; opacity: 0; }
 }
 #s-recognition .rc-halo { position: absolute; left: 50%; top: 50%; width: 380px; height: 380px; margin: -190px 0 0 -190px; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .42), rgba(37, 199, 188, .12) 55%, rgba(37, 199, 188, 0)); animation: rcHalo 6s infinite; }
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .5), rgba(37, 199, 188, .14) 55%, rgba(37, 199, 188, 0)); animation: rcHalo 6s infinite; }
 @keyframes rcHalo { 0%, 94%, 100% { opacity: .3; transform: scale(.82); } 12% { opacity: 1; transform: scale(1); animation-timing-function: linear; } 50% { opacity: .86; transform: scale(.97); animation-timing-function: ease-in-out; } }

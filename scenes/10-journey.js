@@ -132,7 +132,7 @@
           <span class="jn-pk"><b>Behind a Better Life · Story 07</b><span>Traffic Operations Centre</span></span>
         </div>
         <h3 class="jn-pt">She rebuilt the night handover in one afternoon.</h3>
-        <p class="jn-pl">Nouf Al-Harbi turned a messy night handover into one clear page — and showed the day shift how to use it.</p>
+        <p class="jn-pl">Nouf Al-Harbi turned the night handover into one clear page — and showed the day shift how to use it.</p>
         <div class="jn-pimg"><div class="photo amb-ken-2" style="background-image:url('assets/photos/nouf.jpg')"></div><span class="jn-pval">Excellence</span></div>
         <div class="jn-react">
           <span>${Deck.icon('handshake')}Thank you</span>
