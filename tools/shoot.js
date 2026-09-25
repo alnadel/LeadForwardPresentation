@@ -4,7 +4,7 @@
    node tools/shoot.js [--scenes open,survey] [--out shots] [--wait 2600]
                        [--motion] [--file index.html] [--w 1920 --h 1080]
 
-   --motion  also saves a second shot 1.2 s later on every stop into _motion/;
+   --motion  also saves three quick samples after every parked shot into _motion/;
              python3 tools/motion.py shots reports how much of each parked
              frame is still moving (ambient motion must keep running). */
 const path = require('path');
@@ -53,8 +53,13 @@ fs.mkdirSync(out, { recursive: true });
       let moved = null;
       if (opt('motion', false)) {
         await page.waitForTimeout(1200);
+        // three quick JPEG samples ~0.6 s apart: a loop that happens to be in
+        // phase with one gap still shows up in another
         fs.mkdirSync(path.join(out, '_motion'), { recursive: true });
-        await page.screenshot({ path: path.join(out, '_motion', name) });
+        for (let k = 1; k <= 3; k++) {
+          await page.waitForTimeout(600);
+          await page.screenshot({ path: path.join(out, '_motion', name.replace('.png', '') + '~' + k + '.jpg'), type: 'jpeg', quality: 85 });
+        }
         moved = true;
       }
       const state = await page.evaluate(() => Deck.state());
