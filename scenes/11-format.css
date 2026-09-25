@@ -35,7 +35,7 @@
 #s-format .fm-slot { position: absolute; left: 0; right: 0; height: 90px; }
 #s-format .fm-slot + .fm-slot::before, #s-format .fm-sig::before { content: ''; position: absolute; left: 36px; right: 36px; top: -16px; height: 1px; background: rgba(255, 255, 255, .08); }
 #s-format .fm-chip { position: absolute; left: 36px; top: 0; width: 40px; height: 40px; border-radius: 28%; display: grid; place-items: center; font: 700 22px/1 var(--font); color: var(--teal); border: 1.5px solid rgba(37, 199, 188, .55); background: rgba(37, 199, 188, .06);
-  animation: fmChip 14s ease-in-out infinite; animation-delay: calc(var(--k) * 4s); }
+  animation: fmChip 14s ease-in-out infinite; animation-delay: calc(var(--k) * 4s - .6s); }
 #s-format .fm-blank { position: absolute; left: 100px; top: 12px; width: 420px; }
 #s-format .fm-blank i { display: block; height: 12px; border-radius: 6px; background: rgba(255, 255, 255, .08); }
 #s-format .fm-blank i + i { width: 62%; margin-top: 22px; }
@@ -88,7 +88,7 @@
 #s-format .fm-q { flex: none; margin: 0; font: 400 30px/1.3 var(--font); color: var(--ink-1); white-space: nowrap; }
 #s-format .fm-lead { flex: 1; min-width: 40px; margin-left: 28px; height: 14px; position: relative; }
 #s-format .fm-lead::before { content: ''; position: absolute; left: 0; right: 7px; top: 6px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .15), rgba(37, 199, 188, .6)); }
-#s-format .fm-lead i { position: absolute; right: 0; top: 0; width: 14px; height: 14px; border-radius: 28%; background: rgba(37, 199, 188, .35); animation: fmPing 14s ease-in-out infinite; animation-delay: calc(var(--k) * 4s); }
+#s-format .fm-lead i { position: absolute; right: 0; top: 0; width: 14px; height: 14px; border-radius: 28%; background: rgba(37, 199, 188, .35); animation: fmPing 14s ease-in-out infinite; animation-delay: calc(var(--k) * 4s - .6s); }
 /* the design decision behind each field (stop 2): a full sentence under its question */
 #s-format .fm-cap { position: relative; margin: 6px 0 0 232px; font: 400 28px/1.3 var(--font); color: var(--ink-1); white-space: nowrap; }
 /* a teal arrow hangs in the gutter, so the decision lines up with its question */

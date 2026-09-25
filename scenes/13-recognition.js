@@ -41,7 +41,7 @@
       'Recognition should make the employee feel seen. The story and its impact come first. The reward supports the moment; it is not the point.',
       'Recognition works at three scales. The first is immediate: the leader acknowledges the contribution, and the colleague receives a personal certificate.',
       'Each quarter, featured stories reach the whole organisation, through a newsletter or an internal-channel spotlight across Tahakom. The same story, now seen far beyond the desk.',
-      'Once a year, selected stories are featured at a company event or gathered in an annual collection. It is still the same story, now seen by the whole company.',
+      'Once a year, selected stories are featured at a company event or gathered in an annual collection. Each tier is the same story, reaching further.',
       'One principle protects all of this. We use Featured Story, not Best Story. Selection follows clear criteria, and popularity does not decide the outcome. There are no rankings and no podium.',
     ],
     field: [
