@@ -58,14 +58,14 @@ Nothing lights more than about 10% of the field before scene 17.
 - **1** Rule · *Real stories. Visible values. Repeatable impact.* → a light ignites beside *One person's story can light the way for others.* and a ripple of light crosses the field.
 Ambient: photo push-in; video-wall glow breathes; the light breathes.
 
-### 02 · The question — centred question, then a stack of verbs — 4 stops
+### 02 · The question — centred question, then a stack of verbs — 4 stops · ILLUSTRATIVE STORY tag from stop 1 (Nouf's photo)
 - **0** Centred, display-scale: **When was the last time a colleague inspired you?** Nothing else. (Breathing frame.)
 - **1** The question glides to the top left and shrinks. `nouf-question.jpg` fills a full-height right panel (about 45% of the width, veiled on its inner edge). *Think of one moment that made work better — and ask who else ever heard about it.*
 - **2** A stack of large verbs, each with a small light to its left and its sentence beneath: **HELPED** *A colleague stepped in when support was needed.* · **SUPPORTED** *Someone went the extra mile for another person or team.* · **IMPROVED** *A small action solved a problem or made work easier.* · **INSPIRED** *The behaviour could help others — if they could see it.* (skippable)
 - **3** Three of the four lights sink and dim; the verbs recede. *Every day, these moments happen. Most stay visible only to the people who were there.* → **What if one story could travel further?** (teal, the only bright element).
 Ambient: the lights breathe out of phase; the photo drifts.
 
-### 03 · One night — film frame, then a pull-back — 4 stops · ILLUSTRATIVE STORY (presenter says so aloud)
+### 03 · One night — film frame, then a pull-back — 4 stops · ILLUSTRATIVE STORY
 - **0** A huge light-weight clock **03:12** with a blinking colon (top left). `TRAFFIC OPERATIONS CENTRE · NIGHT SHIFT`. `nouf.jpg` as a wide band under a navy veil. *Every morning, the day shift spent its first hour rebuilding what happened overnight.*
 - **1** **Nouf rebuilt the night handover — unasked, in one afternoon.** Scattered note fragments fly together into a clean card, `NIGHT HANDOVER · v2`, with six ticked rows: *Overnight incidents · timestamped · Signal faults still open · Diversions in force at handover · Camera outages · zone + ticket · Anything the day shift must call · Signed off by night supervisor*.
 - **2** Before → after, with **no numbers**: `MORNING SHIFT · FIRST HOUR` *Rebuilding the night* → *On live incidents from minute one*.
@@ -223,7 +223,7 @@ Ambient: lights keep passing between colleagues; the photo's light trails drift.
 ---
 
 ## Honesty rules
-- Nouf and Faisal are **illustrative**. Their scenes carry the `ILLUSTRATIVE STORY` tag, and the presenter says so at 03.
+- Nouf and Faisal are **illustrative**. Every frame that shows them carries the `ILLUSTRATIVE STORY` tag, from 02.1 on, where the presenter first says so.
 - The illustrative story uses no invented numbers (no minutes saved, no reach counts), and there are no headcounts anywhere.
 - Survey and benchmark figures appear exactly as in the final deck, with the directional caveat legible on screen.
 - Retention is framed as a possible long-term effect, never as a pilot outcome.

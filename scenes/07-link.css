@@ -18,8 +18,8 @@
 
 /* the faint skeleton (stops 0–1) */
 #s-link .lk-ghost { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
-#s-link .lk-ghost path { fill: none; stroke: rgba(255, 255, 255, .26); stroke-width: 2; stroke-dasharray: 5 11; animation: lkDash 4s linear infinite; }
-#s-link .lk-ghost path.c { stroke: rgba(37, 199, 188, .46); }
+#s-link .lk-ghost path { fill: none; stroke: rgba(255, 255, 255, .22); stroke-width: 1.6; stroke-dasharray: 5 11; animation: lkDash 4s linear infinite; }
+#s-link .lk-ghost path.c { stroke: rgba(37, 199, 188, .38); }
 @keyframes lkDash { to { stroke-dashoffset: -32; } }
 
 /* node → prism connector, lit at stop 2 */
