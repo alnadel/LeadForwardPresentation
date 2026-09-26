@@ -8,7 +8,8 @@ for f in sorted(glob.glob(os.path.join(d, '*-fwd.png'))):
     if not os.path.exists(b):
         continue
     A = Image.open(f).convert('L').resize((480, 270)); B = Image.open(b).convert('L').resize((480, 270))
-    px = list(ImageChops.difference(A, B).getdata())
+    D = ImageChops.difference(A, B)
+    px = list(D.get_flattened_data() if hasattr(D, 'get_flattened_data') else D.getdata())
     pct = sum(1 for v in px if v > 24) / len(px) * 100
     flag = '  <-- MISMATCH' if pct > 1.5 else ''
     bad += bool(flag)

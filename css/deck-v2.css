@@ -418,8 +418,8 @@ em.hl { font-style: normal; color: var(--teal); }
 /* Lite mode for weak laptops (press L): no large blurs or blends. */
 #stage.lite #glow { display: none; }
 #stage.lite .scene.leaving { filter: none; }
-#stage.lite .amb-ken, #stage.lite .amb-ken-2 { animation: none; }
+#stage.lite .amb-ken, #stage.lite .amb-ken-2, #stage.lite .amb-ken-strong, #stage.lite .amb-float3d, #stage.lite .amb-float3d-2 { animation: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .amb-breathe, .amb-float, .amb-float-2, .amb-spin, .amb-spin-rev, .amb-ken, .amb-ken-2, .amb-twinkle { animation-duration: 0s !important; }
+  .amb-breathe, .amb-float, .amb-float-2, .amb-spin, .amb-spin-rev, .amb-ken, .amb-ken-2, .amb-twinkle, .amb-ken-strong, .amb-float3d, .amb-float3d-2, .amb-bob, .amb-orbit, .amb-sway, .amb-rays, .amb-leak { animation-duration: 0s !important; }
 }
