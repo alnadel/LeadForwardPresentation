@@ -104,7 +104,7 @@
 
           <div class="nt-scraps">${SCRAPS.map(scrapHtml).join('')}</div>
 
-          <div class="nt-card-w" data-spark="0" data-spark-xy="${CARD.x + CARD.w - 49},${CARD.y + 43}" data-spark-delay=".6">
+          <div class="nt-card-w" data-spark="0" data-spark-xy="${CARD.x + CARD.w - 49},${CARD.y + 43}" data-spark-delay=".75">
             <i class="nt-card-pool"></i>
             <div class="glass live nt-card">
               <div class="nt-card-h">${Deck.icon('document-certified', 'nt-card-ic')}<span class="nt-card-t">NIGHT HANDOVER · v2</span><span class="nt-card-slot"></span></div>
@@ -112,7 +112,7 @@
             </div>
           </div>
 
-          <p class="nt-ba" data-in="0" style="--d:1.3s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
+          <p class="nt-ba" data-in="0" style="--d:1.45s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
         </div>
       </div>
 

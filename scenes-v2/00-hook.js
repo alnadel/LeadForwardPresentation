@@ -11,8 +11,8 @@
    field wave plays only on a live build. */
 (function () {
   const LIGHT = [960, 716];   // where the story light rests (the horizon's centre)
-  const LAND = 2;             // s after --enter: the light lands (the spark's data-spark-delay)
-  const MEET = .68;           // s the arrival glints take to run in (keep in step with .hk-glints in 00-hook.css)
+  const LAND = 1.7;           // s after --enter: the light lands (the spark's data-spark-delay)
+  const MEET = .62;           // s the arrival glints take to run in (keep in step with .hk-glints in 00-hook.css)
   // near-camera bokeh: large soft squares drifting slowly at the edges of the frame
   const BOKEH = [[120, 170, 96, 18, -4], [1690, 130, 130, 22, -9], [300, 820, 150, 24, -13], [1540, 790, 110, 20, -2], [40, 520, 70, 16, -7], [1820, 470, 84, 19, -11], [880, 70, 60, 17, -5]];
   const bokeh = BOKEH.map(([x, y, sz, t, dl], i) => `<i style="left:${x}px;top:${y}px;--sz:${sz}px;--t:${t}s;--dl:${dl}s;--bx:${(i % 2 ? -1 : 1) * (40 + i * 9)}px;--by:${(i % 3 - 1) * 36}px"></i>`).join('');

@@ -3,20 +3,20 @@
    open adds .hk-wake, which holds the room dark; 00-hook.js then adds .hk-meeting and
    .hk-landed on the spark's clock. In s after --enter: the warm light blooms (0.05) →
    the question rises, heavy and slow (0.3–2.4) → two glints run in along the horizon
-   (1.07–1.75, .hk-meeting) → the light lands (1.75, .hk-landed): the horizon draws out of
+   (1.08–1.7, .hk-meeting) → the light lands (1.7, .hk-landed): the horizon draws out of
    it, the first ripple spreads, a wave wakes the field → the curtain lifts, and the rays,
-   bokeh and dust fade up around the question (to ~4.5). */
+   bokeh and dust fade up around the question. Everything has settled ~2.6 s after --enter. */
 
 /* the house lights: near-black over the field. It is the scene's first layer, so the warm
    light, the question and the horizon build on black and the room fades up around them */
 #s-hook .hk-curtain { position: absolute; inset: 0; background: #02060C; pointer-events: none; opacity: 0; }
 #s-hook.hk-wake:not(.hk-meeting) .hk-curtain { opacity: 1; }
-#s-hook.hk-wake.hk-meeting .hk-curtain { transition: opacity 2.5s cubic-bezier(.55, 0, .3, 1); }
+#s-hook.hk-wake.hk-meeting .hk-curtain { transition: opacity 1.45s cubic-bezier(.55, 0, .3, 1); }
 
 /* the question alone; a warm light turns and breathes behind it (it blooms first, on black) */
 #s-hook .nt-warm { position: absolute; left: 330px; top: 150px; width: 1260px; height: 760px; pointer-events: none; opacity: 0;
   animation: ntWarmOrbit 20s linear infinite; }
-#s-hook.st-0 .nt-warm { opacity: 1; transition: opacity 2.8s var(--ease-soft) calc(var(--enter, 0s) + .05s); }
+#s-hook.st-0 .nt-warm { opacity: 1; transition: opacity 2.3s var(--ease-soft) calc(var(--enter, 0s) + .05s); }
 #s-hook .nt-warm::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(124, 60, 107, .66), rgba(96, 38, 80, .24) 55%, transparent);
   animation: ntWarmPulse 6.4s ease-in-out infinite; }
 #s-hook .nt-warm i { position: absolute; left: 380px; top: 400px; width: 500px; height: 340px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .26), rgba(37, 199, 188, .06) 60%, transparent);
@@ -75,18 +75,18 @@
 #s-hook.hk-wake:not(.hk-landed) .nt-horizon { opacity: 0; transform: scaleX(0); }
 #s-hook.hk-wake:not(.hk-landed) .nt-rays, #s-hook.hk-wake:not(.hk-landed) .nt-dust, #s-hook.hk-wake:not(.hk-landed) .nt-bokeh i { opacity: 0; }
 #s-hook.hk-wake:not(.hk-landed) .nt-rings i, #s-hook.hk-wake:not(.hk-landed) .nt-horizon i, #s-hook.hk-wake:not(.hk-landed) .nt-horizon i::after { animation: none; }
-#s-hook.hk-landed .nt-horizon { transition: transform 1.6s cubic-bezier(.16, .8, .3, 1), opacity .35s var(--ease-soft); }
-#s-hook.hk-landed .nt-rays { transition: opacity 2.6s var(--ease-soft) .2s; }
-#s-hook.hk-landed .nt-bokeh i { transition: opacity 2.4s var(--ease-soft) .45s; }
-#s-hook.hk-landed .nt-dust { transition: opacity 2s var(--ease-soft) .7s; }
+#s-hook.hk-landed .nt-horizon { transition: transform 1.1s cubic-bezier(.16, .8, .3, 1), opacity .3s var(--ease-soft); }
+#s-hook.hk-landed .nt-rays { transition: opacity .85s var(--ease-soft); }
+#s-hook.hk-landed .nt-bokeh i { transition: opacity .8s var(--ease-soft) .1s; }
+#s-hook.hk-landed .nt-dust { transition: opacity .7s var(--ease-soft) .15s; }
 /* the arrival: two glints run in along the unlit horizon and meet where the light lands */
 #s-hook .hk-glints { position: absolute; width: 0; height: 0; pointer-events: none; }
 #s-hook .hk-glints b { position: absolute; top: -2px; width: 170px; height: 4px; border-radius: 2px; opacity: 0;
   background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .6) 40%, #fff); box-shadow: 0 0 14px rgba(3, 255, 203, .9); }
 #s-hook .hk-glints b.l { right: 0; }
 #s-hook .hk-glints b.r { left: 0; transform: scaleX(-1); }
-#s-hook.hk-meeting .hk-glints b.l { animation: hkMeetL .68s cubic-bezier(.5, 0, .85, .45) both; }
-#s-hook.hk-meeting .hk-glints b.r { animation: hkMeetR .68s cubic-bezier(.5, 0, .85, .45) both; }
+#s-hook.hk-meeting .hk-glints b.l { animation: hkMeetL .62s cubic-bezier(.5, 0, .85, .45) both; }
+#s-hook.hk-meeting .hk-glints b.r { animation: hkMeetR .62s cubic-bezier(.5, 0, .85, .45) both; }
 @keyframes hkMeetL { 0% { transform: translateX(-560px) scaleX(.3); opacity: 0; } 25% { opacity: 1; } 92% { opacity: 1; } 100% { transform: translateX(0) scaleX(1); opacity: 0; } }
 @keyframes hkMeetR { 0% { transform: translateX(560px) scaleX(-.3); opacity: 0; } 25% { opacity: 1; } 92% { opacity: 1; } 100% { transform: translateX(0) scaleX(-1); opacity: 0; } }
 
@@ -94,7 +94,7 @@
    down onto the horizon as it lands */
 #s-hook .nt-q { position: absolute; left: 0; right: 0; top: 356px; text-align: center; transform-origin: 50% 100%;
   filter: drop-shadow(0 12px 38px rgba(2, 6, 14, .7)) blur(0); transform: translateY(18px) scale(1.035); }
-#s-hook.st-0 .nt-q { transform: none; transition: transform 3.4s cubic-bezier(.16, .8, .24, 1) calc(var(--enter, 0s) + .2s); }
+#s-hook.st-0 .nt-q { transform: none; transition: transform 2.6s cubic-bezier(.16, .8, .24, 1) calc(var(--enter, 0s) + .15s); }
 #s-hook .nt-q .display { white-space: nowrap; }
 #s-hook .nt-q [data-split].is-in .w > span { transition-duration: 1.45s, 1s, 1.1s; }
 

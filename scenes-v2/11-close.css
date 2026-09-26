@@ -46,18 +46,19 @@
 #s-close.st-1 .cl-story { animation: clStory var(--t) linear var(--dl) infinite; }
 @keyframes clStory { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 94% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 
-/* the brand frame */
+/* the brand frame. Key: the title (and, in the card below, the ask). The Arabic line, the
+   two closing lines and the thank-you support it: smaller and quieter */
 #s-close .cl-logo { position: absolute; left: 50%; top: 44px; width: 116px; margin-left: -58px; color: #fff; }
 #s-close .cl-logo svg { width: 100%; display: block; }
-#s-close .cl-main { position: absolute; left: 0; right: 0; top: 186px; text-align: center; }
-#s-close .cl-title { font-size: 136px; }
-#s-close .cl-ar { margin-top: 22px; font: 700 64px/1.2 var(--font); color: var(--teal); letter-spacing: 0; }
-#s-close .cl-make { margin: 34px auto 0; font: 700 46px/1.2 var(--font); letter-spacing: -.015em; color: var(--white); }
-#s-close .cl-way { margin: 22px 0 0; display: inline-flex; align-items: center; gap: 18px; font: 400 36px/1.1 var(--font); color: var(--sea); }
+#s-close .cl-main { position: absolute; left: 0; right: 0; top: 196px; text-align: center; }
+#s-close .cl-title { font-size: 140px; }
+#s-close .cl-ar { margin-top: 20px; font: 700 52px/1.2 var(--font); color: var(--teal); letter-spacing: 0; }
+#s-close .cl-make { margin: 28px auto 0; font: 400 28px/1.3 var(--font); letter-spacing: 0; color: rgba(255, 255, 255, .72); }
+#s-close .cl-way { margin: 16px 0 0; display: inline-flex; align-items: center; gap: 14px; font: 400 28px/1.1 var(--font); color: var(--sea); }
 #s-close .cl-way .light { animation: ambBreathe 3s ease-in-out infinite; }
 /* a gentle light passes through "Light the way." now and then */
 #s-close .cl-way .amb-shimmer { animation-duration: 7s; padding: 0 .08em; }
-#s-close .cl-thanks { margin-top: 36px; font: 700 26px/1 var(--font); letter-spacing: .42em; text-transform: uppercase; color: var(--ink-1); padding-left: .42em; }
+#s-close .cl-thanks { margin-top: 30px; font: 700 22px/1 var(--font); letter-spacing: .42em; text-transform: uppercase; color: rgba(255, 255, 255, .8); padding-left: .42em; }
 
 /* a soft dark pool behind the brand block: the lit field and the city lights stay at the edges */
 #s-close .cl-hush { position: absolute; left: 60px; top: 30px; width: 1800px; height: 720px; border-radius: 50%; pointer-events: none;
@@ -71,17 +72,19 @@
   background: radial-gradient(60% 120% at 22% 0%, rgba(37, 199, 188, .12), transparent 70%); }
 #s-close .cl-ask-l { flex: none; }
 #s-close .cl-ask .kicker { font-size: 22px; }
-#s-close .cl-ask-h { margin-top: 18px; font: 700 72px/1.02 var(--font); letter-spacing: -.024em; color: var(--white); white-space: nowrap; text-shadow: 0 0 40px rgba(37, 199, 188, .18); }
-#s-close .cl-ask-div { flex: none; width: 2px; height: 150px; margin: 0 64px 0 auto; border-radius: 1px;
+/* the ask is the hero of the card: large and bright */
+#s-close .cl-ask-h { margin-top: 16px; font: 700 84px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); white-space: nowrap; text-shadow: 0 0 44px rgba(37, 199, 188, .24); }
+#s-close .cl-ask-div { flex: none; width: 2px; height: 150px; margin: 0 52px 0 auto; border-radius: 1px;
   background: linear-gradient(180deg, transparent, rgba(37, 199, 188, .6), transparent); }
 #s-close .cl-ask-r { position: relative; flex: none; display: flex; flex-direction: column; gap: 8px; padding-right: 8px; }
 /* the three commitments on a rail; a light runs down it now and then */
-#s-close .cl-rail { position: absolute; left: 24px; top: 26px; bottom: 26px; width: 2px; background: rgba(37, 199, 188, .35); overflow: hidden; }
+#s-close .cl-rail { position: absolute; left: 19px; top: 22px; bottom: 22px; width: 2px; background: rgba(37, 199, 188, .35); overflow: hidden; }
 #s-close .cl-rail b { position: absolute; left: -1px; top: 0; width: 4px; height: 46px; border-radius: 2px; background: linear-gradient(180deg, transparent, var(--sea)); box-shadow: 0 0 10px var(--sea); opacity: 0; }
 #s-close.st-1 .cl-rail b { animation: clRail 6s cubic-bezier(.45, 0, .55, 1) 2.4s infinite; }
-@keyframes clRail { 0% { transform: translateY(-46px); opacity: 0; } 10% { opacity: 1; } 45% { transform: translateY(110px); opacity: 1; } 55%, 100% { transform: translateY(110px); opacity: 0; } }
-#s-close .cl-step { position: relative; display: flex; align-items: center; gap: 22px; height: 50px; font: 700 32px/1 var(--font); letter-spacing: -.008em; color: var(--ink-1); white-space: nowrap; }
-#s-close .cl-step b { flex: none; width: 50px; height: 50px; border-radius: 28%; display: grid; place-items: center; font: 700 21px/1 var(--font); letter-spacing: .06em; color: var(--sea);
+@keyframes clRail { 0% { transform: translateY(-46px); opacity: 0; } 10% { opacity: 1; } 45% { transform: translateY(96px); opacity: 1; } 55%, 100% { transform: translateY(96px); opacity: 0; } }
+/* the three commitments are a reminder for Q&A: support */
+#s-close .cl-step { position: relative; display: flex; align-items: center; gap: 18px; height: 44px; font: 500 24px/1 var(--font); letter-spacing: 0; color: rgba(255, 255, 255, .74); white-space: nowrap; }
+#s-close .cl-step b { flex: none; width: 40px; height: 40px; border-radius: 28%; display: grid; place-items: center; font: 700 18px/1 var(--font); letter-spacing: .06em; color: var(--sea);
   border: 1.5px solid rgba(37, 199, 188, .7); background: #071A2C; box-shadow: 0 0 18px rgba(37, 199, 188, .25); }
 /* settled: keep the deep shadow unclipped; while hidden, clip nothing above the card (the shared
    a-unfold hidden clip reaches 80px up and would show the card's glow as a faint line during stop 0) */

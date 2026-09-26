@@ -8,7 +8,11 @@
    up to their exact values) and what we need, and the decision as the hero while
    everything before it recedes.
    Merges v1 16 (ask) and 14 (measure); v1 15 (risks) lives in the notes. All
-   state is keyed off .st-n, so back navigation lands on the same frame. */
+   state is keyed off .st-n, so back navigation lands on the same frame.
+   Audience first — stop 0: the ask. Stop 1: "one quarterly cycle" (lit in the line
+   and in the ring's core) and the three commitment titles; their descriptions are
+   fine print. Stop 2: the decision, "scale, adjust or stop." (largest, brightest,
+   the spark); the lane labels and the two cards are readable support. */
 (function () {
   /* ── the quarter ring (stage px) ── */
   const CX = 952, CY = 650, R = 170, V = 200;   // V: half-size of the ring's SVG box
@@ -68,13 +72,15 @@
   const blips = Array.from({ length: 24 }, (_, i) => `<b style="--x:${(i * 41) % 97}%;--y:${4 + (i * 59) % 32}%;--w:${16 + (i * 7) % 30}px;--t:${2.2 + (i % 5) * .8}s;--dl:${-i * .37}s"></b>`).join('');
   const dust = Array.from({ length: 18 }, (_, i) => `<i style="left:${4 + (i * 137) % 92}%;top:${58 + (i * 71) % 40}%;--t:${11 + (i % 6) * 2.2}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 13) % 50)}px;--dy:${-150 - (i * 29) % 180}px"></i>`).join('');
 
-  const HERO_Y = 848;   // top of the decision's hero line
+  const HERO_Y = 786;   // top of the decision's hero line (keep in step with .pl-hero in 10-pilot.css)
   // after "stop." the pilot's path forks three ways: one recommendation, three possible outcomes
-  // (box: stage 960,830 · 820×140; every branch is drawn equal, so none is favoured)
-  const FORK = ['M30 76 H300 C 430 76, 520 32, 760 32', 'M30 76 H760', 'M30 76 H300 C 430 76, 520 120, 760 120'];
+  // (box: stage FX,FY · FW×140; the stem starts just after the spark; every branch is drawn
+  // equal, so none is favoured)
+  const FX = 1116, FY = 780, FW = 650, FN = FW - 30, FB = 210;
+  const FORK = [`M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 32, ${FN} 32`, `M30 76 H${FN}`, `M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 120, ${FN} 120`];
   const fork = FORK.map((d, i) => `<path class="pl-fb" d="${d}" pathLength="100" style="--i:${i}"/>`).join('');
   const forkLights = FORK.map((d, i) => `<i class="pl-fl" style="offset-path:path('${d}');--i:${i}"><b class="light sm"></b></i>`).join('');
-  const forkNodes = [32, 76, 120].map((y, i) => `<i class="pl-fn" style="left:760px;top:${y}px;--i:${i}"></i>`).join('');
+  const forkNodes = [32, 76, 120].map((y, i) => `<i class="pl-fn" style="left:${FN}px;top:${y}px;--i:${i}"></i>`).join('');
 
   Deck.scene({
     id: 'pilot',
@@ -86,7 +92,7 @@
     holds: [6, 12, 12],
     notes: [
       'So here is the ask, in three words: approve the pilot. Pause, and let it sit. Everything that follows is what that approval buys, and how we will know whether it worked.',
-      'We start with one quarterly cycle and measure what changes. One lap of this ring is one quarter: open nominations to peers and leaders, run one full cycle — capture, curate, feature, reinforce — and report what changed.',
+      'We start with one quarterly cycle and measure what changes. One lap of this ring is one quarter: open nominations to peers and leaders, run one full cycle — capture, curate, feature, reinforce — and report what changed: participation, reach, recognition and repeatable behaviour, on a quarterly dashboard.',
       'Four gantries judge it: participation, reach, recognition, repeatable behaviour. Baseline: 8% reach, a 56% gap; the same eight questions at quarter end. We need a sponsor, curation time, our existing channels — no new platform. Then one recommendation: scale, adjust or stop. Risks if asked (v1 scene 15): a popularity contest — peers nominate, criteria published (curation panel); nominations dry up — always open, each featured colleague nominates the next (Internal Communications); a sensitive story — facts and consent checked first (HR, Legal on request); clustering — representation tracked from month one (HR / People Analytics); owners and the needs list are our proposal, team to confirm before presenting.',
     ],
     field: [
@@ -113,7 +119,7 @@
       <h1 class="display pl-title" data-in="0" data-split data-spark="0" data-spark-delay="1.05" style="--d:.35s;--wstep:.09s">Approve the pilot.</h1>
 
       <!-- stop 1 · one quarter, three commitments -->
-      <p class="lead pl-sub" data-in="1" data-out="2" style="--d:.15s">Start with one quarterly cycle and measure what changes.</p>
+      <p class="lead pl-sub" data-in="1" data-out="2" style="--d:.15s">Start with <b class="pl-key">one quarterly cycle</b> and measure what changes.</p>
       <div class="pl-plan" data-out="2">
         <i class="pl-rglow" style="left:${CX}px;top:${CY}px"></i>
         <i class="pl-conn a-wipe" data-in="1" style="top:${CY - 1}px;width:${CX - R - 144}px;--d:.2s;--dur:.7s"><b></b></i>
@@ -138,13 +144,13 @@
           <h3 class="pl-ct"><b class="pl-n">01</b>Open nominations</h3>
           <p class="pl-cx">Accept peer and leader nominations through a simple form.</p>
         </div>
-        <div class="pl-c pl-c2 glass a-right" data-in="1" style="left:${C2X}px;top:${CY - 96}px;--d:.72s">
+        <div class="pl-c pl-c2 glass a-right" data-in="1" style="left:${C2X}px;top:${CY - 85}px;--d:.72s">
           <h3 class="pl-ct"><b class="pl-n">02</b>Run one full cycle</h3>
           <p class="pl-cx"><span class="pl-chain">Capture → Curate → Feature → Reinforce</span> <span class="pl-nb">within the quarter.</span></p>
         </div>
         <div class="pl-c pl-c3 glass a-left" data-in="1" style="--d:1.08s">
           <h3 class="pl-ct"><b class="pl-n">03</b>Report what changed</h3>
-          <p class="pl-cx">Participation, reach, recognition and repeatable behaviour on a quarterly dashboard.</p>
+          <p class="pl-cx">On a quarterly dashboard.</p>
         </div>
       </div>
 
@@ -174,8 +180,8 @@
       <div class="pl-herow" data-spark="2" data-spark-delay=".8" style="top:${HERO_Y}px">
         <p class="pl-hero" data-in="2" data-split style="--d:.86s;--wstep:.07s">scale, adjust or stop.</p>
       </div>
-      <div class="pl-fork" aria-hidden="true">
-        <svg viewBox="0 0 820 140">${fork}</svg>
+      <div class="pl-fork" aria-hidden="true" style="left:${FX}px;top:${FY}px;width:${FW}px">
+        <svg viewBox="0 0 ${FW} 140" style="width:${FW}px">${fork}</svg>
         ${forkLights}${forkNodes}
       </div>
     `,

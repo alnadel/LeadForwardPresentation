@@ -823,10 +823,14 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     requestAnimationFrame(loopFrame);
     const h = readHash();
     const begin = () => {
-      if (h) go(h.i, h.st, { instant: true });
-      else go(0, 0, {});
-      document.body.classList.add('ready');
-      setTimeout(() => chrome.classList.remove('booting'), 700);
+      const start = () => {
+        if (h) go(h.i, h.st, { instant: true });
+        else go(0, 0, {});
+        document.body.classList.add('ready');
+        setTimeout(() => chrome.classList.remove('booting'), 700);
+      };
+      // a live cold open waits two frames, so its timers and its first paint start together
+      if (h) start(); else requestAnimationFrame(() => requestAnimationFrame(start));
     };
     // wait for fonts and photographs so nothing pops in late
     const urls = new Set();

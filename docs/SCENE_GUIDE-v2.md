@@ -37,7 +37,7 @@ Everything in `docs/SCENE_GUIDE.md` still applies (stops, `data-in` / `data-out`
 - **Rich builds.** Each stop's build should feel choreographed: elements arrive in a clear order, the spark leads the eye, and connectors draw with a leading light.
   - All text still lands within about 1.2 s of the click.
   - Motion may continue after the text lands; the build should settle by about 2.5 s.
-- **Room legibility.** The v1 minimums still apply: sentences 28px or more, labels 20px or more, caveats 24px at 80% white.
+- **Audience-first hierarchy.** Per stop, the 1–2 things the audience must take away (the headline plus one hero element) are the largest and brightest, and the spark lands there. Everything else is visibly subordinate: supporting sentences about 20–24px at 55–70% white, captions, caveats and sources 16–18px. Key text stays big (headlines 64px+, key lines 32px+). Move pure duplication into the notes; never drop numbers, caveats or honesty tags.
 - **One scene, one idea per stop.** Condensed does not mean crowded. If a stop feels dense, cut words (move them into the notes) rather than shrinking the type.
 
 ## Verify (mandatory)

@@ -44,10 +44,12 @@
 #s-pilot .pl-title { position: absolute; left: 138px; top: 172px; font-size: 144px; white-space: nowrap; transform-origin: 6px 0;
   transition: transform 1s var(--ease-io), opacity .9s var(--ease-soft); }
 /* from stop 1: the ask steps back to a heading so the plan (then the decision) can lead */
-#s-pilot.st-1 .pl-title { transform: scale(.5); opacity: .72; }
+#s-pilot.st-1 .pl-title { transform: scale(.5); opacity: .62; }
 
 /* ── stop 1 · one quarter ── */
-#s-pilot .pl-sub { position: absolute; left: 144px; top: 262px; font-size: 40px; line-height: 1.25; color: var(--ink-1); white-space: nowrap; }
+/* the line is quiet; its key phrase is lit (the ring's core repeats it) */
+#s-pilot .pl-sub { position: absolute; left: 144px; top: 262px; font-size: 38px; line-height: 1.25; color: rgba(255, 255, 255, .7); white-space: nowrap; }
+#s-pilot .pl-key { font-weight: 700; color: var(--sea); letter-spacing: -.01em; text-shadow: 0 0 28px rgba(3, 255, 203, .35); }
 #s-pilot .pl-plan { position: absolute; inset: 0; transform-origin: 952px 650px; }
 #s-pilot .pl-plan.is-out { opacity: 0; transform: scale(.86); filter: blur(8px); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-io), filter .6s var(--ease-soft); }
 #s-pilot .pl-sub.is-out { filter: blur(6px); transition: opacity .5s var(--ease-soft), transform .6s var(--ease-soft), filter .5s var(--ease-soft); }
@@ -72,7 +74,7 @@
 #s-pilot.st-1 .pl-prog { stroke-dashoffset: 0; }
 #s-pilot .pl-ticks line { stroke: rgba(255, 255, 255, .7); stroke-width: 3; stroke-linecap: round; }
 #s-pilot .pl-months text { fill: var(--ink-2); font: 700 24px/1 var(--font); letter-spacing: .08em; text-anchor: middle; dominant-baseline: central; }
-#s-pilot .pl-core text { fill: var(--sea); font: 700 26px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; text-anchor: middle; }
+#s-pilot .pl-core text { fill: var(--sea); font: 700 30px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; text-anchor: middle; }
 #s-pilot .pl-ticks, #s-pilot .pl-months, #s-pilot .pl-core { opacity: 0; transition: opacity .6s var(--ease-soft); }
 #s-pilot.st-1 .pl-ticks { opacity: 1; transition-delay: .45s; }
 #s-pilot.st-1 .pl-months { opacity: 1; transition-delay: .7s; }
@@ -102,15 +104,16 @@
 #s-pilot .pl-mark { position: absolute; color: var(--ink-3); white-space: nowrap; }
 
 /* the three commitments, in glass: at the start, along the arc, where the loop closes */
-#s-pilot .pl-c { position: absolute; width: 600px; padding: 26px 30px 28px; border-radius: 22px; }
+/* the titles carry the stop; the descriptions are fine print */
+#s-pilot .pl-c { position: absolute; width: 600px; padding: 24px 30px 26px; border-radius: 22px; }
 #s-pilot .pl-c[data-in].is-in { transition-duration: 1s, 1.1s, .9s, 1.1s; }
-#s-pilot .pl-c1 { left: 144px; top: 386px; }
-#s-pilot .pl-c3 { left: 144px; top: 716px; }
+#s-pilot .pl-c1 { left: 144px; top: 420px; }
+#s-pilot .pl-c3 { left: 144px; top: 712px; }
 #s-pilot .pl-c2 { width: 606px; }
-#s-pilot .pl-ct { margin: 0; display: flex; align-items: baseline; gap: 16px; font: 700 40px/1.12 var(--font); letter-spacing: -.014em; color: var(--white); }
+#s-pilot .pl-ct { margin: 0; display: flex; align-items: baseline; gap: 16px; font: 700 42px/1.12 var(--font); letter-spacing: -.016em; color: var(--white); }
 #s-pilot .pl-n { font: 700 26px/1 var(--font); letter-spacing: .08em; color: var(--teal); }
-#s-pilot .pl-cx { margin: 12px 0 0; font: 400 30px/1.32 var(--font); color: var(--ink-2); text-wrap: pretty; }
-#s-pilot .pl-chain { white-space: nowrap; color: var(--ink-1); }
+#s-pilot .pl-cx { margin: 10px 0 0; font: 400 22px/1.4 var(--font); color: rgba(255, 255, 255, .62); text-wrap: balance; }
+#s-pilot .pl-chain { white-space: nowrap; color: rgba(255, 255, 255, .78); }
 #s-pilot .pl-chain .arr { color: var(--teal); }
 #s-pilot .pl-nb { white-space: nowrap; }
 
@@ -187,38 +190,40 @@
 #s-pilot .pl-glab { position: absolute; width: 400px; text-align: center; font-size: 24px; color: var(--teal); text-shadow: 0 2px 10px rgba(0, 0, 0, .6); }
 
 /* the baseline and what we need, side by side, in glass */
-#s-pilot .pl-card { position: absolute; top: 560px; width: 800px; height: 190px; padding: 24px 32px 0; border-radius: 22px; }
+/* support: compact, readable, quieter than the decision */
+#s-pilot .pl-card { position: absolute; top: 556px; width: 800px; height: 150px; padding: 20px 30px 0; border-radius: 22px; }
 #s-pilot .pl-base { left: 144px; }
 #s-pilot .pl-need { left: 976px; }
-#s-pilot .pl-card-l { color: var(--teal); }
+#s-pilot .pl-card-l { color: var(--teal); font-size: 20px; }
 #s-pilot .pl-base .pl-card-l { color: var(--purple-lt); }
-#s-pilot .pl-base-t { margin: 8px 0 0; font: 400 30px/1.2 var(--font); color: var(--ink-2); white-space: nowrap; }
-#s-pilot .pl-fig { font-weight: 700; font-size: 60px; line-height: 1; vertical-align: -8px; color: var(--purple-lt); letter-spacing: -.025em; text-shadow: 0 0 30px rgba(157, 103, 170, .45); }
+#s-pilot .pl-base-t { margin: 6px 0 0; font: 400 24px/1.2 var(--font); color: rgba(255, 255, 255, .74); white-space: nowrap; }
+#s-pilot .pl-fig { font-weight: 700; font-size: 46px; line-height: 1; vertical-align: -5px; color: var(--purple-lt); letter-spacing: -.025em; text-shadow: 0 0 26px rgba(157, 103, 170, .4); }
 #s-pilot .pl-fig .num { display: inline-block; }
 #s-pilot .pl-base-t i, #s-pilot .pl-need-t i { font-style: normal; color: var(--teal); margin: 0 .15em; }
-#s-pilot .pl-base-t2 { margin: 8px 0 0; font: 400 30px/1.3 var(--font); color: var(--ink-2); white-space: nowrap; }
+#s-pilot .pl-base-t2 { margin: 8px 0 0; font: 400 22px/1.3 var(--font); color: rgba(255, 255, 255, .62); white-space: nowrap; }
 #s-pilot .pl-base-t2 .arr { color: var(--teal); }
-#s-pilot .pl-need-t { margin: 18px 0 0; font: 400 30px/1.4 var(--font); color: var(--ink-1); text-wrap: balance; }
+#s-pilot .pl-need-t { margin: 14px 0 0; font: 400 24px/1.42 var(--font); color: rgba(255, 255, 255, .78); text-wrap: balance; }
 /* settled: keep the deep shadow unclipped; while hidden, clip nothing above the cards */
 #s-pilot .pl-card[data-in].is-in { clip-path: inset(-160px round 22px); }
 #s-pilot .pl-card[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }
 
 /* the decision: the hero of the stop */
-#s-pilot .pl-final { position: absolute; left: 144px; top: 786px; margin: 0; font: 700 48px/1.1 var(--font); letter-spacing: -.02em; color: var(--ink-1); white-space: nowrap; }
+/* the decision: the hero of the stop (largest, brightest, the spark lands after "stop.") */
+#s-pilot .pl-final { position: absolute; left: 144px; top: 734px; margin: 0; font: 700 40px/1.1 var(--font); letter-spacing: -.018em; color: var(--ink-1); white-space: nowrap; }
 #s-pilot .pl-herow { position: absolute; left: 140px; }
-#s-pilot .pl-hero { display: inline-block; margin: 0; font: 700 94px/1.06 var(--font); letter-spacing: -.03em; color: var(--teal); white-space: nowrap; }
+#s-pilot .pl-hero { display: inline-block; margin: 0; font: 700 116px/1.06 var(--font); letter-spacing: -.032em; color: var(--sea); white-space: nowrap; }
 #s-pilot.st-2 .pl-hero.is-in { animation: plHero 5s ease-in-out 2.6s infinite; }
 @keyframes plHero { 0%, 100% { filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .5)); } }
-/* once the decision has landed, everything before it steps back a little */
+/* once the decision has landed, everything before it steps back (the cards stay readable) */
 #s-pilot .pl-rig-in { position: absolute; inset: 0; transition: opacity .4s var(--ease-soft); }
-#s-pilot.st-2 .pl-rig-in { opacity: .72; transition: opacity 1s var(--ease-soft) 1.9s; }
+#s-pilot.st-2 .pl-rig-in { opacity: .6; transition: opacity 1s var(--ease-soft) 1.9s; }
 #s-pilot .pl-card > * { transition: opacity .4s var(--ease-soft); }
-#s-pilot.st-2 .pl-card > * { opacity: .9; transition: opacity 1s var(--ease-soft) 2s; }
+#s-pilot.st-2 .pl-card > * { opacity: .86; transition: opacity 1s var(--ease-soft) 2s; }
 
 /* the fork: the path splits three ways after "stop." (it draws behind a leading light, then
    a story travels the stem and divides into all three branches, every 5 s) */
-#s-pilot .pl-fork { position: absolute; left: 960px; top: 830px; width: 820px; height: 140px; pointer-events: none; }
-#s-pilot .pl-fork svg { position: absolute; inset: 0; width: 820px; height: 140px; overflow: visible; }
+#s-pilot .pl-fork { position: absolute; height: 140px; pointer-events: none; }
+#s-pilot .pl-fork svg { position: absolute; left: 0; top: 0; height: 140px; overflow: visible; }
 #s-pilot .pl-fb { fill: none; stroke: rgba(37, 199, 188, .7); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; transition: stroke-dashoffset .3s var(--ease-soft); }
 #s-pilot.st-2 .pl-fb { stroke-dashoffset: 0; transition: stroke-dashoffset .9s cubic-bezier(.5, 0, .3, 1) 1.45s; }
 #s-pilot .pl-fl { position: absolute; left: 0; top: 0; width: 0; height: 0; offset-rotate: 0deg; offset-distance: 0%; opacity: 0; }
