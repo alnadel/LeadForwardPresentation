@@ -1,0 +1,49 @@
+/* 01 · Open (v2) — the title over the night operations centre; the video wall
+   is alive with data; at stop 1 the story light is born at the tagline. */
+Deck.scene({
+  id: 'open',
+  title: 'Behind a Better Life',
+  act: 0,
+  bg: 'night',
+  chrome: { mark: false, progress: false },
+  cues: ['Title', 'Tagline · the light is born'],
+  holds: [5, 7],
+  notes: [
+    'Let the title sit. Introduce the team and Lead Forward 2026. Say the decision up front: in fifteen minutes we will ask you to approve one quarterly pilot.',
+    'Real stories. Visible values. Repeatable impact. One person’s story can light the way for others — that light is the thread through everything that follows.',
+  ],
+  field: [
+    { dim: .5, lit: 0, travel: .3, offset: [0, 0], links: .45, wave: .5, streaks: .16, sparkle: 1.4, calm: [[100, 90, 1120, 980, .72]] },
+    { dim: .72, lit: .02, travel: .6, litFrom: [300, 905], links: .7, streaks: .22 },
+  ],
+  html: `
+    <div class="op-cam">
+      <div class="photo op-photo amb-ken-strong" style="background-image:url('assets/photos/ops-centre-night.jpg')"></div>
+      <div class="op-wall">
+        ${Array.from({ length: 16 }, (_, i) => `<b style="--x:${(i * 37) % 96}%;--y:${(i * 53) % 88}%;--w:${18 + (i * 7) % 26}px;--t:${2.4 + (i % 5) * .7}s;--dl:${-i * .43}s"></b>`).join('')}
+        <em class="op-scanline"></em>
+      </div>
+      <div class="amb-leak op-leak"></div>
+    </div>
+    <div class="fill op-veil"></div>
+    <div class="op-glow"></div>
+    <div class="amb-dust op-dust">${Array.from({ length: 26 }, (_, i) => `<i style="left:${(i * 137) % 100}%;top:${40 + (i * 71) % 60}%;--t:${10 + (i % 6) * 2.4}s;--dl:${-i * 1.1}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 60)}px;--dy:${-160 - (i * 29) % 200}px"></i>`).join('')}</div>
+
+    <div class="op-logo a-materialize" data-in="0" style="--d:.2s;--dur:1.6s">${Deck.logo()}</div>
+    <div class="kicker op-kicker a-wipe" data-in="0" style="--d:.9s">Team presentation · Lead Forward 2026</div>
+    <h1 class="display op-title" data-in="0" data-split style="--d:1.05s">Behind a<br>Better Life</h1>
+    <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" style="--d:1.9s;--dur:1.4s">خلف حياة أفضل</div>
+
+    <div class="op-rule a-wipe" data-in="1"></div>
+    <p class="op-tag" data-in="1" data-split style="--d:.15s">Real stories. Visible values. Repeatable impact.</p>
+    <div class="op-line" data-in="1" style="--d:.8s;--dur:.7s">
+      <span class="op-light" data-spark="1" data-spark-at="c" data-spark-delay=".6"><b class="op-ring"></b><b class="op-ring" style="animation-delay:-1.6s"></b></span>
+      <span class="op-line-t">One person’s story can light the way for others.</span>
+    </div>
+  `,
+  step(n, prev, ctx) {
+    if (n === 1 && !ctx.instant) {
+      ctx.after(1700, () => window.Field && Field.burst(300, 905, { radius: 2400, dur: 3.4 }));
+    }
+  },
+});

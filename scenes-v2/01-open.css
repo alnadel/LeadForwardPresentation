@@ -1,0 +1,33 @@
+/* 01 · Open (v2) */
+#s-open .op-cam { position: absolute; inset: 0; overflow: hidden; }
+#s-open .op-photo { opacity: .76; background-position: 62% 50%; transform-origin: 72% 46%; }
+#s-open .op-leak { opacity: .9; }
+/* the video wall keeps working: data blips flicker, a scan line sweeps */
+#s-open .op-wall { position: absolute; left: 1330px; top: 190px; width: 590px; height: 360px; transform: skewY(-6deg); mix-blend-mode: screen; }
+#s-open .op-wall b { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: 4px; border-radius: 2px; background: rgba(37, 199, 188, .9); box-shadow: 0 0 12px rgba(3, 255, 203, .8); opacity: 0; animation: opBlip var(--t) steps(1) var(--dl) infinite; }
+@keyframes opBlip { 0%, 100% { opacity: 0; } 12% { opacity: .9; } 28% { opacity: .2; } 36% { opacity: .75; } 58% { opacity: 0; } }
+#s-open .op-scanline { position: absolute; left: 0; right: 0; top: 0; height: 60px; background: linear-gradient(180deg, transparent, rgba(3, 255, 203, .22), transparent); animation: opScan 4.2s cubic-bezier(.5, 0, .5, 1) infinite; }
+@keyframes opScan { 0% { transform: translateY(-60px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(380px); opacity: 0; } }
+#s-open .op-veil { background:
+  linear-gradient(90deg, rgba(30, 12, 26, .97) 0%, rgba(30, 12, 26, .9) 30%, rgba(30, 12, 26, .42) 58%, rgba(6, 16, 30, .18) 100%),
+  linear-gradient(0deg, rgba(3, 8, 16, .85) 0%, transparent 38%); }
+#s-open .op-glow { position: absolute; left: 1280px; top: 160px; width: 700px; height: 460px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .28), transparent); filter: blur(24px); animation: opGlow 5.5s ease-in-out infinite; }
+@keyframes opGlow { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.12); } }
+#s-open .op-dust { position: absolute; inset: 0; pointer-events: none; }
+
+#s-open .op-logo { position: absolute; left: 144px; top: 92px; width: 150px; color: #fff; }
+#s-open .op-logo svg { width: 100%; display: block; }
+#s-open .op-kicker { position: absolute; left: 144px; top: 318px; }
+#s-open .op-title { position: absolute; left: 140px; top: 366px; width: 1100px; }
+#s-open .op-ar { position: absolute; left: 144px; top: 668px; font: 700 66px/1.2 var(--font); color: var(--teal); }
+#s-open.st-0 .op-ar.is-in { animation: opArGlow 5s ease-in-out 2.6s infinite; }
+@keyframes opArGlow { 0%, 100% { text-shadow: 0 0 0 rgba(37, 199, 188, 0); } 50% { text-shadow: 0 0 36px rgba(37, 199, 188, .55); } }
+
+#s-open .op-rule { position: absolute; left: 144px; top: 800px; width: 96px; height: 3px; background: var(--teal); box-shadow: 0 0 14px rgba(3, 255, 203, .6); }
+#s-open .op-tag { position: absolute; left: 144px; top: 824px; margin: 0; font: 400 38px/1.3 var(--font); color: var(--ink-1); letter-spacing: -.005em; }
+#s-open .op-line { position: absolute; left: 144px; top: 890px; display: flex; align-items: center; gap: 30px; }
+/* the story light itself is the travelling spark; this is its birthplace */
+#s-open .op-light { position: relative; width: 30px; height: 30px; }
+#s-open .op-ring { position: absolute; left: 2px; top: 2px; width: 26px; height: 26px; border-radius: 28%; border: 1.5px solid rgba(37, 199, 188, .85); box-shadow: 0 0 10px rgba(3, 255, 203, .3); animation: opRing 3.2s cubic-bezier(.3, .55, .45, 1) infinite; opacity: 0; }
+@keyframes opRing { 0% { transform: scale(1); opacity: 0; } 14% { opacity: .55; } 100% { transform: scale(3.2); opacity: 0; } }
+#s-open .op-line-t { font: 400 34px/1.3 var(--font); color: var(--ink-1); }

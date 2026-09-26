@@ -17,7 +17,7 @@ fs.mkdirSync(out, { recursive: true });
   const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
-  await page.goto('file://' + path.join(root, 'index.html'));
+  await page.goto('file://' + path.resolve(root, opt('file', 'index.html')));
   await page.waitForFunction(() => document.body.classList.contains('ready'));
   // freeze ambient motion so frames are comparable
   await page.addStyleTag({ content: '*,*::before,*::after{animation-play-state:paused!important}#field{display:none!important}' });

@@ -15,7 +15,7 @@ fs.mkdirSync(out, { recursive: true });
   const exe = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
   const browser = await chromium.launch(fs.existsSync(exe) ? { executablePath: exe } : {});
   const page = await browser.newPage({ viewport: { width: 960, height: 540 } });
-  await page.goto('file://' + path.join(root, 'index.html'));
+  await page.goto('file://' + path.resolve(root, opt('file', 'index.html')));
   await page.waitForFunction(() => document.body.classList.contains('ready'));
   const n = await page.evaluate(() => Deck.defs.length);
   for (let i = 0; i < n - 1; i++) {
