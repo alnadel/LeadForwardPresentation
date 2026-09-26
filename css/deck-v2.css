@@ -75,9 +75,9 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 #field { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 1; pointer-events: none; }
 /* before the deck is ready (fonts and photos loading) the room is black: no field, no glow,
    so the cold open starts from true black instead of flashing the backdrop first */
-#stage::before { content: ''; position: absolute; inset: 0; z-index: 0; background: #02060C; opacity: 0; pointer-events: none; transition: opacity .5s var(--ease-soft); }
+#stage::before { content: ''; position: absolute; inset: 0; z-index: 0; background: #02060C; opacity: 0; pointer-events: none; transition: opacity .9s var(--ease-soft) .6s; }   /* held until the first scene (fading in over .8s) covers it */
 body:not(.ready) #stage::before { opacity: 1; transition: none; }
-#field, #glow, #beams { transition: opacity .5s var(--ease-soft); }
+#field, #glow, #beams { transition: opacity .9s var(--ease-soft) .6s; }
 body:not(.ready) #field, body:not(.ready) #glow, body:not(.ready) #beams { opacity: 0; transition: none; }
 #glow { position: absolute; inset: -20%; z-index: 0; pointer-events: none; }
 #glow i { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .5; mix-blend-mode: screen; }

@@ -34,6 +34,7 @@ What is new in v2:
   - Headlines flip in word by word and catch a light sweep.
   - Cards unfold, and icons materialise out of light.
   - Numbers count up and land with a punch.
+- **Audience-first hierarchy.** On every stop the one or two things the audience needs are the largest and brightest; supporting detail (descriptions, raw values, legends, caveats, sources) stays on screen but small and dim. *Reading the numbers* is rebuilt around this: the mechanism behind (−14, −15), the willingness ahead (+48), then "build the channel, then test it."
 - **Bigger, bolder layouts.** Every diagram fills the frame, text is at least 26–30px for the room, cards use a glass material with a slow travelling edge light, and the element each stop is about is the largest and brightest.
 - **Livelier parked frames.** Every stop has several slow continuous motions: constellation lines and waves in the field, shooting lights, photo push-ins, flowing connectors, breathing nodes. Nothing inside the text you are reading moves, and numbers never change while parked.
 - **It opens cold on the question.** The first frame is "When was the last time a colleague inspired you?" with no title or introduction; the next click opens the title out of the light under the question, and then Nouf's night.
