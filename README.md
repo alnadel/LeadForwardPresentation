@@ -142,6 +142,13 @@ These changed from, or were added to, the approved deck. Check each one with the
 - The v2 source is `index-v2.html`, with `scenes-v2/`, `js/engine-v2.js` + `js/field-v2.js`, and `css/deck-v2.css`. The v2 authoring contract (transitions, spark, ambient library) is [`docs/SCENE_GUIDE-v2.md`](docs/SCENE_GUIDE-v2.md). The tools take `--file index-v2.html`, and `python3 tools/build.py index-v2.html Present/Behind-a-Better-Life.html` rebuilds the single file. Open `index-v2.html?nogate` to skip the start screen while editing.
 - Scene authoring rules are in [`docs/SCENE_GUIDE.md`](docs/SCENE_GUIDE.md).
 - Rebuild the v1 single file with `python3 tools/build.py` (it writes `Present-v1-full/Behind-a-Better-Life.html`).
+- Smoothness and flicker checks for v2:
+  - `python3 tools/flicker.py` flags fast flashes and `steps()` blips.
+  - `node tools/popcheck.js` flags delayed animations that snap into view.
+  - `node tools/animaudit.js` lists expensive (non-transform/opacity) animations running on each stop.
+  - `node tools/perf.js` measures repaint, style and layout work per parked stop.
+
+  All the node tools take `--file index-v2.html --scenes a,b`.
 - Screenshot every stop with `node tools/shoot.js --motion` (Playwright). Then check that ambient motion is running with `python3 tools/motion.py shots`, and that back navigation matches forward navigation with `node tools/backcheck.js` followed by `python3 tools/backdiff.py`.
 
 The people in the photographs are AI-generated illustrations, not Tahakom employees.
