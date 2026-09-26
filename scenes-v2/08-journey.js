@@ -18,16 +18,24 @@
   const xy = (p) => p[0].toFixed(1) + ',' + p[1].toFixed(1);
   const PUBLISH = 1.15;          // stop 1: the post publishes this long after the click
 
-  // stop 2: the four teams, and the takeaway's lights that reach just those four
+  // stop 1: the checklist hands the story to the post along a short connector
+  const FLOW = { x0: 1044, x1: 1108, y: 740 };   // from the checklist's value to the post's value
+  const FLOWP = `M${FLOW.x0} ${FLOW.y} L${FLOW.x1} ${FLOW.y}`;
+
+  // stop 2: the certificate, the takeaway hub under it, and four teams below
   const TEAMS = ['Traffic Ops · Shift B', 'Enforcement Ops', 'Field Operations', 'Data Centre'];
-  const TILE = { x: 584, y: 612, w: 280, h: 200, gap: 24 };   // the row ends on the right margin (1776)
-  const HUB = [1326, 462];                                    // under the certificate, where the takeaway branches
+  const CERT = { x: 548, y: 150, w: 1228, h: 290 };
+  const TILE = { x: 548, y: 668, w: 286, h: 214, gap: 28 };   // the row spans the content column (548–1776)
+  const HUB = [CERT.x + CERT.w / 2, 564];                     // the bottom of the "takeaway shared with" pill
+  const STEM = `M${HUB[0]} ${CERT.y + CERT.h} L${HUB[0]} ${HUB[1] - 64}`;
   const tileX = (i) => TILE.x + i * (TILE.w + TILE.gap);
-  const corner = (i) => [tileX(i) + TILE.w - 34, TILE.y + 34];
+  const port = (i) => [tileX(i) + TILE.w / 2, TILE.y];
   const reachPath = (i) => {
-    const [ex, ey] = corner(i);
-    return `M${HUB[0]} ${HUB[1]} C${HUB[0]} ${HUB[1] + 80} ${ex} ${ey - 120} ${ex} ${ey}`;
+    const [ex, ey] = port(i);
+    return `M${HUB[0]} ${HUB[1]} C${HUB[0]} ${HUB[1] + 62} ${ex} ${ey - 70} ${ex} ${ey}`;
   };
+  const LK = { dl: .6, dd: .38, st: .06 };                   // the branches draw after the hub lights
+  const FLIP = (i) => LK.dl + LK.dd + i * LK.st - .04;        // each tile turns as its branch arrives
 
   // stop 3: the new light leaves node 01, passes through the pill and reaches the next colleague
   const PILL = { x: 560, w: 700, h: 84 };
@@ -54,9 +62,9 @@
 
   const tiles = TEAMS.map((t, i) => {
     const name = t.replace(' · ', '<br>').replace(/^(Enforcement|Field|Data) /, '$1<br>');
-    return `<div class="jn-tile" style="left:${tileX(i)}px;top:${TILE.y}px;--f:${(1.05 + i * 0.14).toFixed(2)}s;--k:${i}">
+    return `<div class="jn-tile a-unfold" data-in="2" style="left:${tileX(i)}px;top:${TILE.y}px;--f:${FLIP(i).toFixed(2)}s;--k:${i};--d:.34s;--dur:.7s">
         <div class="jn-face front"><b>${name}</b><i class="jn-hollow"></i></div>
-        <div class="jn-face back"><b>${name}</b><span class="jn-adopt">${svgCheck}Adopted</span><i class="jn-cdot"></i></div>
+        <div class="jn-face back"><b>${name}</b><span class="jn-adopt">${svgCheck}Adopted</span></div>
       </div>`;
   }).join('');
 
@@ -133,6 +141,7 @@
       </div>
 
       <!-- 1 · CURATE → FEATURE: the checks tick, then the post publishes -->
+      <i class="jn-glow g1" data-at="1"></i>
       <div class="jn-cur a-flip" data-in="1" data-out="2" style="--d:.12s;--dur:.8s">
         <div class="paper jn-cur-i amb-float3d-2 jn-sheen">
           <div class="jn-cur-h"><b>Curation checklist</b><span>Before it is shared</span></div>
@@ -144,7 +153,11 @@
           </div>
         </div>
       </div>
-      <div class="jn-flow a-fade" data-in="1" data-out="2" style="--d:${(PUBLISH - .15).toFixed(2)}s;--dur:.5s">${svgChev}${svgChev}${svgChev}</div>
+      <div class="jn-flow a-fade" data-in="1" data-out="2" style="--d:${(PUBLISH - .2).toFixed(2)}s;--dur:.4s">
+        <svg viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-fl" d="${FLOWP}"/></svg>
+        <span class="jn-chevs" style="left:${FLOW.x0}px;top:${FLOW.y}px;width:${FLOW.x1 - FLOW.x0}px">${svgChev}${svgChev}${svgChev}</span>
+        <i class="light sm jn-fdot" style="offset-path:path('${FLOWP}')"></i>
+      </div>
       <div class="jn-post a-swing" data-in="1" data-out="2" style="--d:${PUBLISH}s;--dur:1s">
         <div class="paper jn-post-i amb-float3d jn-sheen">
           <div class="jn-ph">
@@ -162,20 +175,27 @@
       </div>
 
       <!-- 2 · REINFORCE: the certificate, and four teams adopt the takeaway -->
-      <div class="jn-certw a-drop" data-in="2" data-out="3" style="--d:.15s">
-        <div class="paper jn-cert amb-float3d jn-sheen">
+      <i class="jn-glow g2" data-at="2"></i>
+      <div class="jn-certw a-drop" data-in="2" data-out="3" style="left:${CERT.x}px;top:${CERT.y}px;width:${CERT.w}px;height:${CERT.h}px;--d:.12s">
+        <div class="paper jn-cert jn-bob jn-sheen">
+          <i class="jn-frame"></i>
           <span class="jn-cert-i">${Deck.icon('document-certified')}</span>
           <span class="jn-cert-t">
             <span class="jn-cert-k">Leader acknowledgement</span>
             <b>Nouf Al-Harbi</b>
             <span class="jn-cert-l">Personal certificate · Excellence</span>
           </span>
+          <span class="jn-seal"><svg viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="74" class="jn-seal-r"/><circle cx="80" cy="80" r="64" class="jn-seal-r2"/></svg><span class="jn-seal-i">${Deck.art('mark')}</span></span>
         </div>
       </div>
-      <div class="label jn-tl a-fade" data-in="2" data-out="3" style="--d:.4s">Takeaway shared with</div>
-      <div class="jn-tiles a-fade" data-in="2" data-out="3" style="--d:.35s">${tiles}</div>
-      <svg class="jn-links a-fade" data-in="2" data-out="3" style="--d:.9s;--dur:.8s" viewBox="0 0 1920 1080" aria-hidden="true">${TEAMS.map((t, i) => `<path class="jn-lk" d="${reachPath(i)}"/>`).join('')}</svg>
-      <div class="jn-hub a-materialize" data-in="2" data-out="3" style="left:${HUB[0]}px;top:${HUB[1]}px;--d:.7s"><b class="amb-ring"></b><i class="light sm"></i></div>
+      <svg class="jn-links a-fade" data-in="2" data-out="3" viewBox="0 0 1920 1080" aria-hidden="true">
+        <path class="jn-lk jn-stem" d="${STEM}" pathLength="1" style="--dl:.4s;--dd:.22s"/>
+        ${TEAMS.map((t, i) => `<path class="jn-lk" d="${reachPath(i)}" pathLength="1" style="--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"/><path class="jn-lkf" d="${reachPath(i)}" style="--k:${i}"/>`).join('')}
+      </svg>
+      <div class="jn-leads" data-out="3">${TEAMS.map((t, i) => `<i class="jn-lead" style="offset-path:path('${reachPath(i)}');--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"></i>`).join('')}</div>
+      <div class="jn-hub a-materialize" data-in="2" data-out="3" style="left:${HUB[0]}px;top:${HUB[1] - 32}px;--d:.48s;--dur:.6s"><span class="jn-hub-i"><i class="light sm"></i>Takeaway shared with</span></div>
+      <div class="jn-tiles" data-out="3" data-stagger style="--stagger:.07s">${tiles}</div>
+      <div class="jn-ports" data-out="3">${TEAMS.map((t, i) => { const [x, y] = port(i); return `<i class="jn-port" style="left:${x}px;top:${y}px;--k:${i};--f:${FLIP(i).toFixed(2)}s"></i>`; }).join('')}</div>
       <div class="jn-reach" data-out="3">
         ${TEAMS.map((t, i) => `<i class="light sm jn-rt" style="offset-path:path('${reachPath(i)}');--k:${i}"></i>`).join('')}
       </div>
@@ -183,7 +203,7 @@
       <!-- 3 · THE CHAIN: a new light leaves the ring -->
       <svg class="jn-trail" viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-trace" d="${SPLIT}" pathLength="100"/><path class="jn-tr" d="${SPLIT}"/></svg>
       <div class="jn-newlight">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="offset-path:path('${SPLIT}');--c:${k}"></i>`).join('')}</div>
-      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
+      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass live"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
       <div class="jn-next" style="left:${NEXT[0]}px;top:${NEXT[1].toFixed(1)}px"><b class="jn-pool"></b><i class="jn-sq"></i><b class="jn-flash"></b><span class="jn-rings"><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.07s"></b><b class="amb-ring" style="animation-delay:-2.13s"></b></span></div>
       <h2 class="jn-big" data-in="3" data-split style="--d:.55s">Recognition becomes <em class="hl jn-beh">behaviour.</em></h2>
     `,

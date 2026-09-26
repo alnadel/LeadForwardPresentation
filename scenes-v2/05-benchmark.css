@@ -1,99 +1,125 @@
-/* 05 · Reading the numbers (v2) — dumbbell chart */
-#s-benchmark .bm-h { margin-top: 26px; font-size: 72px; white-space: nowrap; transition: opacity .9s var(--ease-soft); }
-/* stop 1: the reading leads; the headline steps back */
-#s-benchmark.st-1 .bm-h { opacity: .5; }
+/* 05 · Reading the numbers (v2) — full-frame dumbbell chart */
+
+/* ── header: the headline turns into the reading at stop 1 ───────────── */
+#s-benchmark .bm-kick { position: relative; height: 22px; }
+#s-benchmark .bm-kick .kicker { position: absolute; left: 0; top: 0; white-space: nowrap; }
+#s-benchmark .bm-swap { position: relative; margin-top: 26px; height: 140px; }
+#s-benchmark .bm-h { position: absolute; left: 0; top: 0; font-size: 72px; white-space: nowrap; }
+#s-benchmark .bm-read { position: absolute; left: 0; top: 0; margin: 0; font: 700 64px/1.04 var(--font); letter-spacing: -.022em; color: var(--white); white-space: nowrap; }
+#s-benchmark .bm-read .purple { color: var(--purple-lt); }
+#s-benchmark .bm-read .teal { color: var(--teal); }
+#s-benchmark .bm-read-mark, #s-benchmark .bm-mark { position: absolute; width: 0; height: 0; }
 #s-benchmark .bm-chart { position: absolute; inset: 0; pointer-events: none; }
 
+/* ── the two group panels ───────────────────────────────────────────── */
+#s-benchmark .bm-panel { position: absolute; left: var(--m); width: 1632px; border-radius: 22px; overflow: hidden; }
+#s-benchmark .bm-panel[data-in] { clip-path: inset(-80px round 22px); }
+#s-benchmark .bm-panel.mech { background: linear-gradient(100deg, rgba(157, 103, 170, .2), rgba(96, 38, 80, .1) 45%, rgba(20, 10, 26, .2)), rgba(18, 9, 24, .58); }
+#s-benchmark .bm-panel.will { background: linear-gradient(100deg, rgba(37, 199, 188, .13), rgba(37, 199, 188, .04) 45%, rgba(3, 255, 203, .07)), rgba(5, 16, 28, .6); }
+/* a slow glow drifts inside each panel */
+#s-benchmark .bm-pglow { position: absolute; top: -40%; bottom: -40%; width: 760px; border-radius: 50%; pointer-events: none; }
+#s-benchmark .mech .bm-pglow { left: 0; background: radial-gradient(closest-side, rgba(157, 103, 170, .22), transparent); animation: bmPGlow 11s ease-in-out infinite alternate; }
+#s-benchmark .will .bm-pglow { right: -120px; background: radial-gradient(closest-side, rgba(3, 255, 203, .16), transparent); animation: bmPGlow 9s ease-in-out -4s infinite alternate-reverse; }
+@keyframes bmPGlow { from { transform: translateX(-60px) scale(.9); opacity: .6; } to { transform: translateX(160px) scale(1.1); opacity: 1; } }
+/* the group's tab sits on the panel's top edge */
+#s-benchmark .bm-tab { position: absolute; left: 176px; height: 42px; display: inline-flex; align-items: center; gap: 14px; padding: 0 22px 0 18px; border-radius: 12px;
+  font: 700 24px/1 var(--font); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap; box-shadow: 0 10px 30px rgba(0, 0, 0, .35); }
+#s-benchmark .bm-tab i { width: 14px; height: 14px; border-radius: 28%; background: currentColor; flex: none; box-shadow: 0 0 12px currentColor; }
+/* glass on an opaque base, so the panel edge beneath does not show through */
+#s-benchmark .bm-tab.mech { color: var(--purple-lt); background: linear-gradient(165deg, rgba(157, 103, 170, .3), rgba(96, 38, 80, .16) 60%, rgba(30, 12, 26, .2)), #150C1C; }
+#s-benchmark .bm-tab.will { color: var(--teal); background: linear-gradient(165deg, rgba(37, 199, 188, .24), rgba(255, 255, 255, .03) 60%, rgba(37, 199, 188, .08)), #071A24; }
+
 /* ── the shared 0–100% axis ─────────────────────────────────────────── */
-#s-benchmark .bm-grid { position: absolute; top: 334px; height: 296px; width: 0; border-left: 1px dashed rgba(255, 255, 255, .1); }
-#s-benchmark .bm-grid.major { border-left-color: rgba(255, 255, 255, .18); }
+#s-benchmark .bm-grid { position: absolute; width: 0; border-left: 1px dashed rgba(255, 255, 255, .12); }
+#s-benchmark .bm-grid.major { border-left-color: rgba(255, 255, 255, .2); }
 /* grid lines rise out of the axis */
 #s-benchmark .bm-grid[data-in] { clip-path: inset(0 0 0 0); }
 #s-benchmark .bm-grid[data-in]:not(.is-in) { transform: none; opacity: 1; filter: none; clip-path: inset(100% 0 0 0); }
-#s-benchmark .bm-axis { position: absolute; top: 629px; height: 2px; background: rgba(255, 255, 255, .44); }
-#s-benchmark .bm-lane { position: absolute; height: 1px; margin-top: -.5px; background: linear-gradient(to right, rgba(255, 255, 255, .16) 50%, transparent 50%) 0 0 / 8px 1px repeat-x; }
-#s-benchmark .bm-ticks span { position: absolute; top: 644px; width: 100px; text-align: center; font: 700 22px/1 var(--font); letter-spacing: .04em; color: var(--ink-3); }
+#s-benchmark .bm-axis { position: absolute; height: 2px; background: rgba(255, 255, 255, .5); }
+#s-benchmark .bm-lane { position: absolute; height: 1px; margin-top: -.5px; background: linear-gradient(to right, rgba(255, 255, 255, .14) 50%, transparent 50%) 0 0 / 8px 1px repeat-x; }
+#s-benchmark .bm-ticks span { position: absolute; width: 100px; text-align: center; font: 700 24px/1 var(--font); letter-spacing: .04em; color: var(--ink-3); }
 
 /* the axis draws behind a leading light (live build only; at rest it is gone) */
-#s-benchmark .bm-tip { position: absolute; left: 600px; top: 630px; width: 0; height: 0; opacity: 0; }
-#s-benchmark .bm-tip::before { content: ''; position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 28%;
+#s-benchmark .bm-tip { position: absolute; width: 0; height: 0; opacity: 0; }
+#s-benchmark .bm-tip::before { content: ''; position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 28%;
   background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 16px var(--sea), 0 0 44px rgba(3, 255, 203, .6); }
-#s-benchmark .bm-tip::after { content: ''; position: absolute; right: 4px; top: -2px; width: 180px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .75)); }
+#s-benchmark .bm-tip::after { content: ''; position: absolute; right: 4px; top: -2px; width: 200px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .75)); }
 #s-benchmark.bm-live .bm-tip { animation: bmTip 1s var(--ease-out) calc(var(--enter, 0s) + .28s) both; }
-@keyframes bmTip { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateX(960px); opacity: 0; } }
+@keyframes bmTip { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 70% { opacity: 1; } 100% { transform: translateX(var(--w)); opacity: 0; } }
 
 /* ambient: a slow scan light rises off the axis and crosses the chart */
-#s-benchmark .bm-scan { position: absolute; left: 600px; top: 320px; width: 0; height: 312px; opacity: 0; }
-#s-benchmark .bm-scan::before { content: ''; position: absolute; left: -110px; top: 0; width: 220px; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .15) 38%, rgba(3, 255, 203, .2) 50%, rgba(37, 199, 188, .15) 62%, transparent);
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 70%); mask-image: linear-gradient(180deg, transparent, #000 70%); }
-#s-benchmark .bm-scan::after { content: ''; position: absolute; left: -7px; top: 303px; width: 14px; height: 14px; border-radius: 28%;
+#s-benchmark .bm-scan { position: absolute; width: 0; opacity: 0; }
+#s-benchmark .bm-scan::before { content: ''; position: absolute; left: -120px; top: 0; width: 240px; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .13) 38%, rgba(3, 255, 203, .2) 50%, rgba(37, 199, 188, .13) 62%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 75%); mask-image: linear-gradient(180deg, transparent, #000 75%); }
+#s-benchmark .bm-scan::after { content: ''; position: absolute; left: -7px; bottom: -7px; width: 14px; height: 14px; border-radius: 28%;
   background: var(--sea); box-shadow: 0 0 14px var(--sea), 0 0 40px rgba(3, 255, 203, .7); }
 #s-benchmark.st-0 .bm-scan { animation: bmScan 7.2s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 2.3s) infinite; }
-@keyframes bmScan { 0% { transform: translateX(-40px); opacity: 0; } 8% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(1000px); opacity: 0; } }
+@keyframes bmScan { 0% { transform: translateX(-40px); opacity: 0; } 8% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(calc(var(--w) + 40px)); opacity: 0; } }
 
-#s-benchmark .bm-legend { position: absolute; right: var(--m); top: 694px; display: flex; gap: 36px; font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
-#s-benchmark .bm-legend span { display: inline-flex; align-items: center; gap: 12px; }
-#s-benchmark .bm-legend i { width: 20px; height: 20px; flex: none; }
-#s-benchmark .bm-legend .k-t { border-radius: 28%; background: linear-gradient(135deg, var(--purple) 50%, var(--teal) 50%); }
+/* ── caveat, legend, sources ────────────────────────────────────────── */
+#s-benchmark .bm-cav { position: absolute; left: var(--m); top: 850px; margin: 0; font: 400 28px/1.3 var(--font); color: rgba(255, 255, 255, .84); }
+/* the key sits on the chart's top edge, like the group tabs */
+#s-benchmark .bm-legend { position: absolute; right: 176px; height: 42px; display: flex; align-items: center; gap: 34px; padding: 0 24px; border-radius: 12px;
+  font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-1); white-space: nowrap;
+  background: linear-gradient(165deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .07)), #10131F; box-shadow: 0 10px 30px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .14); }
+#s-benchmark .bm-legend span { display: inline-flex; align-items: center; gap: 14px; }
+#s-benchmark .bm-legend i { width: 22px; height: 22px; flex: none; }
+#s-benchmark .bm-legend .k-t { border-radius: 28%; background: linear-gradient(135deg, var(--purple) 50%, var(--teal) 50%); box-shadow: 0 0 14px rgba(37, 199, 188, .4); }
 #s-benchmark .bm-legend .k-b { border-radius: 50%; background: var(--blue); border: 3px solid var(--blue-lt); }
+#s-benchmark .bm-src { position: absolute; left: var(--m); top: 904px; margin: 0; font: 400 22px/1.3 var(--font); color: rgba(255, 255, 255, .8); }
+#s-benchmark .bm-src b { font-weight: 700; }
 
-/* ── groups and rows ────────────────────────────────────────────────── */
-#s-benchmark .bm-grp { position: absolute; left: var(--m); width: 1632px; display: flex; align-items: center; gap: 14px; font: 700 22px/1 var(--font); letter-spacing: .2em; text-transform: uppercase; }
-#s-benchmark .bm-grp i { width: 14px; height: 14px; border-radius: 28%; background: currentColor; flex: none; box-shadow: 0 0 12px currentColor; }
-#s-benchmark .bm-grp b { flex: 1; height: 1px; margin-left: 12px; background: linear-gradient(90deg, currentColor, transparent); opacity: .4; }
-#s-benchmark .bm-grp.mech { color: var(--purple-lt); }
-#s-benchmark .bm-grp.will { color: var(--teal); }
-
-#s-benchmark .bm-row { position: absolute; left: 0; width: 1920px; height: 70px; }
-#s-benchmark .bm-lab { position: absolute; left: var(--m); top: 50%; font: 700 27px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-1); white-space: nowrap;
+/* ── rows ───────────────────────────────────────────────────────────── */
+#s-benchmark .bm-row { position: absolute; left: 0; width: 1920px; height: 72px; }
+#s-benchmark .bm-lab { position: absolute; left: 176px; top: 50%; font: 700 30px/1 var(--font); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-1); white-space: nowrap;
   transform: translate(-28px, -50%); opacity: 0; transition: transform .7s var(--ease-out) var(--delay), opacity .5s var(--ease-soft) var(--delay); }
 #s-benchmark .bm-row.is-in .bm-lab { transform: translate(0, -50%); opacity: 1; }
 
 /* the segment draws from the benchmark towards Tahakom, in step with the dot */
-#s-benchmark .bm-seg { position: absolute; top: 32px; height: 6px; border-radius: 3px; transition: clip-path .78s var(--ease-io) calc(var(--delay) + .2s); }
+#s-benchmark .bm-seg { position: absolute; top: 32px; height: 8px; border-radius: 4px; transition: clip-path .78s var(--ease-io) calc(var(--delay) + .2s); }
 #s-benchmark .bm-seg.to-l { background: linear-gradient(to left, var(--blue), var(--purple)); clip-path: inset(0 0 0 100%); }
 #s-benchmark .bm-seg.to-r { background: linear-gradient(to right, var(--blue), var(--teal)); clip-path: inset(0 100% 0 0); }
 #s-benchmark .bm-row.is-in .bm-seg { clip-path: inset(0 0 0 0); }
-#s-benchmark .hero .bm-seg { box-shadow: 0 0 18px rgba(37, 199, 188, .45); background: linear-gradient(to right, var(--blue), var(--teal) 70%, #6FF5E2); }
+#s-benchmark .hero .bm-seg { top: 31px; height: 10px; border-radius: 5px; box-shadow: 0 0 22px rgba(37, 199, 188, .55); background: linear-gradient(to right, var(--blue), var(--teal) 65%, #6FF5E2); }
 
-#s-benchmark .bm-dot { position: absolute; top: 35px; width: 0; height: 0; }
+#s-benchmark .bm-dot { position: absolute; top: 36px; width: 0; height: 0; }
 #s-benchmark .bm-dot i { position: absolute; left: 0; top: 0; display: block; }
 #s-benchmark .bm-dot u { position: absolute; display: block; }
 /* the benchmark dot pops in first */
 #s-benchmark .bm-b i { transform: scale(0); transition: transform .55s var(--ease-back) calc(var(--delay) + .02s); }
 #s-benchmark .bm-row.is-in .bm-b i { transform: scale(1); }
-#s-benchmark .bm-b u { width: 24px; height: 24px; left: -12px; top: -12px; border-radius: 50%; background: var(--blue); border: 3px solid var(--blue-lt); box-shadow: 0 0 16px rgba(59, 128, 170, .6); animation: bmBreathe 3.4s ease-in-out calc(var(--bp, 0s) - 1.7s) infinite; }
+#s-benchmark .bm-b u { width: 28px; height: 28px; left: -14px; top: -14px; border-radius: 50%; background: var(--blue); border: 3px solid var(--blue-lt); box-shadow: 0 0 16px rgba(59, 128, 170, .6); animation: bmBreathe 3.4s ease-in-out calc(var(--bp, 0s) - 1.7s) infinite; }
 /* …then the Tahakom dot leaves the benchmark value and travels to ours */
 #s-benchmark .bm-t { transition: transform .78s var(--ease-io) calc(var(--delay) + .2s); }
 #s-benchmark .bm-row.is-in .bm-t { transform: translateX(var(--dx)); }
 #s-benchmark .bm-t i { opacity: 0; transform: scale(.4); transition: opacity .25s var(--ease-soft) calc(var(--delay) + .16s), transform .45s var(--ease-back) calc(var(--delay) + .16s); }
 #s-benchmark .bm-row.is-in .bm-t i { opacity: 1; transform: none; }
-#s-benchmark .bm-t u { width: 28px; height: 28px; left: -14px; top: -14px; border-radius: 28%; animation: bmBreathe 3.4s ease-in-out var(--bp, 0s) infinite; }
-#s-benchmark .mech .bm-t u { background: var(--purple); border: 2px solid var(--purple-lt); box-shadow: 0 0 20px rgba(157, 103, 170, .75); }
-#s-benchmark .will .bm-t u { background: var(--teal); border: 2px solid #8BF0E7; box-shadow: 0 0 22px rgba(37, 199, 188, .75); }
+#s-benchmark .bm-t u { width: 32px; height: 32px; left: -16px; top: -16px; border-radius: 28%; animation: bmBreathe 3.4s ease-in-out var(--bp, 0s) infinite; }
+#s-benchmark .mech .bm-t u { background: var(--purple); border: 2px solid var(--purple-lt); box-shadow: 0 0 22px rgba(157, 103, 170, .8); }
+#s-benchmark .will .bm-t u { background: var(--teal); border: 2px solid #8BF0E7; box-shadow: 0 0 24px rgba(37, 199, 188, .8); }
 @keyframes bmBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.14); } }
 /* a halo breathes behind every dot: the benchmark's half a breath after Tahakom's,
    each row a quarter breath after the one above, so some dot is always mid-breath */
-#s-benchmark .bm-b i::before { content: ''; position: absolute; left: -64px; top: -64px; width: 128px; height: 128px; border-radius: 50%;
+#s-benchmark .bm-b i::before { content: ''; position: absolute; left: -70px; top: -70px; width: 140px; height: 140px; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(59, 128, 170, .62), transparent); animation: bmHalo 3.4s ease-in-out calc(var(--bp, 0s) - 1.7s) infinite; }
-#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -76px; top: -76px; width: 152px; height: 152px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out var(--bp, 0s) infinite; }
+#s-benchmark .bm-t i::before { content: ''; position: absolute; left: -84px; top: -84px; width: 168px; height: 168px; border-radius: 50%; animation: bmHalo 3.4s ease-in-out var(--bp, 0s) infinite; }
 #s-benchmark .mech .bm-t i::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .6), transparent); }
 #s-benchmark .will .bm-t i::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .6), transparent); }
 @keyframes bmHalo { 0%, 100% { opacity: .2; transform: scale(.55); } 50% { opacity: 1; transform: scale(1.12); } }
 
 /* value labels sit on the outer side of each dot */
-#s-benchmark .bm-dot b { position: absolute; top: -15px; font: 700 26px/30px var(--font); white-space: nowrap; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity .45s var(--ease-soft) calc(var(--delay) + .1s); }
-#s-benchmark .bm-dot b.r { left: 24px; }
-#s-benchmark .bm-dot b.l { right: 24px; }
+#s-benchmark .bm-dot b { position: absolute; top: -18px; font: 700 32px/36px var(--font); white-space: nowrap; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity .45s var(--ease-soft) calc(var(--delay) + .1s); }
+#s-benchmark .bm-dot b.r { left: 28px; }
+#s-benchmark .bm-dot b.l { right: 28px; }
 #s-benchmark .bm-t b { transition-delay: calc(var(--delay) + .9s); }
 #s-benchmark .bm-row.is-in .bm-dot b { opacity: 1; }
 #s-benchmark .bm-b b { color: var(--blue-lt); }
 #s-benchmark .mech .bm-t b { color: var(--purple-lt); }
-#s-benchmark .will .bm-t b { color: var(--teal); }
+#s-benchmark .will .bm-t b { color: #5FE3D8; }
 
 /* ambient: a comet in the row's tone travels each segment, benchmark to Tahakom */
-#s-benchmark .bm-glint { position: absolute; top: 35px; width: 34px; height: 4px; margin: -2px 0 0 -17px; border-radius: 2px; opacity: 0; box-shadow: 0 0 12px currentColor; }
+#s-benchmark .bm-glint { position: absolute; top: 36px; width: 38px; height: 5px; margin: -2.5px 0 0 -19px; border-radius: 3px; opacity: 0; box-shadow: 0 0 14px currentColor; }
 #s-benchmark .bm-glint.r { background: linear-gradient(90deg, transparent, currentColor 70%, #fff); }
 #s-benchmark .bm-glint.l { background: linear-gradient(270deg, transparent, currentColor 70%, #fff); }
 #s-benchmark .mech .bm-glint { color: #E2C8EA; }
@@ -104,47 +130,37 @@
 /* the difference, counted up as the dot travels, lands with a punch */
 #s-benchmark .bm-delta { position: absolute; top: 50%; transform: translateY(-50%); display: flex; align-items: baseline; gap: 8px; white-space: nowrap; opacity: 0; transition: opacity .3s var(--ease-soft) calc(var(--delay) + .2s); }
 #s-benchmark .bm-row.is-in .bm-delta { opacity: 1; }
-#s-benchmark .bm-delta .cnt { display: inline-block; font: 700 54px/1 var(--font); letter-spacing: -.02em; transform-origin: 0 70%; }
+#s-benchmark .bm-delta .cnt { display: inline-block; font: 700 64px/1 var(--font); letter-spacing: -.02em; transform-origin: 0 70%; }
 #s-benchmark .bm-delta .cnt.neg::before { content: '\2212'; }
 #s-benchmark .bm-delta .cnt.pos::before { content: '+'; }
 #s-benchmark .bm-delta .cnt.counted { animation: bmPunch .9s var(--ease-out); }
-@keyframes bmPunch { 0% { transform: scale(1); filter: brightness(1); } 16% { transform: scale(1.34); filter: brightness(1.7); } 100% { transform: scale(1); filter: brightness(1); } }
-#s-benchmark .bm-delta small { font: 700 26px/1 var(--font); letter-spacing: .02em; }
-#s-benchmark .bm-delta em { font: 400 26px/1 var(--font); font-style: normal; color: var(--ink-3); margin-left: 12px; }
+@keyframes bmPunch { 0% { transform: scale(1); filter: brightness(1); } 16% { transform: scale(1.3); filter: brightness(1.7); } 100% { transform: scale(1); filter: brightness(1); } }
+#s-benchmark .bm-delta small { font: 700 30px/1 var(--font); letter-spacing: .02em; }
+#s-benchmark .bm-delta em { font: 400 26px/1 var(--font); font-style: normal; color: var(--ink-2); margin-left: 14px; }
 #s-benchmark .mech .bm-delta { color: var(--purple-lt); }
 #s-benchmark .will .bm-delta { color: var(--teal); }
 /* the hero: +48 in sea green, glowing */
-#s-benchmark .hero .bm-delta { color: var(--sea); text-shadow: 0 0 22px rgba(3, 255, 203, .4); }
-#s-benchmark .hero .bm-delta .cnt { font-size: 60px; }
+#s-benchmark .hero .bm-delta { color: var(--sea); text-shadow: 0 0 24px rgba(3, 255, 203, .45); gap: 10px; }
+#s-benchmark .hero .bm-delta .cnt { font-size: 88px; }
+#s-benchmark .hero .bm-delta small { font-size: 32px; }
 #s-benchmark.st-0 .hero .bm-delta { animation: bmHeroGlow 3.2s ease-in-out calc(var(--delay) + 1.9s) infinite; }
-@keyframes bmHeroGlow { 0%, 100% { text-shadow: 0 0 18px rgba(3, 255, 203, .35); } 50% { text-shadow: 0 0 46px rgba(3, 255, 203, .95), 0 0 90px rgba(3, 255, 203, .35); } }
-#s-benchmark .bm-hero-halo { position: absolute; top: -45px; width: 300px; height: 160px; border-radius: 50%; pointer-events: none; opacity: 0;
-  background: radial-gradient(closest-side, rgba(3, 255, 203, .26), rgba(37, 199, 188, .08) 60%, transparent); }
+@keyframes bmHeroGlow { 0%, 100% { text-shadow: 0 0 18px rgba(3, 255, 203, .35); } 50% { text-shadow: 0 0 50px rgba(3, 255, 203, .95), 0 0 100px rgba(3, 255, 203, .35); } }
+#s-benchmark .bm-hero-halo { position: absolute; top: -64px; width: 380px; height: 200px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .28), rgba(37, 199, 188, .08) 60%, transparent); }
 #s-benchmark .bm-row.is-in .bm-hero-halo { animation: bmHeroHalo 3.2s ease-in-out calc(var(--delay) + 1.9s) infinite both; }
-@keyframes bmHeroHalo { 0%, 100% { opacity: .4; transform: scale(.82); } 50% { opacity: 1; transform: scale(1.12); } }
+@keyframes bmHeroHalo { 0%, 100% { opacity: .45; transform: scale(.82); } 50% { opacity: 1; transform: scale(1.12); } }
 /* a ring bursts from +48 as it lands (live build only) */
-#s-benchmark .hero .bm-delta::before { content: ''; position: absolute; left: 30px; top: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 28%;
+#s-benchmark .hero .bm-delta::before { content: ''; position: absolute; left: 50px; top: 50%; width: 80px; height: 80px; margin: -40px 0 0 -40px; border-radius: 28%;
   border: 2px solid rgba(3, 255, 203, .9); box-shadow: 0 0 24px rgba(3, 255, 203, .6); opacity: 0; pointer-events: none; }
 #s-benchmark.bm-live .hero .bm-delta::before { animation: bmRing 1.2s var(--ease-out) calc(var(--delay) + .98s) both; }
-@keyframes bmRing { 0% { transform: scale(.5); opacity: 0; } 12% { opacity: 1; } 100% { transform: scale(3.4); opacity: 0; } }
+@keyframes bmRing { 0% { transform: scale(.5); opacity: 0; } 12% { opacity: 1; } 100% { transform: scale(3.2); opacity: 0; } }
 
 /* ── stop 1: a light runs along each group as the reading names it ─────── */
-#s-benchmark .bm-band { position: absolute; left: 144px; width: 1632px; opacity: 0; pointer-events: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 50%, transparent); mask-image: linear-gradient(90deg, transparent, #000 50%, transparent);
-  -webkit-mask-size: 520px 100%; mask-size: 520px 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: -520px 0; mask-position: -520px 0; }
-#s-benchmark .bm-band { mix-blend-mode: screen; }
-#s-benchmark .bm-band.mech { top: 336px; height: 124px; background: linear-gradient(180deg, transparent, rgba(201, 166, 211, .34) 30%, rgba(201, 166, 211, .34) 70%, transparent); }
-#s-benchmark .bm-band.will { top: 496px; height: 124px; background: linear-gradient(180deg, transparent, rgba(3, 255, 203, .26) 30%, rgba(3, 255, 203, .26) 70%, transparent); }
-#s-benchmark.bm-read-live .bm-band.mech { animation: bmBand 1.3s cubic-bezier(.4, 0, .3, 1) .35s both; }
-#s-benchmark.bm-read-live .bm-band.will { animation: bmBand 1.3s cubic-bezier(.4, 0, .3, 1) .75s both; }
-@keyframes bmBand { 0% { opacity: 1; -webkit-mask-position: -520px 0; mask-position: -520px 0; } 100% { opacity: 1; -webkit-mask-position: 1700px 0; mask-position: 1700px 0; } }
-
-/* ── caveat, reading, sources ───────────────────────────────────────── */
-#s-benchmark .bm-mark { position: absolute; left: 1756px; top: 528px; width: 0; height: 0; }
-#s-benchmark .bm-cav { position: absolute; left: var(--m); top: 688px; margin: 0; font: 400 28px/1.3 var(--font); color: rgba(255, 255, 255, .82); }
-#s-benchmark .bm-read-k { position: absolute; left: var(--m); top: 778px; }
-/* the second line opens with the dash, hung left so "build" lines up under "Behind" at x 600
-   (a first-line indent, because the split-word masks would clip a dash hung inside them) */
-#s-benchmark .bm-read { position: absolute; left: calc(600px - 1.14em); top: 756px; margin: 0; text-indent: 1.14em; font: 700 52px/1.06 var(--font); letter-spacing: -.022em; color: var(--white); }
-#s-benchmark .bm-read .w { text-indent: 0; }
-#s-benchmark .bm-src { position: absolute; left: var(--m); top: 892px; margin: 0; font: 400 24px/1.32 var(--font); color: rgba(255, 255, 255, .82); }
-#s-benchmark .bm-src b { font-weight: 700; }
+#s-benchmark .bm-band { position: absolute; left: var(--m); width: 1632px; opacity: 0; pointer-events: none; border-radius: 22px; mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 50%, transparent); mask-image: linear-gradient(90deg, transparent, #000 50%, transparent);
+  -webkit-mask-size: 560px 100%; mask-size: 560px 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: -560px 0; mask-position: -560px 0; }
+#s-benchmark .bm-band.mech { background: linear-gradient(180deg, transparent, rgba(201, 166, 211, .34) 30%, rgba(201, 166, 211, .34) 70%, transparent); }
+#s-benchmark .bm-band.will { background: linear-gradient(180deg, transparent, rgba(3, 255, 203, .26) 30%, rgba(3, 255, 203, .26) 70%, transparent); }
+#s-benchmark.bm-read-live .bm-band.mech { animation: bmBand 1.3s cubic-bezier(.4, 0, .3, 1) .45s both; }
+#s-benchmark.bm-read-live .bm-band.will { animation: bmBand 1.3s cubic-bezier(.4, 0, .3, 1) .85s both; }
+@keyframes bmBand { 0% { opacity: 1; -webkit-mask-position: -560px 0; mask-position: -560px 0; } 100% { opacity: 1; -webkit-mask-position: 1700px 0; mask-position: 1700px 0; } }

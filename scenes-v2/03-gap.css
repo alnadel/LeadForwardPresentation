@@ -1,131 +1,230 @@
-/* 03 · The gap (v2) — district map */
-#s-gap .gp-h { margin-top: 30px; font-size: 72px; white-space: nowrap; }
+/* 03 · The gap (v2) — three team districts on a lit floor, in perspective */
+
+/* ── type ────────────────────────────────────────────────────────────── */
+#s-gap .gp-head .kicker { font-size: 22px; }
+#s-gap .gp-h { margin-top: 20px; font-size: 72px; white-space: nowrap; }
 /* stop 2: the headline steps back so the payoff outranks it */
-#s-gap .gp-h.is-dim { opacity: .4 !important; filter: none; }
+#s-gap .gp-h.is-dim { opacity: .38 !important; filter: none; }
 
 /* the three points, each above its own district */
-#s-gap .gp-pt { position: absolute; top: 334px; width: 410px; }
-#s-gap .gp-n { display: flex; align-items: center; gap: 14px; font: 700 22px/1 var(--font); letter-spacing: .18em; }
-#s-gap .gp-n::after { content: ''; width: 40px; height: 2px; background: currentColor; opacity: .7; }
+#s-gap .gp-pt { position: absolute; top: 312px; width: 504px; }
+#s-gap .gp-n { display: inline-flex; align-items: center; gap: 14px; font: 700 22px/1 var(--font); letter-spacing: .18em; }
+#s-gap .gp-n::after { content: ''; width: 44px; height: 2px; background: currentColor; opacity: .7; }
 #s-gap .gp-pt.go .gp-n { color: var(--teal); }
 #s-gap .gp-pt.gap .gp-n { color: var(--purple-lt); }
-#s-gap .gp-pt-h { margin-top: 15px; color: var(--white); }
-#s-gap .gp-pt-s { margin: 8px 0 0; font: 400 30px/1.34 var(--font); color: var(--ink-2); text-wrap: pretty; }
+#s-gap .gp-pt-h { margin: 14px 0 0; font: 700 40px/1.08 var(--font); letter-spacing: -.016em; color: var(--white); }
+#s-gap .gp-pt-s { margin: 10px 0 0; font: 400 30px/1.32 var(--font); color: var(--ink-2); text-wrap: pretty; }
 /* focus follows the newest points */
-#s-gap[data-step="1"] .gp-pt.p1 { opacity: .5; }
+#s-gap[data-step="1"] .gp-pt.p1 { opacity: .46; }
 
-/* ── the map: tilts back and recedes at stop 2; drifts slowly all the time ── */
-#s-gap .gp-map { position: absolute; inset: 0; pointer-events: none; transform-origin: 960px 892px; transition: transform 1.2s var(--ease-io), opacity .9s var(--ease-soft); }
-#s-gap.st-2 .gp-map { transform: perspective(1500px) rotateX(32deg) scale(.95); opacity: .55; transition: transform 1.5s var(--ease-io), opacity 1.1s var(--ease-soft); }
-#s-gap .gp-drift { position: absolute; inset: 0; animation: gpDrift 17s ease-in-out infinite; }
+/* ── the ground: a soft pool of light the map stands in ─────────────── */
+#s-gap .gp-ground { position: absolute; left: -8%; right: -8%; top: 470px; height: 640px; pointer-events: none; opacity: 0;
+  background: radial-gradient(48% 56% at 50% 58%, rgba(37, 199, 188, .13), rgba(59, 128, 170, .07) 45%, rgba(96, 38, 80, .08) 65%, transparent 82%);
+  transition: opacity .5s var(--ease-soft); }
+#s-gap.st-0 .gp-ground { opacity: 1; transition: opacity 1.6s var(--ease-soft) calc(var(--enter, 0s) + .3s); animation: gpGround 9s ease-in-out infinite; }
+#s-gap.st-2 .gp-ground { opacity: .7; }
+@keyframes gpGround { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06) translateY(-10px); } }
+
+/* ── the map: a floor tilted in perspective; it swings up out of the chapter
+   line at stop 0 and tilts back and recedes at stop 2 ─────────────────── */
+#s-gap .gp-map { position: absolute; inset: 0; pointer-events: none; perspective: 1800px; perspective-origin: 960px 540px; opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-gap.st-0 .gp-map { opacity: 1; transition: opacity 1s var(--ease-soft) var(--enter, 0s); }
+#s-gap.st-2 .gp-map { opacity: .6; transition: opacity 1.3s var(--ease-soft); }
+#s-gap .gp-plane { position: absolute; inset: 0; transform-origin: 960px 940px; transform-style: preserve-3d;
+  transform: translateY(40px) rotateX(74deg) scale(1); transition: transform .5s var(--ease-soft); }
+#s-gap.st-0 .gp-plane { transform: translateY(0) rotateX(44deg) scale(1); transition: transform 2.2s cubic-bezier(.16, .84, .24, 1) var(--enter, 0s); }
+#s-gap.st-2 .gp-plane { transform: translateY(-6px) rotateX(70deg) scale(.9); transition: transform 1.6s var(--ease-io); }
+/* the whole map drifts a little, all the time */
+#s-gap .gp-drift { position: absolute; inset: 0; transform-style: preserve-3d; animation: gpDrift 19s ease-in-out infinite; }
 @keyframes gpDrift {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-  25% { transform: translate3d(10px, -6px, 0) rotate(.16deg); }
-  50% { transform: translate3d(-3px, -10px, 0) rotate(-.06deg); }
-  75% { transform: translate3d(-10px, -3px, 0) rotate(-.16deg); }
+  25% { transform: translate3d(12px, -8px, 0) rotate(.22deg); }
+  50% { transform: translate3d(-4px, -14px, 0) rotate(-.08deg); }
+  75% { transform: translate3d(-12px, -4px, 0) rotate(-.22deg); }
 }
 
-#s-gap .gp-d { position: absolute; }
-#s-gap .gp-wall { position: absolute; inset: 0; border-radius: 76px; border: 2px solid rgba(255, 255, 255, .24);
-  background: radial-gradient(120% 95% at 50% 38%, rgba(255, 255, 255, .055), rgba(255, 255, 255, .014) 72%);
-  transition: border-color 1.2s var(--ease-soft); }
-#s-gap .gp-in { position: absolute; inset: 0; border-radius: 76px; overflow: hidden; }
-/* stop 0: each district holds a soft pool of its own light, breathing */
-#s-gap .gp-in::before { content: ''; position: absolute; left: var(--sx); top: var(--sy); width: 760px; height: 760px; margin: -380px 0 0 -380px; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .22), rgba(37, 199, 188, .09) 45%, rgba(37, 199, 188, .03) 70%, transparent);
-  opacity: 0; transition: opacity 1.4s var(--ease-soft); }
-#s-gap.st-0 .gp-in::before { opacity: 1; transition-delay: calc(var(--enter, 0s) + 1.2s + var(--di) * .2s); animation: gpPool 5.6s ease-in-out calc(var(--di) * -1.9s) infinite; }
-@keyframes gpPool { 0%, 100% { transform: scale(.82); } 50% { transform: scale(1.08); } }
-/* stop 1: the boundary turns purple — the walls read as walls */
-#s-gap.st-1 .gp-wall { border-color: rgba(201, 166, 211, .62); transition-delay: calc(.8s + var(--di) * .22s); }
+/* the floor grid, with a slow sweep of light running over it towards us */
+#s-gap .gp-grid { position: absolute; left: -160px; right: -160px; top: 330px; height: 700px; opacity: 0; transition: opacity 1.2s var(--ease-soft);
+  background-image: linear-gradient(rgba(143, 194, 220, .1) 2px, transparent 2px), linear-gradient(90deg, rgba(143, 194, 220, .1) 2px, transparent 2px);
+  background-size: 56px 56px; background-position: 12px 26px;
+  -webkit-mask-image: radial-gradient(56% 62% at 50% 72%, #000 25%, transparent 78%); mask-image: radial-gradient(56% 62% at 50% 72%, #000 25%, transparent 78%); }
+#s-gap.st-0 .gp-grid { opacity: 1; transition-delay: calc(var(--enter, 0s) + .2s); }
+#s-gap .gp-grid::after { content: ''; position: absolute; inset: 0; background: inherit;
+  background-image: linear-gradient(rgba(3, 255, 203, .5) 2px, transparent 2px), linear-gradient(90deg, rgba(3, 255, 203, .5) 2px, transparent 2px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 44%, #000 50%, transparent 56%); mask-image: linear-gradient(180deg, transparent 44%, #000 50%, transparent 56%);
+  -webkit-mask-size: 100% 300%; mask-size: 100% 300%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: 0 80%; mask-position: 0 80%; opacity: 0; }
+#s-gap.st-0 .gp-grid::after { animation: gpSweep 7.5s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 1.6s) infinite; }
+@keyframes gpSweep { 0% { -webkit-mask-position: 0 80%; mask-position: 0 80%; opacity: 0; } 10% { opacity: 1; } 62% { opacity: 1; } 72%, 100% { -webkit-mask-position: 0 20%; mask-position: 0 20%; opacity: 0; } }
 
-/* colleagues: pop in at stop 0; many twinkle */
-#s-gap .gp-sq { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 28%; background: rgba(255, 255, 255, var(--a));
-  transform: scale(0); transition: transform .8s var(--ease-back) calc(var(--enter, 0s) + .5s + var(--di) * .14s + var(--rd) * .6s); }
+/* ── districts ─────────────────────────────────────────────────────── */
+#s-gap .gp-d { position: absolute; transform-style: preserve-3d; }
+#s-gap .gp-floor { position: absolute; inset: 0; border-radius: 92px; opacity: 0; transform: scale(.86);
+  background: radial-gradient(110% 92% at 50% 42%, rgba(24, 46, 74, .82), rgba(9, 19, 36, .9) 72%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .05), 0 0 80px rgba(37, 199, 188, .08), inset 0 0 70px rgba(37, 199, 188, .08);
+  transition: opacity .35s var(--ease-soft), transform .4s var(--ease-soft); }
+#s-gap.st-0 .gp-floor { opacity: 1; transform: none;
+  transition: opacity 1s var(--ease-soft) calc(var(--enter, 0s) + .2s + var(--di) * .12s), transform 1.5s var(--ease-out) calc(var(--enter, 0s) + .2s + var(--di) * .12s); }
+#s-gap .gp-in { position: absolute; inset: 0; border-radius: 92px; overflow: hidden; }
+
+/* a pool of light on the floor under every light */
+#s-gap .gp-pool { position: absolute; width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .34), rgba(37, 199, 188, .12) 45%, transparent);
+  transition: opacity .4s var(--ease-soft); }
+#s-gap.st-0 .gp-pool { opacity: 1; transition: opacity 1.2s var(--ease-soft) calc(var(--enter, 0s) + 1.05s + var(--di) * .14s + var(--k) * .12s);
+  animation: gpPool 4.8s ease-in-out calc(var(--k) * -.9s - var(--di) * 1.6s) infinite; }
+@keyframes gpPool { 0%, 100% { transform: scale(.8); } 50% { transform: scale(1.14); } }
+#s-gap.st-1 .gp-pool { opacity: .8; }
+
+/* colleagues: pop in at stop 0; some twinkle */
+#s-gap .gp-sq { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 28%; background: rgba(226, 234, 245, var(--a));
+  transform: scale(0); transition: transform .8s var(--ease-back) calc(var(--enter, 0s) + .45s + var(--di) * .12s + var(--rd) * .6s); }
 #s-gap.st-0 .gp-sq { transform: scale(1); }
 #s-gap .gp-sq.tw { animation: gpTw var(--tt) ease-in-out var(--td) infinite; }
-@keyframes gpTw { 0%, 100% { opacity: 1; } 50% { opacity: .15; } }
+@keyframes gpTw { 0%, 100% { opacity: 1; } 50% { opacity: .18; } }
 
-/* the lights ignite inside every district, then keep pulsing and sending out rings */
-#s-gap .gp-L { --ig: calc(var(--enter, 0s) + 1s + var(--di) * .14s + var(--k) * .14s); }
-#s-gap .gp-L b { position: absolute; inset: -2px; border-radius: 28%; background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--sea) 38%, var(--teal) 80%);
-  box-shadow: 0 0 10px var(--sea), 0 0 30px rgba(3, 255, 203, .55), 0 0 70px rgba(37, 199, 188, .3);
-  opacity: 0; transition: opacity .9s var(--ease-soft); animation: gpBreathe 3.2s ease-in-out var(--bd) infinite; }
-#s-gap.st-0 .gp-L b { opacity: 1; transition-delay: var(--ig); }
-@keyframes gpBreathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.28); filter: brightness(1.35); } }
-#s-gap .gp-L::after { content: ''; position: absolute; inset: -3px; border-radius: 28%; border: 2px solid var(--sea); opacity: 0; }
-#s-gap.st-0 .gp-L::after { animation: gpIgnite 1.3s var(--ease-out) var(--ig) both, gpPing 6.6s var(--ease-out) calc(var(--ig) + 1.5s + var(--pd)) infinite; }
-@keyframes gpIgnite { 0% { opacity: 0; transform: scale(.8); } 12% { opacity: .9; } 100% { opacity: 0; transform: scale(3.2); } }
-@keyframes gpPing { 0% { opacity: 0; transform: scale(.8); } 5% { opacity: .75; } 36% { opacity: 0; transform: scale(3); } 100% { opacity: 0; transform: scale(3); } }
+/* the walls: ten stacked outlines. At stop 0 they are a low kerb; at stop 1 they
+   rise (layer by layer) and turn purple; at stop 2 they sink back. --wc / --ws are
+   each layer's resting colour and glow (the hit flash animates away from them). */
+#s-gap .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); position: absolute; inset: 0; border-radius: 92px; border: 2px solid var(--wc); box-shadow: var(--ws); pointer-events: none;
+  transform: translateZ(calc(var(--k) * .4px)); transition: transform .6s var(--ease-soft), border-color .6s var(--ease-soft), box-shadow .6s var(--ease-soft); }
+#s-gap.st-0 .gp-w { transform: translateZ(calc(var(--k) * 1.3px)); transition: transform 1s var(--ease-out) calc(var(--enter, 0s) + .6s), border-color 1s var(--ease-soft) calc(var(--enter, 0s) + .5s + var(--di) * .12s); }
+#s-gap.st-0 .gp-w.base { --wc: rgba(255, 255, 255, .3); }
+#s-gap.st-0 .gp-w.rim { --wc: rgba(255, 255, 255, .22); }
+#s-gap.st-1 .gp-w { --wc: rgba(201, 166, 211, calc(.1 + var(--k) * .012)); transform: translateZ(calc(var(--k) * 8px));
+  transition: transform 1.2s var(--ease-out) calc(.2s + var(--di) * .16s + var(--k) * .035s), border-color .9s var(--ease-soft) calc(.2s + var(--di) * .16s + var(--k) * .035s), box-shadow .9s var(--ease-soft) calc(.5s + var(--di) * .16s); }
+#s-gap.st-1 .gp-w.base { --wc: rgba(201, 166, 211, .62); }
+#s-gap.st-1 .gp-w.rim { --wc: rgba(232, 208, 238, .92); --ws: 0 0 22px rgba(157, 103, 170, .75), inset 0 0 18px rgba(157, 103, 170, .35); }
+#s-gap.st-2 .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); transform: translateZ(calc(var(--k) * 1.3px)); transition: transform 1.3s var(--ease-io), border-color 1s var(--ease-soft), box-shadow 1s var(--ease-soft); }
+#s-gap.st-2 .gp-w.base { --wc: rgba(37, 199, 188, .42); }
+#s-gap.st-2 .gp-w.rim { --wc: rgba(37, 199, 188, .3); }
 
-/* stop 1: a ripple leaves a light in the district's own shape, reaches every wall
-   at once and stops there; it turns purple and the wall flashes. First all three
-   together (b), then one district every 3.4 s, in turn (a). */
-#s-gap .gp-rip { position: absolute; inset: 0; border-radius: 76px; border: 3px solid var(--teal); box-shadow: inset 0 0 34px rgba(37, 199, 188, .28);
-  transform-origin: var(--sx) var(--sy); transform: scale(.04); opacity: 0; pointer-events: none; }
+/* stop 1: a ripple leaves the first light in the district's own shape, runs
+   across the floor, hits the wall and stops there; the wall flashes purple from
+   the ground up. First all three together (b), then one district every 3.4 s (a). */
+#s-gap .gp-rip { position: absolute; inset: 0; border-radius: 92px; border: 4px solid var(--teal); box-shadow: inset 0 0 40px rgba(37, 199, 188, .3), 0 0 18px rgba(37, 199, 188, .4);
+  transform-origin: var(--sx) var(--sy); transform: translateZ(2px) scale(.04); opacity: 0; pointer-events: none; }
 @keyframes gpRip {
-  0% { transform: scale(.04); opacity: 0; border-color: var(--teal); animation-timing-function: cubic-bezier(.42, .12, .78, .88); }
+  0% { transform: translateZ(2px) scale(.04); opacity: 0; border-color: var(--teal); animation-timing-function: cubic-bezier(.42, .12, .78, .88); }
   12% { opacity: 1; }
-  62% { transform: scale(1); opacity: 1; border-color: var(--teal); animation-timing-function: var(--ease-soft); }
+  62% { transform: translateZ(2px) scale(1); opacity: 1; border-color: var(--sea); animation-timing-function: var(--ease-soft); }
   70% { border-color: var(--purple-lt); opacity: .95; }
-  100% { transform: scale(1); opacity: 0; border-color: var(--purple-lt); }
+  100% { transform: translateZ(2px) scale(1); opacity: 0; border-color: var(--purple-lt); }
 }
 @keyframes gpRipLoop {
-  0% { transform: scale(.04); opacity: 0; border-color: var(--teal); animation-timing-function: cubic-bezier(.42, .12, .78, .88); }
+  0% { transform: translateZ(2px) scale(.04); opacity: 0; border-color: var(--teal); animation-timing-function: cubic-bezier(.42, .12, .78, .88); }
   2.4% { opacity: 1; }
-  13% { transform: scale(1); opacity: 1; border-color: var(--teal); animation-timing-function: var(--ease-soft); }
+  13% { transform: translateZ(2px) scale(1); opacity: 1; border-color: var(--sea); animation-timing-function: var(--ease-soft); }
   15% { border-color: var(--purple-lt); opacity: .95; }
-  22% { transform: scale(1); opacity: 0; border-color: var(--purple-lt); }
-  100% { transform: scale(1); opacity: 0; border-color: var(--purple-lt); }
+  22% { transform: translateZ(2px) scale(1); opacity: 0; border-color: var(--purple-lt); }
+  100% { transform: translateZ(2px) scale(1); opacity: 0; border-color: var(--purple-lt); }
 }
-#s-gap.st-1 .gp-rip.b { animation: gpRip 1.8s linear calc(.3s + var(--di) * .2s) both; }
+#s-gap.st-1 .gp-rip.b { animation: gpRip 1.8s linear calc(.35s + var(--di) * .2s) both; }
 #s-gap.st-1 .gp-rip.a { animation: gpRipLoop 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
+/* the hit: a bright purple flash climbs the wall */
+@keyframes gpWallHit { 0% { border-color: var(--wc); box-shadow: var(--ws); } 18% { border-color: rgba(248, 232, 252, 1); box-shadow: 0 0 26px rgba(201, 166, 211, .9), inset 0 0 20px rgba(157, 103, 170, .6); } 100% { border-color: var(--wc); box-shadow: var(--ws); } }
+@keyframes gpWallHitLoop { 0%, 12.6% { border-color: var(--wc); box-shadow: var(--ws); } 15.4% { border-color: rgba(248, 232, 252, 1); box-shadow: 0 0 26px rgba(201, 166, 211, .9), inset 0 0 20px rgba(157, 103, 170, .6); } 26%, 100% { border-color: var(--wc); box-shadow: var(--ws); } }
+#s-gap.st-1 .gp-w { animation: gpWallHit 1.1s var(--ease-soft) calc(1.36s + var(--di) * .2s + var(--k) * .035s) 1, gpWallHitLoop 10.2s linear calc(3.4s + var(--di) * 3.4s + var(--k) * .035s) infinite; }
+#s-gap.st-2 .gp-w { animation: none; }
 
-#s-gap .gp-flash { position: absolute; inset: -1px; border-radius: 77px; border: 3px solid var(--purple-lt); box-shadow: 0 0 26px rgba(157, 103, 170, .8), inset 0 0 24px rgba(157, 103, 170, .45); opacity: 0; }
-@keyframes gpFlash { 0% { opacity: 0; } 14% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes gpFlashLoop { 0%, 12.4% { opacity: 0; } 14.6% { opacity: 1; } 25% { opacity: 0; } 100% { opacity: 0; } }
-#s-gap.st-1 .gp-flash.b { animation: gpFlash 1.1s var(--ease-soft) calc(1.35s + var(--di) * .2s) both; }
-#s-gap.st-1 .gp-flash.a { animation: gpFlashLoop 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
+/* the lights rise out of the floor as they ignite, then hover, breathe and ping;
+   each faces the camera and stands on a thin stem of light */
+/* (the box is roomy so the glow and rings never fall outside it: Chrome clips a
+   3D-sorted layer's negative overflow) */
+#s-gap .gp-L { position: absolute; width: 200px; height: 200px; margin: -100px 0 0 -100px; transform: translateZ(0) rotateX(-74deg); transition: transform .5s var(--ease-soft); }
+#s-gap .gp-L { --ig: calc(var(--enter, 0s) + 1s + var(--di) * .14s + var(--k) * .12s); }
+#s-gap.st-0 .gp-L { transform: translateZ(40px) rotateX(-44deg); transition: transform 1.3s var(--ease-out) var(--ig); }
+#s-gap.st-2 .gp-L { transform: translateZ(40px) rotateX(-70deg); transition: transform 1.6s var(--ease-io); }
+#s-gap .gp-L b { position: absolute; left: 88px; top: 88px; width: 24px; height: 24px; border-radius: 28%; background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--sea) 38%, var(--teal) 80%);
+  box-shadow: 0 0 12px var(--sea), 0 0 34px rgba(3, 255, 203, .6), 0 0 80px rgba(37, 199, 188, .34);
+  opacity: 0; transition: opacity .5s var(--ease-soft); animation: gpBreathe 3.2s ease-in-out var(--bd) infinite; }
+#s-gap.st-0 .gp-L b { opacity: 1; transition: opacity .9s var(--ease-soft) var(--ig); }
+@keyframes gpBreathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.26); filter: brightness(1.35); } }
+#s-gap .gp-L::after { content: ''; position: absolute; left: 86px; top: 86px; width: 28px; height: 28px; border-radius: 28%; border: 2px solid var(--sea); opacity: 0; }
+#s-gap.st-0 .gp-L::after { animation: gpIgnite 1.3s var(--ease-out) var(--ig) both, gpPing 6.6s var(--ease-out) calc(var(--ig) + 1.5s + var(--pd)) infinite; }
+@keyframes gpIgnite { 0% { opacity: 0; transform: scale(.8); } 12% { opacity: .95; } 100% { opacity: 0; transform: scale(3.6); } }
+@keyframes gpPing { 0% { opacity: 0; transform: scale(.8); } 5% { opacity: .75; } 36% { opacity: 0; transform: scale(3.2); } 100% { opacity: 0; transform: scale(3.2); } }
+#s-gap .gp-stem { position: absolute; width: 2px; height: 40px; margin: -40px 0 0 -1px; transform-origin: 50% 100%; transform: rotateX(-90deg) scaleY(0);
+  background: linear-gradient(0deg, rgba(37, 199, 188, 0), rgba(3, 255, 203, .75)); transition: transform .4s var(--ease-soft); }
+#s-gap.st-0 .gp-stem { transform: rotateX(-90deg) scaleY(1); transition: transform 1.3s var(--ease-out) calc(var(--enter, 0s) + 1s + var(--di) * .14s + var(--k) * .12s); }
 
-/* stop 1: dashed bridges that give out halfway; stories keep setting out and fading there */
-#s-gap .gp-bridges { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
-#s-gap .gp-br { fill: none; stroke: url(#gpBridgeInk); stroke-width: 2.5; stroke-dasharray: 7 7; }
-#s-gap.st-1 .gp-br { animation: gpDash 2.4s linear infinite; }
-@keyframes gpDash { to { stroke-dashoffset: -28; } }
-#s-gap .gp-gate { fill: rgba(37, 199, 188, .9); }
-#s-gap .gp-bls { position: absolute; inset: 0; }
-#s-gap .gp-bl { position: absolute; left: 0; top: 0; width: 18px; height: 18px; offset-rotate: 0deg; offset-distance: 0%; opacity: 0; }
+/* ── bridges: they stand up out of the floor and arc over both walls ── */
+#s-gap .gp-br { position: absolute; transform-origin: 50% 100%; transform: rotateX(-90deg); pointer-events: none; transition: transform .8s var(--ease-soft); }
+/* stop 2: each bridge lowers across the gap like a drawbridge — the gap closed */
+#s-gap.st-2 .gp-br { transform: rotateX(-6deg); transition: transform 1.5s cubic-bezier(.5, 0, .2, 1) .5s; }
+#s-gap .gp-br svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+#s-gap .gp-br path { fill: none; stroke-linecap: round; }
+#s-gap .gp-br-glow { stroke: rgba(37, 199, 188, .2); stroke-width: 10; stroke-dasharray: 48 200; opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-gap .gp-br-line { stroke: url(#gpBridgeInk); stroke-width: 3.5; stroke-dasharray: 1.6 1.5; opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-gap .gp-br-ok { stroke: var(--sea); stroke-width: 3.5; stroke-dasharray: 0 100; opacity: 0; transition: stroke-dasharray .4s var(--ease-soft), opacity .4s var(--ease-soft); }
+#s-gap.st-1 .gp-br-line { opacity: 1; animation: gpDash 2.2s linear infinite; transition: opacity .7s var(--ease-soft) .5s; }
+#s-gap.st-1 .gp-br-glow { opacity: 1; transition: opacity .9s var(--ease-soft) .6s; }
+#s-gap .gp-br.p2 .gp-br-line, #s-gap .gp-br.p2 .gp-br-glow { transition-delay: .8s; }
+@keyframes gpDash { to { stroke-dashoffset: -6.2; } }
+/* stop 2: the bridges complete — the gap closed */
+#s-gap.st-2 .gp-br-line { opacity: 0; animation: none; transition: opacity .6s var(--ease-soft); }
+#s-gap.st-2 .gp-br-glow { opacity: 1; stroke: rgba(37, 199, 188, .28); stroke-dasharray: 100 0; transition: stroke-dasharray 1.3s var(--ease-io) 1.1s, opacity .5s var(--ease-soft); }
+#s-gap.st-2 .gp-br-ok { opacity: .95; stroke-dasharray: 100 0; transition: stroke-dasharray 1.3s var(--ease-io) 1.1s, opacity .5s var(--ease-soft) 1.1s; }
+#s-gap.st-2 .gp-br.p2 .gp-br-ok, #s-gap.st-2 .gp-br.p2 .gp-br-glow { transition-delay: 1.5s; }
+
+/* the story light: at stop 1 it sets out and fails at the top of the arc */
+#s-gap .gp-bl { position: absolute; left: 0; top: 0; width: 20px; height: 20px; margin: 0; border-radius: 28%; offset-rotate: 0deg; offset-distance: 0%; opacity: 0;
+  background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--sea) 40%, var(--teal) 82%); box-shadow: 0 0 12px var(--sea), 0 0 34px rgba(3, 255, 203, .6); }
 @keyframes gpSend {
-  0% { offset-distance: 0%; opacity: 0; animation-timing-function: cubic-bezier(.3, .5, .45, 1); }
+  0% { offset-distance: 0%; opacity: 0; transform: scale(1); animation-timing-function: cubic-bezier(.3, .5, .45, 1); }
   6% { opacity: 1; }
-  38% { opacity: .9; }
-  50% { offset-distance: 50%; opacity: 0; }
+  40% { opacity: 1; filter: none; }
+  48% { offset-distance: 48%; opacity: 1; transform: scale(1.3); filter: hue-rotate(80deg) brightness(1.4); }
+  54% { offset-distance: 50%; opacity: 0; transform: scale(2); filter: hue-rotate(80deg); }
   100% { offset-distance: 50%; opacity: 0; }
 }
-#s-gap.st-1 .gp-bl.p1 { animation: gpSend 4.4s linear .75s infinite; }
-#s-gap.st-1 .gp-bl.p2 { animation: gpSend 4.4s linear 2.95s infinite; }
+#s-gap.st-1 .gp-br.p1 .gp-bl:not(.ok) { animation: gpSend 4.4s linear .8s infinite; }
+#s-gap.st-1 .gp-br.p2 .gp-bl:not(.ok) { animation: gpSend 4.4s linear 3s infinite; }
+/* the break: a purple mark at the top of the arc flashes; fragments fall to the floor */
+#s-gap .gp-x { position: absolute; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 28%; border: 2.5px solid var(--purple-lt); box-shadow: 0 0 16px rgba(157, 103, 170, .9); opacity: 0; }
+@keyframes gpFail { 0%, 46% { opacity: 0; transform: scale(.5); } 52% { opacity: 1; transform: scale(1); } 78% { opacity: 0; transform: scale(2.8); } 100% { opacity: 0; transform: scale(2.8); } }
+#s-gap.st-1 .gp-br.p1 .gp-x { animation: gpFail 4.4s var(--ease-out) .8s infinite; }
+#s-gap.st-1 .gp-br.p2 .gp-x { animation: gpFail 4.4s var(--ease-out) 3s infinite; }
+#s-gap .gp-frag { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 28%; background: var(--purple-lt); box-shadow: 0 0 10px rgba(157, 103, 170, .9); opacity: 0; }
+@keyframes gpFall {
+  0%, 50% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+  53% { opacity: 1; transform: translate(calc(var(--fx) * .2), -6px) rotate(20deg); animation-timing-function: cubic-bezier(.5, 0, 1, .6); }
+  80% { opacity: .9; }
+  86% { opacity: 0; transform: translate(var(--fx), 178px) rotate(200deg); }
+  100% { opacity: 0; transform: translate(var(--fx), 178px) rotate(200deg); }
+}
+#s-gap.st-1 .gp-br.p1 .gp-frag { animation: gpFall 4.4s linear calc(.8s + var(--f) * .04s) infinite; }
+#s-gap.st-1 .gp-br.p2 .gp-frag { animation: gpFall 4.4s linear calc(3s + var(--f) * .04s) infinite; }
+/* stop 2: a story crosses each bridge, one after the other */
+@keyframes gpCross { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 50% { offset-distance: 100%; opacity: 1; } 56%, 100% { offset-distance: 100%; opacity: 0; } }
+#s-gap.st-2 .gp-br.p1 .gp-bl.ok { animation: gpCross 6s var(--ease-soft) 2.4s infinite; }
+#s-gap.st-2 .gp-br.p2 .gp-bl.ok { animation: gpCross 6s var(--ease-soft) 4s infinite; }
 
-#s-gap .gp-x { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 28%; border: 2px solid var(--purple-lt); box-shadow: 0 0 14px rgba(157, 103, 170, .8); opacity: 0; transition: opacity .4s var(--ease-soft); }
-/* the break stays marked; each failed story flashes on top of it */
-#s-gap.st-1 .gp-x.m { opacity: .7; transition: opacity .6s var(--ease-soft) 1.4s; }
-@keyframes gpFail { 0%, 44% { opacity: 0; transform: scale(.5); } 50% { opacity: 1; transform: scale(.8); } 74% { opacity: 0; transform: scale(2.6); } 100% { opacity: 0; transform: scale(2.6); } }
-#s-gap.st-1 .gp-x.a.p1 { animation: gpFail 4.4s var(--ease-out) .75s infinite; }
-#s-gap.st-1 .gp-x.a.p2 { animation: gpFail 4.4s var(--ease-out) 2.95s infinite; }
+/* foreground dust */
+#s-gap .gp-dust i { width: 4px; height: 4px; }
+#s-gap .gp-dust { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1s var(--ease-soft); }
+#s-gap.st-0 .gp-dust { opacity: .8; transition-delay: calc(var(--enter, 0s) + 1s); }
 
 /* ── stop 2: the conclusion and the ask ─────────────────────────────── */
-#s-gap .gp-close { position: absolute; left: var(--m); right: var(--m); top: 350px; }
-#s-gap .gp-c1 { margin: 0; font: 400 32px/1.4 var(--font); color: var(--ink-2); }
-#s-gap .gp-c2 { margin: 18px 0 0; font: 700 56px/1.08 var(--font); letter-spacing: -.022em; color: var(--white); }
-#s-gap .gp-ask { position: relative; display: inline-flex; align-items: center; gap: 18px; margin-top: 40px; padding: 16px 32px 16px 22px; border-radius: 14px; overflow: hidden;
-  border: 1px solid rgba(37, 199, 188, .45); background: linear-gradient(100deg, rgba(37, 199, 188, .14), rgba(37, 199, 188, .05)); }
-#s-gap .gp-ask .kicker::before { display: none; }
+#s-gap .gp-close { position: absolute; left: var(--m); right: var(--m); top: 300px; }
+#s-gap .gp-c1 { margin: 0; font: 400 36px/1.36 var(--font); color: var(--ink-2); }
+#s-gap .gp-c2 { margin: 22px 0 0; max-width: 1560px; font: 700 70px/1.04 var(--font); letter-spacing: -.024em; color: var(--white); }
+#s-gap .gp-ask-w { display: inline-block; margin-top: 40px; }
+#s-gap .gp-ask { display: flex; align-items: center; gap: 28px; padding: 28px 48px 28px 34px; border-radius: 24px;
+  background: linear-gradient(100deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .06) 60%, rgba(157, 103, 170, .08)), rgba(7, 16, 32, .7);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .45), 0 0 70px rgba(37, 199, 188, .16), inset 0 1px 0 rgba(255, 255, 255, .16); }
 /* the story light docks here (the spark rests in this slot) */
-#s-gap .gp-ask-lt { width: 30px; height: 30px; flex: none; margin-right: 4px; }
-#s-gap .gp-ask-sep { font: 700 28px/1 var(--font); color: var(--teal); }
-#s-gap .gp-ask-t { font: 500 32px/1 var(--font); color: var(--white); }
-/* parked on the ask: the strip glows, and a sheen passes through it */
-#s-gap.st-2 .gp-ask.is-in { animation: gpAsk 3.8s ease-in-out 2s infinite; }
-@keyframes gpAsk { 0%, 100% { border-color: rgba(37, 199, 188, .45); box-shadow: 0 0 0 rgba(37, 199, 188, 0), inset 0 0 0 rgba(37, 199, 188, 0); } 50% { border-color: rgba(3, 255, 203, .9); box-shadow: 0 0 44px rgba(37, 199, 188, .38), inset 0 0 26px rgba(37, 199, 188, .18); } }
-#s-gap .gp-ask::after { content: ''; position: absolute; top: -30%; bottom: -30%; left: -40%; width: 26%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .16), transparent); transform: skewX(-18deg); opacity: 0; pointer-events: none; }
-#s-gap.st-2 .gp-ask.is-in::after { animation: gpSheen 5.2s ease-in-out 2.4s infinite; }
-@keyframes gpSheen { 0% { left: -40%; opacity: 0; } 8% { opacity: 1; } 50% { left: 120%; opacity: 1; } 51%, 100% { left: 120%; opacity: 0; } }
+#s-gap .gp-ask-lt { position: relative; width: 40px; height: 40px; flex: none; }
+#s-gap .gp-ask-lt b { position: absolute; inset: 0; border-radius: 28%; border: 2px solid rgba(3, 255, 203, .6); opacity: 0; }
+#s-gap.st-2 .gp-ask-lt b { animation: gpDock 3.4s var(--ease-out) 2.4s infinite; }
+@keyframes gpDock { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(2.6); opacity: 0; } }
+#s-gap .gp-ask-k { font: 700 24px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--sea); white-space: nowrap; }
+#s-gap .gp-ask-sep { width: 2px; height: 50px; background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .4), transparent); }
+#s-gap .gp-ask-t { font: 700 50px/1.05 var(--font); letter-spacing: -.012em; color: var(--white); white-space: nowrap; }
+#s-gap .gp-ask.amb-sheen::after { animation-duration: 6.5s; animation-delay: 2.6s; }
+
+/* stop 2: the gap is closed — no more walls being hit, no more stories failing
+   (kept last, and as specific as the stop-1 rules it overrides) */
+#s-gap.st-2 .gp-rip.a, #s-gap.st-2 .gp-rip.b,
+#s-gap.st-2 .gp-br.p1 .gp-bl:not(.ok), #s-gap.st-2 .gp-br.p2 .gp-bl:not(.ok),
+#s-gap.st-2 .gp-br.p1 .gp-x, #s-gap.st-2 .gp-br.p2 .gp-x,
+#s-gap.st-2 .gp-br.p1 .gp-frag, #s-gap.st-2 .gp-br.p2 .gp-frag { animation: none; opacity: 0; }

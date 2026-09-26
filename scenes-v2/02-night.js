@@ -9,7 +9,7 @@
    formula); v2 scene 11 calls back to it. */
 (function () {
   const OFFSET = Deck.NIGHT_OFFSET;   // this scene's camera pan, held on every stop (shared with 11)
-  const CARD = { x: 1216, y: 424, w: 560 };
+  const CARD = { x: 1104, y: 392, w: 672 };
   const ROWS = [
     'Overnight incidents · timestamped',
     'Signal faults still open',
@@ -18,13 +18,13 @@
     'Anything the day shift must call',
     'Signed off by night supervisor',
   ];
-  const CARD_CY = CARD.y + 200;       // the card's centre (it is ~400px tall)
+  const CARD_CY = CARD.y + 232;       // the card's centre (it is ~465px tall)
   // the old handover: loose notes dropped around the desk [left, top, w, h, tilt°]
   const SCRAPS = [
-    [800, 470, 150, 92, -12], [1010, 770, 132, 84, 9], [1250, 432, 168, 98, -6],
-    [1640, 470, 124, 80, 13], [1690, 770, 140, 92, -9], [1330, 850, 160, 72, 5],
-    [880, 650, 120, 104, -15], [1540, 610, 112, 74, 17], [1130, 600, 140, 84, -3],
-    [640, 820, 126, 80, 11], [1450, 720, 118, 78, -8],
+    [780, 452, 150, 92, -12], [980, 760, 132, 84, 9], [1220, 420, 168, 98, -6],
+    [1640, 440, 124, 80, 13], [1690, 760, 140, 92, -9], [1330, 830, 160, 72, 5],
+    [860, 640, 120, 104, -15], [1560, 600, 112, 74, 17], [1110, 590, 140, 84, -3],
+    [640, 800, 126, 80, 11], [1440, 700, 118, 78, -8], [1760, 600, 104, 70, -14],
   ];
 
   const rnd = (s) => { s = Math.sin(s * 12.9898 + 78.233) * 43758.5453; return s - Math.floor(s); };
@@ -57,6 +57,9 @@
   const KNOW = { x: Math.round(Math.min(Math.max(144, MID[0] - 380), 1776 - 760)), y: Math.round(Math.max(REST[0][1], REST[1][1]) + 84) };
 
   const check = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5.5 12.5 10 17 18.5 7.5"/></svg>';
+  // near-camera bokeh: large soft squares drifting slowly at the edges of the frame (stop 0 depth)
+  const BOKEH = [[120, 170, 96, 18, -4], [1690, 130, 130, 22, -9], [300, 820, 150, 24, -13], [1540, 790, 110, 20, -2], [40, 520, 70, 16, -7], [1820, 470, 84, 19, -11], [880, 70, 60, 17, -5]];
+  const bokeh = BOKEH.map(([x, y, sz, t, dl], i) => `<i style="left:${x}px;top:${y}px;--sz:${sz}px;--t:${t}s;--dl:${dl}s;--bx:${(i % 2 ? -1 : 1) * (40 + i * 9)}px;--by:${(i % 3 - 1) * 36}px"></i>`).join('');
   // dust drifting through the night air (stops 0–1)
   const dust = Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 137 + 41) % 100}%;top:${28 + (i * 71) % 70}%;--t:${11 + (i % 6) * 2.3}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 70)}px;--dy:${-150 - (i * 29) % 210}px"></i>`).join('');
 
@@ -85,7 +88,13 @@
     ],
     html: `
       <div class="nt-warm"><i></i></div>
+      <div class="nt-deep">
+        <div class="nt-rays"></div>
+        <div class="nt-rings"><i></i><i></i><i></i></div>
+        <div class="nt-horizon"><i></i></div>
+      </div>
       <div class="amb-dust nt-dust">${dust}</div>
+      <div class="nt-bokeh">${bokeh}</div>
 
       <div class="nt-q" data-spark="0" data-spark-xy="960,716" data-spark-delay="1.05">
         <h1 class="display" data-in="0" data-split style="--d:.1s">When was the last time</h1>
@@ -105,19 +114,20 @@
 
         <div class="nt-ui">
           <div class="kicker nt-kicker a-wipe" data-in="1" style="--d:.45s">Traffic operations centre · night shift</div>
-          <div class="nt-clock num a-blur" data-in="1" style="--d:.25s;--dur:1.3s">03<span class="nt-colon">:</span>12</div>
+          <div class="nt-clock num a-blur" data-in="1" style="--d:.2s;--dur:1.2s" aria-label="03:12"><i class="nt-clock-glow"></i><span class="nt-dg">03</span><span class="nt-colon"><b></b><b></b></span><span class="nt-dg">12</span></div>
           <h2 class="nt-head" data-in="1" data-split style="--d:.4s">Nouf rebuilt the night handover — unasked, in one afternoon.</h2>
 
           <div class="nt-scraps">${SCRAPS.map(scrapHtml).join('')}</div>
 
-          <div class="nt-card-w" data-spark="1" data-spark-xy="1722,461" data-spark-delay="1.05">
-            <div class="paper nt-card">
-              <div class="nt-card-h"><span>NIGHT HANDOVER · v2</span></div>
-              ${ROWS.map((r, k) => `<div class="nt-row" style="--k:${k}"><span class="nt-box">${check}</span><span>${r}</span></div>`).join('')}
+          <div class="nt-card-w" data-spark="1" data-spark-xy="${CARD.x + CARD.w - 58},${CARD.y + 52}" data-spark-delay="1.05">
+            <i class="nt-card-pool"></i>
+            <div class="glass live nt-card">
+              <div class="nt-card-h">${Deck.icon('document-certified', 'nt-card-ic')}<span class="nt-card-t">NIGHT HANDOVER · v2</span><span class="nt-card-slot"></span></div>
+              ${ROWS.map((r, k) => `<div class="nt-row" style="--k:${k}"><span class="nt-box">${check}</span><span class="nt-row-t">${r}</span></div>`).join('')}
             </div>
           </div>
 
-          <p class="nt-ba" data-in="1" style="--d:.9s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night</span> → <span class="nt-after">on live incidents from minute one.</span></p>
+          <p class="nt-ba" data-in="1" style="--d:.85s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
         </div>
       </div>
 
