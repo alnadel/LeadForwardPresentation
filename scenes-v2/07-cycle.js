@@ -459,7 +459,8 @@
     }
     ctx.pl.style.transform = `translate(${x.toFixed(1)}px,${AYG}px) scale(${k < 0 ? 1 : Math.max(.3, 1 - k * 2.2).toFixed(3)},${k < 0 ? 1 : (1 + Math.min(k, .3) * 1.4).toFixed(3)})`;
     fade(ctx.pl, o.toFixed(3));
-    ctx.pt.style.transform = `translate(${(x - tail).toFixed(1)}px,${AYG}px) scaleX(${(tail / 230).toFixed(3)})`;
+    // (the trail is 230 px long and scales about its right end, so it always ends at the light)
+    ctx.pt.style.transform = `translate(${(x - 230).toFixed(1)}px,${AYG}px) scaleX(${(tail / 230).toFixed(3)})`;
     fade(ctx.pt, (k < 0 ? o : o * .8).toFixed(3));
     ctx.pNodes.forEach((d, i) => {
       const hit = k < 0 && o > .5 && Math.abs(x - PX[i]) < 46;
