@@ -1,15 +1,19 @@
-/* 07 · The cycle (v2) — two lanes become a ring, and the ring keeps turning.
+/* 07 · The cycle (v3: two stops) — two lanes become a ring, and the ring keeps turning.
    Stop 0: two full-width lanes. The award lane (purple) draws to a wall; its light
    runs into the wall and shatters. The story lane (teal) draws behind a leading
    light, its nodes materialise as the light passes, and the story light loops back
    to its start with a comet tail, lighting every node it passes.
-   Stop 1: the award lane falls away, the story loop contracts into the ring, and
-   the ring draws behind a leading light; each node materialises as the light
-   passes it and a connector carries it out to its glass card. The light keeps
-   orbiting; every pass flares the node and lights its card.
-   Stop 2: the cycle repeats. The ring brightens, a second story joins the orbit,
-   an inner ring turns, every lap sends a pulse out, stories leave the ring into
-   the field, and each card unfolds its principle. */
+   Stop 1, one choreographed step: the award lane falls away, the story loop
+   contracts into the ring, and the ring draws behind a leading light; each node
+   materialises as the light passes it and a connector carries it out to its glass
+   card. As the draw closes, the cycle repeats: the ring surges and brightens, "The
+   cycle repeats" lands in the centre with the spark, a pulse leaves the ring, an
+   inner ring turns in, each card unfolds its principle and a second story joins the
+   orbit half a lap behind. While parked: both lights orbit, every pass flares the
+   node and lights its card, every lap sends a pulse out, stories leave the ring
+   into the field. All state keys off .st-n / data-step and the draw clock, so back
+   navigation lands on the same frame; the surge and first pulse play on a live
+   click only. */
 (function () {
   const mod = (v, m) => ((v % m) + m) % m;
   // the lane draws run on an ease-in-out sine (CSS cubic-bezier(.37,0,.63,1)); tAt is
@@ -38,7 +42,9 @@
 
   /* ── stops 1–2 · the ring ──────────────────────────────────────────── */
   const CX = 960, CY = 640, R = 276, ROUT = 316, RIN = 184;
-  const DRAW = 1.0, DRAW_AT = .15;   // the ring draws in 1 s, .15 s after the click
+  const DRAW = .9, DRAW_AT = .12;    // the ring draws in .9 s, .12 s after the click
+  const REP = DRAW_AT + DRAW;         // s after the click: the draw closes and the cycle repeats
+  const JOIN = DRAW + .45;            // s into the draw: the second story joins the orbit
   const LAP = 7.2;                    // one orbit, seconds
   const CIRCLE = `M${CX + R} ${CY} A${R} ${R} 0 1 1 ${CX - R} ${CY} A${R} ${R} 0 1 1 ${CX + R} ${CY}`;
   const STAGES = [
@@ -106,17 +112,16 @@
     act: 2,
     bg: 'teal',
     transition: 'iris',
-    cues: ['What is new · two lanes', 'The cycle · four stages', 'The cycle repeats'],
-    holds: [9, 12, 9],
+    cues: ['What is new · two lanes', 'The cycle · four steps · it repeats'],
+    holds: [9, 15],
     notes: [
-      'Most recognition runs the top lane: an achievement earns recognition, and it ends there. The bottom lane keeps going: an experience becomes a story, the story shows a behaviour, it inspires someone, and more stories follow.',
-      'That loop is the solution, in four steps. Capture: a peer or leader nominates through a short form. Curate: check facts, secure consent, link one value. Feature: a short story on existing channels. Reinforce: recognise, share the takeaway.',
-      'Then it repeats. Each step protects a principle: employee voice, fair selection, visible recognition, organisational learning. Next, one illustrative story all the way round.',
+      'Most recognition stops at the award. Ours keeps going: a story leads to behaviour, which inspires more stories.',
+      'Four steps, one quarter. Capture: a peer or leader nominates. Curate: facts checked, consent given, one value linked. Feature: a short story on our channels. Reinforce: the contributor is recognised and the takeaway is shared. Then it repeats.',
     ],
     field: [
       { dim: .3, lit: .02, travel: .22, offset: [150, -70], litFrom: null, links: .5, wave: .5, streaks: .14, sparkle: 1, calm: [[100, 120, 1500, 380, .85], [120, 400, 1760, 950, .55]] },
-      { dim: .44, lit: .06, litFrom: [CX, CY], travel: .45, links: .8, wave: .7, streaks: .22, sparkle: 2.2, calm: [[100, 120, 1300, 300, .85], [120, 320, 660, 960, .8], [1260, 320, 1800, 960, .8]] },
-      { dim: .5, lit: .1, travel: .7, wave: .9, sparkle: 3, streaks: .28, calm: [[100, 120, 1300, 300, .85], [120, 320, 660, 960, .8], [1260, 320, 1800, 960, .8], [800, 540, 1120, 740, .8]] },
+      { dim: .48, lit: .09, litFrom: [CX, CY], travel: .65, links: .8, wave: .85, streaks: .26, sparkle: 2.8,
+        calm: [[100, 120, 1300, 300, .85], [120, 320, 660, 960, .8], [1260, 320, 1800, 960, .8], [800, 540, 1120, 740, .8]] },
     ],
     html: `
       <!-- stop 0 · two lanes -->
@@ -192,7 +197,7 @@
             ${[140, 320].map((a) => { const x = RIN + 14 + RIN * Math.cos(rad(a)), y = RIN + 14 + RIN * Math.sin(rad(a)); return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a + 90})"><path class="cy-i2" d="M-4 -10 L12 0 L-4 10 Z"/></g>`; }).join('')}
           </svg>
         </div>
-        <svg class="cy-svg cy-rsvg" viewBox="0 0 1920 1080" aria-hidden="true" data-spark="1" data-spark-xy="${CX},${CY}">
+        <svg class="cy-svg cy-rsvg" viewBox="0 0 1920 1080" aria-hidden="true">
           <circle class="cy-rtrack" cx="${CX}" cy="${CY}" r="${R}"/>
           <circle class="cy-rwide" cx="${CX}" cy="${CY}" r="${R}"/>
           <circle class="cy-rdraw" cx="${CX}" cy="${CY}" r="${R}" pathLength="100" transform="rotate(-45 ${CX} ${CY})"/>
@@ -213,9 +218,9 @@
            keep the same timeline as every CSS loop (and pause with them) -->
       <i class="cy-clock lane"></i><i class="cy-clock orbit"></i>
 
-      <!-- stop 2 · it repeats -->
+      <!-- stop 1, as the draw closes · it repeats -->
       <div class="cy-core" style="left:${CX}px;top:${CY}px"></div>
-      <div class="cy-rep a-scale" data-in="2" data-spark="2" data-spark-at="t" style="left:${CX - 200}px;top:${CY - 54}px;--d:.12s"><span>The cycle<br>repeats</span></div>
+      <div class="cy-rep a-scale" data-in="1" data-spark="1" data-spark-at="t" data-spark-delay="${(REP - .42).toFixed(2)}" style="left:${CX - 200}px;top:${CY - 54}px;--d:${(REP - .08).toFixed(2)}s;--dur:.8s"><span>The cycle<br>repeats</span></div>
     `,
     init(ctx) {
       ctx.geo = ctx.$('.cy-ttr');
@@ -257,10 +262,10 @@
       const forward = !ctx.instant && prev < n;
       // one-shot flourishes (leading lights, the surge) play only on a forward build
       ctx.el.dataset.play = forward ? String(n) : '';
-      // the ring draws when stop 1 is reached going forward; walking back from
-      // stop 2 keeps it drawn and the light orbiting where it is
+      // the ring draws when stop 1 is reached going forward; landing on it (a jump, or
+      // back from the next scene) finds it drawn, the principles open and both lights orbiting
       if (n >= 1 && (prev < 1 || !ctx.draw0)) {
-        ctx.draw0 = performance.now() + (ctx.instant ? -DRAW * 1000 : DRAW_AT * 1000);
+        ctx.draw0 = performance.now() + (ctx.instant ? -(JOIN + .5) * 1000 : DRAW_AT * 1000);
         // landing on the ring: it is already drawn, so the orbit clock skips the draw
         const a = anim(ctx.oclock);
         if (ctx.instant && a) a.currentTime = (DRAW_AT + DRAW) * 1000;
@@ -268,9 +273,10 @@
       if (n < 1) ctx.draw0 = 0;
       ring(ctx, performance.now());
       if (n <= 0) { ctx.hitWall = false; ctx.flash.classList.remove('go'); ctx.wall.classList.remove('go'); ctx.wglow.classList.remove('go'); }
-      // the cycle repeats: a ripple from the centre that stays inside the ring
-      if (n === 2 && forward) {
-        ctx.after(300, () => { restart(ctx.laps[0], 'go'); if (window.Field) Field.burst(CX, CY, { radius: 320, dur: 1.4 }); });
+      // as the draw closes, the cycle repeats: the first pulse leaves the ring and a ripple
+      // spreads from the centre (the surge is CSS, keyed on data-play)
+      if (n === 1 && forward) {
+        ctx.after(REP * 1000, () => { restart(ctx.laps[0], 'go'); if (window.Field) Field.burst(CX, CY, { radius: 320, dur: 1.4 }); });
       }
     },
   });
@@ -348,8 +354,8 @@
     // the comet tail follows the light; while the ring draws it grows with the stroke
     ctx.comet.style.transform = `rotate(${(a + 90).toFixed(2)}deg)`;
     ctx.comet.style.opacity = el < 0 ? 0 : Math.min(1, (360 * p) / 110).toFixed(3);
-    // stop 2: a second story joins the cycle half a lap behind the first
-    const a2 = a - 180, two = ctx.step >= 2 && el >= DRAW;
+    // once the cycle repeats, a second story joins it half a lap behind the first
+    const a2 = a - 180, two = ctx.step >= 1 && el >= JOIN;
     const [x2, y2] = at(a2, R);
     place(ctx.ol2, x2, y2);
     ctx.comet2.style.transform = `rotate(${(a2 + 90).toFixed(2)}deg)`;
@@ -361,14 +367,15 @@
       const hit = ctx.step >= 1 && el >= DRAW - .05 && (near(a, i) || (two && near(a2, i)));
       if (hit && !nw.classList.contains('hit')) {
         restart(nw, 'pass'); restart(ctx.pulses[i], 'go'); restart(ctx.cards[i], 'pass');
-        // stop 2: each pass sends a story out of the ring into the field
-        if (ctx.step >= 2 && ctx.active && window.Field && now - ctx.sent > 600) {
+        // after the repeat: each pass sends a story out of the ring into the field
+        if (el >= DRAW + .2 && ctx.active && window.Field && now - ctx.sent > 600) {
           ctx.sent = now;
           const [nx, ny] = at(STAGES[i].a, R + 60), [fx, fy] = at(STAGES[i].a + (i % 2 ? -18 : 18), R + 420);
           Field.send(nx, ny, fx, fy, 1.8);
         }
-        // stop 2: every time a story comes back round to Capture, a pulse leaves the ring
-        if (i === 0 && ctx.step >= 2) restart(ctx.laps[(ctx.lapK++) % 2], 'go');
+        // every time a story comes back round to Capture, a pulse leaves the ring
+        // (the first one, as the draw closes, is the live build's)
+        if (i === 0 && el >= DRAW + .5) restart(ctx.laps[(ctx.lapK++) % 2], 'go');
       }
       nw.classList.toggle('hit', hit);
     });

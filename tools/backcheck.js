@@ -21,13 +21,13 @@ fs.mkdirSync(out, { recursive: true });
   await page.waitForFunction(() => document.body.classList.contains('ready'));
   // freeze ambient motion so frames are comparable
   await page.addStyleTag({ content: '*,*::before,*::after{animation-play-state:paused!important}#field{display:none!important}' });
-  const defs = await page.evaluate(() => Deck.defs.map((d) => ({ id: d.id, n: Math.max(1, (d.cues || []).length) })));
+  const defs = await page.evaluate(() => Deck.defs.map((d) => ({ id: d.id, n: Math.max(1, (d.cues || []).length), transition: d.transition })));
   for (let si = 0; si < defs.length; si++) {
     const d = defs[si];
     if (only && !only.includes(d.id)) continue;
     const tag = String(si + 1).padStart(2, '0') + '-' + d.id;
     await page.evaluate((i) => Deck.go(i, 0, { instant: false }), si);
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(d.transition === 'chapter' ? 4200 : 3000);   // a chapter card opens ~1s later
     for (let st = 0; st < d.n; st++) {
       if (st) { await page.keyboard.press('ArrowRight'); await page.waitForTimeout(3000); }
       await page.screenshot({ path: path.join(out, tag + '-' + st + '-fwd.png') });

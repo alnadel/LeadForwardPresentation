@@ -1,1 +1,149 @@
-/* 06b-options · Three ways to close the gap (v3) */
+/* 06b · Three ways to close the gap (v3) */
+#s-options { --op-open: cubic-bezier(.75, 0, .2, 1); --walk: 7.5s; }
+
+/* ── glow pools: plum behind A and B, teal behind C ─────────────────────── */
+#s-options .op-pool { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0;
+  transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + .3s), transform 1.4s var(--ease-out); }
+#s-options.st-0 .op-pool { opacity: 1; }
+#s-options .op-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transition: opacity 1.2s var(--ease-soft); }
+#s-options .op-pool.ab { left: 250px; top: 300px; width: 1240px; height: 760px; }
+#s-options .op-pool.ab::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .22), rgba(96, 38, 80, .09) 58%, transparent); animation: opWash 11s ease-in-out infinite alternate; }
+#s-options .op-pool.c { left: 1160px; top: 170px; width: 820px; height: 980px; }
+#s-options .op-pool.c::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 58%, transparent); animation: opBreath 6.4s ease-in-out infinite; }
+#s-options .op-pool.c::after { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: 0; transition: opacity 1.2s var(--ease-soft);
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .34), rgba(37, 199, 188, .13) 55%, transparent); animation: opBreath2 5.2s ease-in-out -2s infinite; }
+#s-options.st-1 .op-pool.ab { opacity: .3; transition-delay: 0s; }
+#s-options.st-1 .op-pool.c { transform: scale(1.1); transition-delay: 0s; }
+#s-options.st-1 .op-pool.c::after { opacity: 1; transition-delay: .3s; }
+@keyframes opWash { from { transform: translate(-70px, 24px) scale(.9); opacity: .55; } to { transform: translate(90px, -30px) scale(1.08); opacity: 1; } }
+@keyframes opBreath { 0%, 100% { transform: scale(.88); opacity: .6; } 50% { transform: scale(1.06); opacity: 1; } }
+@keyframes opBreath2 { 0%, 100% { transform: translateY(-70px) scale(.86); } 50% { transform: translateY(80px) scale(1.1); } }
+
+/* ── header: the headline, then the recommendation in its place ─────────── */
+#s-options .op-head { position: absolute; left: 144px; top: 150px; width: 1632px; height: 170px; }
+#s-options .op-head .kicker { position: absolute; left: 0; top: 0; white-space: nowrap; }
+#s-options .op-h { position: absolute; left: 0; top: 42px; margin: 0; font-size: 70px; white-space: nowrap; }
+#s-options .op-hero { font-size: 64px; line-height: 1.03; letter-spacing: -.026em; }
+#s-options .op-hero em.hl { text-shadow: 0 0 40px rgba(37, 199, 188, .35); }
+#s-options .op-sub { position: absolute; left: 2px; top: 188px; margin: 0; font: 400 26px/1.2 var(--font); color: rgba(255, 255, 255, .66); white-space: nowrap; }
+/* a glow breathes behind the recommendation (the words stay still) */
+#s-options .op-hglow { position: absolute; left: -260px; top: -80px; width: 1900px; height: 340px; pointer-events: none; opacity: 0; transition: opacity 1s var(--ease-soft); }
+#s-options.st-1 .op-hglow { opacity: 1; transition-delay: .5s; }
+#s-options .op-hglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 55%, transparent); animation: opBreath 4.6s ease-in-out infinite; }
+/* the recommendation lands with a bloom (live click only) */
+#s-options .op-hglow::after { content: ''; position: absolute; left: 180px; top: 20px; width: 1300px; height: 300px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(closest-side, rgba(200, 255, 244, .22), transparent); }
+#s-options.op-live1 .op-hglow::after { animation: opBloom 1.6s var(--ease-out) .5s both; }
+@keyframes opBloom { 0% { opacity: 0; transform: scale(.5); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.25); } }
+
+/* ── the columns open from the chapter's centre line (y 540) ────────────── */
+#s-options .op-col, #s-options .op-crit { position: absolute; }
+#s-options .op-col { transform-origin: 50% 0; transition: transform 1s var(--ease-out), opacity .8s var(--ease-soft), filter .8s var(--ease-soft); }
+#s-options .op-table { position: absolute; inset: 0; transition: transform 1.05s var(--ease-io); }
+#s-options.st-1 .op-table { transform: translateY(var(--drop)); }
+#s-options .op-card { position: relative; width: 100%; height: 100%; border-radius: 22px; overflow: hidden; }
+#s-options .op-card[data-in], #s-options .op-crit[data-in] { clip-path: inset(-160px round 22px);
+  transition: clip-path .9s var(--op-open) var(--delay), opacity .2s linear var(--delay), box-shadow .9s var(--ease-soft); }
+#s-options .op-card[data-in]:not(.is-in), #s-options .op-crit[data-in]:not(.is-in) { opacity: 1; transform: none; filter: none;
+  clip-path: inset(var(--seam) -160px var(--rest) -160px round 22px); transition-duration: .35s; transition-delay: 0s; }
+#s-options .op-crit[data-in]:not(.is-in) { opacity: 0; }
+/* two edges of light travel with the opening (live build only) */
+#s-options .op-edge { position: absolute; left: -14px; right: -14px; top: calc(var(--seam) - 1px); height: 3px; border-radius: 2px; opacity: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .9) 16%, #fff 50%, rgba(3, 255, 203, .9) 84%, transparent); box-shadow: 0 0 14px rgba(3, 255, 203, .8), 0 0 44px rgba(3, 255, 203, .35); }
+#s-options.op-live0 .op-edge.t { animation: opEdgeT .9s var(--op-open) calc(var(--enter, 0s) + var(--d)) both, opEdgeFade .9s linear calc(var(--enter, 0s) + var(--d)) both; }
+#s-options.op-live0 .op-edge.b { animation: opEdgeB .9s var(--op-open) calc(var(--enter, 0s) + var(--d)) both, opEdgeFade .9s linear calc(var(--enter, 0s) + var(--d)) both; }
+@keyframes opEdgeT { from { transform: translateY(0); } to { transform: translateY(calc(-1 * var(--seam))); } }
+@keyframes opEdgeB { from { transform: translateY(0); } to { transform: translateY(var(--rest)); } }
+@keyframes opEdgeFade { 0% { opacity: 0; } 8% { opacity: 1; } 70% { opacity: .85; } 100% { opacity: 0; } }
+
+/* a sheen crosses the cards now and then */
+#s-options .op-card::after { content: ''; position: absolute; top: -30%; bottom: -30%; left: -60%; width: 36%; pointer-events: none; opacity: 0;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .09), transparent); transform: skewX(-16deg); }
+#s-options[data-step="0"] .op-card::after { animation: opSheen 9s ease-in-out calc(var(--enter, 0s) + 2.6s + var(--k, 0s)) infinite; }
+#s-options[data-step="1"] .op-col.c .op-card::after { animation: opSheen 7s ease-in-out 2.4s infinite; }
+#s-options .op-col.b { --k: 1.1s; }
+#s-options .op-col.c { --k: 2.2s; }
+@keyframes opSheen { 0%, 58% { left: -60%; opacity: 0; } 62% { opacity: 1; } 96% { opacity: 1; } 100% { left: 130%; opacity: 0; } }
+
+/* ── a column: letter, title (the hero), one line, five ratings, the watch-out ── */
+#s-options .op-hd { position: absolute; left: 30px; right: 26px; top: 30px; display: flex; align-items: center; gap: 16px; }
+#s-options .op-bd { flex: none; width: 50px; height: 50px; border-radius: 28%; display: grid; place-items: center; font: 700 26px/1 var(--font); color: var(--teal);
+  background: rgba(255, 255, 255, .05); border: 2px solid rgba(37, 199, 188, .5);
+  transition: background .6s var(--ease-soft), color .6s var(--ease-soft), border-color .6s var(--ease-soft), box-shadow .6s var(--ease-soft); }
+#s-options .op-t { margin: 0; font: 700 42px/1.08 var(--font); letter-spacing: -.02em; color: var(--white); white-space: nowrap; }
+#s-options .op-s { position: absolute; left: 30px; right: 30px; top: 96px; margin: 0; font: 400 22px/1.36 var(--font); color: rgba(255, 255, 255, .62); text-wrap: balance; }
+
+#s-options .op-row { position: absolute; left: 0; right: 0; height: 60px; display: flex; align-items: center; justify-content: center; }
+#s-options .op-row::before { content: ''; position: absolute; left: 26px; right: 26px; top: 0; height: 1px; background: rgba(255, 255, 255, .1); }
+#s-options .op-worow { height: auto; display: block; }
+#s-options .op-w { margin: 0; padding: 17px 30px 0; font: 400 20px/1.38 var(--font); color: rgba(214, 190, 222, .8); text-wrap: pretty; }
+#s-options .op-w em { font-style: normal; color: rgba(37, 199, 188, .95); }
+
+/* the ratings: drawn marks (full · half · empty), not glyphs */
+#s-options .op-mk { position: relative; display: inline-block; flex: none; width: 40px; height: 40px; border-radius: 50%; }
+#s-options .op-mk.s2 { background: radial-gradient(circle at 36% 30%, #E4FFFA 0 9%, #52EBDD 40%, var(--teal) 76%); box-shadow: 0 0 16px rgba(3, 255, 203, .42), inset 0 0 0 2px rgba(190, 255, 244, .5); }
+#s-options .op-mk.s1 { border: 3px solid rgba(37, 199, 188, .92); background: linear-gradient(90deg, var(--teal) 50%, transparent 50%); background-clip: padding-box; }
+#s-options .op-mk.s0 { border: 3px solid rgba(255, 255, 255, .36); }
+#s-options .op-mk i { position: absolute; inset: -3px; border-radius: 50%; border: 2px solid rgba(3, 255, 203, .9); opacity: 0; pointer-events: none; }
+#s-options .op-mk[data-in] { transition: opacity .3s var(--ease-soft) var(--delay), transform .6s var(--ease-back) var(--delay), filter .4s var(--ease-soft) var(--delay); }
+#s-options .op-mk[data-in]:not(.is-in) { transform: scale(.3); filter: blur(4px); transition-duration: .3s; transition-delay: 0s; }
+/* a strong mark lands with a ripple (live build only) */
+#s-options.op-live0 .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(var(--delay) + .08s) both; }
+@keyframes opRip { 0% { opacity: 0; transform: scale(1); } 12% { opacity: .9; } 100% { opacity: 0; transform: scale(2.1); } }
+
+/* ── the criteria: support (small, dim), with the legend on top ─────────── */
+#s-options .op-leg { position: absolute; left: 0; top: 34px; display: flex; flex-direction: column; gap: 12px; }
+#s-options .op-leg span { display: flex; align-items: center; gap: 12px; font: 400 19px/1 var(--font); letter-spacing: .02em; color: rgba(255, 255, 255, .56); }
+#s-options .op-mk.sm { width: 20px; height: 20px; }
+#s-options .op-mk.sm.s1, #s-options .op-mk.sm.s0 { border-width: 2px; }
+#s-options .op-mk.sm.s2 { box-shadow: 0 0 10px rgba(3, 255, 203, .35); }
+#s-options .op-cl { position: absolute; left: 0; right: 0; height: 60px; display: flex; align-items: center; font: 400 24px/1.1 var(--font); color: rgba(255, 255, 255, .7); white-space: nowrap; }
+#s-options .op-cl::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .1)); }
+#s-options .op-cwo { align-items: flex-start; padding-top: 18px; gap: 12px; font: 700 18px/1.1 var(--font); letter-spacing: .18em; text-transform: uppercase; color: rgba(214, 190, 222, .72); }
+#s-options .op-wi { width: 22px; height: 20px; flex: none; margin-top: -2px; }
+#s-options .op-wi svg { display: block; width: 100%; height: 100%; }
+
+/* ── stop 0 ambient: a reading band walks the five criteria; each row's strong marks glow as it passes ── */
+#s-options .op-band { position: absolute; pointer-events: none; }
+#s-options .op-band i { position: absolute; inset: 0; opacity: 0; mix-blend-mode: screen; border-radius: 12px;
+  background: linear-gradient(90deg, rgba(37, 199, 188, 0), rgba(37, 199, 188, .09) 6%, rgba(37, 199, 188, .12) 50%, rgba(37, 199, 188, .09) 94%, rgba(37, 199, 188, 0));
+  box-shadow: inset 0 1px 0 rgba(3, 255, 203, .2), inset 0 -1px 0 rgba(3, 255, 203, .2); }
+#s-options .op-band i::before { content: ''; position: absolute; left: -10px; top: 50%; width: 12px; height: 12px; margin-top: -6px; border-radius: 28%;
+  background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 12px var(--sea), 0 0 34px rgba(3, 255, 203, .5); }
+#s-options[data-step="0"] .op-band i { animation: opWalk var(--walk) cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 2.2s) infinite; }
+@keyframes opWalk {
+  0% { transform: translateY(0); opacity: 0; } 4% { opacity: 1; }
+  15% { transform: translateY(0); } 20% { transform: translateY(60px); }
+  35% { transform: translateY(60px); } 40% { transform: translateY(120px); }
+  55% { transform: translateY(120px); } 60% { transform: translateY(180px); }
+  75% { transform: translateY(180px); } 80% { transform: translateY(240px); }
+  94% { opacity: 1; } 100% { transform: translateY(240px); opacity: 0; }
+}
+#s-options[data-step="0"] .op-mk.s2[data-in].is-in { animation: opFlare var(--walk) ease-out calc(var(--enter, 0s) + 2.2s + var(--r) * var(--walk) / 5) infinite; }
+@keyframes opFlare { 0%, 100% { box-shadow: 0 0 16px rgba(3, 255, 203, .42), inset 0 0 0 2px rgba(190, 255, 244, .5); }
+  5% { box-shadow: 0 0 34px rgba(3, 255, 203, .9), 0 0 70px rgba(3, 255, 203, .3), inset 0 0 0 2px rgba(220, 255, 250, .9); } 20% { box-shadow: 0 0 16px rgba(3, 255, 203, .42), inset 0 0 0 2px rgba(190, 255, 244, .5); } }
+
+/* ── stop 1: A and B step back, C lifts and goes live ───────────────────── */
+#s-options.st-1 .op-col.a, #s-options.st-1 .op-col.b { opacity: .3; transform: translateY(16px) scale(.96); filter: saturate(.3) brightness(.85); }
+#s-options.st-1 .op-col.b { transition-delay: .06s; }
+#s-options.st-1 .op-col.c { transform: translateY(-12px) scale(1.012); transition-delay: .1s; }
+#s-options.st-1 .op-col.c .op-card { box-shadow: 0 40px 110px rgba(0, 0, 0, .5), 0 0 0 1px rgba(3, 255, 203, .25), 0 0 70px rgba(37, 199, 188, .22), inset 0 1px 0 rgba(255, 255, 255, .18); }
+#s-options.st-1 .op-col.c .op-bd { background: var(--teal); color: var(--navy); border-color: var(--teal); box-shadow: 0 0 30px rgba(37, 199, 188, .6); transition-delay: .3s; }
+#s-options.st-1 .op-crit { opacity: .82; transition: opacity .8s var(--ease-soft); }
+/* a light runs down C's column at the click, each mark rippling as it passes (live build only) */
+#s-options .op-run { position: absolute; left: calc(50% - 150px); top: 164px; width: 300px; height: 120px; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .42), rgba(37, 199, 188, .15) 55%, transparent); }
+#s-options.op-live1 .op-run { animation: opRun 1.5s linear .6s both; }
+@keyframes opRun { 0% { transform: translateY(0); opacity: 0; } 8% { opacity: 1; } 75% { transform: translateY(240px); opacity: 1; } 100% { transform: translateY(240px); opacity: 0; } }
+#s-options.op-live1 .op-col.c .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(.66s + var(--r) * .28s) both; }
+/* …then a reading band keeps walking C's five rows (as the table's did at stop 0); each mark flares and ripples as it arrives */
+#s-options .op-cband { position: absolute; left: 14px; right: 14px; top: 164px; height: 60px; border-radius: 12px; opacity: 0; pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(90deg, rgba(37, 199, 188, .04), rgba(37, 199, 188, .16) 50%, rgba(37, 199, 188, .04));
+  box-shadow: inset 0 1px 0 rgba(3, 255, 203, .26), inset 0 -1px 0 rgba(3, 255, 203, .26); }
+#s-options[data-step="1"] .op-cband { animation: opWalk 6s cubic-bezier(.45, 0, .55, 1) 2.2s infinite; }
+#s-options[data-step="1"] .op-col.c .op-mk.s2 { animation: opFlare 6s ease-out calc(2.2s + var(--r) * 1.2s) infinite; }
+#s-options[data-step="1"] .op-col.c .op-mk.s2 i { animation: opRipC 6s var(--ease-out) calc(2.2s + var(--r) * 1.2s) infinite; }
+@keyframes opRipC { 0% { opacity: 0; transform: scale(1); } 2% { opacity: .85; } 16%, 100% { opacity: 0; transform: scale(2); } }
+
+#stage.lite #s-options .op-pool::before, #stage.lite #s-options .op-pool::after { animation: none; }

@@ -1,4 +1,6 @@
-/* 07 · The cycle (v2) */
+/* 07 · The cycle (v3: two stops; the ring's stop ends in the "cycle repeats" state).
+   Build times at stop 1 (s after the click; keep in step with the scene script):
+   the ring draws .12 → 1.02; the repeat moment lands at 1.02 (REP). */
 #s-cycle .cy-h { margin-top: 30px; font-size: 80px; max-width: 1560px; }
 /* the contrast the audience takes away: the award "stops" (purple, the award lane), the story "keeps going" (teal, the loop) */
 #s-cycle .cy-stop { font-style: normal; color: var(--purple-lt); }
@@ -129,24 +131,24 @@
 #s-cycle .cy-o1 { fill: none; stroke: rgba(255, 255, 255, .22); stroke-width: 2; stroke-dasharray: 2 11; }
 #s-cycle .cy-o2 { fill: none; stroke: rgba(37, 199, 188, .42); stroke-width: 2.5; stroke-dasharray: 34 86; stroke-linecap: round; }
 @keyframes cyTurn { to { transform: rotate(360deg); } }
-/* stop 2: an inner ring with two arrows turns with the cycle */
+/* as the cycle repeats: an inner ring with two arrows turns in with the cycle */
 #s-cycle .cy-inner { position: absolute; opacity: 0; transform: scale(.82) rotate(-40deg); transition: opacity .6s var(--ease-soft), transform 1.2s var(--ease-out); }
-#s-cycle.st-2 .cy-inner { opacity: 1; transform: none; transition: opacity .9s var(--ease-soft) .3s, transform 1.6s var(--ease-out) .3s; }
+#s-cycle.st-1 .cy-inner { opacity: 1; transform: none; transition: opacity .9s var(--ease-soft) 1s, transform 1.5s var(--ease-out) 1s; }
 #s-cycle .cy-inner svg { animation: cyTurn 30s linear infinite; }
 #s-cycle .cy-i1 { fill: none; stroke: rgba(37, 199, 188, .55); stroke-width: 3; stroke-dasharray: 136 44; stroke-dashoffset: 0; stroke-linecap: round; }
 #s-cycle .cy-i2 { fill: rgba(37, 199, 188, .85); stroke: none; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .6)); }
 
 #s-cycle .cy-rtrack { fill: none; stroke: rgba(255, 255, 255, .12); stroke-width: 2.5; }
 #s-cycle .cy-rwide { fill: none; stroke: rgba(37, 199, 188, .07); stroke-width: 30; opacity: 0; transition: opacity 1s var(--ease-soft) .6s, stroke .8s var(--ease-soft); }
-#s-cycle.st-1 .cy-rwide { opacity: 1; }
-#s-cycle.st-2 .cy-rwide { stroke: rgba(37, 199, 188, .14); animation: cyWide 4s ease-in-out 1s infinite; }
+#s-cycle.st-1 .cy-rwide { opacity: 1; stroke: rgba(37, 199, 188, .14); animation: cyWide 4s ease-in-out 2s infinite; transition: opacity 1s var(--ease-soft) .5s, stroke .8s var(--ease-soft) 1.02s; }
 @keyframes cyWide { 0%, 100% { stroke-width: 26; } 50% { stroke-width: 40; } }
-#s-cycle .cy-rdraw { fill: none; stroke: var(--teal); stroke-width: 4.5; stroke-dasharray: 100 100; stroke-dashoffset: 100; filter: drop-shadow(0 0 8px rgba(37, 199, 188, .55)); transition: stroke-width .8s var(--ease-soft), stroke .8s var(--ease-soft); }
-#s-cycle.st-1 .cy-rdraw { animation: cyRing 5s ease-in-out infinite; }
-#s-cycle.st-2 .cy-rdraw { stroke-width: 6.5; stroke: #3FE3D5; filter: drop-shadow(0 0 12px rgba(3, 255, 203, .7)); }
+#s-cycle .cy-rdraw { fill: none; stroke: var(--teal); stroke-width: 4.5; stroke-dasharray: 100 100; stroke-dashoffset: 100; filter: drop-shadow(0 0 8px rgba(37, 199, 188, .55)); transition: stroke-width .8s var(--ease-soft), stroke .8s var(--ease-soft), filter .8s var(--ease-soft); }
+/* the ring brightens as the draw closes */
+#s-cycle.st-1 .cy-rdraw { animation: cyRing 5s ease-in-out 2s infinite; stroke-width: 6.5; stroke: #3FE3D5; filter: drop-shadow(0 0 12px rgba(3, 255, 203, .7));
+  transition: stroke-width .8s var(--ease-soft) 1s, stroke .8s var(--ease-soft) 1s, filter .8s var(--ease-soft) 1s; }
 @keyframes cyRing { 0%, 100% { opacity: 1; } 50% { opacity: .7; } }
-/* the surge when the cycle repeats (forward build only) */
-#s-cycle[data-play="2"] .cy-rsvg { animation: cySurge 1.6s var(--ease-out) .15s; }
+/* the surge when the cycle repeats, as the draw closes (live build only) */
+#s-cycle[data-play="1"] .cy-rsvg { animation: cySurge 1.6s var(--ease-out) .98s; }
 @keyframes cySurge { 0% { filter: brightness(1); } 25% { filter: brightness(1.9) drop-shadow(0 0 20px rgba(3, 255, 203, .8)); } 100% { filter: brightness(1); } }
 
 /* connectors: node → card */
@@ -178,16 +180,16 @@
   100% { offset-distance: 100%; opacity: .95; }
 }
 
-/* stop 2: each lap sends a pulse out from the ring */
+/* after the repeat, each lap sends a pulse out from the ring */
 #s-cycle .cy-lap { position: absolute; border-radius: 50%; border: 3px solid rgba(3, 255, 203, .75); box-shadow: 0 0 24px rgba(3, 255, 203, .35); opacity: 0; }
 #s-cycle .cy-lap.go { animation: cyLap 2s var(--ease-out); }
 @keyframes cyLap { 0% { opacity: 0; transform: scale(1); } 8% { opacity: .8; } 100% { opacity: 0; transform: scale(1.34); } }
 
 #s-cycle .cy-orbit { position: absolute; inset: 0; pointer-events: none; }
 #s-cycle .cy-olight { position: absolute; left: 0; top: 0; width: 30px; height: 30px; margin: -15px 0 0 -15px; opacity: 0; will-change: transform; transform: translate(1145px, 455px); }
-/* the second story that joins the orbit at stop 2 (fades in; the loop sets its position) */
+/* the second story that joins the orbit as the cycle repeats (fades in; the loop sets its position and .on) */
 #s-cycle .cy-olight.c2, #s-cycle .cy-comet.c2 { opacity: 0 !important; transition: opacity .8s var(--ease-soft); }
-#s-cycle .cy-olight.c2.on, #s-cycle .cy-comet.c2.on { opacity: 1 !important; transition: opacity 1.2s var(--ease-soft) .5s; }
+#s-cycle .cy-olight.c2.on, #s-cycle .cy-comet.c2.on { opacity: 1 !important; transition: opacity .9s var(--ease-soft) .05s; }
 /* the leading light's flare while the ring draws */
 #s-cycle .cy-flare { position: absolute; left: 0; top: 0; width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%; opacity: 0; background: radial-gradient(closest-side, rgba(220, 255, 248, .8), rgba(3, 255, 203, .38) 30%, rgba(37, 199, 188, .08) 65%, transparent); will-change: transform, opacity; }
 
@@ -217,21 +219,21 @@
 #s-cycle .cy-card.pass .cy-t { animation: cyNamePass 1.9s var(--ease-soft) .3s; }
 @keyframes cyNamePass { 0%, 100% { text-shadow: 0 0 0 rgba(3, 255, 203, 0); } 24% { text-shadow: 0 0 30px rgba(3, 255, 203, .55); } }
 #s-cycle .cy-s { margin: 12px 0 0; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .62); text-wrap: pretty; }
-/* stop 2: each card unfolds its principle */
+/* as the cycle repeats, each card unfolds its principle (in stage order) */
 #s-cycle .cy-pf { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .5s var(--ease-soft), opacity .3s var(--ease-soft); }
-#s-cycle.st-2 .cy-pf { max-height: 70px; opacity: 1; transition: max-height .8s var(--ease-out) calc(.3s + var(--k) * .14s), opacity .6s var(--ease-soft) calc(.45s + var(--k) * .14s); }
+#s-cycle.st-1 .cy-pf { max-height: 70px; opacity: 1; transition: max-height .8s var(--ease-out) calc(1.08s + var(--k) * .13s), opacity .6s var(--ease-soft) calc(1.2s + var(--k) * .13s); }
 #s-cycle .cy-p { position: relative; display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 15px; font: 700 19px/1.1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(37, 199, 188, .86); }
 #s-cycle .cy-p::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: linear-gradient(90deg, rgba(37, 199, 188, .8), rgba(255, 255, 255, .12)); transform-origin: 0 50%; }
 #s-cycle .cy-p i { width: 11px; height: 11px; border-radius: 28%; background: var(--teal); box-shadow: 0 0 12px rgba(37, 199, 188, .8); flex: none; }
 
-/* ── stop 2 · the cycle repeats ─────────────────────────────────────── */
+/* ── stop 1, as the draw closes · the cycle repeats ─────────────────── */
 #s-cycle .cy-core { position: absolute; width: 0; height: 0; pointer-events: none; }
 #s-cycle .cy-core::before { content: ''; position: absolute; left: -210px; top: -210px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .2), rgba(37, 199, 188, .08) 55%, transparent); opacity: 0; transition: opacity .8s var(--ease-soft); }
-#s-cycle.st-2 .cy-core::before { opacity: 1; transition-delay: .2s; animation: cyCore 4.4s ease-in-out 1s infinite; }
+#s-cycle.st-1 .cy-core::before { opacity: 1; transition-delay: 1s; animation: cyCore 4.4s ease-in-out 2.2s infinite; }
 @keyframes cyCore { 0%, 100% { transform: scale(.88); opacity: .7; } 50% { transform: scale(1.12); opacity: 1; } }
 #s-cycle .cy-rep { position: absolute; width: 400px; text-align: center; font: 700 42px/1.2 var(--font); letter-spacing: .13em; text-indent: .13em; text-transform: uppercase; color: var(--white); }
 #s-cycle .cy-rep span { display: inline-block; text-shadow: 0 0 30px rgba(37, 199, 188, .4); }
-#s-cycle.st-2 .cy-rep.is-in span { animation: cyRep 4.5s ease-in-out 1.2s infinite; }
+#s-cycle.st-1 .cy-rep.is-in span { animation: cyRep 4.5s ease-in-out 2.2s infinite; }
 @keyframes cyRep { 0%, 100% { text-shadow: 0 0 22px rgba(37, 199, 188, .3); } 50% { text-shadow: 0 0 48px rgba(3, 255, 203, .65); } }
 
 /* the clocks of the JS-driven lights (see the scene script) */
