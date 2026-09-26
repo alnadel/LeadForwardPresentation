@@ -29,6 +29,9 @@ def data_uri(path):
         return 'data:%s;base64,%s' % (MIME[ext], base64.b64encode(f.read()).decode('ascii'))
 
 
+DYNAMIC = []   # photo urls that are not literal file names
+
+
 def photo_key(name):
     return '--ph-' + re.sub(r'[^a-z0-9]+', '-', os.path.splitext(name)[0].lower())
 
@@ -36,6 +39,8 @@ def photo_key(name):
 def rewrite_assets(text, base_dir):
     # url('assets/photos/x.jpg') -> var(--ph-x)
     def url_photo(m):
+        if not re.fullmatch(r'assets/photos/[\w.-]+\.(?:jpg|jpeg|png)', m.group(2)):
+            DYNAMIC.append(m.group(2))   # e.g. a url built at runtime: it cannot be inlined
         return 'var(%s)' % photo_key(os.path.basename(m.group(2)))
     text = re.sub(r"""url\(\s*(['"]?)(?:\.\./)?(assets/photos/[^'")]+)\1\s*\)""", url_photo, text)
 
@@ -88,6 +93,8 @@ def main():
     print('wrote %s (%.1f MB), photos: %s' % (os.path.relpath(OUT, ROOT), os.path.getsize(OUT) / 1e6, ', '.join(sorted(used))))
     if left:
         print('WARNING: external references remain:', left[:10])
+    if DYNAMIC:
+        print('WARNING: photo urls that are not literal will not load offline (write them out in full):', DYNAMIC[:10])
 
 
 if __name__ == '__main__':

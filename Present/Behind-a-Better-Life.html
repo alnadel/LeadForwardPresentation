@@ -7594,10 +7594,11 @@ window.LFBack = function (ctx) {
   const PH = 5, CYC = 6 * PH;           // s: one story's phase, the lap of six (the first story lights 1.5 s after the click; the CSS keeps these timings)
   // each story lights the one value it shows (as the featuring criteria ask: one primary value),
   // walking down the six in turn; three colleagues' photos take the card in turn
+  // (each url is written out in full: tools/build.py inlines only literal photo urls)
   const PHOTOS = [
-    { ph: 'nouf.jpg', pos: '22% 40%' },
-    { ph: 'faisal.jpg', pos: '50% 22%' },
-    { ph: 'nouf-question.jpg', pos: '46% 38%' },
+    { img: "var(--ph-nouf)", pos: '22% 40%' },
+    { img: "var(--ph-faisal)", pos: '50% 22%' },
+    { img: "var(--ph-nouf-question)", pos: '46% 38%' },
   ];
   const PHASE = VALUES.map((v, k) => k);                              // story k lights value k
   // each value's lit path: through the prism, out along its ray to its chip, and on into the purpose
@@ -7758,8 +7759,8 @@ window.LFBack = function (ctx) {
 
       <!-- the story card: a colleague's story (illustrative); another story takes it every five seconds -->
       <div class="sv-card glass a-swing" data-in="1" style="--d:.7s;--dur:1s;left:${SV_CARD.x}px;top:${SV_CARD.y}px;width:${SV_CARD.w}px;height:${SV_CARD.h}px">
-        <i class="sv-ph" style="background-image:var(--ph--photos-0-);background-position:${PHOTOS[0].pos}"></i>
-        ${VALUES.map((v, p) => { const ph = PHOTOS[p % 3]; return `<div class="sv-story" style="--p:${p}">${p % 3 ? `<i class="sv-ph" style="background-image:var(--ph--ph);background-position:${ph.pos}"></i>` : ''}<span class="sv-dots">${VALUES.map((w, k) => `<b${PHASE[k] === p ? ' class="on"' : ''}></b>`).join('')}</span></div>`; }).join('')}
+        <i class="sv-ph" style="background-image:${PHOTOS[0].img};background-position:${PHOTOS[0].pos}"></i>
+        ${VALUES.map((v, p) => { const ph = PHOTOS[p % 3]; return `<div class="sv-story" style="--p:${p}">${p % 3 ? `<i class="sv-ph" style="background-image:${ph.img};background-position:${ph.pos}"></i>` : ''}<span class="sv-dots">${VALUES.map((w, k) => `<b${PHASE[k] === p ? ' class="on"' : ''}></b>`).join('')}</span></div>`; }).join('')}
         <span class="sv-tag">Story</span>
         <span class="sv-av">${Deck.icon('employee-female', 'sv-av-ic')}</span>
         <i class="sv-ln" style="top:196px;width:176px"></i><i class="sv-ln" style="top:220px;width:124px"></i>

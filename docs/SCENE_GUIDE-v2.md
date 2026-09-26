@@ -48,6 +48,7 @@ Everything in `docs/SCENE_GUIDE.md` still applies (stops, `data-in` / `data-out`
     - **Animation counts:** many small lights ride on a few carriers.
     - **Fills:** one-shot animations that end invisible use `backwards` fills.
     - **Visibility:** use `visibility: inherit`, never `visible`, so that an off-screen scene draws nothing.
+    - **Photos:** write every photo url out in full, e.g. `url('assets/photos/nouf.jpg')`, even inside a JS array. `tools/build.py` inlines only literal urls, and it warns about any url built at runtime.
     - **Helpers:** call `LFLeave(ctx)` from `leave()` and `LFPark(ctx)` from `step()` (both are in `engine-v2.js`). They hide what has already faded out.
 
 ## Verify (mandatory)
