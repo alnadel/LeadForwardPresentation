@@ -179,7 +179,8 @@
   function frame(now) {
     raf = requestAnimationFrame(frame);
     if (!last) { last = now; t0 = now; }
-    const dt = Math.min(.05, (now - last) / 1000);
+    // real time down to ~4 fps, so bursts and flashes last as long on a slow machine as on a fast one
+    const dt = Math.min(.25, (now - last) / 1000);
     last = now;
     const t = (now - t0) / 1000;
     const e = 1 - Math.exp(-dt / rate);

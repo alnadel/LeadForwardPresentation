@@ -1,7 +1,7 @@
 /* 02 · One night (v2) */
 
 /* ── stop 0: the question alone; a warm light turns and breathes behind it ── */
-#s-night .nt-warm { position: absolute; left: 330px; top: 150px; width: 1260px; height: 760px; pointer-events: none; transition: opacity 1s var(--ease-soft), transform 1.2s var(--ease-io);
+#s-night .nt-warm { position: absolute; left: 330px; top: 150px; width: 1260px; height: 760px; pointer-events: none; transition: opacity 1s var(--ease-soft);
   animation: ntWarmOrbit 20s linear infinite; }
 #s-night .nt-warm::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(124, 60, 107, .66), rgba(96, 38, 80, .24) 55%, transparent);
   animation: ntWarmPulse 6.4s ease-in-out infinite; }

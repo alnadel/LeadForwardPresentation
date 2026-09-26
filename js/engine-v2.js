@@ -304,7 +304,7 @@
     SPK.x = x; SPK.y = y;
     SPK.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
   }
-  function sparkShow(on) { SPK.shown = on; SPK.el.classList.toggle('on', on); }
+  function sparkShow(on) { SPK.shown = on; SPK.el.classList.toggle('on', on); if (!on) { cancelAnimationFrame(SPK.raf); SPK.el.classList.remove('fly'); SPK.hist.length = 0; } }
   function sparkFly(tx, ty, delay, onLand) {
     cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to);
     const go2 = () => {
@@ -342,7 +342,7 @@
     const p = sparkPoint(t);
     $$('.sparked', rec.el).forEach((x) => x.classList.remove('sparked'));
     clearTimeout(SPK.flash);
-    if (instant) { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); sparkPlace(p.x, p.y); sparkShow(true); return; }
+    if (instant) { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); SPK.el.classList.remove('fly'); SPK.hist.length = 0; sparkPlace(p.x, p.y); sparkShow(true); return; }
     const d = (parseFloat(t.dataset.sparkDelay || .12) + (extraDelay || 0)) * 1000;
     // the flash is transient, so the target's own ambient animation resumes afterwards
     sparkFly(p.x, p.y, d, () => { t.classList.add('sparked'); SPK.flash = setTimeout(() => t.classList.remove('sparked'), 1150); });
