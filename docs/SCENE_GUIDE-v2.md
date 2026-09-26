@@ -9,7 +9,7 @@ Everything in `docs/SCENE_GUIDE.md` still applies (stops, `data-in` / `data-out`
 - Source material: the v1 scene with the same content (`scenes/NN-*.js/.css`). Copy and adapt it freely, but keep the v2 ids and stop counts from `docs/STORYBOARD-v2.md`.
 
 ## New in the engine
-- `transition: 'push' | 'rise' | 'dolly' | 'mosaic' | 'iris'` on the scene, as given in the storyboard. An `iris` scene can set `irisBurst: <radius>` (default 2200, 0 = none) to limit the field flash.
+- `transition: 'push' | 'rise' | 'dolly' | 'chapter' | 'iris'` on the scene, as given in the storyboard. `chapter` (the default across act boundaries) is a title card: the old act falls away, a line of light carries the act's number and name, then splits open onto the scene; stop 0 builds as it opens. An `iris` scene can set `irisBurst: <radius>` (default 2200, 0 = none) to limit the field flash.
 - **The spark:** put `data-spark="n"` on the element that stop n is about. `data-spark-at="l|r|t|b|c|tl|tr"` sets where the light rests (default: 34px left of the element, vertically centred). `data-spark-xy="x,y"` overrides with stage coordinates, which you need when the element lives inside a transformed or scaled group.
   - Use at most one target per stop; the engine flies the light there, lands it with a ripple and flashes the element (`.sparked`).
   - A stop with no target fades the light out. `spark: 'keep'` keeps it parked instead; `spark: false` disables it for the scene.
@@ -24,6 +24,7 @@ Everything in `docs/SCENE_GUIDE.md` still applies (stops, `data-in` / `data-out`
   - light on text and panels: `amb-glow-text`, `amb-shimmer` (a light passing through highlight words — text-only elements), `amb-sheen` (a periodic diagonal sheen on cards), `amb-scan` (a scan light on panels);
   - overlays for photos: `amb-rays` and `amb-leak` (put one `<div class="amb-rays">` or `amb-leak` in the photo stack);
   - particles: `amb-dust` (a parent with `<i style="left:…;top:…;--t:14s;--dl:-3s;--dx:40px;--dy:-200px">` children).
+- **Materials:** `.glass` is the premium card: a lit gradient edge, inner highlight and deep shadow. `.glass.plum` is the purple variant, and `.glass.live` adds a slow light travelling round the edge (use it on one hero card per stop, not everywhere). `.paper` stays the white card for product mock-ups.
 - **Field keys**, with scene defaults in brackets: `links` (.6) constellation lines, `wave` (.5) brightness bands, `streaks` (.12/s) shooting lights, `sparkle` (1.2/s) flares, `drift` (1) camera wander, `travel` (.5).
   - Turn these up in visual moments and down behind dense copy. Use `calm` zones for every text block.
   - `Field.warp(kind, dur, amt, [cx, cy])` and `Field.kick(dx, dy, dur)` are available for in-scene camera moves; call them only when `!ctx.instant`.
@@ -46,5 +47,6 @@ python3 tools/motion.py shots/v2-<name>
 node tools/backcheck.js --file index-v2.html --scenes <ids> --out shots/v2-<name>-back && python3 tools/backdiff.py shots/v2-<name>-back
 ```
 - Read every PNG. Check that `report.json` has no errors and that back navigation has 0 mismatches.
+- Watch a build in real time with `node tools/cast.js --scene <id> --stop <n> --out shots/v2-<name>-cast --at 0,200,400,700,1000,1400,2000,2600 --w 960 --h 540`. It saves screencast frames with their real timestamps; headless Chrome runs slowly here, so expect about 2× stretch.
 - Also capture your scene's entrance: `node tools/transitions.js --file index-v2.html --out shots/v2-<name>-tx`, then look at the frames that belong to your scene.
 - Keep scratch scripts in `<scratchpad>/<your-name>/`, never in the repo root.

@@ -1,8 +1,10 @@
 /* Behind a Better Life — presentation engine (v2: the condensed, cinematic cut).
 
    v2 adds on top of v1:
-   · scene TRANSITIONS — transition: 'dolly' | 'push' | 'rise' | 'mosaic' | 'iris'
-     (default: 'mosaic' across act boundaries, 'push' inside an act; back = quick fade)
+   · scene TRANSITIONS — transition: 'dolly' | 'push' | 'rise' | 'chapter' | 'iris'
+     (default: 'chapter' across act boundaries, 'push' inside an act; back = quick fade).
+     chapter: the old scene falls away into depth, the story light stretches into a line
+     of light carrying the act's number and name, and the line splits open onto the next act.
    · the SPARK — one story light that flies to each stop's focus. Mark a target with
      data-spark="n" (the stop), optional data-spark-at="l|r|t|b|c|tl|tr" and
      data-spark-xy="x,y" (stage px override). It lands with a ripple and parks,
@@ -350,28 +352,23 @@
 
   /* ── scene transitions ─────────────────────────────────────────────── */
   let txTimers = [], txPending = null;
-  const TX_ENTER = { push: .32, rise: .32, dolly: .42, mosaic: .2, iris: .25, back: 0 };
+  const TX_ENTER = { push: .32, rise: .32, dolly: .42, chapter: .22, iris: .25, back: 0 };
   function txAfter(ms, fn) { txTimers.push(setTimeout(fn, ms)); }
   function finishTx() {
     txTimers.forEach(clearTimeout); txTimers = [];
     if (txPending) { const f = txPending; txPending = null; f(); }
     delete stage.dataset.tx;
-    const m = $('#tx-mosaic'); if (m) m.classList.remove('cover', 'reveal');
+    const ch = $('#tx-chapter'); if (ch) ch.classList.remove('run', 'open');
     const r = $('#tx-ring'); if (r) r.classList.remove('run');
     const sw = $('#tx-sweep'); if (sw) sw.classList.remove('run');
-    S.forEach((x) => x.el.classList.remove('tx-hold', 'tx-from', 'iris-from', 'iris-run'));
+    S.forEach((x) => x.el.classList.remove('ch-hold', 'ch-open', 'tx-from', 'iris-from', 'iris-run'));
   }
   function buildTxLayer() {
-    const m = document.createElement('div'); m.id = 'tx-mosaic';
-    const cols = 16, rows = 9;
-    let h = '';
-    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-      const k = r * cols + c, v = (Math.sin(k * 12.9898) * 43758.5453) % 1, rv = Math.abs(v);
-      const tone = rv < .07 ? 'lit' : rv < .45 ? 'plum' : rv < .8 ? 'navy' : 'deep';
-      h += '<i class="' + tone + '" style="left:' + (c * 120) + 'px;top:' + (r * 120) + 'px" data-c="' + c + '" data-r="' + r + '"></i>';
-    }
-    m.innerHTML = h;
-    stage.appendChild(m);
+    // chapter card: a line of light, two opening edges and the act's number + name
+    const ch = document.createElement('div'); ch.id = 'tx-chapter';
+    ch.innerHTML = '<div class="ch-dim"></div><div class="ch-line"></div><div class="ch-edge t"></div><div class="ch-edge b"></div>' +
+      '<div class="ch-label"><span class="ch-n"></span><span class="ch-t"></span></div>';
+    stage.appendChild(ch);
     const ring = document.createElement('div'); ring.id = 'tx-ring'; stage.appendChild(ring);
     const sw = document.createElement('div'); sw.id = 'tx-sweep'; stage.appendChild(sw);
     const sp = document.createElement('div'); sp.id = 'spark';
@@ -380,13 +377,6 @@
     for (let i = 0; i < 5; i++) { const g = document.createElement('div'); g.className = 'spark-trail'; g.style.setProperty('--k', i); stage.appendChild(g); SPK.trail.push(g); }
     sparkPlace(960, 1240);
   }
-  function mosaicDelays(ox, oy) {
-    const tiles = $$('#tx-mosaic i');
-    let max = 1;
-    const ds = tiles.map((t) => { const x = +t.dataset.c * 120 + 60, y = +t.dataset.r * 120 + 60; const d = Math.hypot(x - ox, y - oy); if (d > max) max = d; return d; });
-    tiles.forEach((t, i) => t.style.setProperty('--td', (ds[i] / max).toFixed(3)));
-  }
-
   function go(si, st, opts) {
     opts = opts || {};
     si = clamp(si, 0, S.length - 1);
@@ -401,17 +391,16 @@
       const landSettled = instant || (dir < 0 && prevCur !== -1) || opts.settled;
       const kind = instant || prevCur === -1 ? 'none'
         : dir < 0 || opts.settled ? 'back'
-        : rec.def.transition || (old && (old.def.act || 0) !== (rec.def.act || 0) ? 'mosaic' : 'push');
+        : rec.def.transition || (old && (old.def.act || 0) !== (rec.def.act || 0) ? 'chapter' : 'push');
       if (old) {
         stopScene(old);
         old.el.classList.remove('active', 'entering-fwd', 'entering-back');
         clearTimeout(old.leaveTimer);
         if (kind === 'none') old.el.classList.remove('leaving');
-        else if (kind === 'mosaic') old.el.classList.add('leaving', 'held');
         else { old.el.classList.add('leaving'); old.leaveTimer = setTimeout(() => old.el.classList.remove('leaving'), 1300); }
       }
       clearTimeout(rec.leaveTimer);
-      rec.el.classList.remove('leaving', 'held');
+      rec.el.classList.remove('leaving');
       cur = si;
       step = st;
       if (kind !== 'none') stage.dataset.tx = kind;
@@ -420,7 +409,7 @@
       applyStep(rec, landSettled ? st : -1, -1, true, instant ? 'snap' : 'ease');
       rec.el.classList.add('no-anim');
       if (kind === 'push' || kind === 'rise' || kind === 'dolly') rec.el.classList.add('tx-from');
-      if (kind === 'mosaic') rec.el.classList.add('tx-hold');
+      if (kind === 'chapter') rec.el.classList.add('ch-hold');
       if (kind === 'iris') {
         rec.el.style.setProperty('--ix', SPK.shown ? SPK.x + 'px' : '50%');
         rec.el.style.setProperty('--iy', SPK.shown ? SPK.y + 'px' : '50%');
@@ -457,20 +446,28 @@
         requestAnimationFrame(() => { rec.el.classList.remove('iris-from'); rec.el.classList.add('iris-run'); });
         build();
         txAfter(1300, finishTx);
-      } else if (kind === 'mosaic') {
-        mosaicDelays(SPK.shown ? SPK.x : 960, SPK.shown ? SPK.y : 540);
-        const m = $('#tx-mosaic'); m.classList.remove('reveal'); void m.offsetWidth; m.classList.add('cover');
-        if (F) F.kick(0, -120, 1.6);
-        const swap = () => {
-          if (old) { old.el.classList.remove('leaving', 'held'); }
-          rec.el.classList.remove('tx-hold');
-          m.classList.remove('cover'); m.classList.add('reveal');
+      } else if (kind === 'chapter') {
+        const ch = $('#tx-chapter');
+        const a = rec.def.act || 0;
+        $('.ch-n', ch).textContent = String(a + 1).padStart(2, '0');
+        $('.ch-t', ch).textContent = Deck.ACTS[a];
+        // the line grows out of wherever the story light was
+        ch.style.setProperty('--ox', (SPK.shown ? clamp(SPK.x, 80, 1840) : 960) + 'px');
+        ch.classList.remove('run', 'open'); void ch.offsetWidth; ch.classList.add('run');
+        sparkShow(false);
+        if (F) { F.warp('zoom', 1.5, 1.3, [960, 540]); F.kick(0, 0, .1); }
+        const open = () => {
+          ch.classList.add('open');
+          rec.el.classList.add('ch-open');
+          rec.el.classList.remove('ch-hold');
+          if (F) F.burst(960, 540, { radius: 1100, dur: 1.3 });
+          // the light that carried the title becomes the story light again
+          sparkPlace(960, 540); sparkShow(true);
           build();
         };
-        txPending = swap;
-        txAfter(560, () => { txPending = null; swap(); });
-        txAfter(1500, finishTx);
-      } else {
+        txPending = open;
+        txAfter(860, () => { txPending = null; open(); });
+        txAfter(1900, finishTx);      } else {
         build();
         if (kind === 'back') txAfter(500, finishTx);
       }

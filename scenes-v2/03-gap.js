@@ -82,7 +82,7 @@
     title: 'The gap',
     act: 1,
     bg: 'night',
-    transition: 'mosaic',
+    transition: 'chapter',
     cues: ['Inspiration is not always visible · good work happens', 'Visibility stays local · learning does not travel', 'We close the gap · today’s ask'],
     holds: [8, 10, 9],
     notes: [

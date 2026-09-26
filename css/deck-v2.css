@@ -186,6 +186,20 @@ em.hl { font-style: normal; color: var(--teal); }
 
 .card { background: linear-gradient(160deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .03)); border: 1px solid var(--line); border-radius: 14px; }
 .card.plum { background: linear-gradient(160deg, rgba(124, 60, 107, .55), rgba(96, 38, 80, .35)); border-color: rgba(201, 166, 211, .22); color: var(--ink-1); }
+/* glass: the premium card material. A lit gradient edge, an inner top highlight and a deep
+   soft shadow. .glass.live adds a slow light that travels round the edge (ambient). */
+@property --ga { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.glass { position: relative; border-radius: 20px; background: linear-gradient(165deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .05)), rgba(7, 16, 32, .62);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .42), 0 0 0 1px rgba(255, 255, 255, .04), inset 0 1px 0 rgba(255, 255, 255, .14); }
+.glass::before { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, .05) 38%, rgba(255, 255, 255, .03) 62%, rgba(37, 199, 188, .45));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.glass.plum { background: linear-gradient(165deg, rgba(157, 103, 170, .22), rgba(96, 38, 80, .16) 55%, rgba(30, 12, 26, .2)), rgba(22, 10, 26, .62); }
+.glass.plum::before { background: linear-gradient(160deg, rgba(232, 208, 238, .4), rgba(255, 255, 255, .05) 40%, rgba(157, 103, 170, .5)); }
+.glass.live::before { background: conic-gradient(from var(--ga), rgba(255, 255, 255, .08), rgba(3, 255, 203, .95) 7%, rgba(255, 255, 255, .08) 16%, rgba(255, 255, 255, .06) 50%, rgba(201, 166, 211, .7) 57%, rgba(255, 255, 255, .06) 66%);
+  animation: v2GlassEdge 8s linear infinite; }
+@keyframes v2GlassEdge { to { --ga: 360deg; } }
+#stage.lite .glass.live::before { animation: none; }
 .paper { background: #FFFFFF; color: var(--navy); border-radius: 18px; box-shadow: 0 40px 90px rgba(0, 0, 0, .45), 0 2px 0 rgba(255, 255, 255, .6) inset; }
 .paper .muted { color: #6A7688; }
 
@@ -317,15 +331,44 @@ em.hl { font-style: normal; color: var(--teal); }
 #tx-ring::before { content: ''; position: absolute; left: -40px; top: -40px; width: 80px; height: 80px; border-radius: 50%; border: 3px solid rgba(3, 255, 203, .9); box-shadow: 0 0 40px rgba(3, 255, 203, .8), inset 0 0 30px rgba(3, 255, 203, .4); opacity: 0; }
 #tx-ring.run::before { animation: v2Iris 1.15s cubic-bezier(.7, 0, .25, 1) forwards; }
 @keyframes v2Iris { 0% { transform: scale(0); opacity: 1; } 80% { opacity: .9; } 100% { transform: scale(58); opacity: 0; } }
-/* mosaic: the frame breaks into the brand's squares and re-forms */
-#tx-mosaic { position: absolute; inset: 0; z-index: 17; pointer-events: none; }
-#tx-mosaic i { position: absolute; width: 124px; height: 124px; margin: -2px; border-radius: 26%; transform: scale(0); opacity: 0; }
-#tx-mosaic i.plum { background: #3A1631; } #tx-mosaic i.navy { background: #0A2442; } #tx-mosaic i.deep { background: #120A1C; }
-#tx-mosaic i.lit { background: radial-gradient(circle at 35% 30%, #BFFFF1 0 10%, var(--sea) 35%, var(--teal) 85%); box-shadow: 0 0 40px rgba(3, 255, 203, .6); }
-#tx-mosaic.cover i { transform: scale(1.02); opacity: 1; border-radius: 12%; transition: transform .26s cubic-bezier(.3, 0, .2, 1) calc(var(--td) * .3s), opacity .12s linear calc(var(--td) * .3s), border-radius .26s calc(var(--td) * .3s); }
-#tx-mosaic.reveal i { transform: scale(0) rotate(45deg); opacity: 0; transition: transform .36s cubic-bezier(.6, 0, .4, 1) calc(var(--td) * .38s), opacity .3s ease calc(var(--td) * .38s + .08s); }
-#stage[data-tx="mosaic"] .scene.leaving.held { opacity: 1; transform: none; filter: none; transition: none; }
-.scene.tx-hold { visibility: hidden !important; }
+/* chapter (act boundaries): the old act falls away into depth; the story light
+   stretches into a line of light that carries the act's number and name; the line
+   splits into two edges that travel apart and open the next act from the centre */
+#stage[data-tx="chapter"] .scene.leaving { opacity: 0; transform: scale(.86); filter: blur(16px) brightness(.45); transition: opacity .62s cubic-bezier(.5, 0, .8, .4), transform 1s cubic-bezier(.55, 0, .75, .25), filter .62s var(--ease-soft); }
+.scene.ch-hold { clip-path: inset(50% 0 50% 0); transform: scale(1.07); filter: blur(10px) brightness(1.5); }
+.scene.ch-open { clip-path: inset(0 0 0 0); transform: none; filter: none;
+  transition: clip-path .9s cubic-bezier(.75, 0, .2, 1), transform 1.5s var(--ease-out), filter 1s var(--ease-soft) .1s, opacity .01s !important; }
+#tx-chapter { position: absolute; inset: 0; z-index: 17; pointer-events: none; visibility: hidden; }
+#tx-chapter.run { visibility: visible; }
+#tx-chapter .ch-dim { position: absolute; inset: 0; background: radial-gradient(ellipse 46% 26% at 50% 50%, rgba(3, 8, 16, .78), rgba(3, 8, 16, .35) 60%, transparent); opacity: 0; }
+#tx-chapter.run .ch-dim { animation: chDim .5s var(--ease-soft) .05s both; }
+#tx-chapter.open .ch-dim { opacity: 0; animation: none; transition: opacity .5s var(--ease-soft); }
+@keyframes chDim { from { opacity: 0; } to { opacity: 1; } }
+#tx-chapter .ch-line { position: absolute; left: 0; right: 0; top: 539px; height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(37, 199, 188, .6) 14%, rgba(3, 255, 203, 1) 34%, #fff 50%, rgba(3, 255, 203, 1) 66%, rgba(37, 199, 188, .6) 86%, transparent 100%);
+  box-shadow: 0 0 16px rgba(3, 255, 203, .9), 0 0 60px rgba(3, 255, 203, .45); transform: scaleX(0); transform-origin: var(--ox, 960px) 50%; }
+#tx-chapter.run .ch-line { animation: chLine .62s cubic-bezier(.3, 0, .1, 1) both; }
+#tx-chapter.open .ch-line { opacity: 0; transition: opacity .18s linear; }
+@keyframes chLine { 0% { transform: scaleX(0); filter: brightness(2.2); } 100% { transform: scaleX(1); filter: brightness(1); } }
+/* a flare where the light was */
+#tx-chapter .ch-line::after { content: ''; position: absolute; left: calc(var(--ox, 960px) - 90px); top: -88px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255, 255, 255, .9), rgba(3, 255, 203, .5) 35%, transparent); }
+#tx-chapter.run .ch-line::after { animation: chFlare .7s var(--ease-out) both; }
+@keyframes chFlare { 0% { transform: scaleX(1) scale(.3); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+#tx-chapter .ch-edge { position: absolute; left: 0; right: 0; top: 539px; height: 3px; opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .95) 20%, #fff 50%, rgba(3, 255, 203, .95) 80%, transparent); box-shadow: 0 0 18px rgba(3, 255, 203, .9), 0 0 70px rgba(3, 255, 203, .4); }
+#tx-chapter.open .ch-edge.t { animation: chEdgeT .9s cubic-bezier(.75, 0, .2, 1) both; }
+#tx-chapter.open .ch-edge.b { animation: chEdgeB .9s cubic-bezier(.75, 0, .2, 1) both; }
+@keyframes chEdgeT { 0% { transform: translateY(0); opacity: 1; } 70% { opacity: .85; } 100% { transform: translateY(-542px); opacity: 0; } }
+@keyframes chEdgeB { 0% { transform: translateY(0); opacity: 1; } 70% { opacity: .85; } 100% { transform: translateY(542px); opacity: 0; } }
+#tx-chapter .ch-label { position: absolute; left: 0; right: 0; top: 0; height: 1080px; text-align: center; color: var(--white); }
+#tx-chapter .ch-n { position: absolute; left: 0; right: 0; top: 452px; font: 700 34px/1 var(--font); letter-spacing: .5em; text-indent: .5em; color: var(--sea); text-shadow: 0 0 24px rgba(3, 255, 203, .6); }
+#tx-chapter .ch-t { position: absolute; left: 0; right: 0; top: 572px; font: 700 84px/1 var(--font); letter-spacing: .22em; text-indent: .22em; text-transform: uppercase; }
+#tx-chapter.run .ch-n { animation: chInN .6s var(--ease-out) .16s both; }
+#tx-chapter.run .ch-t { animation: chInT .66s var(--ease-out) .22s both; }
+@keyframes chInN { from { opacity: 0; transform: translateY(30px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes chInT { from { opacity: 0; transform: translateY(-34px); letter-spacing: .5em; text-indent: .5em; filter: blur(12px); } to { opacity: 1; transform: none; letter-spacing: .22em; text-indent: .22em; filter: none; } }
+#tx-chapter.open .ch-label { opacity: 0; transform: scale(1.06); filter: blur(8px); transition: opacity .34s var(--ease-soft), transform .5s var(--ease-out), filter .34s var(--ease-soft); }
+#stage.lite .scene.ch-hold { filter: none; }
 /* back: a quick crossfade */
 #stage[data-tx="back"] .scene.leaving { transition-duration: .3s, .3s, .3s; }
 #stage[data-tx="back"] .scene.active { transition-duration: .35s, .35s, .35s; }

@@ -26,7 +26,7 @@ What is new in v2:
 
 - **Scene changes are camera moves.**
   - A sideways *push* within an act.
-  - At each act boundary, the frame breaks into the brand's squares and re-forms (*mosaic*).
+  - At each act boundary, a title card: the old act falls away, a line of light carries the act's number and name, then splits open onto the new act (*chapter*).
   - The field streaks and warps with every move.
   - Going back is always a quick, quiet fade.
 - **One story light (the spark) flies to what you are talking about on each stop.** It lands on the number, the node or the new line with a ripple, then stays there and breathes.

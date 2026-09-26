@@ -24,7 +24,7 @@ The v1 scene files (`scenes/NN-*.js/.css`) are the source material. Reuse their 
   - `push` (sideways travel)
   - `rise` (crane up)
   - `dolly` (fly through the frame)
-  - `mosaic` (the frame breaks into the brand's squares and re-forms; used at act boundaries)
+  - `chapter` (at act boundaries: the old act falls away, a line of light carries the act's number and name, then splits open onto the new act)
   - `iris` (the next scene opens out of the story light)
 
   Set `transition:` on the scene. The field warps and streaks with each move, and a light sweeps across.
@@ -62,7 +62,7 @@ Keep the v1 open (ops-centre photo, lockup, title, Arabic, tagline, one light ig
 - **1** The question falls away, and the film frame builds: huge `03:12` (blinking colon), `TRAFFIC OPERATIONS CENTRE · NIGHT SHIFT`, the `nouf.jpg` band, and **Nouf rebuilt the night handover — unasked, in one afternoon.** Note scraps fly together into the `NIGHT HANDOVER · v2` card with six ticked rows. Beneath, a small before → after line: *Morning shift, first hour: rebuilding the night → on live incidents from minute one.* Spark: on the card.
 - **2** The pull-back to two lit squares at `Deck.NIGHT_PAIR` / `Deck.NIGHT_OFFSET` (pins): **Two people know.** *Nouf, and the colleague who sat next to her.* Use the exact 03.3 image from v1 (two lights and a soft halo). Spark: fades out, so the pair is the only light.
 
-### 03 · The gap — 3 stops · transition `mosaic` (act II)
+### 03 · The gap — 3 stops · transition `chapter` (act II)
 - **0** **Inspiration is happening — but it is not always visible.** Three districts; lights ignite inside them. 01 **Good work happens** (short line).
 - **1** 02 **Visibility stays local** + 03 **Learning does not travel**: ripples hit the walls and the bridges fail (the v1 motion, stronger).
 - **2** The districts recede. *Meaningful contributions exist — the gap is making them visible, recognised and shared across Tahakom.* **Behind a Better Life closes that gap through real employee stories.** Plus the strip `TODAY'S ASK · Approve a one-quarter pilot`.
@@ -80,7 +80,7 @@ Ambient: a wave across the respondents, a hero glow, figures that breathe.
 - **0** **Willingness is strong; the mechanism is weak.** The axis draws, then the mechanism rows (purple, left) and the willingness rows (teal, right, +48 as the hero) build in one choreographed sequence of about 2.2 s. The caveat and sources stay visible.
 - **1** READING: **Behind on the mechanism, ahead on the willingness — build the channel, then test it.**
 
-### 06 · Why it matters — 3 stops · transition `mosaic` (act III)
+### 06 · Why it matters — 3 stops · transition `chapter` (act III)
 - **0** **Recognition creates value at two connected levels.** The v1 prism flow builds in one sequence: the employee node, "shared story", then teal beams to 02A / 02B, with the employee card and org cards in compact form.
 - **1** **Employee recognition becomes organisational value when the story is shared.** · *Retention remains a possible long-term effect — not a direct outcome of the pilot.*
 - **2** The camera rises (in-scene) to `riyadh-aerial.jpg`. `STRATEGIC VALUE` **The initiative does not create new values — it helps employees recognise and apply the values Tahakom already has.** The six value chips light in turn, and three compact pillar labels (Purpose connected to work · Values become visible · Learning moves across teams) appear as captions.
@@ -101,7 +101,7 @@ Three tabs across the top (`01 Story format · 02 Quarterly rhythm · 03 Recogni
 - **1** **The operating cycle keeps stories moving.** Always open (Capture) → Month 1 Curate / Month 2 Feature / Month 3 Reinforce, with a playhead, plus the annual collection.
 - **2** **Recognition should make the employee feel seen.** The three tiers as nested squircles, and **Use Featured Story — not Best Story.**
 
-### 10 · The pilot — 3 stops · transition `mosaic` (act V)
+### 10 · The pilot — 3 stops · transition `chapter` (act V)
 - **0** Over `team-ops.jpg`: `THE ASK` **Approve the pilot.** (display)
 - **1** *Start with one quarterly cycle and measure what changes.* The quarter ring draws, with three commitments: open nominations · run one full cycle (Capture → Curate → Feature → Reinforce) · report what changed.
 - **2** How we'll judge it: a compact measurement lane with four gantries (participation · reach · recognition · repeatable behaviour), the baseline *recognition reach 8% · visibility gap 56% today → the same eight questions at quarter end*, and `WHAT WE NEED` *an executive sponsor · curation time from HR and Internal Communications · our existing channels*. Then **After one quarter we come back with one recommendation: scale, adjust or stop.**
