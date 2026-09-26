@@ -61,7 +61,7 @@
     cues: ['Willingness is strong; the mechanism is weak · the numbers build', 'Reading · build the channel, then test it'],
     holds: [12, 8],
     notes: [
-      'Against benchmarks, the mechanism is behind: org-wide recognition 8% against 22%; choice 49% against 64%. The willingness is ahead: peer recognition 89% against 41%, plus 48. Connection is aligned, 80% against 77%. Directional only, not Saudi norms. [Team: confirm the source of “Choice in recognition”.]',
+      'Against benchmarks, the mechanism is behind: org-wide recognition 8% against 22%; choice 49% against 64%. The willingness is ahead: peer recognition 89% against 41%, plus 48. Connection is aligned, 80% against 77%. Directional only, not Saudi norms.',
       'So: behind on the mechanism, ahead on the willingness. People are ready; the channel is missing. Build the channel, then test it — that is the pilot we are asking you to approve.',
     ],
     field: [

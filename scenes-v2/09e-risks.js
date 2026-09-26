@@ -93,7 +93,7 @@
     cues: ['Four risks · the guard built in'],
     holds: [12],
     notes: [
-      'What could break it? Four risks, each with a guard already in the design and an owner. And the change stays small, because it runs on meetings and channels people already use. [Team: confirm owners.]',
+      'What could break it? Four risks, each with a guard already in the design and an owner. And the change stays small, because it runs on meetings and channels people already use.',
     ],
     field: [
       { dim: .34, lit: .03, travel: .4, offset: [140, 180], warm: .2, litFrom: [1500, 220], links: .5, wave: .6, streaks: .18, sparkle: 1.6, drift: 1,

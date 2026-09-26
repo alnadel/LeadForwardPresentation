@@ -9,7 +9,7 @@ v3 keeps the v2 look, motion and scenes, and adds what the capstone brief and ru
   - supporting text small and dim;
   - 2–4 ambient motions per stop.
   - New cards use `.glass` / `.glass.plum` / `.glass.live`.
-  - Numbers are exact. Proposals are labelled as proposals in the notes (`[Team: confirm …]`).
+  - Numbers are exact. The team has confirmed all proposals (26 Sep 2026).
 
 ## Acts (engine `Deck.ACTS`) and pace targets
 `['The moment', 'The case', 'The campaign', 'Leading it', 'The plan']`, finishing by `[1.5, 6.25, 10.25, 12, 15]` minutes.
@@ -99,10 +99,10 @@ These kickers make the capstone lifecycle visible.
   - A small caption: **"Targets proposed for the sponsor to confirm at launch."**
   - The What-we-need card stays as support: an executive sponsor · curation time from HR and Internal Communications · our existing channels.
   - The hero line stays: **"After one quarter we come back with one recommendation: scale, adjust or stop."**
-- Notes, stop 2: "How we'll judge it: participation from every department, colleagues reading the stories, a short sentiment pulse, and the same survey questions re-asked at quarter end. Reach from 8% to 25%, the visibility gap from 56% to below 40%. These targets are for the sponsor to confirm at launch. Then one recommendation: scale, adjust or stop. [Team: confirm the targets.]"
+- Notes, stop 2: "How we'll judge it: participation from every department, colleagues reading the stories, a short sentiment pulse, and the same survey questions re-asked at quarter end. Reach from 8% to 25%, the visibility gap from 56% to below 40%. These targets are for the sponsor to confirm at launch. Then one recommendation: scale, adjust or stop."
 
 ### 11 Close (id `close`)
-- Stop 1 adds a small line above or below the ask strip: **"Group 1 · Buthainah Alhejazi · Abdulaziz Almalaq · Hassan Alzahrani · Fadi Alkhayrat"**. Team names are taken from the kick-off pack's Group 1 (Inspiring Others). [Team: confirm spelling and order.]
+- Stop 1 adds a small line above or below the ask strip: **"Group 1 · Buthainah Alhejazi · Abdulaziz Almalaq · Hassan Alzahrani · Fadi Alkhayrat"**. Team names are taken from the kick-off pack's Group 1 (Inspiring Others).
 
 ---
 
@@ -137,7 +137,7 @@ These kickers make the capstone lifecycle visible.
   - Hero line: **"We recommend C: a story campaign on the channels we already have."**
   - Support line: **"Awards and tools can plug into it later."**
 - Notes:
-  - 0: "We did not start from the answer. We weighed three ways to close the gap: awards, a new recognition platform, and a story campaign. Awards reward a few. A platform costs money and teaches little. Doing nothing keeps reach at 8%. [Team: confirm the assessment.]"
+  - 0: "We did not start from the answer. We weighed three ways to close the gap: awards, a new recognition platform, and a story campaign. Awards reward a few. A platform costs money and teaches little. Doing nothing keeps reach at 8%."
   - 1: "So we recommend the story campaign. It reaches everyone, the learning travels, it is fair by design, it costs little and it starts now, on the channels we already have. Awards and tools can plug into it later."
 
 ### 09b · Leaders go first (id `leaders`, act 3, `transition: 'chapter'`, 2 stops)
@@ -166,7 +166,7 @@ These kickers make the capstone lifecycle visible.
 
   - The cascade stays behind, dimmed.
 - Notes:
-  - 0: "Inspiration is role-modelled, not announced. So leaders go first. Our sponsor opens the campaign with the story of a colleague who inspired them. Every department leader nominates at least one colleague a quarter and thanks featured colleagues in person. Managers give stories five minutes in every monthly meeting. [Team: confirm the commitments.]"
+  - 0: "Inspiration is role-modelled, not announced. So leaders go first. Our sponsor opens the campaign with the story of a colleague who inspired them. Every department leader nominates at least one colleague a quarter and thanks featured colleagues in person. Managers give stories five minutes in every monthly meeting."
   - 1: "And one rule keeps it honest: leaders spotlight others, never themselves. No self-nomination, no rankings, no broadcast. Consent and fairness come first. That is the leadership behaviour we want the campaign to model."
 
 ### 09c · Where the stories travel (id `comms`, act 3, `transition: 'push'`, 2 stops)
@@ -198,7 +198,7 @@ These kickers make the capstone lifecycle visible.
 | **49%** want to approve their story | Nothing is shared without the colleague's approval. |
 
 - Notes:
-  - 0: "Where do the stories travel? On channels we already have. The intranet story wall is always open. A story email goes out every month, and email is what 123 of 158 colleagues prefer. Teams give stories five minutes a month. Each quarter brings a short video and a town-hall spotlight, and once a year a story collection. Every story is in Arabic and English. [Team: confirm channels.]"
+  - 0: "Where do the stories travel? On channels we already have. The intranet story wall is always open. A story email goes out every month, and email is what 123 of 158 colleagues prefer. Teams give stories five minutes a month. Each quarter brings a short video and a town-hall spotlight, and once a year a story collection. Every story is in Arabic and English."
   - 1: "We designed it with what colleagues told us. Email first. A monthly rhythm, which 47% asked for. An anonymous nomination option for the 32% who want one. And the 49% who want to approve their story get exactly that: nothing is shared without approval."
 
 ### 09d · From one quarter to a habit (id `roadmap`, act 4, `transition: 'chapter'`, 2 stops)
@@ -225,7 +225,7 @@ These kickers make the capstone lifecycle visible.
     - A small recognition budget: certificates and the annual event.
 - Notes:
   - 0: "This is a roadmap, not a one-off, and it is done by the end of 2027: fifteen months. A one-quarter pilot this year. In the first half of 2027 we scale to every department, with a story champion in each. In the third quarter it becomes part of onboarding and leadership development. By the end of 2027 it runs itself, and the first annual story collection closes the year: stories are simply how Tahakom shares what works."
-  - 1: "Who runs it: the sponsor decides, a curation panel from HR, Internal Communications and one rotating employee selects each month, Communications runs the channels, and HR runs the dashboard. The cost is mostly people time, about two hours a week for the panel, plus a small recognition budget. No new software. [Team: confirm the estimate and the budget.]"
+  - 1: "Who runs it: the sponsor decides, a curation panel from HR, Internal Communications and one rotating employee selects each month, Communications runs the channels, and HR runs the dashboard. The cost is mostly people time, about two hours a week for the panel, plus a small recognition budget. No new software."
 
 ### 09e · What could break it (id `risks`, act 4, `transition: 'push'`, 1 stop)
 *Success factor: leadership & change management; topic areas: risk-mitigation plan.*
@@ -242,7 +242,7 @@ These kickers make the capstone lifecycle visible.
 
 - A small caption: **"Change stays small: it runs on meetings and channels people already use."**
 - Build: rows slide in one by one. Each guard "locks" onto its risk (a light closes a bracket). The spark lands on row one.
-- Notes, 0: "What could break it? Four risks, each with a guard already in the design and an owner. And the change stays small, because it runs on meetings and channels people already use. [Team: confirm owners.]"
+- Notes, 0: "What could break it? Four risks, each with a guard already in the design and an owner. And the change stays small, because it runs on meetings and channels people already use."
 
 ---
 

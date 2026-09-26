@@ -85,9 +85,9 @@ The acts now mirror the deliverable: **the case → campaign design → leadersh
 
 The full copy is in [`STORYBOARD-v3.md`](STORYBOARD-v3.md).
 
-## 5. New content the team must confirm
+## 5. New content, confirmed by the team
 
-These are proposals written from the brief. They are shown on screen and flagged in the notes.
+These were written from the brief. The team confirmed all of them on 26 Sep 2026. On screen, the KPI targets are still framed as proposals for the sponsor to confirm at launch, because that is a governance step, not an open question.
 
 - **Options comparison.** The three options and their five-criteria assessment are the team's judgement, not measured data.
 - **Leadership actions.**

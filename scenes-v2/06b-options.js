@@ -81,7 +81,7 @@
     cues: ['Three options · five criteria', 'We recommend C · the story campaign'],
     holds: [16, 11],
     notes: [
-      'We did not start from the answer. We weighed three ways to close the gap: awards, a new recognition platform, and a story campaign. Awards reward a few. A platform costs money and teaches little. Doing nothing keeps reach at 8%. [Team: confirm the assessment.]',
+      'We did not start from the answer. We weighed three ways to close the gap: awards, a new recognition platform, and a story campaign. Awards reward a few. A platform costs money and teaches little. Doing nothing keeps reach at 8%.',
       'So we recommend the story campaign. It reaches everyone, the learning travels, it is fair by design, it costs little and it starts now, on the channels we already have. Awards and tools can plug into it later.',
     ],
     field: [

@@ -111,8 +111,8 @@ The last frame holds the ask on screen for Q&A.
 
 Full storyboard, copy and rationale: [`docs/STORYBOARD.md`](docs/STORYBOARD.md). Speaker notes for every stop are in the speaker view (**S**).
 
-## Confirm before presenting
-These changed from, or were added to, the approved deck. Check each one with the team:
+## Confirmed content
+These changed from, or were added to, the approved deck. **The team confirmed all of them on 26 Sep 2026**, and the `[Team: confirm …]` reminders are gone from the speaker notes. They are kept here as a record:
 
 - **One name for the cycle.** Capture → Curate → Feature → Reinforce is used everywhere. The operating rhythm (scene 12) and the ask (scene 16) previously said "Collect → Validate → Feature → Learn".
 - **Nouf's story is the night-handover version and is illustrative.** It is tagged on screen, and there are no invented numbers. The Executive Cut's junction story (−38%) was a drafted placeholder and has been removed.
@@ -120,11 +120,11 @@ These changed from, or were added to, the approved deck. Check each one with the
 - **Scene 16, "What we need"** (an executive sponsor, curation time from HR and Internal Communications, existing channels) and the "scale, adjust or stop" report-back.
 - **Scene 14, baseline.** It says the same eight survey questions will be re-asked at the end of the quarter.
 - **New in v2, scene 11 How it runs (Impact row):** "Evidence is reviewed before a story is featured." It states a design decision, so check the team agrees.
-- **New in v3.** These are proposals written from the brief, and each is flagged `[Team: confirm …]` in the speaker notes:
+- **New in v3.** These were written from the brief:
   - the options assessment (08);
   - the leaders' commitments (12);
   - channels and cadence (13);
-  - the roadmap, the curation-time estimate and the recognition budget (14);
+  - the roadmap (pilot Q4 2026, done by the end of 2027), the curation-time estimate and the recognition budget (14);
   - the risk owners (15);
   - the KPI targets: reach 8% → 25%, visibility gap 56% → below 40% (16);
   - the Group 1 names on the close (17).
