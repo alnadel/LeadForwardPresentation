@@ -81,7 +81,7 @@
     const d = .38 + i * .14;
     return `
       <div class="cm-row r${i}" style="top:${ROW0 + i * PITCH}px;--k:${i}">
-        <i class="cm-nglow" style="right:${1920 - NUM_R - 40}px"></i>
+        <i class="cm-nglow" style="right:${1920 - NUM_R - 90}px"></i>
         <div class="cm-num a-pop" data-in="1" style="right:${1920 - NUM_R}px;--d:${d.toFixed(2)}s"${i === 0 ? ' data-spark="1" data-spark-delay=".5"' : ''}><span class="num">${p.n}</span>${p.s}</div>
         <p class="cm-find a-fade" data-in="1" style="left:${NUM_R + 26}px;--d:${(d + .12).toFixed(2)}s">${p.f}</p>
         <i class="cm-lead" style="--d:${(d + .22).toFixed(2)}s"><b></b></i>
