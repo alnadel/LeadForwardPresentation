@@ -133,17 +133,6 @@
 #s-options.st-1 .op-col.c .op-card { box-shadow: 0 40px 110px rgba(0, 0, 0, .5), 0 0 0 1px rgba(3, 255, 203, .25), 0 0 70px rgba(37, 199, 188, .22), inset 0 1px 0 rgba(255, 255, 255, .18); }
 #s-options.st-1 .op-col.c .op-bd { background: var(--teal); color: var(--navy); border-color: var(--teal); box-shadow: 0 0 30px rgba(37, 199, 188, .6); transition-delay: .3s; }
 #s-options.st-1 .op-crit { opacity: .82; transition: opacity .8s var(--ease-soft); }
-/* C's live edge: the glass's travelling edge light, drawn as a static rim mask with the light
-   turning inside it (transform), in place of the glass edge (whose --ga turn repaints the card) */
-#s-options .op-rim { position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; opacity: 0;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-#s-options .op-rim i { position: absolute; left: 50%; top: 50%; width: 720px; height: 720px; margin: -360px 0 0 -360px;
-  background: conic-gradient(from 0deg, rgba(255, 255, 255, .08), rgba(3, 255, 203, .95) 7%, rgba(255, 255, 255, .08) 16%, rgba(255, 255, 255, .06) 50%, rgba(201, 166, 211, .7) 57%, rgba(255, 255, 255, .06) 66%); }
-#s-options .op-card.lv .op-rim { opacity: 1; }
-#s-options .op-card.lv .op-rim i { animation: opRim 8s linear infinite; }
-#s-options .op-card.lv::before { opacity: 0; }
-@keyframes opRim { to { transform: rotate(360deg); } }
-#stage.lite #s-options .op-card.lv .op-rim i { animation: none; }
 /* a light runs down C's column at the click, each mark rippling as it passes (live build only) */
 #s-options .op-run { position: absolute; left: calc(50% - 150px); top: 164px; width: 300px; height: 120px; border-radius: 50%; opacity: 0; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .42), rgba(37, 199, 188, .15) 55%, transparent); }

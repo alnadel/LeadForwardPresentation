@@ -75,7 +75,6 @@
   const REP = DRAW_AT + DRAW;         // s after the click: the draw closes and the cycle repeats
   const JOIN = DRAW + .45;            // s into the draw: the second story joins the orbit
   const LAP = 7.2;                    // one orbit, seconds
-  const CIRCLE = `M${CX + R} ${CY} A${R} ${R} 0 1 1 ${CX - R} ${CY} A${R} ${R} 0 1 1 ${CX + R} ${CY}`;
   const STAGES = [
     { n: '01', t: 'Capture', s: 'Peer or leader nomination through a short, clear form.', p: 'Employee voice', a: -45, ic: 'person-message' },
     { n: '02', t: 'Curate', s: 'Verify facts, secure consent and link the story to one value.', p: 'Fair selection', a: 45, ic: 'document-certified' },
@@ -363,10 +362,10 @@
     const sp = tp * v;
     let x, o, k = -1, tail;
     if (sp < run) {
-      x = PX[0] + sp; o = Math.min(1, tp / .2); tail = Math.min(230, sp);
+      x = PX[0] + sp; o = ease(Math.min(1, tp / .26)); tail = Math.min(230, sp);   // it lights up (and goes, below) over ≥ 260 ms, eased
     } else {
       k = tp - run / v;
-      x = PEND; o = Math.max(0, 1 - k / .35); tail = Math.max(0, 230 - k * 1000);
+      x = PEND; o = ease(Math.max(0, 1 - k / .35)); tail = Math.max(0, 230 - k * 1000);
     }
     ctx.pl.style.transform = `translate(${x.toFixed(1)}px,${Y1}px) scale(${k < 0 ? 1 : Math.max(.3, 1 - k * 2.2).toFixed(3)},${k < 0 ? 1 : (1 + Math.min(k, .3) * 1.4).toFixed(3)})`;
     fade(ctx.pl, o.toFixed(3));
