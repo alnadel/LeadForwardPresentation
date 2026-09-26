@@ -61,9 +61,10 @@
   const monX = MON.map((m) => [qp(m.a, QD / 2, QT)[0], qp(m.b, QD / 2, QT)[0]]);
   const QKF = [];
   // a month is lit while the walk is on it (rising and falling over ≥ 240 ms)
+  // (the walk sets out just inside M1, so M1 rises with the light itself, over its first 4%)
   monX.forEach(([a, b], k) => {
-    const on = wAt(a), off = wAt(b), e = 3.2;
-    QKF.push(`@keyframes plMon${k} { 0%, ${pct(on - e)} { opacity: 0; animation-timing-function: ease-in-out; } ${pct(on + e * .4)}, ${pct(off - e * .4)} { opacity: 1; animation-timing-function: ease-in-out; } ${pct(off + e)}, 100% { opacity: 0; } }`);
+    const on = wAt(a), off = wAt(b), e = 3.2, up0 = Math.max(0, on - e), up1 = Math.max(4, on + e * .4);
+    QKF.push(`@keyframes plMon${k} { ${up0 > 0 ? `0%, ${pct(up0)}` : '0%'} { opacity: 0; animation-timing-function: ease-in-out; } ${pct(up1)}, ${pct(off - e * .4)} { opacity: 1; animation-timing-function: ease-in-out; } ${pct(off + e)}, 100% { opacity: 0; } }`);
   });
   // the commitments light where they happen: 01 as the walk sets out, 02 across the middle month, 03 at quarter end
   const CWIN = [[0, 12], [wAt(monX[1][0]), wAt(monX[1][1])], [WEND * 100, WEND * 100 + 14]];
