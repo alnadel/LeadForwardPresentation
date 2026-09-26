@@ -14,7 +14,7 @@
 #s-gap .gp-n::after { content: ''; width: 44px; height: 2px; background: currentColor; opacity: .7; }
 #s-gap .gp-pt.go .gp-n { color: var(--teal); }
 #s-gap .gp-pt.gap .gp-n { color: var(--purple-lt); }
-#s-gap .gp-pt-h { margin: 16px 0 0; font: 700 50px/1.04 var(--font); letter-spacing: -.022em; color: var(--white); white-space: nowrap; }
+#s-gap .gp-pt-h { margin: 16px 0 0; font: 700 48px/1.04 var(--font); letter-spacing: -.022em; color: var(--white); white-space: nowrap; }
 #s-gap .gp-pt-h em { font-style: normal; }
 #s-gap .gp-pt.go .gp-pt-h em { color: var(--teal); }
 #s-gap .gp-pt.gap .gp-pt-h em { color: var(--purple-lt); }
@@ -214,8 +214,8 @@
 /* support: a small, dim follow-on to the dimmed headline (context, not the point) */
 #s-gap .gp-c1 { margin: 0; font: 400 24px/1.4 var(--font); color: rgba(255, 255, 255, .6); }
 /* the payoff: the largest, brightest line on the stop */
-#s-gap .gp-c2 { margin: 46px 0 0; max-width: 1600px; font: 700 78px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); }
-#s-gap .gp-ask-w { display: inline-block; margin-top: 44px; }
+#s-gap .gp-c2 { margin: 40px 0 0; max-width: 1460px; font: 700 78px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); }
+#s-gap .gp-ask-w { display: inline-block; margin-top: 36px; }
 #s-gap .gp-ask { display: flex; align-items: center; gap: 28px; padding: 30px 52px 30px 36px; border-radius: 24px;
   background: linear-gradient(100deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .06) 60%, rgba(157, 103, 170, .08)), rgba(7, 16, 32, .7);
   box-shadow: 0 34px 90px rgba(0, 0, 0, .45), 0 0 70px rgba(37, 199, 188, .16), inset 0 1px 0 rgba(255, 255, 255, .16); }

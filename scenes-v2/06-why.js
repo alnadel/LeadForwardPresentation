@@ -23,7 +23,7 @@
   const CARD_A = [430, 646], CARD_B = [690, 906];
   const LAND_A = [CARD_A[0] + 30, CARD_A[1] - 30], LAND_B = [CARD_B[0] + 30, CARD_B[1] - 30];
   const LIGHT_X = NODE.x + NODE.r + 22;    // where the story light rests (782)
-  const EMP = { x: 144, w: 470, top: FY - 170, h: 340 };
+  const EMP = { x: 144, w: 470, top: FY - 150, h: 300 };
   const BAND = [410, 926];                 // the beams' vertical band
 
   const cx1 = X0 + 96, cx2 = X1 - 92;
@@ -148,7 +148,8 @@
 
           <!-- 01 · the individual -->
           <div class="glass wy-card wy-emp a-unfold amb-sheen" data-in="0" style="--d:.2s;--dur:.9s;${box(EMP.x, EMP.top, EMP.w, EMP.h)};--sh:-.4s">
-            <div class="wy-card-h"><span class="wy-num">01</span><span class="label">Employee level</span></div>
+            <div class="wy-card-h"><span class="wy-num">01</span></div>
+            <h3 class="wy-card-t">Employee level</h3>
             <ul class="wy-list" data-stagger style="--stagger:.07s;--d:.36s">${EMPL.map((t) => `<li data-in="0">${t}</li>`).join('')}</ul>
           </div>
 
@@ -172,23 +173,25 @@
           <!-- 02 · the organisation -->
           ${ORG.map((o) => `
           <div class="glass wy-card wy-org ${o.cls} a-unfold amb-sheen" data-in="0" style="--d:${o.d}s;--dur:.75s;${box(X1, o.y[0], 1776 - X1, o.y[1] - o.y[0])};--sh:${o.sh}">
-            <div class="wy-card-h"><span class="wy-num">${o.k}</span><span class="label">${o.label}</span></div>
+            <div class="wy-card-h"><span class="wy-num">${o.k}</span></div>
+            <h3 class="wy-card-t">${o.label}</h3>
             <ul class="wy-list">${o.items.map((t) => `<li>${t}</li>`).join('')}</ul>
           </div>
           <div class="wy-port a-materialize" data-in="0" style="--d:${o.d + .12}s;--dur:.7s;${box(X1 - 38, (o.y[0] + o.y[1]) / 2 - 38, 76, 76)}">${Deck.icon(o.icon, 'wy-port-ic')}</div>`).join('')}
         </div>
       </div>
 
-      <!-- stop 2: strategic value -->
+      <!-- stop 2: strategic value. Key: the statement and the three outcomes (the
+           spark lands on the outcomes); the six values are supporting context -->
       <div class="pad wy-sv">
         <div class="kicker a-wipe" data-in="2" style="--d:.5s">Strategic value</div>
         <h2 class="h2 wy-sv-st" data-in="2" data-split style="--d:.55s;--wstep:.04s">The initiative does not create new <span class="wy-nw">values —</span> it helps employees recognise and apply <em class="hl">the values Tahakom already has.</em></h2>
       </div>
       <div class="wy-chips" data-stagger style="--stagger:.07s;--d:.8s">
-        ${VALUES.map((v, i) => `<span class="wy-chip glass a-flip" data-in="2" style="--k:${i}"${i === 0 ? ' data-spark="2" data-spark-delay=".75"' : ''}><i></i>${v}</span>`).join('')}
+        ${VALUES.map((v, i) => `<span class="wy-chip glass a-flip" data-in="2" style="--k:${i}"><i></i>${v}</span>`).join('')}
       </div>
       <div class="wy-pillars" data-stagger style="--stagger:.1s;--d:1.02s">
-        ${PILLARS.map((p, i) => `<div class="wy-p glass plum a-unfold" data-in="2" style="--dur:.8s"><div class="wy-p-h"><span class="num">${String(i + 1).padStart(2, '0')}</span><i></i></div><div class="wy-p-t">${p}</div></div>`).join('')}
+        ${PILLARS.map((p, i) => `<div class="wy-p glass plum a-unfold" data-in="2" style="--dur:.8s"><div class="wy-p-h"><span class="num"${i === 0 ? ' data-spark="2" data-spark-at="r" data-spark-delay="1.05"' : ''}>${String(i + 1).padStart(2, '0')}</span><span class="wy-p-r"><i></i><b></b></span></div><div class="wy-p-t">${p}</div></div>`).join('')}
       </div>
     `,
     step(n, prev, ctx) {
@@ -196,7 +199,7 @@
       // whole flow builds) and into stop 1 (the story passes through again). Their
       // resting state is invisible, so any stop reached another way looks the same.
       const el = ctx.el, live = !ctx.instant;
-      el.classList.remove('wy-run-in', 'wy-pulse');
+      el.classList.remove('wy-run-in', 'wy-pulse', 'wy-sv-live');
       void el.offsetWidth;
       if (live && n === 0 && prev === -1) {
         el.classList.add('wy-run-in');
@@ -204,7 +207,10 @@
       }
       if (live && n === 1 && prev === 0) el.classList.add('wy-pulse');
       // stop 2 is a camera rise: the world streaks up past the lens
-      if (live && n === 2 && prev === 1 && window.Field) { Field.warp('up', 1.3, .9); Field.kick(0, -200, 1.9); }
+      if (live && n === 2 && prev === 1) {
+        el.classList.add('wy-sv-live');   // the outcome rules draw behind a leading light
+        if (window.Field) { Field.warp('up', 1.3, .9); Field.kick(0, -200, 1.9); }
+      }
     },
   });
 })();

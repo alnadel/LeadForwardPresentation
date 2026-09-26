@@ -11,7 +11,8 @@
 #s-why .wy-h { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 72px; }
 #s-why .wy-final { position: absolute; left: 0; top: 0; width: 1632px; }
 #s-why .wy-st { max-width: 1560px; font-size: 70px; }
-#s-why .wy-cav { margin: 20px 0 0; font: 400 28px/1.35 var(--font); color: rgba(255, 255, 255, .84); }
+/* the retention caveat: a small caption, always on screen with the claim */
+#s-why .wy-cav { margin: 22px 0 0; font: 400 21px/1.35 var(--font); color: rgba(255, 255, 255, .72); }
 
 /* ── the flow ────────────────────────────────────────────────────────── */
 #s-why .wy-flow { position: absolute; inset: 0; }
@@ -67,18 +68,19 @@
 /* the cards' opacity only ever changes for focus (their entrance is an unfold) */
 #s-why .wy-card[data-in] { transition: opacity .8s var(--ease-soft), transform var(--dur, 1.1s) var(--ease-out) var(--delay), filter var(--dur, .9s) var(--ease-out) var(--delay), clip-path var(--dur, 1.1s) var(--ease-out) var(--delay); }
 #s-why .wy-card.amb-sheen::after { animation-duration: 5.4s; animation-delay: var(--sh, 0s); background: linear-gradient(100deg, transparent, rgba(160, 255, 236, .12), transparent); }
-#s-why .wy-card-h { display: flex; align-items: baseline; gap: 14px; white-space: nowrap; }
-#s-why .wy-num { font: 700 26px/1 var(--font); letter-spacing: .08em; color: var(--teal); }
-#s-why .wy-card-h .label { color: var(--white); letter-spacing: .11em; }
-#s-why .wy-list { list-style: none; margin: 10px 0 0; padding: 0; }
-#s-why .wy-list li { position: relative; padding-left: 28px; margin-top: 12px; font: 400 28px/1.3 var(--font); color: var(--ink-1); white-space: nowrap; }
-#s-why .wy-list li::before { content: ''; position: absolute; left: 0; top: .48em; width: 12px; height: 12px; border-radius: 28%; background: var(--teal); box-shadow: 0 0 10px rgba(37, 199, 188, .6); }
+/* each card: its number, then its title (the level: key, readable), then the
+   bullets (support: small, dim, light) */
+#s-why .wy-card-h { display: flex; align-items: center; gap: 14px; white-space: nowrap; }
+#s-why .wy-card-h::after { content: ''; width: 40px; height: 2px; background: var(--teal); opacity: .6; }
+#s-why .wy-num { font: 700 22px/1 var(--font); letter-spacing: .14em; color: var(--teal); }
+#s-why .wy-card-t { margin: 10px 0 0; font: 700 34px/1.08 var(--font); letter-spacing: -.014em; color: var(--white); white-space: nowrap; }
+#s-why .wy-list { list-style: none; margin: 8px 0 0; padding: 0; }
+#s-why .wy-list li { position: relative; padding-left: 24px; margin-top: 8px; font: 400 23px/1.34 var(--font); color: rgba(255, 255, 255, .64); white-space: nowrap; }
+#s-why .wy-list li::before { content: ''; position: absolute; left: 0; top: .5em; width: 9px; height: 9px; border-radius: 28%; background: rgba(37, 199, 188, .75); }
 #s-why .wy-emp { padding: 0 34px; background: linear-gradient(165deg, rgba(37, 199, 188, .16), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .05)), rgba(7, 18, 32, .66); }
-#s-why .wy-emp .wy-card-h .label { font-size: 24px; }
-#s-why .wy-emp .wy-list li { margin-top: 16px; }
+#s-why .wy-emp .wy-list li { margin-top: 10px; }
 /* the organisation benefits: teal like the individual (purple is kept for gaps) */
 #s-why .wy-org { padding: 0 24px 0 66px; background: linear-gradient(165deg, rgba(37, 199, 188, .13), rgba(255, 255, 255, .03) 55%, rgba(143, 194, 220, .05)), rgba(7, 18, 32, .66); }
-#s-why .wy-org .wy-card-h .label { letter-spacing: .1em; }
 /* where each beam lands: an org port on the card's edge */
 #s-why .wy-port { position: absolute; z-index: 2; display: grid; place-items: center; border-radius: 28%; background: linear-gradient(160deg, #1B2438, #0E1424); border: 2px solid rgba(37, 199, 188, .85); color: var(--white);
   box-shadow: 0 0 34px rgba(37, 199, 188, .38), 0 10px 30px rgba(0, 0, 0, .4); }
@@ -124,7 +126,7 @@
   animation: wyRim 5s linear infinite; }
 #s-why.st-0 .wy-prism-ring { opacity: 1; }
 @keyframes wyRim { to { --wy-a: 360deg; } }
-#s-why .wy-prism-t { position: relative; font: 700 28px/1.22 var(--font); letter-spacing: .15em; text-indent: .15em; text-transform: uppercase; text-align: center; color: var(--white); text-shadow: 0 0 18px rgba(3, 255, 203, .5); }
+#s-why .wy-prism-t { position: relative; font: 700 31px/1.2 var(--font); letter-spacing: .15em; text-indent: .15em; text-transform: uppercase; text-align: center; color: var(--white); text-shadow: 0 0 18px rgba(3, 255, 203, .5); }
 
 /* the build light: in through the node's wire, through the prism, out along a beam */
 /* it runs beneath the prism, so it enters the shared story and re-emerges on the beams */
@@ -153,25 +155,33 @@
 #s-why .wy-sv-st { margin-top: 30px; font-size: 64px; line-height: 1.04; max-width: 1200px; }
 
 /* the six values: glass tiles, one in the light at a time, the light passing tile to tile */
-#s-why .wy-chips { position: absolute; left: 144px; top: 470px; display: grid; grid-template-columns: repeat(3, 340px); gap: 18px 20px; }
-#s-why .wy-chip { display: flex; align-items: center; justify-content: center; gap: 16px; height: 88px; border-radius: 20px;
-  font: 700 28px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 255, 255, .9); }
-#s-why .wy-chip > i { width: 12px; height: 12px; border-radius: 28%; flex: none; background: rgba(37, 199, 188, .55); }
+/* supporting context: compact, quieter tiles directly under the phrase they illustrate */
+#s-why .wy-chips { position: absolute; left: 144px; top: 452px; display: grid; grid-template-columns: repeat(3, 252px); gap: 12px 14px; }
+#s-why .wy-chip { display: flex; align-items: center; justify-content: center; gap: 12px; height: 58px; border-radius: 16px;
+  font: 700 19px/1 var(--font); letter-spacing: .13em; text-transform: uppercase; color: rgba(255, 255, 255, .74);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .1); }
+#s-why .wy-chip > i { width: 9px; height: 9px; border-radius: 28%; flex: none; background: rgba(37, 199, 188, .55); }
 #s-why .wy-chip::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
-  background: radial-gradient(120% 140% at 50% 50%, rgba(37, 199, 188, .34), rgba(37, 199, 188, .08) 70%, transparent); box-shadow: 0 0 40px rgba(37, 199, 188, .55), inset 0 0 0 2px var(--teal); }
+  background: radial-gradient(120% 140% at 50% 50%, rgba(37, 199, 188, .26), rgba(37, 199, 188, .06) 70%, transparent); box-shadow: 0 0 26px rgba(37, 199, 188, .4), inset 0 0 0 1.5px rgba(37, 199, 188, .85); }
 #s-why.st-2 .wy-chip.is-in::after { animation: wyChip 8.4s ease-in-out calc(var(--delay) + .9s + var(--k) * 1.4s) infinite both; }
 #s-why.st-2 .wy-chip.is-in > i { animation: wyChipDot 8.4s ease-in-out calc(var(--delay) + .9s + var(--k) * 1.4s) infinite both; }
 @keyframes wyChip { 0%, 25%, 100% { opacity: 0; } 5%, 17% { opacity: 1; } }
-@keyframes wyChipDot { 0%, 25%, 100% { background: rgba(37, 199, 188, .55); box-shadow: none; } 5%, 17% { background: var(--sea); box-shadow: 0 0 14px var(--sea); } }
+@keyframes wyChipDot { 0%, 25%, 100% { background: rgba(37, 199, 188, .55); box-shadow: none; } 5%, 17% { background: var(--sea); box-shadow: 0 0 10px var(--sea); } }
 
-/* the three outcomes: glass cards across the foot of the frame */
-#s-why .wy-pillars { position: absolute; left: 144px; top: 756px; width: 1632px; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 24px; }
-#s-why .wy-p { padding: 24px 32px 28px; border-radius: 22px; }
+/* the three outcomes (key): glass cards across the foot of the frame */
+#s-why .wy-pillars { position: absolute; left: 144px; top: 712px; width: 1632px; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 24px; }
+#s-why .wy-p { padding: 26px 28px 32px; border-radius: 22px; }
 #s-why .wy-p-h { display: flex; align-items: center; gap: 18px; height: 26px; }
 #s-why .wy-p-h .num { font: 700 24px/1 var(--font); letter-spacing: .16em; color: var(--teal); }
-#s-why .wy-p-h i { flex: 1; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .9), rgba(255, 255, 255, .04)); transform-origin: 0 50%; transform: scaleX(0); transition: transform 1s var(--ease-out) calc(var(--delay) + .3s); }
+#s-why .wy-p-r { position: relative; flex: 1; height: 2px; }
+#s-why .wy-p-h i { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(37, 199, 188, .9), rgba(255, 255, 255, .04)); transform-origin: 0 50%; transform: scaleX(0); transition: transform 1s var(--ease-out) calc(var(--delay) + .3s); }
 #s-why .wy-p.is-in .wy-p-h i { transform: none; }
-#s-why .wy-p-t { margin-top: 16px; font: 700 35px/1.15 var(--font); letter-spacing: -.012em; color: var(--white); white-space: nowrap; }
+/* a light leads each rule as it draws (live builds only; at rest it is gone) */
+#s-why .wy-p-r b { position: absolute; left: 0; top: 1px; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 28%; opacity: 0; pointer-events: none;
+  background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 10px var(--sea), 0 0 26px rgba(3, 255, 203, .55); }
+#s-why.wy-sv-live .wy-p.is-in .wy-p-r b { animation: wyLead 1s var(--ease-out) calc(var(--delay) + .3s) both; }
+@keyframes wyLead { 0% { left: 0; opacity: 0; } 8% { opacity: 1; } 70% { opacity: .9; } 100% { left: 100%; opacity: 0; } }
+#s-why .wy-p-t { margin-top: 18px; font: 700 37px/1.12 var(--font); letter-spacing: -.016em; color: var(--white); white-space: nowrap; }
 
 /* lite mode (L): the rise keeps its move but drops the large blur */
 #stage.lite #s-why .wy-rise { filter: none !important; }

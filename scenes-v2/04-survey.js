@@ -71,10 +71,12 @@
       ${[0, 1, 2, 3].map((k) => `<i class="sv-mark" data-spark="${k}" data-spark-xy="${SPARK}"${k ? '' : ' data-spark-delay=".3"'}></i>`).join('')}
 
       <!-- the key (stops 1–2), then the second figure (stop 3), in one slot -->
-      <div class="sv-legend glass" data-in="1" data-out="3" style="--d:.55s">
+      <!-- support: a small caption-weight key (the figure and its label lead) -->
+      <div class="sv-legend" data-in="1" data-out="3" style="--d:.55s">
         <span class="sv-key"><i class="k-lit"></i><span class="sv-kt">${[1, 2].map((k) => `<b data-at="${k}">${lit(k)} of 158 · ${METRICS[k].label.toLowerCase()}</b>`).join('')}</span></span>
         <span class="sv-key"><i class="k-off"></i>Other respondents</span>
       </div>
+      <!-- the second figure: secondary to the 80% (smaller, quieter) -->
       <div class="sv-second glass amb-sheen" data-in="3" style="--d:.7s">
         <b class="num sv-49"><span data-count="49" data-dur=".9" data-delay=".75">0</span><small>%</small></b>
         <div class="sv-49t">
