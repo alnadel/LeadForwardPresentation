@@ -5,7 +5,8 @@
    materialise as it passes them, and the light keeps orbiting with a comet tail.
    Chevrons flow round the ring, each node's halo flares as the light passes, and
    a faint outer ring turns slowly. Stop 2: the cycle repeats; every lap sends a
-   pulse out from the ring, and each stage shows its principle. */
+   pulse out from the ring, a second story light joins the orbit, and each stage
+   shows its principle. */
 (function () {
   // ring geometry (stage px)
   const CX = 960, CY = 610, R = 220, ROUT = 262;
@@ -79,8 +80,8 @@
     ],
     field: [
       { dim: .3, lit: .02, travel: .22, offset: [150, -70], litFrom: null, links: .5, wave: .5, streaks: .14, sparkle: 1, calm: [[100, 120, 1500, 380, .85], [140, 420, 1720, 900, .5]] },
-      { dim: .4, lit: .05, litFrom: [CX, CY], travel: .35, links: .7, wave: .6, sparkle: 1.9, calm: [[100, 120, 1300, 300, .85], [120, 400, 680, 940, .72], [1240, 400, 1800, 940, .72]] },
-      { lit: .08, travel: .5, wave: .7, sparkle: 1.9, calm: [[100, 120, 1300, 300, .85], [120, 400, 680, 950, .72], [1240, 400, 1800, 950, .72], [820, 540, 1100, 700, .8]] },
+      { dim: .46, lit: .06, litFrom: [CX, CY], travel: .45, links: .8, wave: .7, streaks: .24, sparkle: 2.4, calm: [[100, 120, 1300, 300, .85], [120, 400, 680, 940, .72], [1240, 400, 1800, 940, .72]] },
+      { lit: .09, travel: .6, wave: .8, sparkle: 2.6, calm: [[100, 120, 1300, 300, .85], [120, 400, 680, 950, .72], [1240, 400, 1800, 950, .72], [820, 540, 1100, 700, .8]] },
     ],
     html: `
       <!-- stop 0 · two lanes -->
@@ -259,8 +260,9 @@
     // the comet tail follows the light; while the ring draws it grows with the stroke
     ctx.comet.style.transform = `rotate(${(a + 90).toFixed(2)}deg)`;
     ctx.comet.style.opacity = el < 0 ? 0 : Math.min(1, (360 * p) / 110).toFixed(3);
-    // stop 2: a second story joins the cycle, half a lap behind the first
-    const a2 = a + 180, two = ctx.step >= 2 && el >= DRAW;
+    // stop 2: a second story joins the cycle behind the first (135°, so the two
+    // alternate through the nodes and one light is always in view)
+    const a2 = a - 135, two = ctx.step >= 2 && el >= DRAW;
     const [x2, y2] = at(a2, R);
     place(ctx.ol2, x2, y2);
     ctx.comet2.style.transform = `rotate(${(a2 + 90).toFixed(2)}deg)`;

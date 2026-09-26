@@ -341,9 +341,11 @@
     if (!t) { if (rec.def.spark !== 'keep') { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); sparkShow(false); } return; }
     const p = sparkPoint(t);
     $$('.sparked', rec.el).forEach((x) => x.classList.remove('sparked'));
-    if (instant) { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); sparkPlace(p.x, p.y); sparkShow(true); t.classList.add('sparked'); return; }
+    clearTimeout(SPK.flash);
+    if (instant) { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); sparkPlace(p.x, p.y); sparkShow(true); return; }
     const d = (parseFloat(t.dataset.sparkDelay || .12) + (extraDelay || 0)) * 1000;
-    sparkFly(p.x, p.y, d, () => t.classList.add('sparked'));
+    // the flash is transient, so the target's own ambient animation resumes afterwards
+    sparkFly(p.x, p.y, d, () => { t.classList.add('sparked'); SPK.flash = setTimeout(() => t.classList.remove('sparked'), 1150); });
   }
 
   /* ── scene transitions ─────────────────────────────────────────────── */
