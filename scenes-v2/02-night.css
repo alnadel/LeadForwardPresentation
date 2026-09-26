@@ -105,16 +105,18 @@
 /* the soft light between them (positioned at their midpoint) … */
 #s-night .nt-pair { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 #s-night.st-2 .nt-pair { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
-#s-night .nt-pair .nt-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: ambBreathe 3.4s ease-in-out infinite; }
+#s-night .nt-pair .nt-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: ntHalo 3s ease-in-out -.75s infinite; }
+/* the halo between them breathes with them, a little deeper than v1 */
+@keyframes ntHalo { 0%, 100% { transform: scale(.94); opacity: .6; } 50% { transform: scale(1.2); opacity: 1; } }
 /* … and one light on each colleague (the wrapper is placed per frame; the light breathes) */
 #s-night .nt-p { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 #s-night.st-2 .nt-p { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
-#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; animation: ntPair 3.6s ease-in-out infinite; }
-#s-night .nt-p + .nt-p .light { animation-delay: -1.8s; }
+#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; animation: ntPair 3s ease-in-out infinite; }
+#s-night .nt-p + .nt-p .light { animation-delay: -1.5s; }
 /* each light breathes deeply: at rest it is the v1 light, at the top of the breath its glow swells */
 @keyframes ntPair {
   0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--sea), 0 0 36px rgba(3, 255, 203, .6), 0 0 90px rgba(37, 199, 188, .35); }
-  50% { transform: scale(1.25); box-shadow: 0 0 24px var(--sea), 0 0 84px rgba(3, 255, 203, .8), 0 0 210px rgba(37, 199, 188, .6); }
+  50% { transform: scale(1.25); box-shadow: 0 0 22px var(--sea), 0 0 74px 10px rgba(3, 255, 203, .62), 0 0 170px 38px rgba(37, 199, 188, .42); }
 }
 
 #s-night .nt-know { position: absolute; width: 760px; text-align: center; }
