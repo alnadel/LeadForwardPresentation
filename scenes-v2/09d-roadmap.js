@@ -1,16 +1,16 @@
 /* 09d · From one quarter to a habit (v3) — act V opens on the plan. The chapter
    card's line of light does not go away: the scene opens on exactly that line
    (stage y 540), which becomes the roadmap's timeline.
-   Stop 0: four milestones on the glowing timeline, 2026 → 2030. The timeline is the
+   Stop 0: four milestones on the glowing timeline, Q4 2026 → the end of 2027. The timeline is the
    ground of a pseudo-3D staircase: each stage is a step that rises from its node and
    grows as the programme scales (Pilot a low slab, Habit the tallest), with its year
-   standing on it and, toward 2030, a faint Riyadh horizon behind the top step. The
+   standing on it and, toward the end of 2027, a faint Riyadh horizon behind the top step. The
    pilot is the hero (its year lit, its card in live glass, the spark docks in its
    node); each card carries its stage's icon; the later stages get quieter step by
-   step, and the line turns to a dashed horizon after 2028. Ambient: a story light
+   step, and the line turns to a dashed horizon after Q3 2027. Ambient: a story light
    leaves the pilot and travels the timeline, pausing at each milestone (its node
    pings, and its step's and its card's top edges light), then
-   dissolves past 2030; sparks rise off the line; a horizon glow breathes behind
+   dissolves past the last step; sparks rise off the line; a horizon glow breathes behind
    the pilot; the live edge circles the pilot card.
    Stop 1: "Who runs it, and what it costs." The years and cards fold away and the
    timeline rises into a slim rail under the headline (the story keeps travelling
@@ -32,9 +32,9 @@
   const S0Y = 230;                             // stop 0's box starts here (keep in step with .rm-s0 in the CSS)
   const MS = [
     { when: 'Q4 2026', stage: 'Pilot', what: 'One quarterly cycle, open to everyone. <b>Decide: scale, adjust or stop.</b>', x: 144, w: 480 },
-    { when: '2027', stage: 'Scale', what: 'Every department, a story champion in each, video and town-hall spotlights.', x: 660, w: 348 },
-    { when: '2028', stage: 'Embed', what: 'Part of onboarding and leadership development; the first annual story collection.', x: 1044, w: 348 },
-    { when: '2030', stage: 'Habit', what: 'Self-running: stories are how Tahakom shares what works.', x: 1428, w: 348 },
+    { when: 'H1 2027', stage: 'Scale', what: 'Every department, a story champion in each, video and town-hall spotlights.', x: 660, w: 348 },
+    { when: 'Q3 2027', stage: 'Embed', what: 'Part of onboarding and leadership development.', x: 1044, w: 348 },
+    { when: 'Q4 2027', stage: 'Habit', what: 'Self-running by year end, closed by the first annual story collection.', x: 1428, w: 348 },
   ];
   const NX = MS.map((m) => m.x + 46);          // node centres on the timeline
   // line icons on a 24 grid (outline, round caps)
@@ -56,13 +56,13 @@
   const r2 = (v) => Math.round(v * 100) / 100;
 
   // the story light's lap: it leaves the pilot, rests briefly at each later milestone and
-  // dissolves past 2030; a second story runs half a lap behind, so every milestone pings
+  // dissolves past the last step; a second story runs half a lap behind, so every milestone pings
   // twice a lap (the pings in 09d-roadmap.css peak at 0% and 50%)
   const LAP = 9, FIRST = 1.5;                  // s per lap; the first lap starts after the build
   const AT = [.03, .22, .42, .64];             // share of the lap when the light reaches each node
   const ping = (i) => r2(FIRST + AT[i] * LAP);
   // the lap as keyframes, built from the node positions: out of the pilot, a rest at each
-  // later milestone (each segment eases in and out), then it dissolves beyond 2030
+  // later milestone (each segment eases in and out), then it dissolves beyond the last step
   const io = 'animation-timing-function: cubic-bezier(.5, 0, .4, 1)';
   const tx = (x, sc, op) => `transform: translateX(${x}px) scale(${sc})` + (op == null ? '' : `; opacity: ${op}`);
   const runKeys = `@keyframes rmRun {
@@ -88,7 +88,7 @@
     { r: 'Curation panel', d: 'HR, Internal Communications and one rotating employee, choosing monthly', a: 'three', b: 'check' },
     { r: 'Internal Communications', d: 'Channels and calendar', a: 'one', b: 'cast' },
     { r: 'HR / People Analytics', d: 'The dashboard', a: 'one', b: 'bars' },
-    { r: 'Story champions', d: 'From 2027', a: 'two', b: 'story' },
+    { r: 'Story champions', d: 'From H1 2027', a: 'two', b: 'story' },
   ];
   // the budget as a pseudo-3D stack: people time is the main block, recognition a thin layer on
   // it, and new software a ghost above it, crossed out (sizes are illustrative, not figures)
@@ -188,10 +188,10 @@
     act: 4,
     bg: 'navy',
     transition: 'chapter',
-    cues: ['Roadmap · 2026 to 2030', 'Who runs it, and what it costs'],
+    cues: ['Roadmap · done by the end of 2027', 'Who runs it, and what it costs'],
     holds: [12, 14],
     notes: [
-      'This is a roadmap, not a one-off. A one-quarter pilot this year. In 2027 we scale to every department, with a story champion in each. In 2028 it becomes part of onboarding and leadership development. By 2030 it runs itself: stories are simply how Tahakom shares what works.',
+      'This is a roadmap, not a one-off, and it is done by the end of 2027: fifteen months. A one-quarter pilot this year. In the first half of 2027 we scale to every department, with a story champion in each. In the third quarter it becomes part of onboarding and leadership development. By the end of 2027 it runs itself, and the first annual story collection closes the year: stories are simply how Tahakom shares what works.',
       'Who runs it: the sponsor decides, a curation panel from HR, Internal Communications and one rotating employee selects each month, Communications runs the channels, and HR runs the dashboard. The cost is mostly people time, about two hours a week for the panel, plus a small recognition budget. No new software. [Team: confirm the estimate and the budget.]',
     ],
     field: [
@@ -206,7 +206,7 @@
       <div class="amb-dust rm-dust a-fade" data-in="0" data-out="1" style="top:${DUST_Y}px;--d:1s;--dur:1.4s">${dust}</div>
 
       <div class="kicker rm-kick a-wipe" data-in="0" style="--d:.1s">Roadmap</div>
-      <h2 class="h2 rm-h" data-in="0" data-out="1" data-split style="--d:.16s">From one quarter to a habit.</h2>
+      <h2 class="h2 rm-h" data-in="0" data-out="1" data-split style="--d:.16s">From one quarter to a habit, <em class="hl">by</em> <em class="hl">the</em> <em class="hl">end</em> <em class="hl">of</em> <em class="hl">2027.</em></h2>
       <h2 class="h2 rm-h" data-in="1" data-split style="--d:.18s">Who runs it, and what it costs.</h2>
 
       <!-- stop 0 · the staircase and its years above the line, cards below (they fold away at stop 1) -->

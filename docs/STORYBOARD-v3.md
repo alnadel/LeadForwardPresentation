@@ -202,29 +202,29 @@ These kickers make the capstone lifecycle visible.
   - 1: "We designed it with what colleagues told us. Email first. A monthly rhythm, which 47% asked for. An anonymous nomination option for the 32% who want one. And the 49% who want to approve their story get exactly that: nothing is shared without approval."
 
 ### 09d · From one quarter to a habit (id `roadmap`, act 4, `transition: 'chapter'`, 2 stops)
-*Rubric: feasibility & implementation (timeline, ownership, resources); success factor "implementation plan including budget"; lifecycle step "transformation strategy / roadmap to 2030".*
+*Rubric: feasibility & implementation (timeline, ownership, resources); success factor "implementation plan including budget"; lifecycle step "transformation strategy / roadmap". The plan is complete by the end of 2027: fifteen months from the pilot.*
 
 - **Stop 0.**
-  - Kicker **Roadmap**. Headline **"From one quarter to a habit."**
+  - Kicker **Roadmap**. Headline **"From one quarter to a habit, by the end of 2027."** (the date in teal)
   - A horizontal roadmap with four milestones on a glowing timeline:
 
 | When | Stage | What happens |
 | --- | --- | --- |
 | **Q4 2026** | **Pilot** | One quarterly cycle, open to everyone. Decide: scale, adjust or stop. |
-| **2027** | **Scale** | Every department, a story champion in each, video and town-hall spotlights. |
-| **2028** | **Embed** | Part of onboarding and leadership development; the first annual story collection. |
-| **2030** | **Habit** | Self-running: stories are how Tahakom shares what works. |
+| **H1 2027** | **Scale** | Every department, a story champion in each, video and town-hall spotlights. |
+| **Q3 2027** | **Embed** | Part of onboarding and leadership development. |
+| **Q4 2027** | **Habit** | Self-running by year end, closed by the first annual story collection. |
 
   - The pilot is the hero (lit, `.glass.live`); the others are quieter. The spark lands on Pilot.
 - **Stop 1.**
   - Headline **"Who runs it, and what it costs."** Two glass panels.
-  - **Owners** (left): Executive sponsor, meaning direction and the quarterly decision · Curation panel, meaning HR, Internal Communications and one rotating employee, choosing monthly · Internal Communications, meaning channels and calendar · HR / People Analytics, meaning the dashboard · Story champions, from 2027.
+  - **Owners** (left): Executive sponsor, meaning direction and the quarterly decision · Curation panel, meaning HR, Internal Communications and one rotating employee, choosing monthly · Internal Communications, meaning channels and calendar · HR / People Analytics, meaning the dashboard · Story champions, from H1 2027.
   - **Budget** (right): hero line **"Low cost by design: people time, not new software."** Three support lines:
     - No new platform: email, intranet and town halls already exist.
     - People time: the curation panel, about two hours a week.
     - A small recognition budget: certificates and the annual event.
 - Notes:
-  - 0: "This is a roadmap, not a one-off. A one-quarter pilot this year. In 2027 we scale to every department, with a story champion in each. In 2028 it becomes part of onboarding and leadership development. By 2030 it runs itself: stories are simply how Tahakom shares what works."
+  - 0: "This is a roadmap, not a one-off, and it is done by the end of 2027: fifteen months. A one-quarter pilot this year. In the first half of 2027 we scale to every department, with a story champion in each. In the third quarter it becomes part of onboarding and leadership development. By the end of 2027 it runs itself, and the first annual story collection closes the year: stories are simply how Tahakom shares what works."
   - 1: "Who runs it: the sponsor decides, a curation panel from HR, Internal Communications and one rotating employee selects each month, Communications runs the channels, and HR runs the dashboard. The cost is mostly people time, about two hours a week for the panel, plus a small recognition budget. No new software. [Team: confirm the estimate and the budget.]"
 
 ### 09e · What could break it (id `risks`, act 4, `transition: 'push'`, 1 stop)

@@ -36,11 +36,11 @@
 /* it lands as the chapter line (bright) and cools into the road ahead */
 #s-roadmap .rm-line[data-in]:not(.is-in) { transform: none; filter: brightness(3.2); opacity: 0; }
 #s-roadmap .rm-line[data-in].is-in { transition: opacity .25s var(--ease-soft) var(--delay), filter 1.4s var(--ease-soft) var(--delay); }
-/* travelled: bright at the pilot, quieter towards 2028 */
+/* travelled: bright at the pilot, quieter towards Q3 2027 */
 #s-roadmap .rm-lit { position: absolute; left: 0; top: 0; width: var(--p2); height: 3px; border-radius: 2px;
   background: linear-gradient(90deg, rgba(3, 255, 203, 0) 0, rgba(3, 255, 203, .95) var(--p0), rgba(37, 199, 188, .9) calc(var(--p0) + 170px), rgba(37, 199, 188, .62) var(--p1), rgba(37, 199, 188, .42) 100%);
   filter: drop-shadow(0 0 6px rgba(3, 255, 203, .55)); }
-/* the far horizon, 2028 → 2030: dashed, flowing forward, fading out */
+/* the far horizon, Q3 → Q4 2027: dashed, flowing forward, fading out */
 #s-roadmap .rm-dash { position: absolute; left: var(--p2); top: .5px; width: 780px; height: 2px; overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg, #000, #000 50%, rgba(0, 0, 0, .5) 70%, transparent); mask-image: linear-gradient(90deg, #000, #000 50%, rgba(0, 0, 0, .5) 70%, transparent); }
 /* the dashes flow forward: a strip one period wider slides by one period (26 px) */
@@ -77,7 +77,7 @@
   15%, 65% { transform: scale(2.8); opacity: 0; } 16%, 49.9%, 66%, 100% { transform: scale(1); opacity: 0; } }
 @keyframes rmCore { 0%, 50% { opacity: 0; animation-timing-function: ease-in-out; } 2.5%, 52.5% { opacity: 1; } 18%, 49.9%, 68%, 100% { opacity: 0; } }
 
-/* the story light's lap: it leaves the pilot, rests at 2027 and 2028, reaches 2030 and
+/* the story light's lap: it leaves the pilot, rests at H1 and Q3 2027, reaches Q4 2027 and
    dissolves beyond it (the 9 s / 1.5 s here are LAP / FIRST in 09d-roadmap.js) */
 #s-roadmap .rm-run { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; pointer-events: none; }
 #s-roadmap .rm-run .light { position: absolute; left: -11px; top: -11px; }
@@ -130,7 +130,7 @@
 #s-roadmap .rm-step .tp { fill: rgba(37, 199, 188, .26); stroke: rgba(37, 199, 188, .45); stroke-width: 1; }
 #s-roadmap .rm-step .sd { fill: rgba(4, 22, 40, .6); stroke: rgba(37, 199, 188, .25); stroke-width: 1; stroke-dasharray: 5 5; }
 #s-roadmap .rm-step .ed { fill: none; stroke: rgba(3, 255, 203, .75); stroke-width: 2; }
-/* the pilot's step is the brightest; the later ones quieter, 2030 drawn as a dashed horizon */
+/* the pilot's step is the brightest; the later ones quieter, Q4 2027 drawn as a dashed horizon */
 #s-roadmap .rm-step.k0 .tp { fill: rgba(3, 255, 203, .3); stroke: rgba(3, 255, 203, .7); }
 #s-roadmap .rm-step.k0 .ed { stroke: var(--sea); stroke-width: 2.5; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .7)); }
 #s-roadmap .rm-step.k2 .ed { stroke: rgba(37, 199, 188, .65); }
@@ -141,7 +141,7 @@
 #s-roadmap .rm-step-lit { position: absolute; left: 0; top: 14px; height: 3px; border-radius: 2px; opacity: 0; pointer-events: none;
   background: linear-gradient(90deg, rgba(3, 255, 203, .2), #BFFFF2 20%, rgba(3, 255, 203, .95) 70%, rgba(3, 255, 203, .2)); box-shadow: 0 0 16px rgba(3, 255, 203, .8), 0 -6px 26px rgba(3, 255, 203, .35); }
 #s-roadmap.st-0 .rm-step-lit { animation: rmCap 9s ease-out var(--pt) infinite; }
-/* toward 2030: a faint Riyadh horizon behind the top of the stairs */
+/* toward the end of 2027: a faint Riyadh horizon behind the top of the stairs */
 #s-roadmap .rm-city { position: absolute; left: 1130px; top: 6px; width: 790px; height: 304px; pointer-events: none;
   background-size: 1500px auto; background-position: -450px -170px; background-repeat: no-repeat; filter: saturate(.55) brightness(.9);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 45%), linear-gradient(180deg, transparent, #000 50%, #000 92%, transparent); -webkit-mask-composite: source-in;
@@ -223,7 +223,7 @@
 #s-roadmap .rm-pp.p2 { background: linear-gradient(165deg, #6E4A7E, #2A1634 70%); box-shadow: inset 0 0 0 1.5px rgba(201, 166, 211, .6); }
 #s-roadmap .rm-pp.p3 .hd, #s-roadmap .rm-pp.p3 .bd { fill: #9FD8F0; }
 #s-roadmap .rm-pp.p3 { background: linear-gradient(165deg, #24587E, #0B2A46 70%); }
-/* from 2027: drawn dashed, not there yet */
+/* from H1 2027: drawn dashed, not there yet */
 #s-roadmap .rm-av.two .rm-pp { border-style: dashed; border-color: rgba(37, 199, 188, .7); box-shadow: none; opacity: .9; }
 #s-roadmap .rm-badge { position: absolute; right: -8px; bottom: -6px; z-index: 2; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
   color: #062036; background: var(--teal); border: 2px solid #0B1F36; }

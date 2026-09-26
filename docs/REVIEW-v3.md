@@ -45,10 +45,10 @@ Source: *Training Material – Tahakom – Capstone Kick-off* (Lead Forward Prog
 
 | Criterion | Weight | v2 (est.) | Why | What v3 adds |
 | --- | --- | --- | --- | --- |
-| Strategic alignment | 20 | 3–4 / 5 | Values and "two connected levels" are shown. Tahakom's purpose line is not on screen. | Purpose "Urban Intelligence for a Better Life" on screen. Each story is tied to a value, and the roadmap runs to 2030. |
+| Strategic alignment | 20 | 3–4 / 5 | Values and "two connected levels" are shown. Tahakom's purpose line is not on screen. | Purpose "Urban Intelligence for a Better Life" on screen. Each story is tied to a value, and the roadmap is complete by the end of 2027. |
 | Leadership mindset & behaviour | 20 | **2 / 5** | No leadership plan, and little on role-modelling or ethics. | New scene *Leaders go first*: sponsor, leaders and managers each have concrete actions. *Leaders spotlight others, never themselves*: consent, fairness and no rankings. |
 | Innovation & problem solving | 15 | 3 / 5 | "Recognition that keeps going" is a strong idea, but no options are shown. | New scene *Three ways to close the gap*: options compared on five criteria, then the recommendation. |
-| Feasibility & implementation | 15 | **2 / 5** | There is a pilot, but no timeline beyond one quarter, no owners on screen and no budget. | New scenes *From one quarter to a habit* (2026 → 2030 roadmap, owners, low-cost budget) and *What could break it* (risks, guards, owners). |
+| Feasibility & implementation | 15 | **2 / 5** | There is a pilot, but no timeline beyond one quarter, no owners on screen and no budget. | New scenes *From one quarter to a habit* (a roadmap complete by the end of 2027, owners, low-cost budget) and *What could break it* (risks, guards, owners). |
 | Stakeholder engagement & communication | 15 | **2 / 5** | The communication plan is missing, and the survey's voice-of-employee findings sit in the notes. | New scene *Where the stories travel*: channels, formats and cadence, bilingual, and built on what colleagues asked for (email 123/158, monthly 47%, anonymous 32%, approval 49%). |
 | Impact & measurement | 15 | 3 / 5 | Four measures and baselines are shown, but there are no KPIs or targets. | The pilot's KPI panel: participation, engagement, sentiment, recognition reach and visibility gap, each with its baseline and a proposed target. |
 
@@ -95,7 +95,7 @@ These are proposals written from the brief. They are shown on screen and flagged
   - Leaders nominate at least one colleague a quarter and acknowledge featured colleagues within a week.
   - Managers run a five-minute story moment each month.
 - **Channels and cadence.** A monthly story email, an intranet story wall, a team story moment, a quarterly 60-second video and town-hall spotlight, an annual collection, and Arabic and English versions.
-- **Roadmap.** Pilot Q4 2026 → scale 2027 → embed 2028 → habit by 2030.
+- **Roadmap.** Pilot Q4 2026 → scale H1 2027 → embed Q3 2027 → habit by the end of 2027 (Q4 2027).
 - **Governance and budget.**
   - The curation panel is HR, Internal Communications and a rotating employee, at roughly two hours a week (estimate).
   - There is no new platform. A small recognition budget is to be confirmed with the sponsor.

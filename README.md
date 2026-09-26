@@ -37,7 +37,7 @@ How the deck maps to the rubric:
 
 | Rubric area | Where it is answered |
 | --- | --- |
-| Strategic alignment | 07 Why it matters (Tahakom's purpose and values) · 14 the roadmap to 2030 |
+| Strategic alignment | 07 Why it matters (Tahakom's purpose and values) · 14 the roadmap, complete by the end of 2027 |
 | Leadership | 12 Leaders go first (sponsor, leaders, managers; spotlight others, never themselves) |
 | Innovation | 08 three options weighed · 09 recognition that keeps going |
 | Feasibility | 14 roadmap, owners and budget · 15 risks · 16 the pilot plan |
