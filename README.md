@@ -19,20 +19,32 @@ There are two versions, and both use the same keys and speaker view:
 
 | Folder | Scenes · stops | Use it for |
 | --- | --- | --- |
-| **`Present/`** (v2, condensed) | 12 · 32 | **the 15-minute slot**. Cinematic scene changes and a livelier frame while parked. |
-| `Present-v1-full/` (v1, full) | 17 · 62 | a longer session, or open it in Q&A for the detail v2 folds into the notes (risk table, story format, rhythm) |
+| **`Present/`** (v3, the competition deck) | 17 · 39 | **the 15-minute capstone presentation**. It covers the full *Inspire Others* brief and rubric. |
+| `Present-v1-full/` (v1, full) | 17 · 62 | a longer session, or Q&A detail (the longer story format, rhythm and recognition slides) |
 
-## Version 2 — condensed (15 minutes)
+## The competition deck (v3, 15 minutes)
+v3 answers the Lead Forward 2026 capstone brief for **Inspire Others**. The final deliverable is a concept deck covering campaign design, leadership involvement, the communication plan and impact measurement. v3 also covers the six evaluation criteria. [`docs/REVIEW-v3.md`](docs/REVIEW-v3.md) has the full analysis against the brief and the rubric, and [`docs/STORYBOARD-v3.md`](docs/STORYBOARD-v3.md) has the copy.
 
 | Act | Scenes (stops) | Aim to finish by |
 | --- | --- | --- |
-| I · The moment | 01 The question (1) · 02 Open (2) · 03 One night (2) | 2:00 |
-| II · The gap | 04 The gap (3) · 05 What colleagues told us (4) · 06 Reading the numbers (2) | 6:00 |
-| III · Why it matters | 07 Why it matters (3) | 7:45 |
-| IV · The cycle | 08 The cycle (3) · 09 One story, through the cycle (4) · 10 How it runs (3) | 12:15 |
-| V · The pilot | 11 The pilot (3) · 12 Close (2) | 15:00 |
+| I · The moment | 01 The question (1) · 02 Open (2) · 03 One night (2) | 1:30 |
+| II · The case | 04 The gap (3) · 05 What colleagues told us (4) · 06 Reading the numbers (2) · 07 Why it matters (2) | 6:15 |
+| III · The campaign | 08 Three ways to close the gap (2) · 09 The cycle (2) · 10 One story, through the cycle (4) · 11 How it runs (3) | 10:15 |
+| IV · Leading it | 12 Leaders go first (2) · 13 Where the stories travel (2) | 12:00 |
+| V · The plan | 14 From one quarter to a habit (2) · 15 What could break it (1) · 16 The pilot (3) · 17 Close (2) | 15:00 |
 
-What is new in v2:
+How the deck maps to the rubric:
+
+| Rubric area | Where it is answered |
+| --- | --- |
+| Strategic alignment | 07 Why it matters (Tahakom's purpose and values) · 14 the roadmap to 2030 |
+| Leadership | 12 Leaders go first (sponsor, leaders, managers; spotlight others, never themselves) |
+| Innovation | 08 three options weighed · 09 recognition that keeps going |
+| Feasibility | 14 roadmap, owners and budget · 15 risks · 16 the pilot plan |
+| Stakeholders & communication | 13 channels, cadence, bilingual, designed with what colleagues asked for |
+| Impact & measurement | 16 KPIs with baselines and proposed targets |
+
+What else is new since v1:
 
 - **Scene changes are camera moves.**
   - A sideways *push* within an act.
@@ -48,9 +60,8 @@ What is new in v2:
 - **Bigger, bolder layouts.** Every diagram fills the frame, text is at least 26–30px for the room, cards use a glass material with a slow travelling edge light, and the element each stop is about is the largest and brightest.
 - **Livelier parked frames.** Every stop has several slow continuous motions: constellation lines and waves in the field, shooting lights, photo push-ins, flowing connectors, breathing nodes. Nothing inside the text you are reading moves, and numbers never change while parked.
 - **It opens cold on the question.** The first frame is "When was the last time a colleague inspired you?" with no title or introduction; the next click opens the title out of the light under the question, and then Nouf's night.
-- Merged content: 07 = the link, strategic alignment and the values. 10 = format, rhythm and recognition as three tabs. 11 = measure and the ask, with the risk table in the notes.
 
-Storyboard and rationale: [`docs/STORYBOARD-v2.md`](docs/STORYBOARD-v2.md).
+Storyboards: [`docs/STORYBOARD-v3.md`](docs/STORYBOARD-v3.md) (the additions) on top of [`docs/STORYBOARD-v2.md`](docs/STORYBOARD-v2.md) (the look and motion).
 
 The rest of this README describes both versions; the talk table and scene numbers below refer to v1.
 
@@ -108,7 +119,15 @@ These changed from, or were added to, the approved deck. Check each one with the
 - **Scene 15, risk owners** (Curation panel, Internal Communications, HR/Legal, HR/People Analytics). These are proposals taken from the team's concept deck.
 - **Scene 16, "What we need"** (an executive sponsor, curation time from HR and Internal Communications, existing channels) and the "scale, adjust or stop" report-back.
 - **Scene 14, baseline.** It says the same eight survey questions will be re-asked at the end of the quarter.
-- **New in v2, scene 10 How it runs (Impact row):** "Evidence is reviewed before a story is featured." It states a design decision, so check the team agrees. In v2 the baseline re-ask, "What we need" and the risk owners appear in scene 11 (The pilot) and its notes.
+- **New in v2, scene 11 How it runs (Impact row):** "Evidence is reviewed before a story is featured." It states a design decision, so check the team agrees.
+- **New in v3.** These are proposals written from the brief, and each is flagged `[Team: confirm …]` in the speaker notes:
+  - the options assessment (08);
+  - the leaders' commitments (12);
+  - channels and cadence (13);
+  - the roadmap, the curation-time estimate and the recognition budget (14);
+  - the risk owners (15);
+  - the KPI targets: reach 8% → 25%, visibility gap 56% → below 40% (16);
+  - the Group 1 names on the close (17).
 
 ## Tech check at the venue (5 minutes)
 - Use Chrome or Edge, full screen (**F**). Set the display to 1920×1080 if possible.
