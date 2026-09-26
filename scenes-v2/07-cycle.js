@@ -122,7 +122,7 @@
       <!-- stop 0 · two lanes -->
       <div class="pad cy-head">
         <div class="kicker" data-in="0" data-out="1">What is new</div>
-        <h2 class="h2 cy-h" data-in="0" data-out="1" data-split style="--d:.15s">Most recognition stops at the award.<br><em class="hl cy-keep" data-spark="0" data-spark-at="r">This keeps going.</em></h2>
+        <h2 class="h2 cy-h" data-in="0" data-out="1" data-split style="--d:.15s">Most recognition <em class="cy-stop">stops</em> at the award.<br><em class="hl cy-keep" data-spark="0" data-spark-at="r">This keeps going.</em></h2>
       </div>
 
       <div class="cy-lanes" data-out="1">

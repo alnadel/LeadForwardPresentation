@@ -6,16 +6,21 @@
 /* stop 2: the headline steps back so the payoff outranks it */
 #s-gap .gp-h.is-dim { opacity: .38 !important; filter: none; }
 
-/* the three points, each above its own district */
-#s-gap .gp-pt { position: absolute; top: 312px; width: 504px; }
+/* the three points, each above its own district. The title is what the room
+   reads (big, white, one key phrase lit in the point's tone); the sentence under
+   it is support: small, dim and light */
+#s-gap .gp-pt { position: absolute; top: 306px; width: 504px; }
 #s-gap .gp-n { display: inline-flex; align-items: center; gap: 14px; font: 700 22px/1 var(--font); letter-spacing: .18em; }
 #s-gap .gp-n::after { content: ''; width: 44px; height: 2px; background: currentColor; opacity: .7; }
 #s-gap .gp-pt.go .gp-n { color: var(--teal); }
 #s-gap .gp-pt.gap .gp-n { color: var(--purple-lt); }
-#s-gap .gp-pt-h { margin: 14px 0 0; font: 700 40px/1.08 var(--font); letter-spacing: -.016em; color: var(--white); }
-#s-gap .gp-pt-s { margin: 10px 0 0; font: 400 30px/1.32 var(--font); color: var(--ink-2); text-wrap: pretty; }
+#s-gap .gp-pt-h { margin: 16px 0 0; font: 700 50px/1.04 var(--font); letter-spacing: -.022em; color: var(--white); white-space: nowrap; }
+#s-gap .gp-pt-h em { font-style: normal; }
+#s-gap .gp-pt.go .gp-pt-h em { color: var(--teal); }
+#s-gap .gp-pt.gap .gp-pt-h em { color: var(--purple-lt); }
+#s-gap .gp-pt-s { margin: 14px 0 0; max-width: 440px; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .62); text-wrap: pretty; }
 /* focus follows the newest points */
-#s-gap[data-step="1"] .gp-pt.p1 { opacity: .46; }
+#s-gap[data-step="1"] .gp-pt.p1 { opacity: .42; }
 
 /* ── the ground: a soft pool of light the map stands in ─────────────── */
 #s-gap .gp-ground { position: absolute; left: -8%; right: -8%; top: 470px; height: 640px; pointer-events: none; opacity: 0;
@@ -205,11 +210,13 @@
 #s-gap.st-0 .gp-dust { opacity: .8; transition-delay: calc(var(--enter, 0s) + 1s); }
 
 /* ── stop 2: the conclusion and the ask ─────────────────────────────── */
-#s-gap .gp-close { position: absolute; left: var(--m); right: var(--m); top: 300px; }
-#s-gap .gp-c1 { margin: 0; font: 400 36px/1.36 var(--font); color: var(--ink-2); }
-#s-gap .gp-c2 { margin: 22px 0 0; max-width: 1560px; font: 700 70px/1.04 var(--font); letter-spacing: -.024em; color: var(--white); }
-#s-gap .gp-ask-w { display: inline-block; margin-top: 40px; }
-#s-gap .gp-ask { display: flex; align-items: center; gap: 28px; padding: 28px 48px 28px 34px; border-radius: 24px;
+#s-gap .gp-close { position: absolute; left: var(--m); right: var(--m); top: 292px; }
+/* support: a small, dim follow-on to the dimmed headline (context, not the point) */
+#s-gap .gp-c1 { margin: 0; font: 400 24px/1.4 var(--font); color: rgba(255, 255, 255, .6); }
+/* the payoff: the largest, brightest line on the stop */
+#s-gap .gp-c2 { margin: 46px 0 0; max-width: 1600px; font: 700 78px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); }
+#s-gap .gp-ask-w { display: inline-block; margin-top: 44px; }
+#s-gap .gp-ask { display: flex; align-items: center; gap: 28px; padding: 30px 52px 30px 36px; border-radius: 24px;
   background: linear-gradient(100deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .06) 60%, rgba(157, 103, 170, .08)), rgba(7, 16, 32, .7);
   box-shadow: 0 34px 90px rgba(0, 0, 0, .45), 0 0 70px rgba(37, 199, 188, .16), inset 0 1px 0 rgba(255, 255, 255, .16); }
 /* the story light docks here (the spark rests in this slot) */
@@ -219,7 +226,7 @@
 @keyframes gpDock { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(2.6); opacity: 0; } }
 #s-gap .gp-ask-k { font: 700 24px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--sea); white-space: nowrap; }
 #s-gap .gp-ask-sep { width: 2px; height: 50px; background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .4), transparent); }
-#s-gap .gp-ask-t { font: 700 50px/1.05 var(--font); letter-spacing: -.012em; color: var(--white); white-space: nowrap; }
+#s-gap .gp-ask-t { font: 700 58px/1.05 var(--font); letter-spacing: -.016em; color: var(--white); white-space: nowrap; }
 #s-gap .gp-ask.amb-sheen::after { animation-duration: 6.5s; animation-delay: 2.6s; }
 
 /* stop 2: the gap is closed — no more walls being hit, no more stories failing

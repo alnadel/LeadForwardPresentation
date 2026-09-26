@@ -99,9 +99,10 @@
   };
 
   const points = [
-    { n: '01', tone: 'go', t: 'Good work happens', s: 'Employees help, solve problems and go the extra mile in their daily work.', at: 0, d: .6 },
-    { n: '02', tone: 'gap', t: 'Visibility stays local', s: 'These contributions are often noticed only by the immediate team or manager.', at: 1, d: .05 },
-    { n: '03', tone: 'gap', t: 'Learning does not travel', s: 'Useful behaviours are not consistently shared across departments or repeated.', at: 1, d: .3 },
+    // t: the point's title (the key line, one key phrase lit); s: its support line
+    { n: '01', tone: 'go', t: '<em>Good work</em> happens', s: 'Employees help, solve problems and go the extra mile in their daily work.', at: 0, d: .6 },
+    { n: '02', tone: 'gap', t: 'Visibility stays <em>local</em>', s: 'These contributions are often noticed only by the immediate team or manager.', at: 1, d: .05 },
+    { n: '03', tone: 'gap', t: 'Learning <em>does not travel</em>', s: 'Useful behaviours are not consistently shared across departments or repeated.', at: 1, d: .3 },
   ];
 
   // dust drifting up through the light above the map (foreground depth)
@@ -162,6 +163,8 @@
           <p class="gp-pt-s">${p.s}</p>
         </div>`).join('')}
 
+      <!-- stop 2: the dimmed headline and its small follow-on line are context;
+           the payoff and today's ask are what the room takes away -->
       <div class="gp-close">
         <p class="gp-c1" data-in="2" style="--d:.3s">Meaningful contributions exist — the gap is making them visible, recognised and shared across Tahakom.</p>
         <p class="gp-c2" data-in="2" data-split style="--d:.5s">Behind a Better Life closes that gap through <em class="hl">real employee stories.</em></p>
