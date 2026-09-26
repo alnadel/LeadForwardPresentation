@@ -23,7 +23,7 @@
 @keyframes ntPush { from { transform: scale(1); } to { transform: scale(1.07); } }
 #s-night.st-1 .nt-deep { opacity: 0; transition: opacity .55s var(--ease-soft); }
 #s-night .nt-rays { position: absolute; left: 260px; top: -140px; width: 1400px; height: 980px; opacity: 0; transform-origin: 50% 0; mix-blend-mode: screen;
-  background: repeating-conic-gradient(from 150deg at 50% 0%, transparent 0deg, rgba(214, 180, 222, .065) 1.6deg, transparent 3.2deg, transparent 7.4deg);
+  background: repeating-conic-gradient(from 150deg at 50% 0%, transparent 0deg, rgba(214, 180, 222, .055) 1.6deg, transparent 3.2deg, transparent 7.4deg);
   -webkit-mask-image: radial-gradient(54% 78% at 50% 0%, transparent 10%, #000 32%, rgba(0, 0, 0, .5) 52%, transparent 78%); mask-image: radial-gradient(54% 78% at 50% 0%, transparent 10%, #000 32%, rgba(0, 0, 0, .5) 52%, transparent 78%); }
 #s-night.st-0 .nt-rays { opacity: 1; transition: opacity 2.2s var(--ease-soft) calc(var(--enter, 0s) + .3s); animation: ntRays 17s ease-in-out infinite alternate; }
 @keyframes ntRays { from { transform: rotate(-5deg) scaleY(.96); } to { transform: rotate(5deg) scaleY(1.04); } }
