@@ -175,10 +175,11 @@
   const OBJ = [
     // 01 · a personal certificate on an easel: the employee's portrait, a title, a leader's signature and seal
     `<g class="ob cert">
-       <path class="ez" d="M-58-40-70 2M58-40 70 2M0-60 0-2"/>
+       <path class="ez" d="M-6-204-70 4M6-204 70 4M0-204V-196"/>
        <rect class="dp" x="-89" y="-189" width="190" height="140" rx="8"/>
        <rect class="pp" x="-95" y="-184" width="190" height="140" rx="8"/>
        <rect class="pb" x="-86" y="-175" width="172" height="122" rx="5"/>
+       <path class="ezb" d="M-104-41H104"/>
        <circle class="av" cx="-56" cy="-146" r="17"/>${person(-56, -134, .9).replace('<g ', '<g class="avp" ')}
        <path class="tl" d="M-28-153H60"/><path class="t2" d="M-28-138H36"/>
        <path class="t3" d="M-66-112H66M-66-99H42"/>

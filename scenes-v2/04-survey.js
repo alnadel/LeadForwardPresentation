@@ -138,6 +138,11 @@
       { dim: .32, wave: .8, travel: .8, sparkle: 1.4, links: .55, streaks: .12 },
     ],
     html: `
+      <!-- the waffle first, under everything else (at ${WX}, ${WY}): one canvas, no wrapper. Painted first, it
+           needs no second layer while the headline and the figure animate over its margins -->
+      <i class="sv-wpool"></i>
+      <canvas class="sv-wcan" width="${WW + PAD.l + PAD.r}" height="${WH + PAD.t + PAD.b}" style="left:${WX - PAD.l}px;top:${WY - PAD.t}px;width:${WW + PAD.l + PAD.r}px;height:${WH + PAD.t + PAD.b}px"></canvas>
+
       <div class="pad sv-head">
         <div class="kicker" data-in="0">Current state · primary data</div>
         <div class="sv-swap">
@@ -180,9 +185,6 @@
         </div>
       </div>
 
-      <i class="sv-wpool"></i>
-      <!-- the waffle (at ${WX}, ${WY}): one canvas, no wrapper (a wrapper box became a waffle-sized layer during the build) -->
-      <canvas class="sv-wcan" width="${WW + PAD.l + PAD.r}" height="${WH + PAD.t + PAD.b}" style="left:${WX - PAD.l}px;top:${WY - PAD.t}px;width:${WW + PAD.l + PAD.r}px;height:${WH + PAD.t + PAD.b}px"></canvas>
       <div class="sv-sweep" style="left:${WX}px;top:${WY - 40}px;height:${WH + 80}px"></div>
       <i class="sv-clock"></i>
     `,

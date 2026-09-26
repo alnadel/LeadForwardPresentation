@@ -39,7 +39,7 @@
   transition: transform calc(.8s + var(--k) * .16s) cubic-bezier(.3, .06, .16, 1) calc(var(--enter, 0s) + .12s); }
 #s-survey .sv-reel b { display: block; height: 226px; font-weight: 700; }
 /* motion blur while the reels roll (live builds only; at rest there is none) */
-#s-survey.sv-live .sv-slot { animation: svRoll calc(.8s + var(--k) * .16s) var(--ease-soft) calc(var(--enter, 0s) + .12s) both; }
+#s-survey.sv-live .sv-slot { animation: svRoll calc(.8s + var(--k) * .16s) var(--ease-soft) calc(var(--enter, 0s) + .12s) backwards; }
 @keyframes svRoll { 0% { filter: blur(0); } 25%, 55% { filter: blur(5px) brightness(1.25); } 100% { filter: blur(0); } }
 #s-survey .sv-probe { position: absolute; left: 0; top: 0; visibility: hidden; white-space: nowrap; }
 #s-survey .sv-pct { flex: none; max-width: 0; overflow: hidden; opacity: 0; font-size: 112px; line-height: 1.12; letter-spacing: -.02em;
@@ -49,7 +49,7 @@
 /* the figure lands with a flash of light (live builds only) */
 #s-survey .sv-odo::after { content: ''; position: absolute; left: -40px; top: 10px; width: 520px; height: 210px; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(closest-side, rgba(255, 255, 255, .34), transparent); }
-#s-survey.sv-live .sv-odo::after { animation: svLand 1.1s var(--ease-out) calc(var(--enter, 0s) + 1s) both; }
+#s-survey.sv-live .sv-odo::after { animation: svLand 1.1s var(--ease-out) calc(var(--enter, 0s) + 1s) backwards; }
 @keyframes svLand { 0% { opacity: 0; transform: scale(.7); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.25); } }
 
 /* label and line beneath: they cross-fade stop to stop. The short label is key
@@ -101,15 +101,16 @@
 #s-survey .sv-49t p { margin: 8px 0 0; font: 400 22px/1.36 var(--font); color: rgba(255, 255, 255, .7); }
 
 /* ── the waffle ───────────────────────────────────────────────────────── */
-#s-survey .sv-wpool { position: absolute; top: 619px; width: 450px; height: 410px; margin: -205px 0 0 -225px; border-radius: 50%; pointer-events: none; opacity: 0; transform: scale(1.88);
+/* the pool behind the waffle: it slides to the lit share and takes its colour. It never runs a composited
+   animation (no fade of its own, no breathing: it comes and goes with the scene), so the canvas over it
+   needs no second layer (the canvas's own floor light and the tiles carry the motion) */
+#s-survey .sv-wpool { position: absolute; top: 619px; width: 450px; height: 410px; margin: -205px 0 0 -225px; border-radius: 50%; pointer-events: none; transform: scale(1.88);
   left: 1310px; background: radial-gradient(closest-side, var(--sv-glow), transparent);
-  transition: left 1.2s cubic-bezier(.5, 0, .2, 1), opacity 1s var(--ease-soft), --sv-glow 1s var(--ease-soft); }
-#s-survey.st-0 .sv-wpool { opacity: 1; animation: svWPool 8s ease-in-out infinite; }
+  transition: left 1.2s cubic-bezier(.5, 0, .2, 1), --sv-glow 1s var(--ease-soft); }
 #s-survey[data-tone="base"] .sv-wpool { --sv-glow: rgba(143, 194, 220, .12); }
 #s-survey[data-tone="gap"] .sv-wpool  { left: 1110px; --sv-glow: rgba(157, 103, 170, .34); }
 #s-survey[data-tone="hero"] .sv-wpool { left: 880px; --sv-glow: rgba(3, 255, 203, .26); }
 #s-survey[data-tone="go"] .sv-wpool   { left: 1220px; --sv-glow: rgba(37, 199, 188, .3); }
-@keyframes svWPool { 0%, 100% { transform: scale(1.88); } 50% { transform: scale(2.16); } }
 
 /* the squares are drawn on one canvas (04-survey.js): each of them pops in, relights, twinkles,
    breathes and carries the wave as its CSS did, without a layer of its own */
