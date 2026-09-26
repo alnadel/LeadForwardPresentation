@@ -1,7 +1,3 @@
-/* a scene of this set that has faded out while leaving is hidden at once (LFLeave in 00-hook.js):
-   its layers leave the compositor before the next scene's build peaks */
-.scene.lf-gone, .scene.lf-gone * { visibility: hidden !important; }
-
 /* 00 · The hook (v2) — the question opens the talk, before the title.
    The parked frame is keyed off .st-0 (a settled landing shows it at once). A live cold
    open adds .hk-wake, which holds the room dark; 00-hook.js then adds .hk-meeting and

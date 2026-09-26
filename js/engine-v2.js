@@ -430,6 +430,9 @@
       if (kind === 'iris') {
         rec.el.style.setProperty('--ix', SPK.shown ? SPK.x + 'px' : '50%');
         rec.el.style.setProperty('--iy', SPK.shown ? SPK.y + 'px' : '50%');
+        // radius: 1.4x the farthest corner (the old 2300px); a bigger circle only grows its mask layer
+        const ix = SPK.shown ? SPK.x : 960, iy = SPK.shown ? SPK.y : 540;
+        rec.el.style.setProperty('--ir', Math.ceil(1.4 * Math.hypot(Math.max(ix, 1920 - ix), Math.max(iy, 1080 - iy))) + 'px');
         rec.el.classList.add('iris-from');
       }
       void rec.el.offsetWidth;
@@ -903,3 +906,47 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     Promise.race([Promise.all([fonts].concat(imgs)), new Promise((r) => setTimeout(r, 4000))]).then(begin);
   };
 })();
+
+/* ── shared scene helpers: release the compositor layers of what a scene no longer shows ── */
+/* LFPark(ctx): park what a stop has hidden (any scene may call it from its step()). An element
+   the stop has taken away ([data-in] not yet in, [data-out] out) is invisible but not free: its hidden state carries a blur, and under a filter every animated
+   child keeps a compositor layer that is still drawn. Once its fade-out has run, the element is
+   taken out with visibility: hidden (no layers at all); it is given back in the very frame it
+   is shown again, so nothing it shows is cut short. A settled landing parks at once. */
+window.LFPark = function (ctx) {
+  if (window.LFBack) LFBack(ctx);
+  const out = (x) => (x.hasAttribute('data-in') && !x.classList.contains('is-in')) || x.classList.contains('is-out');
+  const hide = [], show = [];
+  let wait = 1.2;
+  // (all reads first, then the writes: no style recalculation per element)
+  ctx.$$('[data-in], [data-out]').forEach((x) => {
+    if (!out(x)) { if (x.style.visibility) show.push(x); return; }
+    if (x.style.visibility === 'hidden') return;
+    hide.push(x);
+    if (ctx.instant) return;
+    const cs = getComputedStyle(x), d = cs.transitionDuration.split(','), l = cs.transitionDelay.split(',');
+    d.forEach((v, i) => { wait = Math.max(wait, parseFloat(v) + parseFloat(l[i % l.length]) + .15); });
+  });
+  show.forEach((x) => { x.style.visibility = ''; });
+  const park = () => hide.forEach((x) => { if (out(x)) x.style.visibility = 'hidden'; });
+  if (ctx.instant) park(); else if (hide.length) ctx.after(wait * 1000, park);
+};
+
+/* LFLeave(ctx) / LFBack(ctx): a scene that is leaving stays in the compositor (1.3 s) after its
+   fade has already taken it off screen. Call LFLeave from leave(): once the section's own opacity
+   transition has run to its end (transparent), .lf-gone hides it (deck-v2.css), so the next scene
+   builds without the old one's layers. LFBack (LFPark calls it) gives it back on re-entry. */
+window.LFLeave = function (ctx) {
+  const el = ctx.el;
+  if (ctx.lfDone) el.removeEventListener('transitionend', ctx.lfDone);
+  ctx.lfDone = (e) => {
+    if (e.target !== el || e.propertyName !== 'opacity') return;
+    el.removeEventListener('transitionend', ctx.lfDone); ctx.lfDone = null;
+    if (!el.classList.contains('active') && parseFloat(getComputedStyle(el).opacity) < .01) el.classList.add('lf-gone');
+  };
+  el.addEventListener('transitionend', ctx.lfDone);
+};
+window.LFBack = function (ctx) {
+  ctx.el.classList.remove('lf-gone');
+  if (ctx.lfDone) { ctx.el.removeEventListener('transitionend', ctx.lfDone); ctx.lfDone = null; }
+};

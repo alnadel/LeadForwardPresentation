@@ -39,9 +39,20 @@ Everything in `docs/SCENE_GUIDE.md` still applies (stops, `data-in` / `data-out`
   - Motion may continue after the text lands; the build should settle by about 2.5 s.
 - **Audience-first hierarchy.** Per stop, the 1–2 things the audience must take away (the headline plus one hero element) are the largest and brightest, and the spark lands there. Everything else is visibly subordinate: supporting sentences about 20–24px at 55–70% white, captions, caveats and sources 16–18px. Key text stays big (headlines 64px+, key lines 32px+). Move pure duplication into the notes; never drop numbers, caveats or honesty tags.
 - **One scene, one idea per stop.** Condensed does not mean crowded. If a stop feels dense, cut words (move them into the notes) rather than shrinking the type.
+- **Within the GPU budget.** When a projector laptop runs out of GPU memory, the screen flashes dark for a frame. That caused the dark flash on the gap slide.
+  - Every stop, including the scene that is still leaving, must stay within **40 MP of layers in total, with no single layer over 3 MP and no more than 250 layers**. The shared chrome alone costs about 20 MP.
+  - Measure with `node tools/layers.js --scenes <ids>`.
+  - What keeps a scene cheap:
+    - **Wrappers:** full-stage wrappers are zero-size boxes, and SVGs are cut to what they draw.
+    - **Glows:** soft glows are drawn at ¼ or ½ size and scaled up.
+    - **Animation counts:** many small lights ride on a few carriers.
+    - **Fills:** one-shot animations that end invisible use `backwards` fills.
+    - **Visibility:** use `visibility: inherit`, never `visible`, so that an off-screen scene draws nothing.
+    - **Helpers:** call `LFLeave(ctx)` from `leave()` and `LFPark(ctx)` from `step()` (both are in `engine-v2.js`). They hide what has already faded out.
 
 ## Verify (mandatory)
 ```
+node tools/layers.js --scenes <ids>
 node tools/shoot.js --file index-v2.html --scenes <ids> --out shots/v2-<name> --motion --wait 3200
 python3 tools/motion.py shots/v2-<name>
 node tools/backcheck.js --file index-v2.html --scenes <ids> --out shots/v2-<name>-back && python3 tools/backdiff.py shots/v2-<name>-back

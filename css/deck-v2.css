@@ -84,7 +84,7 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
    colourway on the back layer and crossfades opacity, instead of repainting a full-screen
    gradient every frame */
 #bgl { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-#bgl i { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s var(--ease-soft); will-change: opacity;
+#bgl i { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity 1.4s var(--ease-soft), visibility 0s linear 1.4s; will-change: opacity;
   background:
     radial-gradient(1200px 900px at 12% 18%, color-mix(in srgb, var(--bg-a) 85%, transparent), transparent 70%),
     radial-gradient(1300px 1000px at 92% 88%, color-mix(in srgb, var(--bg-b) 90%, transparent), transparent 70%),
@@ -94,7 +94,7 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 #bgl i[data-bg="navy"]  { --bg-a: #0C2C4E; --bg-b: #3A1631; --bg-c: #041628; }
 #bgl i[data-bg="deep"]  { --bg-a: #1B0B19; --bg-b: #041628; --bg-c: #02070F; }
 #bgl i[data-bg="teal"]  { --bg-a: #0B3A44; --bg-b: #3A1631; --bg-c: #041628; }
-#bgl i.on { opacity: 1; }
+#bgl i.on { opacity: 1; visibility: visible; transition: opacity 1.4s var(--ease-soft), visibility 0s; }   /* the faded-out one stops drawing */
 
 #field { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 1; pointer-events: none; }
 /* before the deck is ready (fonts and photos loading) the room is black: no field, no glow,
@@ -130,6 +130,9 @@ body:not(.ready) #field, body:not(.ready) #glow, body:not(.ready) #beams, body:n
 /* …and they hold no GPU layers: a paused animation keeps its layer while visible, and a child
    with its own visibility:visible would otherwise escape the hidden scene */
 .scene:not(.active):not(.leaving) * { visibility: hidden !important; }
+/* a scene that calls LFLeave (engine-v2.js) is hidden as soon as its own fade-out ends, so its
+   layers leave the compositor before the next scene's build peaks */
+.scene.lf-gone, .scene.lf-gone * { visibility: hidden !important; }
 
 /* ── step visibility ──────────────────────────────────────────────────────
    data-in="n"   hidden until the scene reaches stop n, then animates in.
@@ -242,10 +245,11 @@ em.hl { font-style: normal; color: var(--teal); }
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
 .glass.live > .gl-edge { display: block; animation: glEdgeIn .8s var(--ease-soft) both; }
 @keyframes glEdgeIn { from { opacity: 0; } to { opacity: 1; } }
-.gl-edge > i { position: absolute; left: 50%; top: 50%; width: var(--gs, 480px); height: var(--gs, 480px); margin: calc(var(--gs, 480px) / -2) 0 0 calc(var(--gs, 480px) / -2);
+/* drawn at half size and scaled x2: the conic light is smooth, and the layer costs a quarter */
+.gl-edge > i { position: absolute; left: 50%; top: 50%; width: calc(var(--gs, 480px) / 2); height: calc(var(--gs, 480px) / 2); margin: calc(var(--gs, 480px) / -4) 0 0 calc(var(--gs, 480px) / -4); transform: scale(2);
   background: conic-gradient(rgba(255, 255, 255, .08), rgba(3, 255, 203, .95) 7%, rgba(255, 255, 255, .08) 16%, rgba(255, 255, 255, .06) 50%, rgba(201, 166, 211, .7) 57%, rgba(255, 255, 255, .06) 66%);
   animation: v2GlassEdge 8s linear infinite; }
-@keyframes v2GlassEdge { to { transform: rotate(360deg); } }
+@keyframes v2GlassEdge { from { transform: rotate(0deg) scale(2); } to { transform: rotate(360deg) scale(2); } }
 #stage.lite .gl-edge > i { animation: none; }
 .paper { background: #FFFFFF; color: var(--navy); border-radius: 18px; box-shadow: 0 40px 90px rgba(0, 0, 0, .45), 0 2px 0 rgba(255, 255, 255, .6) inset; }
 .paper .muted { color: #6A7688; }
@@ -373,7 +377,7 @@ em.hl { font-style: normal; color: var(--teal); }
 #stage[data-tx="dolly"] .scene.active { transition: opacity .8s var(--ease-soft) .22s, transform 1.25s var(--ease-out) .18s, filter .9s var(--ease-soft) .22s; }
 /* iris: the next scene opens out of the light */
 .scene.iris-from { clip-path: circle(0px at var(--ix) var(--iy)); }
-.scene.iris-run { clip-path: circle(2300px at var(--ix) var(--iy)); transition: clip-path 1.15s cubic-bezier(.7, 0, .25, 1), opacity .1s !important; }
+.scene.iris-run { clip-path: circle(var(--ir, 2300px) at var(--ix) var(--iy)); transition: clip-path 1.15s cubic-bezier(.7, 0, .25, 1), opacity .1s !important; }
 #stage[data-tx="iris"] .scene.leaving { opacity: 0; transform: scale(.94); filter: blur(3px); transition: opacity .9s var(--ease-soft) .3s, transform 1.2s var(--ease-out), filter .9s var(--ease-soft); }
 #tx-ring { position: absolute; left: 960px; top: 540px; width: 0; height: 0; z-index: 16; pointer-events: none; }
 #tx-ring::before { content: ''; position: absolute; left: -600px; top: -600px; width: 1200px; height: 1200px; border-radius: 50%; opacity: 0; transform: scale(0);

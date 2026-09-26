@@ -158,6 +158,3 @@
 
 /* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
    and scaled up (a conic gradient scales cleanly), a quarter of the layer */
-#s-options .gl-edge > i { width: calc(var(--gs, 480px) / 2); height: calc(var(--gs, 480px) / 2); margin: calc(var(--gs, 480px) / -4) 0 0 calc(var(--gs, 480px) / -4); transform: scale(2); }
-#stage:not(.lite) #s-options .gl-edge > i { animation-name: opEdge2; }
-@keyframes opEdge2 { from { transform: rotate(0deg) scale(2); } to { transform: rotate(360deg) scale(2); } }
