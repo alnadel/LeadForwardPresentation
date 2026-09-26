@@ -777,6 +777,7 @@ aside{border-left:1px solid #1E2635;overflow:auto;padding:18px 0}
 aside ol{list-style:none;margin:0;padding:0}aside li{padding:9px 20px;font:400 15px/1.3 Arial;color:#8C98AB;cursor:pointer}aside li.done{color:#4E5A6D}aside li.on{color:#fff;background:#141B27;border-left:3px solid #25C7BC}
 footer{grid-column:1/3;padding:12px 28px;border-top:1px solid #1E2635;display:flex;align-items:center;gap:18px;font:700 12px Arial;color:#6E7A8E;letter-spacing:.12em}
 .track{flex:1;height:4px;background:#1E2635;border-radius:3px;overflow:hidden}#bar{height:100%;background:#25C7BC;width:0}
+html[dir=rtl] #stop{float:left}html[dir=rtl] #notes b{margin-right:0;margin-left:8px}html[dir=rtl] aside{border-left:0;border-right:1px solid #1E2635}html[dir=rtl] aside li.on{border-left:0;border-right:3px solid #25C7BC}html[dir=rtl] header small,html[dir=rtl] .box small,html[dir=rtl] #act,html[dir=rtl] footer{letter-spacing:0}html[dir=rtl] .track{transform:scaleX(-1)}
 </style></head><body>
 <header><div><small>${T('Clock', 'الساعة')}</small><div id="clock">--:--</div></div><div><small>${T('Elapsed', 'المنقضي')}</small><div id="timer">00:00</div></div><div class="sp"></div>
 <button onclick="deck.resetTimer()">${T('Reset timer', 'إعادة المؤقّت')}</button><button onclick="deck.prev()">${T('◀ Back', 'رجوع ▶')}</button><button class="go" onclick="deck.next()">${T('Next ▶', '◀ التالي')}</button></header>
