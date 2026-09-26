@@ -22,6 +22,7 @@
    prism's glow and the purpose node breathe, and a light passes through the purpose.
    All state is keyed off .st-n; the travelling lights are one-shot on live clicks. */
 (function () {
+  const t = Deck.t, AR = Deck.rtl;
   // Geometry in stage px. The flow runs along y = FY.
   const FY = 668;
   const NODE = { x: 708, r: 52 };          // the individual: 104px squircle
@@ -85,18 +86,26 @@
   const beamBox = `viewBox="${X0} ${BAND[0]} ${X1 - X0} ${BAND[1] - BAND[0]}" style="${box(X0, BAND[0], X1 - X0, BAND[1] - BAND[0])}`;
 
   // each bullet carries a brand icon in place of its dot
-  const EMPL = [['Feel seen and valued', 'eye-lightbulb'], ['Stay motivated to contribute', 'chart-growth'], ['Participate, nominate and share', 'person-message'], ['Learn from colleagues', 'user-network']];
+  const EMPL = [[t('Feel seen and valued', 'يشعر بأن جهده مرئي ومقدَّر'), 'eye-lightbulb'], [t('Stay motivated to contribute', 'يبقى متحفّزًا للمساهمة'), 'chart-growth'], [t('Participate, nominate and share', 'يشارك ويرشّح وينشر'), 'person-message'], [t('Learn from colleagues', 'يتعلّم من زملائه'), 'user-network']];
   const ORG = [
-    { k: '02A', cls: 'wy-a', y: CARD_A, icon: 'users-connected', label: 'Org: Culture &amp; values', items: [['Stronger recognition culture', 'document-certified'], ['Tahakom’s values shown in action', 'gear-clock']], d: .9, sh: '-1.6s' },
-    { k: '02B', cls: 'wy-b', y: CARD_B, icon: 'handshake', label: 'Org: Engagement &amp; experience', items: [['Higher engagement and collaboration', 'hands-teamwork'], ['Stronger employee experience', 'employee-female']], d: .98, sh: '-3.3s' },
+    { k: t('02A', '02أ'), cls: 'wy-a', y: CARD_A, icon: 'users-connected', label: t('Org: Culture &amp; values', 'المنظمة: الثقافة والقيم'), items: [[t('Stronger recognition culture', 'ثقافة تقدير أقوى'), 'document-certified'], [t('Tahakom’s values shown in action', 'قيم تحكم تتجلّى في العمل'), 'gear-clock']], d: .9, sh: '-1.6s' },
+    { k: t('02B', '02ب'), cls: 'wy-b', y: CARD_B, icon: 'handshake', label: t('Org: Engagement &amp; experience', 'المنظمة: التفاعل والتجربة'), items: [[t('Higher engagement and collaboration', 'تفاعل وتعاون أعلى'), 'hands-teamwork'], [t('Stronger employee experience', 'تجربة موظف أفضل'), 'employee-female']], d: .98, sh: '-3.3s' },
   ];
   const li = ([t, ic], attr) => `<li${attr || ''}>${Deck.icon(ic, 'wy-li-ic')}${t}</li>`;
 
-  const VALUES = ['Commitment', 'Collaboration', 'Innovation', 'Impact', 'Learning', 'Excellence'];
-  const PILLARS = [['Purpose connected to work', 'gear-clock'], ['Values become visible', 'eye-lightbulb'], ['Learning moves across teams', 'user-network']];
+  const VALUES = t(['Commitment', 'Collaboration', 'Innovation', 'Impact', 'Learning', 'Excellence'], ['الالتزام', 'التعاون', 'الابتكار', 'الأثر', 'التعلّم', 'التميّز']);
+  const PILLARS = [[t('Purpose connected to work', 'الغاية مرتبطة بالعمل'), 'gear-clock'], [t('Values become visible', 'القيم تصبح مرئية'), 'eye-lightbulb'], [t('Learning moves across teams', 'التعلّم ينتقل بين الفرق'), 'user-network']];
   // city lights that shimmer over the photo (stage px, on its bright districts)
   const GLINTS = [[1560, 575, 1], [1742, 338, .8], [1640, 282, .7], [1402, 500, .8], [1286, 222, .6], [1208, 655, .7], [1812, 842, .9], [1700, 470, .9], [1480, 350, .6], [1860, 610, .8],
     [1590, 640, 1.4], [1740, 700, 1.5], [1450, 625, 1.2], [1325, 752, 1.1], [1680, 800, 1.3], [1850, 735, 1.2], [1530, 715, 1.1], [1395, 680, 1], [1060, 845, .8], [800, 868, .7], [1150, 560, .6], [1500, 240, .7]];
+  // Arabic: the photo is never mirrored, so its lit districts (its right-hand side) would fall under the
+  // veil, which the mirror moves to the right. It shows that side on the open left instead: the photo
+  // is drawn larger (AR_PH: the share of its width at the stage's left edge, its drawn size and
+  // vertical offset, the width it covers) and the city lights follow it (see the scene's CSS)
+  const AR_PH = { x0: .52, w: 2708, h: 1523, dy: -66, span: 1300 };
+  const glints = !AR ? GLINTS : GLINTS
+    .map(([x, y, s]) => [Math.round(1920 - (x / 1920 - AR_PH.x0) * AR_PH.w), Math.round(y / 1080 * AR_PH.h + AR_PH.dy), s])
+    .filter(([x, y]) => x > 1920 - AR_PH.span + 80 && x < 1900 && y > 20 && y < 1060);
 
   /* ── stop 1: one story's light passes through the values Tahakom already has, into its purpose ──
      A story card (left) sends its light into a glass prism; the prism splits it into six rays, one
@@ -153,16 +162,20 @@
 
   Deck.scene({
     id: 'why',
-    title: 'Why it matters',
+    title: t('Why it matters', 'لماذا يهمّ ذلك'),
     act: 1,
     bg: 'night',
     transition: 'push',
-    cues: ['Becomes organisational value when the story is shared · the flow · retention caveat', 'Aligned by design · our purpose · the six values · three outcomes, over Riyadh'],
+    cues: t(['Becomes organisational value when the story is shared · the flow · retention caveat', 'Aligned by design · our purpose · the six values · three outcomes, over Riyadh'],
+      ['يتحوّل إلى قيمة مؤسسية حين تُشارَك القصة · التدفق · تنبيه الاحتفاظ بالموظفين', 'متّسق بالتصميم · غايتنا · القيم الست · ثلاث نتائج، فوق الرياض']),
     holds: [11, 11],
-    notes: [
+    notes: t([
       'Why does this matter to Tahakom? Recognition happens to one person. Value happens when the story is shared: people feel seen, the behaviour spreads, and the culture gets stronger. Retention may follow over time, but it is not a promise of the pilot.',
       'And it is aligned by design. We are not inventing new values. Every story shows how daily work serves our purpose, Urban Intelligence for a Better Life, and makes one of our six values visible in action.',
-    ],
+    ], [
+      'لماذا يهمّ هذا تحكم؟ التقدير يحدث لشخص واحد، أما القيمة فتتحقق حين تُشارَك القصة: يشعر الناس بأن جهدهم مرئي، وينتشر السلوك، وتقوى الثقافة. قد يتحسّن الاحتفاظ بالموظفين مع الوقت، لكنه ليس وعدًا من التجربة.',
+      'وهو متّسق بالتصميم. لا نبتكر قيمًا جديدة. كل قصة تُظهر كيف يخدم العمل اليومي غايتنا، ذكاء حضري لحياة أفضل، وتجعل إحدى قيمنا الست مرئية في العمل.',
+    ]),
     field: [
       { dim: .3, lit: 0, travel: .3, offset: [170, -80], warm: .1, links: .5, wave: .5, streaks: .12, sparkle: 1.1,
         calm: [[100, 120, 1800, 410, .85], [110, 480, 640, 860, .75], [1190, 420, 1810, 920, .75]] },
@@ -176,7 +189,7 @@
         <div class="wy-plate amb-ken-strong">
           <div class="photo wy-photo" style="background-image:url('assets/photos/riyadh-aerial.jpg')"></div>
           <div class="wy-leak"></div>
-          <div class="wy-glints">${GLINTS.map(([x, y, s], i) => `<i style="left:${x}px;top:${y}px;--s:${s};animation-delay:${(-i * 1.37).toFixed(2)}s;animation-duration:${(3.6 + (i % 4) * .9).toFixed(1)}s"></i>`).join('')}</div>
+          <div class="wy-glints">${glints.map(([x, y, s], i) => `<i style="left:${x}px;top:${y}px;--s:${s};animation-delay:${(-i * 1.37).toFixed(2)}s;animation-duration:${(3.6 + (i % 4) * .9).toFixed(1)}s"></i>`).join('')}</div>
         </div>
       </div>
       <div class="fill wy-veil a-fade" data-in="1" style="--dur:.8s"></div>
@@ -185,9 +198,9 @@
       <!-- stop 0: the header and the flow; at stop 1 they drift up and away -->
       <div class="wy-rise">
         <div class="pad wy-head">
-          <div class="kicker a-wipe" data-in="0" style="--d:.1s">Why it matters</div>
-          <h2 class="h2 wy-st" data-in="0" data-split style="--d:.12s;--wstep:.045s">Employee recognition becomes organisational value <em class="hl">when the story is shared.</em></h2>
-          <p class="wy-cav" data-in="0" style="--d:.62s">Retention remains a possible long-term effect — not a direct outcome of the pilot.</p>
+          <div class="kicker a-wipe" data-in="0" style="--d:.1s">${t('Why it matters', 'لماذا يهمّ ذلك')}</div>
+          <h2 class="h2 wy-st" data-in="0" data-split style="--d:.12s;--wstep:.045s">${t('Employee recognition becomes organisational value <em class="hl">when the story is shared.</em>', 'يتحوّل تقدير الموظف إلى قيمة مؤسسية <em class="hl">حين تُشارَك القصة.</em>')}</h2>
+          <p class="wy-cav" data-in="0" style="--d:.62s">${t('Retention remains a possible long-term effect — not a direct outcome of the pilot.', 'يبقى الاحتفاظ بالموظفين أثرًا محتملًا على المدى الطويل — لا نتيجةً مباشرة للتجربة.')}</p>
         </div>
 
         <div class="wy-flow">
@@ -234,7 +247,7 @@
           <div class="glass wy-card wy-emp a-unfold amb-sheen" data-in="0" style="--d:.3s;--dur:.9s;${box(EMP.x, EMP.top, EMP.w, EMP.h)};--sh:-.4s">
             <i class="wy-emp-ph" style="background-image:url('assets/photos/ops-centre-night.jpg')"></i>
             <div class="wy-card-h"><span class="wy-num">01</span></div>
-            <h3 class="wy-card-t">Employee level</h3>
+            <h3 class="wy-card-t">${t('Employee level', 'على مستوى الموظف')}</h3>
             <ul class="wy-list" data-stagger style="--stagger:.06s;--d:.46s">${EMPL.map((x) => li(x, ' data-in="0"')).join('')}</ul>
           </div>
 
@@ -246,7 +259,7 @@
           <div class="wy-prism a-materialize" data-in="0" style="--d:.6s;--dur:.9s;${box(PRISM.x - PRISM.r, FY - PRISM.r, PRISM.r * 2, PRISM.r * 2)}">
             <span class="wy-prism-ring"><i></i></span>
             <span class="wy-prism-glow"></span>
-            <span class="wy-prism-t">Shared<br>story</span>
+            <span class="wy-prism-t">${t('Shared<br>story', 'قصة<br>مُشارَكة')}</span>
           </div>
           <!-- the spark lands above the shared story as the story light passes through it -->
           <i class="wy-prism-mark" data-spark="0" data-spark-xy="${PRISM.x},${FY - PRISM.r - 40}" data-spark-delay=".82"></i>
@@ -271,8 +284,8 @@
            show how; the three outcomes are support -->
       <div class="wy-g1">
       <div class="pad wy-sv">
-        <div class="kicker a-wipe" data-in="1" style="--d:.45s">Strategic value</div>
-        <h2 class="h2 wy-sv-st" data-in="1" data-split style="--d:.45s;--wstep:.035s">The initiative does not create new <span class="wy-nw">values —</span> it helps employees recognise and apply <em class="hl">the values Tahakom already has.</em></h2>
+        <div class="kicker a-wipe" data-in="1" style="--d:.45s">${t('Strategic value', 'القيمة الاستراتيجية')}</div>
+        <h2 class="h2 wy-sv-st" data-in="1" data-split style="--d:.45s;--wstep:.035s">${t('The initiative does not create new <span class="wy-nw">values —</span> it helps employees recognise and apply <em class="hl">the values Tahakom already has.</em>', 'المبادرة لا تبتكر قيمًا <span class="wy-nw">جديدة —</span><br>بل تساعد الموظفين على إدراك وتطبيق <em class="hl">القيم التي تمتلكها تحكم أصلًا.</em>')}</h2>
       </div>
 
       <!-- the values' rays, faint: all six are there before any story lights them -->
@@ -284,7 +297,7 @@
       <div class="sv-card glass a-swing" data-in="1" style="--d:.7s;--dur:1s;left:${SV_CARD.x}px;top:${SV_CARD.y}px;width:${SV_CARD.w}px;height:${SV_CARD.h}px">
         <i class="sv-ph" style="background-image:${PHOTOS[0].img};background-position:${PHOTOS[0].pos}"></i>
         ${VALUES.map((v, p) => { const ph = PHOTOS[p % 3]; return `<div class="sv-story" style="--p:${p}">${p % 3 ? `<i class="sv-ph" style="background-image:${ph.img};background-position:${ph.pos}"></i>` : ''}<span class="sv-dots">${VALUES.map((w, k) => `<b${PHASE[k] === p ? ' class="on"' : ''}></b>`).join('')}</span></div>`; }).join('')}
-        <span class="sv-tag">Story</span>
+        <span class="sv-tag">${t('Story', 'قصة')}</span>
         <span class="sv-av">${Deck.icon('employee-female', 'sv-av-ic')}</span>
         <i class="sv-ln" style="top:196px;width:176px"></i><i class="sv-ln" style="top:220px;width:124px"></i>
         <span class="sv-dots sv-dots-0">${VALUES.map(() => '<b></b>').join('')}</span>
@@ -321,8 +334,8 @@
 
       <!-- the purpose: where every story's values lead -->
       <div class="sv-purp glass a-unfold" data-in="1" style="--d:.85s;--dur:.9s;left:${PNODE[0]}px;top:${SV_BY - 128}px;width:${1776 - PNODE[0]}px;height:256px">
-        <p class="sv-lead">Every story shows how daily work serves Tahakom’s purpose:</p>
-        <p class="sv-pp"><span class="amb-shimmer">Urban Intelligence<br>for a Better Life.</span></p>
+        <p class="sv-lead">${t('Every story shows how daily work serves Tahakom’s purpose:', 'كل قصة تُظهر كيف يخدم العمل اليومي غاية تحكم:')}</p>
+        <p class="sv-pp"><span class="amb-shimmer">${t('Urban Intelligence<br>for a Better Life.', 'ذكاء حضري<br>لحياة أفضل.')}</span></p>
       </div>
       <div class="sv-node a-materialize" data-in="1" style="--d:1.05s;--dur:.8s;left:${PNODE[0] - NODE_R}px;top:${SV_BY - NODE_R}px;width:${NODE_R * 2}px;height:${NODE_R * 2}px"><i></i></div>
       <!-- the spark lands in the node: the story's light arrives at the purpose -->
@@ -337,6 +350,8 @@
       <!-- the lights' sampled paths (generated above, as the flow's markup was built) -->
       <style>${KF.join('\n')}</style>
     `,
+    // Arabic: pictograms keep their drawn orientation (the engine flips them back with the text)
+    init(ctx) { if (AR) ctx.$$('.icon').forEach((e) => e.setAttribute('data-flip', '')); },
     step(n, prev, ctx) {
       // the travelling lights are one-shot builds on live clicks: the story's run
       // through the flow as the scene arrives (stop 0), the leading lights on the

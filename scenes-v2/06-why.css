@@ -305,3 +305,25 @@
 
 /* lite mode (L): the rise keeps its move but drops the large blur */
 #stage.lite #s-why .wy-rise { filter: none !important; }
+
+/* ── Arabic (right to left) ─────────────────────────────────────────────────
+   The scene is mirrored, so the story flows right to left: the individual on the right, the
+   organisation on the left; at stop 1 the story card sends its light leftwards through the prism
+   and the values into the purpose. Text blocks are flipped back by the engine; these rules only
+   undo what a mirror gets wrong inside them. */
+/* each bullet's icon leads its line from the right */
+html[lang="ar"] #s-why .wy-list li { padding-left: 0; padding-right: 40px; }
+html[lang="ar"] #s-why .wy-li-ic { left: auto; right: 0; }
+html[lang="ar"] #s-why .wy-prism-t { text-indent: 0; line-height: 1.25; }
+/* the value chips keep their inset on the side their words start */
+html[lang="ar"] #s-why .sv-chip { padding-left: 0; padding-right: 22px; font-size: 21px; }
+/* Riyadh is never mirrored: its lit side shows on the open left, drawn larger, fading out under the
+   veil on the right (keep in step with AR_PH in the scene script) */
+html[lang="ar"] #s-why .wy-photo { left: 620px; background-size: 2708px 1523px; background-position: -1408px -66px;
+  -webkit-mask-image: linear-gradient(90deg, #000 68%, transparent); mask-image: linear-gradient(90deg, #000 68%, transparent); }
+/* the split headlines' word masks (and the words' text-clipped shine, which paints only inside each
+   word's box) leave room for the marks above and below Arabic letters: hamza, dots, kasra */
+html[lang="ar"] #s-why [data-split] .w, html[lang="ar"] #s-why [data-split] .w > span { padding: .32em 0 .38em; margin: -.32em 0 -.38em; }
+html[lang="ar"] #s-why .wy-st, html[lang="ar"] #s-why .wy-sv-st { line-height: 1.18; }
+/* wipes reveal from where the Arabic starts (the right) */
+html[lang="ar"] #s-why .rtl-flip[data-in].a-wipe:not(.is-in) { clip-path: inset(0 0 0 100%); }

@@ -10,6 +10,7 @@
    All state is keyed off .st-0 (a settled landing shows the parked frame); the
    field wave plays only on a live build. */
 (function () {
+  const t = Deck.t;
   const LIGHT = [960, 716];   // where the story light rests (the horizon's centre)
   const LAND = 1.7;           // s after --enter: the light lands (the spark's data-spark-delay)
   const MEET = .62;           // s the arrival glints take to run in (keep in step with .hk-glints in 00-hook.css)
@@ -21,15 +22,17 @@
 
   Deck.scene({
     id: 'hook',
-    title: 'The question',
+    title: t('The question', 'السؤال'),
     act: 0,
     bg: 'deep',
     chrome: { mark: false, progress: false },
-    cues: ['When was the last time a colleague inspired you?'],
+    cues: t(['When was the last time a colleague inspired you?'], ['متى كانت آخر مرة ألهمك فيها زميل؟']),
     holds: [8],
-    notes: [
+    notes: t([
       'Open with the question, before you introduce anyone. Ask it, then stay quiet for a few seconds: when was the last time a colleague inspired you? Give the room time to picture one person and one moment.',
-    ],
+    ], [
+      'افتتح بالسؤال قبل أن تعرّف بأحد. اطرحه، ثم التزم الصمت بضع ثوانٍ: متى كانت آخر مرة ألهمك فيها زميل؟ امنح الحضور وقتًا ليستحضروا شخصًا واحدًا ولحظة واحدة.',
+    ]),
     field: [
       { dim: .6, lit: 0, travel: 0, offset: [0, 0], pins: [], warm: .3, links: .7, wave: .7, streaks: .14, sparkle: 1.4, drift: 1.2, calm: [[180, 330, 1740, 690, .6]] },
     ],
@@ -50,8 +53,8 @@
       <div class="hk-flare" style="left:${LIGHT[0]}px;top:${LIGHT[1]}px"><i></i><b></b></div>
 
       <div class="nt-q" data-spark="0" data-spark-xy="${LIGHT[0]},${LIGHT[1]}" data-spark-delay="${LAND}">
-        <h1 class="display" data-in="0" data-split style="--d:.3s;--wstep:.085s">When was the last time</h1>
-        <h1 class="display" data-in="0" data-split style="--d:.74s;--wstep:.085s">a colleague inspired you?</h1>
+        <h1 class="display" data-in="0" data-split style="--d:.3s;--wstep:.085s">${t('When was the last time', 'متى كانت آخر مرة')}</h1>
+        <h1 class="display" data-in="0" data-split style="--d:.74s;--wstep:.085s">${t('a colleague inspired you?', 'ألهمك فيها زميل؟')}</h1>
       </div>
     `,
     step(n, prev, ctx) {

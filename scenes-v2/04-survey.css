@@ -146,3 +146,29 @@
 #s-survey.st-3 .sv-pu.is-in .sv-pu2 b { animation: svBreak 5.2s cubic-bezier(.3, .1, .4, 1) 2.2s infinite; }
 @keyframes svBreak { 0% { transform: translateX(0) scale(.5); opacity: 0; } 8% { opacity: 1; transform: translateX(10px) scale(1); }
   46% { transform: translateX(calc(var(--w2, 400px) * .5)) scale(1); opacity: 1; } 60% { transform: translateX(calc(var(--w2, 400px) * .56)) scale(.4); opacity: 0; } 100% { transform: translateX(calc(var(--w2, 400px) * .56)) scale(.4); opacity: 0; } }
+
+/* ── Arabic (right to left): the instrument moves to the right and the waffle to the left, so the
+   waffle fills from the right (the column-by-column relight, the glow pool and the roll of light
+   all run right to left with it). The figure and the 49% are each flipped back as one piece
+   (data-flip) and keep their left-to-right order; the figure sits at the start of its column. */
+html[lang="ar"] #s-survey .sv-odo { direction: ltr; justify-content: flex-end; }
+html[lang="ar"] #s-survey .sv-odo::after { left: auto; right: -40px; }
+html[lang="ar"] #s-survey .sv-49 { direction: ltr; }
+html[lang="ar"] #s-survey .sv-ico.sm { margin: 0 0 0 12px; }
+/* the headline and the punchline hang from the start (the right) of the header */
+html[lang="ar"] #s-survey .sv-h, html[lang="ar"] #s-survey .sv-punch { left: auto; right: 0; }
+/* the punchline's contrast reads right to left: the lit line grows from the right, and the light
+   sets out along the broken track from the right (the track is mirrored about its own centre) */
+html[lang="ar"] #s-survey .sv-pu1 { transform-origin: 100% 50%; }
+html[lang="ar"] #s-survey .sv-pu2 { scale: -1 1; }
+/* Arabic letters rise and fall further than Latin ones: the word masks and the landing shine
+   (background-clip: text through each word's box) get room for them, and the lines more leading */
+html[lang="ar"] #s-survey [data-split] .w, html[lang="ar"] #s-survey [data-split] .w > span { padding: .26em .04em .3em; margin: -.26em -.04em -.3em; }
+html[lang="ar"] #s-survey .sv-head .kicker { line-height: 1.5; }
+html[lang="ar"] #s-survey .sv-swap { margin-top: 18px; }
+html[lang="ar"] #s-survey .sv-h, html[lang="ar"] #s-survey .sv-punch { line-height: 1.25; }
+html[lang="ar"] #s-survey .sv-lab { line-height: 1.35; }
+html[lang="ar"] #s-survey .sv-txt { margin-top: 10px; line-height: 1.5; }
+html[lang="ar"] #s-survey .sv-legend { line-height: 1.4; padding-top: 16px; }
+html[lang="ar"] #s-survey .sv-49t .label { line-height: 1.4; }
+html[lang="ar"] #s-survey .sv-49t p { margin-top: 4px; line-height: 1.5; }

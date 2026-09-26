@@ -19,6 +19,7 @@
    same frame; the leading lights, the first hit, the surge and the first pulse play on a live
    click only. */
 (function () {
+  const t = Deck.t, AR = Deck.rtl;
   const mod = (v, m) => ((v % m) + m) % m;
   const r1 = (v) => Math.round(v * 10) / 10;
   // the draws run on an ease-in-out sine (CSS cubic-bezier(.37,0,.63,1)); tAt is its inverse:
@@ -37,7 +38,7 @@
   const LYG = 862, LD = 360, LRC = LD / 2, LX0 = 296, LX1 = 1624, LW = 46, LT = 16;
   const LS = LX1 - LX0, LCAP = Math.PI * LRC, LL = 2 * LS + 2 * LCAP;
   const TX = [350, 655, 960, 1265, 1570];
-  const TW = ['Experience', 'Story', 'Behaviour', 'Inspiration', 'More stories'];
+  const TW = t(['Experience', 'Story', 'Behaviour', 'Inspiration', 'More stories'], ['تجربة', 'قصة', 'سلوك', 'إلهام', 'قصص أكثر']);
   const TI = ['hands-teamwork', 'person-message', 'gear-clock', 'eye-lightbulb', 'users-connected'];
   // a point on the loop (plane) at distance s along it, with its outward normal
   function planeAt(s) {
@@ -62,7 +63,7 @@
 
   /* the award road: a short straight in the same ground, higher up the stage */
   const AYG = 594, AX0 = 186, AHW = 30, AT = 14;
-  const PX = [340, 700], PW = ['Achievement', 'Recognition'], PI = ['chart-growth', 'document-certified'];
+  const PX = [340, 700], PW = t(['Achievement', 'Recognition'], ['إنجاز', 'تقدير']), PI = ['chart-growth', 'document-certified'];
   const WALL = 1010, WT = 34, WD = 74, WH = 172;       // the wall: its face, thickness, half-depth, height
   const PEND = WALL - 12;                             // where the award light dies
   const POD = 58;                                     // the podium's height (Recognition stands on it)
@@ -116,10 +117,10 @@
   const JOIN = DRAW + .45;            // s into the draw: the second story joins the orbit
   const LAP = 7.2;                    // one orbit, seconds
   const STAGES = [
-    { n: '01', t: 'Capture', s: 'Peer or leader nomination through a short, clear form.', p: 'Employee voice', a: -45, ic: 'person-message' },
-    { n: '02', t: 'Curate', s: 'Verify facts, secure consent and link the story to one value.', p: 'Fair selection', a: 45, ic: 'document-certified' },
-    { n: '03', t: 'Feature', s: 'Publish a short, authentic story across relevant channels.', p: 'Visible recognition', a: 135, ic: 'content-layout' },
-    { n: '04', t: 'Reinforce', s: 'Recognise the contribution, share the takeaway and track response.', p: 'Organisational learning', a: 225, ic: 'handshake' },
+    { n: '01', t: t('Capture', 'رصد'), s: t('Peer or leader nomination through a short, clear form.', 'ترشيح من زميل أو قائد عبر نموذج قصير وواضح.'), p: t('Employee voice', 'صوت الموظف'), a: -45, ic: 'person-message' },
+    { n: '02', t: t('Curate', 'انتقاء'), s: t('Verify facts, secure consent and link the story to one value.', 'التحقق من الوقائع، وأخذ الموافقة، وربط القصة بقيمة واحدة.'), p: t('Fair selection', 'اختيار عادل'), a: 45, ic: 'document-certified' },
+    { n: '03', t: t('Feature', 'إبراز'), s: t('Publish a short, authentic story across relevant channels.', 'نشر قصة قصيرة وأصيلة عبر القنوات المناسبة.'), p: t('Visible recognition', 'تقدير مرئي'), a: 135, ic: 'content-layout' },
+    { n: '04', t: t('Reinforce', 'ترسيخ'), s: t('Recognise the contribution, share the takeaway and track response.', 'تقدير المساهمة، ومشاركة الدرس المستفاد، ومتابعة التفاعل.'), p: t('Organisational learning', 'تعلّم مؤسسي'), a: 225, ic: 'handshake' },
   ];
   const CARD = { w: 492, l: 144, r: 1284, topEnd: 626, botTop: 700 };   // top cards grow upward, bottom cards downward
   const rad = (a) => a * Math.PI / 180;
@@ -200,16 +201,19 @@
 
   Deck.scene({
     id: 'cycle',
-    title: 'The cycle',
+    title: t('The cycle', 'الدورة'),
     act: 2,
     bg: 'teal',
     transition: 'iris',
-    cues: ['What is new · the road that stops, the loop that keeps going', 'The cycle · four steps · it repeats'],
+    cues: t(['What is new · the road that stops, the loop that keeps going', 'The cycle · four steps · it repeats'], ['ما الجديد · طريق يتوقف، وحلقة تستمر', 'الدورة · أربع خطوات · تتكرر']),
     holds: [9, 15],
-    notes: [
+    notes: t([
       'Most recognition stops at the award. Ours keeps going: a story leads to behaviour, which inspires more stories.',
       'Four steps, one quarter. Capture: a peer or leader nominates. Curate: facts checked, consent given, one value linked. Feature: a short story on our channels. Reinforce: the contributor is recognised and the takeaway is shared. Then it repeats.',
-    ],
+    ], [
+      'معظم التقدير يتوقف عند الجائزة. أمّا تقديرنا فيستمر: القصة تقود إلى سلوك، والسلوك يُلهم قصصًا أكثر.',
+      'أربع خطوات في ربع سنة. رصد: يرشّح زميل أو قائد. انتقاء: نتحقق من الوقائع، ونأخذ الموافقة، ونربط القصة بقيمة واحدة. إبراز: قصة قصيرة عبر قنواتنا. ترسيخ: نقدّر صاحب المساهمة ونشارك الدرس المستفاد. ثم تتكرر الدورة.',
+    ]),
     field: [
       { dim: .3, lit: .02, travel: .22, offset: [150, -70], litFrom: null, links: .5, wave: .5, streaks: .14, sparkle: 1, calm: [[100, 120, 1500, 380, .85], [120, 400, 1760, 960, .55]] },
       { dim: .48, lit: .09, litFrom: [CX, CY], travel: .65, links: .8, wave: .85, streaks: .26, sparkle: 2.8,
@@ -218,8 +222,8 @@
     html: `
       <!-- stop 0 · the road that stops, the loop that keeps going -->
       <div class="pad cy-head">
-        <div class="kicker" data-in="0" data-out="1">What is new</div>
-        <h2 class="h2 cy-h" data-in="0" data-out="1" data-split style="--d:.15s">Most recognition <em class="cy-stop">stops</em> at the award.<br><em class="hl cy-keep" data-spark="0" data-spark-at="r">This keeps going.</em></h2>
+        <div class="kicker" data-in="0" data-out="1">${t('What is new', 'ما الجديد')}</div>
+        <h2 class="h2 cy-h" data-in="0" data-out="1" data-split style="--d:.15s">${t('Most recognition <em class="cy-stop">stops</em> at the award.<br><em class="hl cy-keep" data-spark="0" data-spark-at="r">This keeps going.</em>', 'معظم التقدير <em class="cy-stop">يتوقف</em> عند الجائزة.<br><em class="hl cy-keep" data-spark="0" data-spark-at="r">أمّا هذا فيستمر.</em>')}</h2>
       </div>
 
       <div class="cy-lanes" data-out="1">
@@ -249,7 +253,7 @@
           <div class="cy-lanelights a-fade" data-in="0" style="--d:${(LIGHTS_AT - .3).toFixed(2)}s;--dur:.4s">
             <i class="cy-ptrail"></i><i class="cy-plight"></i>
           </div>
-          <div class="cy-end a-right" data-in="0" style="left:${WALL + WT + 30}px;top:${r1(AP(WALL, 0, WH * .55)[1])}px;--d:${(PD.dl + PD.dd).toFixed(2)}s;--dur:.7s">it ends here</div>
+          <div class="cy-end a-right" data-in="0" style="left:${WALL + WT + 30}px;top:${r1(AP(WALL, 0, WH * .55)[1])}px;--d:${(PD.dl + PD.dd).toFixed(2)}s;--dur:.7s">${t('it ends here', 'هنا تنتهي')}</div>
           <div class="cy-flash" style="left:${PEND}px;top:${AYG - 30}px"><b class="cy-burst"></b><b class="cy-ring1"></b><b class="cy-ring1 r2"></b><span class="cy-shards">${shards}</span></div>
         </div>
 
@@ -290,8 +294,8 @@
 
       <!-- stop 1 · the ring on its disc -->
       <div class="pad cy-head">
-        <div class="kicker" data-in="1" style="--d:.2s">The solution</div>
-        <h2 class="h2 cy-h" data-in="1" data-split style="--d:.28s">A simple story-to-impact cycle.</h2>
+        <div class="kicker" data-in="1" style="--d:.2s">${t('The solution', 'الحل')}</div>
+        <h2 class="h2 cy-h" data-in="1" data-split style="--d:.28s">${t('A simple story-to-impact cycle.', 'دورة بسيطة من القصة إلى الأثر.')}</h2>
       </div>
 
       <div class="cy-ring a-fade" data-in="1" style="--d:.05s;--dur:.5s">
@@ -338,9 +342,11 @@
 
       <!-- stop 1, as the draw closes · it repeats -->
       <div class="cy-core" style="left:${CX}px;top:${CY}px"></div>
-      <div class="cy-rep a-scale" data-in="1" data-spark="1" data-spark-at="t" data-spark-delay="${(REP - .42).toFixed(2)}" style="left:${CX - 200}px;top:${CY - 54}px;--d:${(REP - .08).toFixed(2)}s;--dur:.8s"><span>The cycle<br>repeats</span></div>
+      <div class="cy-rep a-scale" data-in="1" data-spark="1" data-spark-at="t" data-spark-delay="${(REP - .42).toFixed(2)}" style="left:${CX - 200}px;top:${CY - 54}px;--d:${(REP - .08).toFixed(2)}s;--dur:.8s"><span>${t('The cycle<br>repeats', 'الدورة<br>تتكرر')}</span></div>
     `,
     init(ctx) {
+      // Arabic: pictograms keep their drawn orientation (the engine flips them back with the text)
+      if (AR) ctx.$$('.icon').forEach((e) => e.setAttribute('data-flip', ''));
       ctx.tail = ctx.$('.cy-tail');
       ctx.tailP = ctx.$$('.cy-ttr');
       ctx.tailD = [];
@@ -380,6 +386,7 @@
     leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
       window.LFPark && LFPark(ctx);   // the lanes leave the compositor once they have fallen away (and the ring until it is drawn)
+      if (AR && !ctx.arSpark) { ctx.arSpark = true; rtlSpark(ctx.$('.cy-keep')); }
       const forward = !ctx.instant && prev < n;
       // one-shot flourishes (leading lights, the surge) play only on a forward build
       ctx.el.dataset.play = forward ? String(n) : '';
@@ -404,6 +411,18 @@
       }
     },
   });
+
+  // Arabic: a spark target inside a text block that the engine flips back shows mirrored within
+  // that block, so its light is placed from where it shows (the same anchors as the engine's)
+  function rtlSpark(el) {
+    const f = el && el.parentElement && el.parentElement.closest('.rtl-flip');
+    if (!f) return;
+    const pos = (n) => { let x = 0, y = 0; for (; n && !n.classList.contains('scene'); n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; } return { x, y }; };
+    const p = pos(el), q = pos(f), w = el.offsetWidth, h = el.offsetHeight, g = 34;
+    const x = 2 * q.x + f.offsetWidth - p.x - w, cx = x + w / 2, cy = p.y + h / 2;
+    const at = { l: [x - g, cy], r: [x + w + g, cy], t: [cx, p.y - g], b: [cx, p.y + h + g], c: [cx, cy], tl: [x - g, p.y + 8], tr: [x + w + g, p.y + 8] }[el.dataset.sparkAt || 'l'];
+    el.dataset.sparkXy = at.map(Math.round).join(',');
+  }
 
   // a clock's animation and its time in seconds (null when its stop is not reached). The
   // animation is looked up once (getAnimations() flushes style) and kept while it lives.

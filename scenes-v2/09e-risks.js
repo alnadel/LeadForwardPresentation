@@ -14,6 +14,7 @@
    the one-shot lights (the stem's leading light, the click ring) play only on a live
    entrance and rest invisible, so a jump or a step back shows the same settled frame. */
 (function () {
+  const t = Deck.t;
   // the risks' pictures: outline, currentColor, round caps (48-unit box, drawn at 58px)
   const star = (cx, cy, R, r) => 'M' + Array.from({ length: 10 }, (_, k) => {
     const a = -Math.PI / 2 + k * Math.PI / 5, d = k % 2 ? r : R;
@@ -30,10 +31,10 @@
     cluster: `<rect x="5" y="5" width="38" height="38" rx="8.5"/><g class="rk-dot" stroke="none">${[[32.5, 12], [38, 12], [35.2, 17], [29.7, 17], [38, 22], [32.5, 22]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.8"/>`).join('')}</g><g opacity=".38" stroke-width="1.5">${[[13, 16], [14, 33], [26, 35], [36.5, 34]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.5"/>`).join('')}</g>`,
   };
   const ROWS = [
-    { risk: 'It becomes a popularity contest or a broadcast', guard: 'Peers nominate; the criteria are published.', owner: 'Curation panel', i: 'team', p: 'podium' },
-    { risk: 'Nominations dry up after launch', guard: 'Always open; each featured colleague nominates the next.', owner: 'Internal Communications', i: 'person-message', p: 'inbox' },
-    { risk: 'A sensitive story is published', guard: 'Facts checked and consent given before anything is shared.', owner: 'HR, with Legal on request', i: 'handshake', p: 'doc' },
-    { risk: 'Stories cluster in a few departments', guard: 'Representation tracked from month one.', owner: 'HR / People Analytics', i: 'laptop-analytics', p: 'cluster' },
+    { risk: t('It becomes a popularity contest or a broadcast', 'تتحوّل إلى مسابقة شعبية أو بثّ من طرف واحد'), guard: t('Peers nominate; the criteria are published.', 'الزملاء يرشّحون؛ والمعايير معلنة.'), owner: t('Curation panel', 'لجنة الانتقاء'), i: 'team', p: 'podium' },
+    { risk: t('Nominations dry up after launch', 'تتراجع الترشيحات بعد الإطلاق'), guard: t('Always open; each featured colleague nominates the next.', 'الترشيح مفتوح دائمًا؛ وكل زميل تُبرَز قصته يرشّح التالي.'), owner: t('Internal Communications', 'الاتصال الداخلي'), i: 'person-message', p: 'inbox' },
+    { risk: t('A sensitive story is published', 'تُنشر قصة حسّاسة'), guard: t('Facts checked and consent given before anything is shared.', 'تدقيق الحقائق وأخذ إذن صاحب القصة قبل أي نشر.'), owner: t('HR, with Legal on request', 'الموارد البشرية، مع الشؤون القانونية عند الحاجة'), i: 'handshake', p: 'doc' },
+    { risk: t('Stories cluster in a few departments', 'تتركّز القصص في إدارات قليلة'), guard: t('Representation tracked from month one.', 'متابعة تمثيل الإدارات من الشهر الأول.'), owner: t('HR / People Analytics', 'الموارد البشرية / تحليلات الموظفين'), i: 'laptop-analytics', p: 'cluster' },
   ];
   const TOP = 350, H = 112, GAP = 14;          // rows (stage px)
   const r2 = (v) => Math.round(v * 100) / 100;
@@ -86,15 +87,17 @@
 
   Deck.scene({
     id: 'risks',
-    title: 'What could break it',
+    title: t('What could break it', 'ما الذي قد يُفشلها'),
     act: 4,
     bg: 'deep',
     transition: 'push',
-    cues: ['Four risks · the guard built in'],
+    cues: t(['Four risks · the guard built in'], ['أربعة مخاطر · والضمانة مدمجة في التصميم']),
     holds: [12],
-    notes: [
+    notes: t([
       'What could break it? Four risks, each with a guard already in the design and an owner. And the change stays small, because it runs on meetings and channels people already use.',
-    ],
+    ], [
+      'ما الذي قد يُفشلها؟ أربعة مخاطر، لكلٍّ منها ضمانة مدمجة في التصميم ومسؤول عنها. ويبقى التغيير محدودًا، لأنها تعمل عبر اجتماعات وقنوات يستخدمها الموظفون أصلًا.',
+    ]),
     field: [
       { dim: .34, lit: .03, travel: .4, offset: [140, 180], warm: .2, litFrom: [1500, 220], links: .5, wave: .6, streaks: .18, sparkle: 1.6, drift: 1,
         calm: [[100, 120, 1400, 290, .8], [110, 300, 1810, 850, .9], [110, 855, 1000, 945, .8]] },
@@ -105,18 +108,18 @@
         <linearGradient id="rkShF" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#3FE6D6"/><stop offset=".45" stop-color="#1A9E9A"/><stop offset="1" stop-color="#0B4F58"/></linearGradient>
         <linearGradient id="rkShH" x1="0" y1="0" x2=".55" y2=".6"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
       </defs></svg>
-      <div class="kicker rk-kick a-wipe" data-in="0" style="--d:.08s">Risks &amp; change</div>
-      <h2 class="h2 rk-h" data-in="0" data-split style="--d:.12s">What could break it, and <em class="hl">the guard built in.</em></h2>
+      <div class="kicker rk-kick a-wipe" data-in="0" style="--d:.08s">${t('Risks &amp; change', 'المخاطر والتغيير')}</div>
+      <h2 class="h2 rk-h" data-in="0" data-split style="--d:.12s">${t('What could break it, and <em class="hl">the guard built in.</em>', 'ما الذي قد يُفشلها، <em class="hl">والضمانة المدمجة فيها.</em>')}</h2>
 
       <div class="rk-cols a-fade" data-in="0" style="--d:.3s">
-        <span class="label" style="left:${144 + RX}px">Risk</span>
-        <span class="label" style="left:${144 + GX}px">Guard</span>
-        <span class="label" style="left:${144 + OWN}px">Owner</span>
+        <span class="label" style="left:${144 + RX}px">${t('Risk', 'الخطر')}</span>
+        <span class="label" style="left:${144 + GX}px">${t('Guard', 'الضمانة')}</span>
+        <span class="label" style="left:${144 + OWN}px">${t('Owner', 'المسؤول')}</span>
       </div>
       ${ROWS.map(row).join('')}
 
       <p class="rk-cap a-fade" data-in="0" style="--d:1.3s;--dur:.9s">
-        <span class="rk-ci">${Deck.icon('hands-teamwork')}</span><span><b>Change stays small:</b> it runs on meetings and channels people already use.</span>
+        <span class="rk-ci">${Deck.icon('hands-teamwork')}</span><span>${t('<b>Change stays small:</b> it runs on meetings and channels people already use.', '<b>يبقى التغيير محدودًا:</b> تعمل عبر اجتماعات وقنوات يستخدمها الموظفون أصلًا.')}</span>
       </p>
     `,
     step(n, prev, ctx) {

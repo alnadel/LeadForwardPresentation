@@ -28,15 +28,16 @@
    so it holds no layers.
    All state is keyed off .st-n, so back navigation lands on the same frame. */
 (function () {
+  const t = Deck.t;
   const Y = 540;               // the timeline: the chapter card's centre line
   const UP = 222;              // stop 1: the timeline rises to a rail at y 318 (keep in step with the CSS)
   const CARD_Y = 600, CARD_H = 246;           // the milestone cards hang below the line
   const S0Y = 230;                             // stop 0's box starts here (keep in step with .rm-s0 in the CSS)
   const MS = [
-    { when: 'Q4 2026', stage: 'Pilot', what: 'One quarterly cycle, open to everyone. <b>Decide: scale, adjust or stop.</b>', x: 144, w: 480 },
-    { when: 'H1 2027', stage: 'Scale', what: 'Every department, a story champion in each, video and town-hall spotlights.', x: 660, w: 348 },
-    { when: 'Q3 2027', stage: 'Embed', what: 'Part of onboarding and leadership development.', x: 1044, w: 348 },
-    { when: 'Q4 2027', stage: 'Habit', what: 'Self-running by year end, closed by the first annual story collection.', x: 1428, w: 348 },
+    { when: t('Q4 2026', 'الربع الرابع 2026'), wq: 'الربع الرابع', wy: '2026', stage: t('Pilot', 'التجربة'), what: t('One quarterly cycle, open to everyone. <b>Decide: scale, adjust or stop.</b>', 'دورة ربع سنوية واحدة، مفتوحة للجميع. <b>القرار: التوسّع أو التعديل أو الإيقاف.</b>'), x: 144, w: 480 },
+    { when: t('H1 2027', 'النصف الأول 2027'), wq: 'النصف الأول', wy: '2027', stage: t('Scale', 'التوسّع'), what: t('Every department, a story champion in each, video and town-hall spotlights.', 'كل الإدارات، وسفير للقصص في كل منها، وتسليط الضوء بالفيديو وفي اللقاءات العامة.'), x: 660, w: 348 },
+    { when: t('Q3 2027', 'الربع الثالث 2027'), wq: 'الربع الثالث', wy: '2027', stage: t('Embed', 'الترسيخ المؤسسي'), what: t('Part of onboarding and leadership development.', 'جزء من برامج التهيئة وتطوير القيادات.'), x: 1044, w: 348 },
+    { when: t('Q4 2027', 'الربع الرابع 2027'), wq: 'الربع الرابع', wy: '2027', stage: t('Habit', 'العادة'), what: t('Self-running by year end, closed by the first annual story collection.', 'تُدار ذاتيًا بنهاية العام، وتختتمها مجموعة القصص السنوية الأولى.'), x: 1428, w: 348 },
   ];
   const NX = MS.map((m) => m.x + 46);          // node centres on the timeline
   // line icons on a 24 grid (outline, round caps)
@@ -86,18 +87,18 @@
   const avatar = (o) => `<span class="rm-av ${o.a}">${o.a === 'one' ? who('lg', 0) : o.a === 'three' ? who('sm p1', -10) + who('sm p3', 26) + who('sm p2', 8) : who('sm p1', -4) + who('sm p2', 20)}` +
     `<span class="rm-badge">${ico(BADGE[o.b])}</span><i class="rm-lit-ic"></i></span>`;
   const OWNERS = [
-    { r: 'Executive sponsor', d: 'Direction and the quarterly decision', a: 'one', b: 'flag' },
-    { r: 'Curation panel', d: 'HR, Internal Communications and one rotating employee, choosing monthly', a: 'three', b: 'check' },
-    { r: 'Internal Communications', d: 'Channels and calendar', a: 'one', b: 'cast' },
-    { r: 'HR / People Analytics', d: 'The dashboard', a: 'one', b: 'bars' },
-    { r: 'Story champions', d: 'From H1 2027', a: 'two', b: 'story' },
+    { r: t('Executive sponsor', 'الراعي التنفيذي'), d: t('Direction and the quarterly decision', 'التوجيه وقرار نهاية كل ربع سنة'), a: 'one', b: 'flag' },
+    { r: t('Curation panel', 'لجنة الانتقاء'), d: t('HR, Internal Communications and one rotating employee, choosing monthly', 'الموارد البشرية والاتصال الداخلي وموظف بالتناوب، تختار شهريًا'), a: 'three', b: 'check' },
+    { r: t('Internal Communications', 'الاتصال الداخلي'), d: t('Channels and calendar', 'القنوات والجدول الزمني'), a: 'one', b: 'cast' },
+    { r: t('HR / People Analytics', 'الموارد البشرية / تحليلات الموظفين'), d: t('The dashboard', 'لوحة المؤشرات'), a: 'one', b: 'bars' },
+    { r: t('Story champions', 'سفراء القصص'), d: t('From H1 2027', 'ابتداءً من النصف الأول 2027'), a: 'two', b: 'story' },
   ];
   // the budget as a pseudo-3D stack: people time is the main block, recognition a thin layer on
   // it, and new software a ghost above it, crossed out (sizes are illustrative, not figures)
   const BUDGET = [
-    { k: 'No new platform:', t: 'email, intranet and town halls already exist.', z: 108, h: 34, c: 'ghost' },
-    { k: 'A small recognition budget:', t: 'certificates and the annual event.', z: 66, h: 16, c: 'rec' },
-    { k: 'People time:', t: 'the curation panel, about two hours a week.', z: 0, h: 66, c: 'ppl' },
+    { k: t('No new platform:', 'لا منصة جديدة:'), t: t('email, intranet and town halls already exist.', 'البريد والشبكة الداخلية واللقاءات العامة قائمة أصلًا.'), z: 108, h: 34, c: 'ghost' },
+    { k: t('A small recognition budget:', 'ميزانية تقدير صغيرة:'), t: t('certificates and the annual event.', 'شهادات التقدير والحفل السنوي.'), z: 66, h: 16, c: 'rec' },
+    { k: t('People time:', 'وقت الموظفين:'), t: t('the curation panel, about two hours a week.', 'لجنة الانتقاء، نحو ساعتين أسبوعيًا.'), z: 0, h: 66, c: 'ppl' },
   ];
   const BW = 130, BD = 90, CS = Math.cos(Math.PI / 6), BO = [103, 160];     // block footprint; iso origin in the stack svg
   const bp = (x, y, z) => [BO[0] + (x - y) * CS, BO[1] + (x + y) * .5 - z];
@@ -124,7 +125,7 @@
   const nodes = MS.map((m, i) => `
       <i class="rm-node n${i} a-materialize" data-in="0" style="left:${NX[i]}px;--d:${r2(.18 + i * .1)}s;--pt:${ping(i)}s"${i === 0 ? ` data-spark="0" data-spark-xy="${NX[0]},${Y}" data-spark-delay=".2"` : ''}><b></b></i>`).join('');
   const years = MS.map((m, i) => `
-      <div class="rm-year y${i}" data-in="0" style="left:${m.x + 28}px;top:${Y - SH[i] - SDY - 8 - (i ? 60 : 72) - S0Y}px;--d:${r2(.3 + i * .09)}s">${m.when}</div>`).join('');
+      <div class="rm-year y${i}" data-in="0" style="left:${m.x + 28}px;top:${Y - SH[i] - SDY - 8 - (i ? 60 : 72) - S0Y}px;--d:${r2(.3 + i * .09)}s">${Deck.rtl ? `<small>${m.wq}</small>${m.wy}` : m.when}</div>`).join('');
   const steps = MS.map((m, i) => {
     const w = SW[i], h = SH[i], W = w + SDX + 2, H = h + SDY + 2;
     const front = `0,${SDY} ${w},${SDY} ${w},${H} 0,${H}`;
@@ -186,16 +187,19 @@
 
   Deck.scene({
     id: 'roadmap',
-    title: 'From one quarter to a habit',
+    title: t('From one quarter to a habit', 'من ربع سنة إلى عادة'),
     act: 4,
     bg: 'navy',
     transition: 'chapter',
-    cues: ['Roadmap · done by the end of 2027', 'Who runs it, and what it costs'],
+    cues: t(['Roadmap · done by the end of 2027', 'Who runs it, and what it costs'], ['خارطة الطريق · تكتمل بنهاية 2027', 'من يديرها، وكم تكلّف']),
     holds: [12, 14],
-    notes: [
+    notes: t([
       'This is a roadmap, not a one-off, and it is done by the end of 2027: fifteen months. A one-quarter pilot this year. In the first half of 2027 we scale to every department, with a story champion in each. In the third quarter it becomes part of onboarding and leadership development. By the end of 2027 it runs itself, and the first annual story collection closes the year: stories are simply how Tahakom shares what works.',
       'Who runs it: the sponsor decides, a curation panel from HR, Internal Communications and one rotating employee selects each month, Communications runs the channels, and HR runs the dashboard. The cost is mostly people time, about two hours a week for the panel, plus a small recognition budget. No new software.',
-    ],
+    ], [
+      'هذه خارطة طريق، لا مبادرة لمرة واحدة، وتكتمل بنهاية 2027: خمسة عشر شهرًا. تجربة لمدة ربع سنة هذا العام. وفي النصف الأول من 2027 نتوسّع إلى كل الإدارات، مع سفير للقصص في كل إدارة. وفي الربع الثالث تصبح جزءًا من برامج التهيئة وتطوير القيادات. وبنهاية 2027 تُدار ذاتيًا، وتختتم مجموعةُ القصص السنوية الأولى العام: فالقصص ببساطة هي الطريقة التي تتشارك بها تحكم ما ينجح.',
+      'من يديرها: الراعي التنفيذي يقرّر، ولجنة انتقاء من الموارد البشرية والاتصال الداخلي وموظف بالتناوب تختار كل شهر، والاتصال الداخلي يدير القنوات، والموارد البشرية تدير لوحة المؤشرات. والتكلفة في معظمها وقت الموظفين: نحو ساعتين أسبوعيًا للجنة، إضافة إلى ميزانية تقدير صغيرة. ولا برمجيات جديدة.',
+    ]),
     field: [
       { dim: .34, lit: .04, travel: .35, offset: [-200, 60], litFrom: [NX[0], Y], warm: .1, links: .5, wave: .65, streaks: .2, sparkle: 1.6, drift: 1,
         calm: [[100, 120, 1500, 290, .8], [110, 420, 1820, 520, .6], [110, 590, 1820, 880, .88]] },
@@ -207,9 +211,9 @@
       <i class="rm-sun"></i>
       <div class="amb-dust rm-dust a-fade" data-in="0" data-out="1" style="top:${DUST_Y}px;--d:1s;--dur:1.4s">${dust}</div>
 
-      <div class="kicker rm-kick a-wipe" data-in="0" style="--d:.1s">Roadmap</div>
-      <h2 class="h2 rm-h" data-in="0" data-out="1" data-split style="--d:.16s">From one quarter to a habit, <em class="hl">by</em> <em class="hl">the</em> <em class="hl">end</em> <em class="hl">of</em> <em class="hl">2027.</em></h2>
-      <h2 class="h2 rm-h" data-in="1" data-split style="--d:.18s">Who runs it, and what it costs.</h2>
+      <div class="kicker rm-kick a-wipe" data-in="0" style="--d:.1s">${t('Roadmap', 'خارطة الطريق')}</div>
+      <h2 class="h2 rm-h" data-in="0" data-out="1" data-split style="--d:.16s">${t('From one quarter to a habit, <em class="hl">by</em> <em class="hl">the</em> <em class="hl">end</em> <em class="hl">of</em> <em class="hl">2027.</em>', 'من ربع سنة إلى عادة، <em class="hl">بنهاية</em> <em class="hl">2027.</em>')}</h2>
+      <h2 class="h2 rm-h" data-in="1" data-split style="--d:.18s">${t('Who runs it, and what it costs.', 'من يديرها، وكم تكلّف.')}</h2>
 
       <!-- stop 0 · the staircase and its years above the line, cards below (they fold away at stop 1) -->
       <div class="rm-s0" data-out="1">
@@ -220,8 +224,8 @@
         ${cards}
         <!-- the whole plan fits in fifteen months: a span under the cards, from the pilot's start to the end of 2027 -->
         <div class="rm-span a-wipe" data-in="0" style="left:${MS[0].x}px;top:${CARD_Y + CARD_H + 30 - S0Y}px;width:${MS[3].x + MS[3].w - MS[0].x}px;--d:1.25s;--dur:1.1s">
-          <i class="rm-sp-l"></i><span class="rm-sp-t"><b>15 months</b>pilot to habit</span><i class="rm-sp-l"></i>
-          <span class="rm-sp-end">${ico('<path d="M6.5 20.5V4"/><path d="M6.5 4.5h11l-2.4 3.9 2.4 3.9h-11"/>')}Done<em>·</em>end of 2027</span>
+          <i class="rm-sp-l"></i><span class="rm-sp-t">${t('<b>15 months</b>pilot to habit', '<b>15 شهرًا</b>من التجربة إلى العادة')}</span><i class="rm-sp-l"></i>
+          <span class="rm-sp-end">${ico('<path d="M6.5 20.5V4"/><path d="M6.5 4.5h11l-2.4 3.9 2.4 3.9h-11"/>')}${t('Done<em>·</em>end of 2027', 'الاكتمال<em>·</em>نهاية 2027')}</span>
         </div>
       </div>
 
@@ -237,14 +241,14 @@
 
       <!-- stop 1 · who runs it, and what it costs -->
       <div class="rm-panel rm-owners glass a-unfold" data-in="1" style="--d:.34s;--dur:1s">
-        <div class="label rm-pl">Owners</div>
+        <div class="label rm-pl">${t('Owners', 'المسؤولون')}</div>
         <i class="rm-spine"><b class="rm-walk"><i class="light sm"></i></b></i>
         <div class="rm-owns" data-stagger style="--stagger:.08s;--d:.5s">${owners}</div>
       </div>
       <div class="rm-panel rm-budget glass live a-unfold" data-in="1" style="--d:.48s;--dur:1s">
-        <div class="label rm-pl">Budget</div>
+        <div class="label rm-pl">${t('Budget', 'الميزانية')}</div>
         <i class="rm-dock a-fade" data-in="1" data-spark="1" data-spark-at="c" data-spark-delay=".28" style="--d:.6s"></i>
-        <p class="rm-hero" data-in="1" data-split style="--d:.62s;--wstep:.04s">Low cost by design:<br><em class="hl amb-shimmer">people time, not new software.</em></p>
+        <p class="rm-hero" data-in="1" data-split style="--d:.62s;--wstep:.04s">${t('Low cost by design:<br><em class="hl amb-shimmer">people time, not new software.</em>', 'تكلفة منخفضة بحكم التصميم:<br><em class="hl amb-shimmer">وقت الموظفين، لا برمجيات جديدة.</em>')}</p>
         <i class="rm-hair a-wipe" data-in="1" style="--d:.86s;--dur:.7s"></i>
         ${budget}
       </div>

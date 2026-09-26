@@ -299,3 +299,18 @@
 
 /* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
    and scaled up (a conic gradient scales cleanly), a quarter of the layer */
+
+/* ── Arabic (right to left): the map, the points and the bridges mirror, so the districts and the
+   stories crossing between them read right to left (01 on the right). The floor's sweep keeps the
+   mirror with the grid it lights (03-gap.js). Arabic letters rise and fall further than Latin
+   ones: the word masks and the landing shine (background-clip: text through each word's box) get
+   room for them, and the lines a little more leading. */
+html[lang="ar"] #s-gap [data-split] .w, html[lang="ar"] #s-gap [data-split] .w > span { padding: .26em .04em .3em; margin: -.26em -.04em -.3em; }
+html[lang="ar"] #s-gap .gp-head .kicker { line-height: 1.5; }
+html[lang="ar"] #s-gap .gp-h { margin-top: 10px; line-height: 1.2; }
+html[lang="ar"] #s-gap .gp-pt-h { margin-top: 10px; line-height: 1.3; }
+html[lang="ar"] #s-gap .gp-pt-s { margin-top: 8px; line-height: 1.55; }
+html[lang="ar"] #s-gap .gp-c1 { line-height: 1.5; }
+html[lang="ar"] #s-gap .gp-c2 { margin-top: 30px; line-height: 1.1; }
+html[lang="ar"] #s-gap .gp-ask-k { line-height: 1.4; }
+html[lang="ar"] #s-gap .gp-ask-t { line-height: 1.1; }

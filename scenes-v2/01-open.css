@@ -94,3 +94,20 @@
 #s-open .op-ring { position: absolute; left: 2px; top: 2px; width: 26px; height: 26px; border-radius: 28%; border: 1.5px solid rgba(37, 199, 188, .85); box-shadow: 0 0 10px rgba(3, 255, 203, .3); animation: opRing 3.2s cubic-bezier(.3, .55, .45, 1) infinite; opacity: 0; }
 @keyframes opRing { 0% { transform: scale(1); opacity: 0; } 14% { opacity: .55; } 100% { transform: scale(3.2); opacity: 0; } }
 #s-open .op-line-t { font: 500 44px/1.2 var(--font); letter-spacing: -.012em; color: var(--white); white-space: nowrap; text-shadow: 0 2px 24px rgba(3, 8, 16, .8); }
+
+/* ── Arabic (right to left): the lockup mirrors to the right. The Arabic name is the title, in
+   the English one's shape (a short line over a long one); the English name is the support line.
+   The photo keeps the mirror (01-open.js), so the working video wall stays under its lights and
+   the text keeps the dark side of the room. */
+/* (Arabic letters rise and fall further than Latin ones: the wipe's clip, the word masks and the
+   landing shine (background-clip: text through each word's box) all get room for them) */
+html[lang="ar"] #s-open .op-kicker { top: 308px; line-height: 1.7; }
+html[lang="ar"] #s-open [data-in].a-wipe.op-kicker:not(.is-in) { clip-path: inset(0 0 0 100%); }
+html[lang="ar"] #s-open .op-title { top: 350px; line-height: 1.04; }
+html[lang="ar"] #s-open .op-title .w, html[lang="ar"] #s-open .op-title .w > span { padding: .26em .04em .3em; margin: -.26em -.04em -.3em; }
+/* (the sweep's window spans the padded word, and its copy of the word sits where the word does) */
+html[lang="ar"] #s-open .op-sw { bottom: 0; }
+html[lang="ar"] #s-open .op-sw > i { padding: .26em .04em 0; }
+html[lang="ar"] #s-open .op-en { top: 680px; font-size: 54px; line-height: 1.15; }
+html[lang="ar"] #s-open .op-tag { top: 806px; line-height: 1.45; }
+html[lang="ar"] #s-open .op-line-t { line-height: 1.3; }

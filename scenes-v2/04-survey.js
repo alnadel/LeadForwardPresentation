@@ -17,12 +17,13 @@
    away in perspective, and the bottom row is mirrored in a glossy floor under a pool
    of the figure's colour: all in the same canvas, so depth costs no layer. */
 (function () {
+  const t = Deck.t;
   const ROWS = 10, N = 158; // 16 columns × 10 rows, filled column by column
   const METRICS = [
-    { v: 158, tone: 'base', icon: 'survey', label: 'Colleagues responded', text: 'An anonymous, eight-question survey.' },
-    { v: 56, tone: 'gap', icon: 'unseen', label: 'Visibility gap', text: 'Rarely or never hear about another department’s achievement.' },
-    { v: 8, tone: 'hero', icon: 'reach', label: 'Recognition reach', text: 'Say praise for a colleague reaches the whole organisation.' },
-    { v: 80, tone: 'go', icon: 'link', label: 'Connection', text: 'Say colleagues’ stories would strengthen connection to Tahakom.' },
+    { v: 158, tone: 'base', icon: 'survey', label: t('Colleagues responded', 'زميلًا شاركوا'), text: t('An anonymous, eight-question survey.', 'في استبيان مجهول الهوية من ثمانية أسئلة.') },
+    { v: 56, tone: 'gap', icon: 'unseen', label: t('Visibility gap', 'فجوة الظهور'), text: t('Rarely or never hear about another department’s achievement.', 'نادرًا ما يسمعون، أو لا يسمعون أبدًا، عن إنجاز إدارة أخرى.') },
+    { v: 8, tone: 'hero', icon: 'reach', label: t('Recognition reach', 'مدى وصول التقدير'), text: t('Say praise for a colleague reaches the whole organisation.', 'يقولون إن الإشادة بزميل تصل إلى المنظمة كلها.') },
+    { v: 80, tone: 'go', icon: 'link', label: t('Connection', 'الارتباط'), text: t('Say colleagues’ stories would strengthen connection to Tahakom.', 'يقولون إن قصص الزملاء ستعزز ارتباطهم بتحكم.') },
   ];
   // each finding's picture: line icons on a 24 grid (outline, round caps)
   const ico = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
@@ -125,17 +126,22 @@
 
   Deck.scene({
     id: 'survey',
-    title: 'What colleagues told us',
+    title: t('What colleagues told us', 'ماذا قال لنا الزملاء'),
     act: 1,
     bg: 'navy',
     transition: 'push',
-    cues: ['158 colleagues responded', '56% · visibility gap', '8% · recognition reach', '80% connection · 49% learning · the punchline'],
-    notes: [
+    cues: t(['158 colleagues responded', '56% · visibility gap', '8% · recognition reach', '80% connection · 49% learning · the punchline'], ['شارك 158 زميلًا', '56% · فجوة الظهور', '8% · مدى وصول التقدير', '80% الارتباط · 49% التعلّم · الخلاصة']),
+    notes: t([
       'We asked before we designed: 158 colleagues answered an anonymous eight-question survey. Each square is one of them.',
       'More than half rarely or never hear about another department’s achievement.',
       'The number to remember: only 8% say praise for a colleague reaches the whole organisation — thirteen people out of 158.',
       'Yet the appetite is there: 80% say these stories would strengthen their connection to Tahakom, and 49% say a colleague’s story gives them an approach they can use. The work exists. The visibility channel does not. Their channel preferences shape our communication plan.',
-    ],
+    ], [
+      'سألنا قبل أن نصمّم: أجاب 158 زميلًا عن استبيان مجهول الهوية من ثمانية أسئلة. كل مربع يمثّل واحدًا منهم.',
+      'أكثر من النصف نادرًا ما يسمعون، أو لا يسمعون أبدًا، عن إنجاز إدارة أخرى.',
+      'الرقم الذي يجب تذكّره: 8% فقط يقولون إن الإشادة بزميل تصل إلى المنظمة كلها، أي ثلاثة عشر شخصًا من أصل 158.',
+      'ومع ذلك فالرغبة موجودة: 80% يقولون إن هذه القصص ستعزز ارتباطهم بتحكم، و49% يقولون إن قصة زميل تمنحهم أسلوبًا يمكنهم تطبيقه. العمل موجود، أما قناة الظهور فغائبة. وتفضيلاتهم للقنوات هي ما يشكّل خطة التواصل لدينا.',
+    ]),
     field: [
       { dim: .3, lit: 0, travel: .4, offset: [-140, 60], links: .5, wave: .7, streaks: .1, sparkle: 1.1,
         calm: [[90, 120, 1500, 300, .85], [90, 320, 830, 960, .8], [830, 310, 1800, 930, .7]] },
@@ -150,10 +156,10 @@
       <canvas class="sv-wcan" width="${WW + PAD.l + PAD.r}" height="${WH + PAD.t + PAD.b}" style="left:${WX - PAD.l}px;top:${WY - PAD.t}px;width:${WW + PAD.l + PAD.r}px;height:${WH + PAD.t + PAD.b}px"></canvas>
 
       <div class="pad sv-head">
-        <div class="kicker" data-in="0">Current state · primary data</div>
+        <div class="kicker" data-in="0">${t('Current state · primary data', 'الوضع الحالي · بيانات أولية')}</div>
         <div class="sv-swap">
-          <h2 class="h2 sv-h" data-in="0" data-out="3" data-split style="--d:.1s">Employee feedback validates the opportunity.</h2>
-          <h2 class="h2 sv-punch" data-in="3" data-split style="--d:.45s;--wstep:.05s">The work exists. <em class="hl">The visibility channel does not.</em></h2>
+          <h2 class="h2 sv-h" data-in="0" data-out="3" data-split style="--d:.1s">${t('Employee feedback validates the opportunity.', 'آراء الموظفين تؤكد الفرصة.')}</h2>
+          <h2 class="h2 sv-punch" data-in="3" data-split style="--d:.45s;--wstep:.05s">${t('The work exists. <em class="hl">The visibility channel does not.</em>', 'العمل موجود. <em class="hl">قناة الظهور غائبة.</em>')}</h2>
           <!-- the contrast, drawn: a lit line under the work; under the channel, a broken track a light cannot cross -->
           <div class="sv-pu" data-in="3" style="--d:1.25s"><i class="sv-pu1"></i><i class="sv-pu2"><b></b></i></div>
         </div>
@@ -162,7 +168,7 @@
       <!-- the instrument: one figure that rolls from stop to stop -->
       <div class="sv-inst" data-in="0" style="--d:.2s">
         <i class="sv-inst-glow"></i>
-        <div class="sv-odo">${slot(0)}${slot(1)}${slot(2)}<span class="sv-pct">%</span></div>
+        <div class="sv-odo"${t('', ' data-flip')}>${slot(0)}${slot(1)}${slot(2)}<span class="sv-pct">%</span></div>
         <div class="sv-reads">
           ${METRICS.map((m, k) => `
           <div class="sv-say ${m.tone}" data-in="${k}" ${k < 3 ? `data-out="${k + 1}"` : ''} style="--d:${k ? .32 : .5}s">
@@ -176,18 +182,18 @@
       <!-- the key (stops 1–2), then the second figure (stop 3), in one slot -->
       <!-- support: a small caption-weight key (the figure and its label lead) -->
       <div class="sv-legend sv-leg0" data-in="0" data-out="1" style="--d:.9s">
-        <span class="sv-key"><i class="k-one"></i>Each square is one colleague</span>
+        <span class="sv-key"><i class="k-one"></i>${t('Each square is one colleague', 'كل مربع يمثّل زميلًا واحدًا')}</span>
       </div>
       <div class="sv-legend" data-in="1" data-out="3" style="--d:.55s">
-        <span class="sv-key"><i class="k-lit"></i><span class="sv-kt">${[1, 2].map((k) => `<b data-at="${k}">${lit(k)} of 158 · ${METRICS[k].label.toLowerCase()}</b>`).join('')}</span></span>
-        <span class="sv-key"><i class="k-off"></i>Other respondents</span>
+        <span class="sv-key"><i class="k-lit"></i><span class="sv-kt">${[1, 2].map((k) => `<b data-at="${k}">${lit(k)} ${t('of', 'من')} 158 · ${METRICS[k].label.toLowerCase()}</b>`).join('')}</span></span>
+        <span class="sv-key"><i class="k-off"></i>${t('Other respondents', 'بقية المشاركين')}</span>
       </div>
       <!-- the second figure: secondary to the 80% (smaller, quieter) -->
       <div class="sv-second glass amb-sheen" data-in="3" style="--d:.7s">
-        <b class="num sv-49"><span data-count="49" data-dur=".9" data-delay=".75">0</span><small>%</small></b>
+        <b class="num sv-49"${t('', ' data-flip')}><span data-count="49" data-dur=".9" data-delay=".75">0</span><small>%</small></b>
         <div class="sv-49t">
-          <div class="label teal sv-49l"><span class="sv-ico sm">${ico(IC.bulb)}</span>Practical learning</div>
-          <p>A colleague’s story gives them an approach they can use.</p>
+          <div class="label teal sv-49l"><span class="sv-ico sm">${ico(IC.bulb)}</span>${t('Practical learning', 'التعلّم العملي')}</div>
+          <p>${t('A colleague’s story gives them an approach they can use.', 'قصة الزميل تمنحهم أسلوبًا يمكنهم تطبيقه.')}</p>
         </div>
       </div>
 
@@ -286,9 +292,14 @@
         const ws = ctx.$$('.sv-punch .w'), em = ctx.$('.sv-punch em');
         const w2 = em && em.closest('.w'), w1 = ws.filter((w) => w !== w2 && !w.contains(em));
         if (w1.length && w2) {
-          const a = w1[0], z = w1[w1.length - 1], pu = ctx.$('.sv-pu');
-          pu.style.setProperty('--x1', a.offsetLeft + 'px'); pu.style.setProperty('--w1', (z.offsetLeft + z.offsetWidth - a.offsetLeft - 14) + 'px');
-          pu.style.setProperty('--x2', w2.offsetLeft + 'px'); pu.style.setProperty('--w2', (w2.offsetWidth - 14) + 'px');
+          const pu = ctx.$('.sv-pu'), h = ctx.$('.sv-punch').offsetLeft;
+          // (inside each word's mask padding: none in English; in Arabic the masks have room for the letters)
+          const pl = (w) => parseFloat(getComputedStyle(w).paddingLeft) || 0, pr = (w) => parseFloat(getComputedStyle(w).paddingRight) || 0;
+          const x0 = Math.min(...w1.map((w) => w.offsetLeft + pl(w))), x9 = Math.max(...w1.map((w) => w.offsetLeft + w.offsetWidth - pr(w)));
+          // (each line stops short of its half's full stop: at the right in English, at the left in Arabic)
+          const cut = Deck.rtl ? 14 : 0;
+          pu.style.setProperty('--x1', (h + x0 + cut) + 'px'); pu.style.setProperty('--w1', (x9 - x0 - 14) + 'px');
+          pu.style.setProperty('--x2', (h + w2.offsetLeft + pl(w2) + cut) + 'px'); pu.style.setProperty('--w2', (w2.offsetWidth - pl(w2) - pr(w2) - 14) + 'px');
         }
       }
 

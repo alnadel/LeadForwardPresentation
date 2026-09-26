@@ -325,3 +325,39 @@
 #s-pilot.st-2 .pl-fn::after { animation: plFn 5s ease-out 2.6s infinite; }
 @keyframes plFn { 0%, 58%, 100% { opacity: 0; } 64% { opacity: 1; } }
 #stage.lite #s-pilot .pl-fl { display: none; }
+
+/* ── Arabic (right to left): the room and the plan are mirrored; the quarter runs right to left ── */
+/* split words: Arabic marks and bowls reach past the Latin word mask (and the
+   word's own box, which bounds its light sweep): both grow, the layout stays */
+html[lang="ar"] #s-pilot [data-split] .w, html[lang="ar"] #s-pilot [data-split] .w > span { padding: .3em .12em .36em; margin: -.3em -.12em -.36em; }
+/* the display line: Arabic letters rise above Latin capitals and fall below them, so it sits a little
+   lower and smaller (clear of the kicker above and the wall's bezel below); stepped back from stop 1,
+   it shrinks towards its start (the right) */
+html[lang="ar"] #s-pilot .pl-title { top: 188px; font-size: 128px; transform-origin: calc(100% - 6px) 0; }
+html[lang="ar"] #s-pilot.st-1 .pl-title { transform: translateY(-4px) scale(.5); }
+/* labels placed by transform: inside the flip, their offsets run the other way */
+html[lang="ar"] #s-pilot .pl-mark.e { transform: translateX(100%); }
+html[lang="ar"] #s-pilot .pl-oneq { transform: translate(50%, -50%); }
+html[lang="ar"] #s-pilot .pl-oneq[data-in]:not(.is-in) { transform: translate(50%, -50%) scale(.8); }
+/* the cycle's arrows point the way Arabic reads */
+html[lang="ar"] #s-pilot .arr { scale: -1 1; }
+html[lang="ar"] #s-pilot .pl-cx { line-height: 1.5; }
+/* the KPI targets: "below" sits on the right (the figure and its % are one left-to-right unit, set
+   in 10-pilot.js); the glow copy lines up with the right-aligned figure */
+html[lang="ar"] #s-pilot .pl-kt-v small { margin: 0 0 0 .22em; }
+html[lang="ar"] #s-pilot .pl-kt-g { left: auto; right: 0; }
+/* the bars run from the right (0) to the left (100%); the engine sets direction rtl on each label,
+   so the anchors swap to keep every label beside its bar end */
+html[lang="ar"] #s-pilot .pl-bar text { text-anchor: end; }
+html[lang="ar"] #s-pilot .pl-bar .pl-ax.e { text-anchor: start; }
+/* the decision: the Arabic line is longer, so it is set a little smaller and the fork is shorter
+   (FX / FW / FB in 10-pilot.js) */
+html[lang="ar"] #s-pilot .pl-hero, html[lang="ar"] #s-pilot .pl-hglow { font-size: 90px; }
+/* (its lead-in rises a little and the line with its fork drops a little, so the decision's tall
+   letters clear the lead-in; the spark is placed from the line's own box) */
+html[lang="ar"] #s-pilot .pl-final { top: 772px; }
+html[lang="ar"] #s-pilot .pl-herow, html[lang="ar"] #s-pilot .pl-fork { margin-top: 8px; }
+/* the kickers: room for Arabic marks inside their wipe's clip, and the wipe opens from the right */
+html[lang="ar"] #s-pilot .pl-kicker { top: 144px; line-height: 1.6; }
+html[lang="ar"] #s-pilot .pl-judge { top: 260px; line-height: 1.6; }
+html[lang="ar"] #s-pilot [data-in].a-wipe.pl-kicker:not(.is-in), html[lang="ar"] #s-pilot [data-in].a-wipe.pl-judge:not(.is-in) { clip-path: inset(0 0 0 100%); }

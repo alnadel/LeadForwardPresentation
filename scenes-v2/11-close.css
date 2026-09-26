@@ -119,3 +119,18 @@
 
 /* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
    and scaled up (a conic gradient scales cleanly), a quarter of the layer */
+
+/* ── Arabic (right to left) ── */
+/* split words: Arabic marks and bowls reach past the Latin word mask (and the
+   word's own box, which bounds its light sweep): both grow, the layout stays */
+html[lang="ar"] #s-close [data-split] .w, html[lang="ar"] #s-close [data-split] .w > span { padding: .3em .12em .36em; margin: -.3em -.12em -.36em; }
+/* stop 0: the callback line is longer in Arabic ("Only two people knew", as 03 says "Only two people
+   know"); its box widens about the same centre, so the words still sit under the pair */
+html[lang="ar"] #s-close .cl-knew { width: 960px; margin-left: -100px; }
+/* the brand frame: the Arabic title leads; "Behind a Better Life" is its quiet Latin line */
+html[lang="ar"] #s-close .cl-main { top: 206px; }
+html[lang="ar"] #s-close .cl-ar { margin-top: 26px; font: 700 50px/1.2 var(--font); direction: ltr; }
+html[lang="ar"] #s-close .cl-thanks { padding-left: 0; font-size: 26px; }
+html[lang="ar"] #s-close .cl-ask-h { font-size: 104px; line-height: 1.1; }
+/* the three points slide in from the right, towards their numbers (each is flipped back, so its offset runs the other way) */
+html[lang="ar"] #s-close .cl-step[data-in].a-left:not(.is-in) { transform: translateX(90px); }

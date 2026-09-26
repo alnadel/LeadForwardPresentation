@@ -20,6 +20,15 @@
    Numbers never change while parked. All state keys off .st-n and .is-in, so back navigation lands
    on the same frame; the one-shot lights play only on a live click. */
 (function () {
+  const t = Deck.t, AR = Deck.rtl;
+  // Arabic: a signed number or a percentage is kept as one left-to-right unit (an isolate), so it
+  // reads as written, "−14" and "77%" (next to Arabic words, Unicode would otherwise move the sign or
+  // the % to the far side of the digits); English is untouched
+  const num = (s) => (AR ? '\u2066' + s + '\u2069' : s);
+  const pc = (v) => num(v + '%');
+  const bidi = (s) => s.replace(/[+\u2212]?\d+%|[+\u2212]\d+/g, (m) => '\u2066' + m + '\u2069');
+  // the unit after a delta: points (Arabic counts 3–10 in the plural, 11 and up in the singular)
+  const pts = (v) => t(' pts', Math.abs(v) <= 10 ? ' نقاط' : ' نقطة');
   /* ── geometry (stage px) ── */
   const K = 3.6;                               // stop 0: px per percentage point (100% = 360 px)
   const YP = 806, PH = 40, PDX = 78, PDY = 52; // plinths: top front edge, front face height, depth (up-right)
@@ -51,14 +60,16 @@
       `<polygon class="s" points="${f.s}"/><polygon class="f" points="${f.f}"/>${extra}<polygon class="t" points="${f.t}"/></svg>`;
   };
   const words = (s, cls) => s.split(' ').map((w) => `<em class="${cls}">${w}</em>`).join(' ');
+  const WILL = t('The willingness', 'الرغبة'), MECHN = t('The mechanism', 'الآلية');
 
   /* ── the data (Tahakom vs benchmark, percentage points) ── */
-  const HERO = { name: 'Peer recognition', t: 89, b: 41, x: 190 };
+  const HERO = { name: t('Peer recognition', 'تقدير الزملاء'), t: 89, b: 41, x: 190 };
   const MECH = [
-    { name: 'Org-wide recognition', t: 8, b: 22, x: 1085 },
-    { name: 'Choice in recognition', t: 49, b: 64, x: 1420 },
+    { name: t('Org-wide recognition', 'التقدير على مستوى المنظمة'), t: 8, b: 22, x: 1085 },
+    { name: t('Choice in recognition', 'حرية الاختيار في التقدير'), t: 49, b: 64, x: 1420 },
   ];
-  const AUX = { name: 'Connection / loyalty', t: 80, b: 77 };
+  const AUX = { name: t('Connection / loyalty', 'الارتباط / الولاء'), t: 80, b: 77 };
+  const VS = t('vs', 'مقابل'), ALIGNED = t('broadly aligned', 'متقاربة عمومًا');
   const hgt = (v) => r1(v * K);
   const gx = (x) => x + CW + GAP;              // the benchmark ghost stands right of Tahakom's column
 
@@ -100,10 +111,10 @@
   const heroNum = `
       <div class="bm-hero" data-in="0" data-out="1" style="left:${BX + 34}px;top:${r1((yT + yL) / 2 - 112)}px;--d:.62s">
         <i class="bm-hglow"></i>
-        <div class="bm-hn" data-spark="0" data-spark-at="tr" data-spark-delay="1.1"><span class="bm-sg">+</span><span class="bm-dg"><span class="bm-gh" aria-hidden="true">48</span><span class="bm-ct" data-count="48" data-dur="1.25" data-delay=".62">0</span></span><b>pts</b></div>
+        <div class="bm-hn" data-spark="0" data-spark-at="tr" data-spark-delay="1.1"><span class="bm-sg">+</span><span class="bm-dg"><span class="bm-gh" aria-hidden="true">48</span><span class="bm-ct" data-count="48" data-dur="1.25" data-delay=".62">0</span></span><b>${pts(48).trim()}</b></div>
         <div class="bm-hname">${HERO.name}</div>
       </div>
-      <p class="bm-aux" data-in="0" data-out="1" style="left:${BX + 40}px;top:${r1(yL + 58)}px;--d:1.5s"><b>+${AUX.t - AUX.b}<small> pts</small></b><span>${AUX.name} · broadly aligned</span><em>${AUX.t}% vs ${AUX.b}%</em></p>`;
+      <p class="bm-aux" data-in="0" data-out="1" style="left:${BX + 40}px;top:${r1(yL + 58)}px;--d:1.5s"><b>${num('+' + (AUX.t - AUX.b))}<small>${pts(AUX.t - AUX.b)}</small></b><span>${AUX.name} · ${ALIGNED}</span><em>${pc(AUX.t)} ${VS} ${pc(AUX.b)}</em></p>`;
 
   /* the mechanism: two pairs, each short of its benchmark */
   const mech = MECH.map((m, i) => {
@@ -119,7 +130,7 @@
         <i class="bm-miss-pulse" style="--pd:${-i * 1.6}s"></i>
       </div>
       <div class="bm-mn" data-in="0" data-out="1" style="left:${cx}px;top:${r1(YB - b - DY - 176)}px;--d:${r1(d + .02)}s">
-        <div class="bm-mv"><span class="bm-sg">\u2212</span><span class="bm-dg"><span class="bm-gh" aria-hidden="true">${v}</span><span class="bm-ct" data-count="${v}" data-dur=".95" data-delay="${d}">0</span></span><b>pts</b></div>
+        <div class="bm-mv"><span class="bm-sg">\u2212</span><span class="bm-dg"><span class="bm-gh" aria-hidden="true">${v}</span><span class="bm-ct" data-count="${v}" data-dur=".95" data-delay="${d}">0</span></span><b>${pts(v).trim()}</b></div>
         <div class="bm-mname">${m.name}</div>
       </div>
       ${eng(m.x, m.t, 'tp', 1.1 + i * .08)}${eng(g, m.b, 'gg', 1.14 + i * .08)}`;
@@ -211,28 +222,32 @@
       </div>`;
 
   // the evidence, now small cards
-  const ev = (cls, x, d, delta, name, vals) => `
+  const ev = (cls, x, d, sg, v, name, vals) => `
       <div class="bm-ev ${cls}" data-in="1" style="left:${x}px;--d:${d}s">
-        <b class="bm-ev-d">${delta}<small> pts</small></b><span class="bm-ev-n">${name}</span><span class="bm-ev-v">${vals}</span>
+        <b class="bm-ev-d">${num(sg + v)}<small>${pts(v)}</small></b><span class="bm-ev-n">${name}</span><span class="bm-ev-v">${vals}</span>
       </div>`;
   const cards =
-    ev('will', 144, .72, `+${HERO.t - HERO.b}`, HERO.name, `${HERO.t}% vs ${HERO.b}%`) +
-    ev('will aux', 486, .8, `+${AUX.t - AUX.b}`, AUX.name, `${AUX.t}% vs ${AUX.b}% · broadly aligned`) +
-    ev('mech', 1030, .88, `−${MECH[0].b - MECH[0].t}`, MECH[0].name, `${MECH[0].t}% vs ${MECH[0].b}%`) +
-    ev('mech', 1386, .96, `−${MECH[1].b - MECH[1].t}`, MECH[1].name, `${MECH[1].t}% vs ${MECH[1].b}%`);
+    ev('will', 144, .72, '+', HERO.t - HERO.b, HERO.name, `${pc(HERO.t)} ${VS} ${pc(HERO.b)}`) +
+    ev('will aux', 486, .8, '+', AUX.t - AUX.b, AUX.name, `${pc(AUX.t)} ${VS} ${pc(AUX.b)} · ${ALIGNED}`) +
+    ev('mech', 1030, .88, '−', MECH[0].b - MECH[0].t, MECH[0].name, `${pc(MECH[0].t)} ${VS} ${pc(MECH[0].b)}`) +
+    ev('mech', 1386, .96, '−', MECH[1].b - MECH[1].t, MECH[1].name, `${pc(MECH[1].t)} ${VS} ${pc(MECH[1].b)}`);
 
   Deck.scene({
     id: 'benchmark',
-    title: 'Reading the numbers',
+    title: t('Reading the numbers', 'قراءة الأرقام'),
     act: 1,
     bg: 'deep',
     transition: 'push',
-    cues: ['Willingness is strong; the mechanism is weak · the numbers build', 'Reading · build the channel, then test it'],
+    cues: t(['Willingness is strong; the mechanism is weak · the numbers build', 'Reading · build the channel, then test it'],
+      ['الرغبة قوية؛ والآلية ضعيفة · تُبنى الأرقام', 'القراءة · لنبنِ القناة، ثم نختبرها']),
     holds: [12, 8],
-    notes: [
+    notes: t([
       'Against benchmarks, the mechanism is behind: org-wide recognition 8% against 22%; choice 49% against 64%. The willingness is ahead: peer recognition 89% against 41%, plus 48. Connection is aligned, 80% against 77%. Directional only, not Saudi norms.',
       'So: behind on the mechanism, ahead on the willingness. People are ready; the channel is missing. Build the channel, then test it — that is what this business case sets out.',
-    ],
+    ], [
+      'مقارنةً بالمعايير المرجعية، الآلية متأخرة: التقدير على مستوى المنظمة 8% مقابل 22%، وحرية الاختيار في التقدير 49% مقابل 64%. أما الرغبة فمتقدمة: تقدير الزملاء 89% مقابل 41%، بفارق 48 نقطة. والارتباط متقارب: 80% مقابل 77%. المقارنة استرشادية فقط، وليست معايير سعودية.',
+      'إذن: متأخرون في الآلية، متقدمون في الرغبة. الناس مستعدون، والقناة غائبة. لنبنِ القناة، ثم نختبرها — وهذا ما تعرضه مبرّرات المبادرة.',
+    ].map(bidi)),
     field: [
       { dim: .3, lit: 0, travel: .25, warm: .15, offset: [-190, 110], links: .45, wave: .6, streaks: .1, sparkle: 1.1, drift: 1,
         calm: [[100, 120, 1640, 290, .7], [100, 300, 1800, 860, .4], [100, 860, 1500, 950, .75]] },
@@ -257,12 +272,12 @@
 
       <div class="pad bm-head">
         <div class="bm-kick">
-          <div class="kicker a-wipe" data-in="0" data-out="1">Benchmark · secondary data</div>
-          <div class="kicker a-wipe" data-in="1" style="--d:.06s">Reading</div>
+          <div class="kicker a-wipe" data-in="0" data-out="1">${t('Benchmark · secondary data', 'المقارنة المعيارية · بيانات ثانوية')}</div>
+          <div class="kicker a-wipe" data-in="1" style="--d:.06s">${t('Reading', 'القراءة')}</div>
         </div>
-        <h2 class="h2 bm-h" data-in="0" data-out="1" data-split style="--d:.1s">${words('Willingness', 't')} is strong; the ${words('mechanism', 'p')} is weak.</h2>
-        <h2 class="h2 bm-read" data-in="1" data-split style="--d:.12s;--wstep:.045s">${words('Behind on the mechanism,', 'p')} ${words('ahead on the willingness', 't')}</h2>
-        <p class="bm-take" data-in="1" data-split data-spark="1" data-spark-delay=".62" style="--d:.42s;--wstep:.05s">— build the channel, then test it.</p>
+        <h2 class="h2 bm-h" data-in="0" data-out="1" data-split style="--d:.1s">${t(`${words('Willingness', 't')} is strong; the ${words('mechanism', 'p')} is weak.`, `${words('الرغبة', 't')} قوية؛ ${words('والآلية', 'p')} ضعيفة.`)}</h2>
+        <h2 class="h2 bm-read" data-in="1" data-split style="--d:.12s;--wstep:.045s">${t(`${words('Behind on the mechanism,', 'p')} ${words('ahead on the willingness', 't')}`, `${words('متأخرون في الآلية،', 'p')} ${words('متقدمون في الرغبة', 't')}`)}</h2>
+        <p class="bm-take" data-in="1" data-split data-spark="1" data-spark-delay=".62" style="--d:.42s;--wstep:.05s">${t('— build the channel, then test it.', '— لنبنِ القناة، ثم نختبرها.')}</p>
       </div>
 
       <!-- a plum and a teal wash drift behind the two halves (half size, scaled ×2) -->
@@ -271,8 +286,8 @@
       <!-- the two plinths carry both stops -->
       ${pool('will', PL.will + 330, YP - 30, 700, 150, 0)}${pool('mech', PL.mech + 360, YP - 30, 720, 150, -4.5)}
       ${plinth('will', PL.will)}${plinth('mech', PL.mech)}
-      <div class="bm-lab will a-wipe" data-in="0" data-out="1" style="left:${PL.will}px;--d:.3s"><i></i>The willingness</div>
-      <div class="bm-lab mech a-wipe" data-in="0" data-out="1" style="left:${PL.mech}px;--d:.4s"><i></i>The mechanism</div>
+      <div class="bm-lab will a-wipe" data-in="0" data-out="1" style="left:${PL.will}px;--d:.3s"><i></i>${WILL}</div>
+      <div class="bm-lab mech a-wipe" data-in="0" data-out="1" style="left:${PL.mech}px;--d:.4s"><i></i>${MECHN}</div>
 
       <!-- stop 0 · the data model -->
       <i class="bm-beam" style="left:${r1(HERO.x + (CW + DX) / 2 - 45)}px;top:${r1(yT - DY - 70)}px"></i>
@@ -294,16 +309,18 @@
         ${cars}
       </div>
       ${gate}
-      <span class="bm-plq will" data-in="1" style="left:${PL.will + 26}px;--d:1s">The willingness</span>
-      <span class="bm-plq mech" data-in="1" style="left:${PL.mech + 26}px;--d:1.06s">The mechanism</span>
+      <span class="bm-plq will" data-in="1" style="left:${PL.will + 26}px;--d:1s">${WILL}</span>
+      <span class="bm-plq mech" data-in="1" style="left:${PL.mech + 26}px;--d:1.06s">${MECHN}</span>
       ${cards}
 
       <!-- supporting: legend, caveat, sources (small and dim, on both stops) -->
       <div class="bm-foot a-fade" data-in="0" style="--d:1.05s;--dur:.8s">
-        <p class="bm-cav"><span class="bm-key"><i class="k-t"></i>Tahakom</span><span class="bm-key"><i class="k-b"></i>Benchmark</span><span class="bm-sep"></span>Directional comparison only: measures and populations are not identical.</p>
-        <p class="bm-src"><b>Sources:</b> Tahakom internal survey (158 responses); Gallup &amp; Workhuman 2024, Achievers Workforce Institute, Globoforce/Workhuman. Benchmarks are directional and are not Saudi norms.</p>
+        <p class="bm-cav"><span class="bm-key"><i class="k-t"></i>${t('Tahakom', 'تحكم')}</span><span class="bm-key"><i class="k-b"></i>${t('Benchmark', 'المقارنة المعيارية')}</span><span class="bm-sep"></span>${t('Directional comparison only: measures and populations are not identical.', 'مقارنة استرشادية فقط: المقاييس والفئات المشمولة ليست متطابقة.')}</p>
+        <p class="bm-src">${t('<b>Sources:</b> Tahakom internal survey (158 responses); Gallup &amp; Workhuman 2024, Achievers Workforce Institute, Globoforce/Workhuman. Benchmarks are directional and are not Saudi norms.', '<b>المصادر:</b> استبيان تحكم الداخلي (158 استجابة)؛ Gallup و Workhuman 2024، و Achievers Workforce Institute، و Globoforce/Workhuman. المقارنات المعيارية استرشادية، وليست معايير سعودية.')}</p>
       </div>
     `,
+    // Arabic: pictograms keep their drawn orientation (the engine flips them back with the text)
+    init(ctx) { if (AR) ctx.$$('.icon, .bm-gauge svg').forEach((e) => e.setAttribute('data-flip', '')); },
     leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
       window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor

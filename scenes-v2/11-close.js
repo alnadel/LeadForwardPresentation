@@ -7,6 +7,7 @@
    Port of v1 17: the pinned pair, the chain drive loop, the KNOW placement
    formula, Deck.NIGHT_PAIR / Deck.NIGHT_OFFSET. v1 stops 1 and 2 are merged. */
 (function () {
+  const t = Deck.t;
   const PAIR = Deck.NIGHT_PAIR;
   const REST = Field.restOf(PAIR, Deck.NIGHT_OFFSET);          // where 02 left them
   const MID = [(REST[0][0] + REST[1][0]) / 2, (REST[0][1] + REST[1][1]) / 2];
@@ -74,24 +75,27 @@
     { d: 'M2000 612 C 1600 648, 1260 600, 940 640 S 320 620, -80 648', t: 13, dl: -7.5 },
     { d: 'M-80 650 C 420 634, 820 614, 1180 644 S 1700 656, 2000 626', t: 15, dl: -11 },
   ];
-  const TEAM = ['Buthainah Alhejazi', 'Abdulaziz Almalaq', 'Hassan Alzahrani', 'Fadi Alkhayrat'];
+  const TEAM = t(['Buthainah Alhejazi', 'Abdulaziz Almalaq', 'Hassan Alzahrani', 'Fadi Alkhayrat'], ['بثينة الحجازي', 'عبدالعزيز الملق', 'حسن الزهراني', 'فادي الخيرات']);
   const stories = STORIES.map((s) => `<i class="cl-story" style="offset-path:path('${s.d}');--t:${s.t}s;--dl:${s.dl}s"><b></b><i class="light sm"></i></i>`).join('');
 
   Deck.scene({
     id: 'close',
-    title: 'Close',
+    title: t('Close', 'الختام'),
     act: 4,
     bg: 'deep',
     transition: 'iris',
     spark: false,
     irisBurst: 520, // a small flash only: the field must still read dark before the chain
     chrome: { mark: false, progress: false },
-    cues: ['Two people knew — the chain', 'Behind a Better Life · thank you · the business case stays on screen for Q&A'],
+    cues: t(['Two people knew — the chain', 'Behind a Better Life · thank you · the business case stays on screen for Q&A'], ['شخصان فقط كانا يعلمان — السلسلة', 'خلف حياة أفضل · شكرًا · تبقى مبرّرات المبادرة على الشاشة للأسئلة']),
     holds: [9, 30],
-    notes: [
+    notes: t([
       'Remember the night shift: two people knew. Now the story is told, and the colleague it featured nominates the next — and the next. Let the chain run; say nothing for a moment.',
       'Behind a Better Life. Make the contribution visible. Make the learning travel. Light the way. Thank you. Hold here for questions: the business case stays on screen. For detail, type a slide number and press Enter; End returns here.',
-    ],
+    ], [
+      'تذكّروا المناوبة الليلية: شخصان فقط كانا يعلمان. والآن تُروى القصة، والزميل الذي أبرزته يرشّح التالي — ثم التالي. دع السلسلة تمتد، والتزم الصمت لحظة.',
+      'خلف حياة أفضل. اجعلوا الإسهام مرئيًا، واجعلوا التعلّم ينتشر. أنيروا الطريق. شكرًا لكم. توقّف هنا للأسئلة: تبقى مبرّرات المبادرة على الشاشة. وللتفاصيل، اكتب رقم الشريحة ثم اضغط Enter؛ ومفتاح End يعيدك إلى هنا.',
+    ]),
     field: [
       // travel starts at 0 so the callback frame matches 02.1; the loop raises it once the chain is complete
       { dim: .8, travel: 0, offset: Deck.NIGHT_OFFSET, pins: PAIR, litFrom: PAIR[0], chain: true, warm: 0, drift: .35, links: .55, wave: .45, streaks: .1, sparkle: 1,
@@ -121,33 +125,33 @@
         <b class="cl-p"><i class="light"></i></b><b class="cl-p"><i class="light"></i></b>
       </div>
       <div class="cl-knew" data-out="1" style="left:${KNOW.x}px;top:${KNOW.y}px">
-        <div class="h1 cl-kglow" data-split aria-hidden="true">Two people knew.</div>
-        <h2 class="h1" data-in="0" data-split style="--d:.15s">Two people knew.</h2>
+        <div class="h1 cl-kglow" data-split aria-hidden="true">${t('Two people knew.', 'شخصان فقط كانا يعلمان.')}</div>
+        <h2 class="h1" data-in="0" data-split style="--d:.15s">${t('Two people knew.', 'شخصان فقط كانا يعلمان.')}</h2>
       </div>
 
       <div class="cl-logo a-materialize" data-in="1" style="--d:.05s;--dur:1.3s">${Deck.logo()}</div>
       <div class="cl-main">
-        <h1 class="display cl-title" data-in="1" data-split style="--d:.15s">Behind a Better Life</h1>
-        <div class="cl-ar ar a-blur" data-in="1" lang="ar" dir="rtl" style="--d:.45s">خلف حياة أفضل</div>
-        <p class="cl-make" data-in="1" style="--d:.6s">Make the contribution visible. Make the learning travel.</p>
-        <p class="cl-way" data-in="1" style="--d:.72s"><i class="light sm"></i><span class="amb-shimmer">Light the way.</span></p>
-        <div class="cl-thanks a-fade" data-in="1" style="--d:.84s">Thank you</div>
+        <h1 class="display cl-title" data-in="1" data-split style="--d:.15s">${t('Behind a Better Life', 'خلف حياة أفضل')}</h1>
+        <div class="cl-ar${t(' ar', '')} a-blur" data-in="1" lang="${t('ar', 'en')}" dir="${t('rtl', 'ltr')}" style="--d:.45s">${t('خلف حياة أفضل', 'Behind a Better Life')}</div>
+        <p class="cl-make" data-in="1" style="--d:.6s">${t('Make the contribution visible. Make the learning travel.', 'اجعلوا الإسهام مرئيًا، واجعلوا التعلّم ينتشر.')}</p>
+        <p class="cl-way" data-in="1" style="--d:.72s"><i class="light sm"></i><span class="amb-shimmer">${t('Light the way.', 'أنيروا الطريق.')}</span></p>
+        <div class="cl-thanks a-fade" data-in="1" style="--d:.84s">${t('Thank you', 'شكرًا لكم')}</div>
       </div>
 
       <!-- the team (support): a small credit line just above the business case -->
-      <p class="cl-team a-fade" data-in="1" style="--d:1.05s;--dur:.9s"><span class="cl-team-k">Group 1</span> <i>·</i> ${TEAM.join(' <i>·</i> ')}</p>
+      <p class="cl-team a-fade" data-in="1" style="--d:1.05s;--dur:.9s"><span class="cl-team-k">${t('Group 1', 'المجموعة 1')}</span> <i>·</i> ${TEAM.join(' <i>·</i> ')}</p>
 
       <div class="cl-ask glass live a-unfold" data-in="1" style="--d:.8s">
         <div class="cl-ask-l">
-          <div class="kicker">The business case</div>
-          <div class="cl-ask-h">Inspiration, made visible.</div>
+          <div class="kicker">${t('The business case', 'مبرّرات المبادرة')}</div>
+          <div class="cl-ask-h">${t('Inspiration, made visible.', 'إلهامٌ يُرى.')}</div>
         </div>
         <i class="cl-ask-div"></i>
         <div class="cl-ask-r" data-stagger style="--stagger:.1s">
           <i class="cl-rail"><b></b></i>
-          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>01</b>A clear need</span>
-          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>02</b>A simple design</span>
-          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>03</b>Measurable impact</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>01</b>${t('A clear need', 'حاجة واضحة')}</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>02</b>${t('A simple design', 'تصميم بسيط')}</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>03</b>${t('Measurable impact', 'أثر قابل للقياس')}</span>
         </div>
       </div>
     `,

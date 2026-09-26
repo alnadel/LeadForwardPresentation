@@ -30,6 +30,7 @@
    the spark), then the five targets; measures, baselines, caption and needs are
    readable support. */
 (function () {
+  const t = Deck.t;
   /* ── the quarter: one tangible object — three month blocks side by side on a glass plate, seen
      in perspective (stage px). A point x along the quarter, d into it and h above the plate lands
      at qp(x, d, h); lines stay lines, so at one depth x maps linearly and a CSS translate walks it. ── */
@@ -86,11 +87,11 @@
   const KX = 144, KW = 312, KG = 18;             // tile left, width and gap (5 × 312 + 4 × 18 = 1632)
   const CW = KW - 48;                            // a tile's chart width (264)
   const KPIS = [
-    { k: 'Participation', m: 'Nominations from every department', b: '—', t: 'every department', c: 'dots' },
-    { k: 'Engagement', m: 'Colleagues reading at least one story', b: 'measured from month 1', t: 'most colleagues', c: 'people' },
-    { k: 'Sentiment', m: '“My work is seen”: pulse, 3 questions', b: 'baseline at launch', t: 'up by quarter end', c: 'gauge' },
-    { k: 'Recognition reach', m: 'Re-survey (same question)', b: 8, t: 25, c: 'bar' },
-    { k: 'Visibility gap', m: 'Re-survey (same question)', b: 56, t: 40, pre: 'below', c: 'bar' },
+    { k: t('Participation', 'المشاركة'), m: t('Nominations from every department', 'ترشيحات من كل الإدارات'), b: '—', t: t('every department', 'كل الإدارات'), c: 'dots' },
+    { k: t('Engagement', 'التفاعل'), m: t('Colleagues reading at least one story', 'زملاء يقرؤون قصة واحدة على الأقل'), b: t('measured from month 1', 'يُقاس من الشهر 1'), t: t('most colleagues', 'أغلب الزملاء'), c: 'people' },
+    { k: t('Sentiment', 'الانطباع'), m: t('“My work is seen”: pulse, 3 questions', '«عملي مرئي»: استطلاع نبض، 3 أسئلة'), b: t('baseline at launch', 'خط الأساس عند الإطلاق'), t: t('up by quarter end', 'ارتفاع بنهاية الربع'), c: 'gauge' },
+    { k: t('Recognition reach', 'مدى وصول التقدير'), m: t('Re-survey (same question)', 'إعادة الاستبيان (السؤال نفسه)'), b: 8, t: 25, c: 'bar' },
+    { k: t('Visibility gap', 'فجوة الظهور'), m: t('Re-survey (same question)', 'إعادة الاستبيان (السؤال نفسه)'), b: 56, t: 40, pre: t('below', 'أقل من'), c: 'bar' },
   ];
   // the story light's path runs x -60 → 1980: one quick pass with the build, then
   // a slow lap every 10 s while the presenter talks, with a second story half a
@@ -115,7 +116,7 @@
         <rect class="pl-trk" x="0" y="4" width="${CW}" height="13" rx="3.5"/><rect class="pl-trk" x="0" y="24" width="${CW}" height="13" rx="3.5"/>
         <rect class="pl-base" x="0" y="4" height="13" rx="3.5" style="width:${b}px"/>
         <rect class="pl-tgt" x="0.8" y="24.8" height="11.4" rx="3" style="--w0:${b}px;--w1:${r2(t - 1.6)}px"/>
-        <text class="pl-bl" x="${r2(b + 8)}" y="11">${x.b}%</text><text class="pl-tl" x="${r2(t + 8)}" y="31">${x.pre ? x.pre + ' ' : ''}${x.t}%</text>
+        <text class="pl-bl" x="${r2(b + 8)}" y="11">${x.b}%</text><text class="pl-tl" x="${r2(t + 8)}" y="31">${x.pre ? x.pre + ' ' + (Deck.rtl ? '\u200E' : '') : ''}${x.t}%</text>
         <text class="pl-ax" x="0" y="53">0</text><text class="pl-ax e" x="${CW}" y="53">100%</text>
       </svg>`;
     }
@@ -135,8 +136,10 @@
     const cx = KX + i * (KW + KG) + KW / 2, num = typeof x.t === 'number';
     const base = typeof x.b === 'number' ? `<b class="pl-kb-n">${x.b}%</b>` : `<span class="pl-kb-t">${x.b}</span>`;
     // each target carries a glow-only copy of itself (.pl-kt-g) that brightens as the light passes
+    // (in Arabic the figure and its % are one left-to-right unit, so "below 40%" reads as 40%, like the other tiles)
+    const nu = (h) => (Deck.rtl ? `<span dir="ltr">${h}</span>` : h);
     const target = num
-      ? `<span class="pl-kt-v n">${x.pre ? `<small>${x.pre}</small>` : ''}<span class="num" data-count="${x.t}" data-from="${x.b}" data-delay="${r2(.95 + i * .06)}" data-dur="1">${x.t}</span>%<span class="pl-kt-g" aria-hidden="true">${x.pre ? `<small>${x.pre}</small>` : ''}<span class="num">${x.t}</span>%</span></span>`
+      ? `<span class="pl-kt-v n">${x.pre ? `<small>${x.pre}</small>` : ''}${nu(`<span class="num" data-count="${x.t}" data-from="${x.b}" data-delay="${r2(.95 + i * .06)}" data-dur="1">${x.t}</span>%`)}<span class="pl-kt-g" aria-hidden="true">${x.pre ? `<small>${x.pre}</small>` : ''}${nu(`<span class="num">${x.t}</span>%`)}</span></span>`
       : `<span class="pl-kt-v">${x.t}<span class="pl-kt-g" aria-hidden="true">${x.t}</span></span>`;
     return `
     <div class="pl-k glass a-unfold" data-in="2" style="--tf:${r2(FIRST_AT + frac(cx) * FIRST)}s;--ts:${cycleAt(cx)}s">
@@ -144,8 +147,8 @@
       <div class="pl-k-h"><b class="pl-k-no">${String(i + 1).padStart(2, '0')}</b><span class="pl-k-name">${x.k}</span></div>
       <p class="pl-k-m">${x.m}</p>
       <div class="pl-ch pl-ch-${x.c}">${chart(x)}</div>
-      <div class="pl-kb"><span class="pl-k-l">Baseline</span>${base}</div>
-      <div class="pl-kt"><span class="pl-k-l t">Target</span>${target}</div>
+      <div class="pl-kb"><span class="pl-k-l">${t('Baseline', 'خط الأساس')}</span>${base}</div>
+      <div class="pl-kt"><span class="pl-k-l t">${t('Target', 'المستهدف')}</span>${target}</div>
     </div>`;
   };
 
@@ -161,11 +164,12 @@
   const blips = Array.from({ length: 24 }, (_, i) => `<b style="--x:${(i * 41) % 97}%;--y:${4 + (i * 59) % 32}%;--w:${16 + (i * 7) % 30}px;--t:${2.2 + (i % 5) * .8}s;--dl:${-i * .37}s"></b>`).join('');
   const dust = Array.from({ length: 18 }, (_, i) => `<i style="left:${Math.round((4 + (i * 137) % 92) * 19.2)}px;top:${Math.round((58 + (i * 71) % 40) * 10.8)}px;--t:${11 + (i % 6) * 2.2}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 13) % 50)}px;--dy:${-150 - (i * 29) % 180}px"></i>`).join('');
 
+  const HERO = t('scale, adjust or stop.', 'التوسّع أو التعديل أو الإيقاف.');
   const HERO_Y = 826;   // top of the decision's hero line (keep in step with .pl-final in 10-pilot.css)
   // after "stop." the pilot's path forks three ways: one recommendation, three possible outcomes
   // (box: stage FX,FY · FW×140; the stem starts just after the spark; every branch is drawn
   // equal, so none is favoured)
-  const FX = 1026, FY = HERO_Y - 10, FW = 740, FN = FW - 30, FB = 250;
+  const FX = t(1026, 1320), FY = HERO_Y - 10, FW = t(740, 456), FN = FW - 30, FB = t(250, 160);   // Arabic: a longer line, a shorter fork
   const FORK = [`M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 32, ${FN} 32`, `M30 76 H${FN}`, `M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 120, ${FN} 120`];
   const fork = FORK.map((d, i) => `<path class="pl-fb" d="${d}" pathLength="100" style="--i:${i}"/>`).join('');
   const forkLights = FORK.map((d, i) => `<i class="pl-fl" style="offset-path:path('${d}');--i:${i}"><b class="light sm"></b></i>`).join('');
@@ -173,17 +177,22 @@
 
   Deck.scene({
     id: 'pilot',
-    title: 'Proof before scale',
+    title: t('Proof before scale', 'الإثبات قبل التوسّع'),
     act: 4,
     bg: 'night',
     transition: 'rise',
-    cues: ['Proof before scale.', 'One quarterly cycle · three commitments', 'How we’ll measure impact · five KPIs, baseline → proposed target · scale, adjust or stop'],
+    cues: t(['Proof before scale.', 'One quarterly cycle · three commitments', 'How we’ll measure impact · five KPIs, baseline → proposed target · scale, adjust or stop'],
+      ['الإثبات قبل التوسّع.', 'دورة ربع سنوية واحدة · ثلاثة التزامات', 'كيف نقيس الأثر · خمسة مؤشرات، من خط الأساس ← إلى المستهدف المقترح · التوسّع أو التعديل أو الإيقاف']),
     holds: [6, 12, 14],
-    notes: [
+    notes: t([
       'Impact measurement. We do not start by scaling; we start with proof. Pause, and let it sit. What follows is how one quarter proves the idea, and how we will know whether it worked.',
       'We start with one quarterly cycle and measure what changes. This is one quarter, month one to month three: open nominations to peers and leaders at the start, run one full cycle — capture, curate, feature, reinforce — within the quarter, and report what changed on a quarterly dashboard at quarter end.',
       'We measure impact through participation from every department, colleagues reading, a sentiment pulse, and a quarter-end re-survey: reach from 8% to 25%, the visibility gap from 56% to below 40%, as proposed targets. After one quarter, the data decides: scale, adjust or stop.',
-    ],
+    ], [
+      'قياس الأثر. لا نبدأ بالتوسّع؛ بل نبدأ بالإثبات. توقّف قليلًا ودع الفكرة تستقر. ما يلي هو كيف يُثبت ربع سنة واحد الفكرة، وكيف سنعرف إن كانت قد نجحت.',
+      'نبدأ بدورة ربع سنوية واحدة ونقيس ما يتغيّر. هذا ربع سنة واحد، من الشهر الأول إلى الشهر الثالث: نفتح باب الترشيح للزملاء والقادة في البداية، وننفّذ دورة كاملة — رصد، انتقاء، إبراز، ترسيخ — خلال الربع، ونعرض ما تغيّر على لوحة مؤشرات ربع سنوية في نهاية الربع.',
+      'نقيس الأثر من خلال مشاركة كل الإدارات، وقراءة الزملاء للقصص، واستطلاع نبض للانطباع، وإعادة الاستبيان في نهاية الربع: مدى وصول التقدير من 8% إلى 25%، وفجوة الظهور من 56% إلى أقل من 40%، كمستهدفات مقترحة. بعد ربع سنة واحد، البيانات تقرّر: التوسّع أو التعديل أو الإيقاف.',
+    ]),
     field: [
       { dim: .3, lit: .03, travel: .25, offset: [-60, -200], litFrom: [960, 300], links: .4, wave: .4, streaks: .14, sparkle: 1, calm: [[100, 110, 1500, 380, .85]] },
       { dim: .22, travel: .1, links: .3, calm: [[100, 110, 1800, 960, .88]] },
@@ -204,12 +213,12 @@
       <div class="amb-dust pl-dust">${dust}</div>
 
       <!-- stop 0 · the headline -->
-      <div class="kicker pl-kicker a-wipe" data-in="0" style="--d:.2s">Impact measurement</div>
-      <h1 class="display pl-title" data-in="0" data-split data-spark="0" data-spark-delay="1.05" style="--d:.35s;--wstep:.09s">Proof before scale.</h1>
+      <div class="kicker pl-kicker a-wipe" data-in="0" style="--d:.2s">${t('Impact measurement', 'قياس الأثر')}</div>
+      <h1 class="display pl-title" data-in="0" data-split data-spark="0" data-spark-delay="1.05" style="--d:.35s;--wstep:.09s">${t('Proof before scale.', 'الإثبات قبل التوسّع.')}</h1>
 
       <!-- stop 1 · one quarter, three commitments (the group is hidden while off stage) -->
       <div class="pl-g1">
-      <p class="lead pl-sub" data-in="1" data-out="2" style="--d:.15s">Start with <b class="pl-key">one quarterly cycle</b> and measure what changes.</p>
+      <p class="lead pl-sub" data-in="1" data-out="2" style="--d:.15s">${t('Start with <b class="pl-key">one quarterly cycle</b> and measure what changes.', 'نبدأ <b class="pl-key">بدورة ربع سنوية واحدة</b> ونقيس ما يتغيّر.')}</p>
       <div class="pl-plan" data-out="2">
         <i class="pl-qdark" style="left:${QVX}px;top:${QYG}px"></i>
         <i class="pl-qglow" style="left:${QVX}px;top:${QYG - 10}px"></i>
@@ -223,7 +232,7 @@
             <ellipse class="pl-qsh" cx="${QVX}" cy="${QYG + 30}" rx="820" ry="34"/>
             ${qblock(QX0 - 20, QX1 + 20, -14, QD + 14, -12, 0, 'pl-qbase')}
             ${MON.map((m) => qblock(m.a, m.b, 0, QD, 0, QT, 'pl-mb')).join('')}
-            ${MON.map((m) => `<text class="pl-mt" x="${r1((m.a + m.b) / 2)}" y="${QYG - QT / 2}">M${MON.indexOf(m) + 1}</text>`).join('')}
+            ${MON.map((m) => `<text class="pl-mt" x="${r1((m.a + m.b) / 2)}" y="${QYG - QT / 2}">${t('M', 'الشهر ')}${MON.indexOf(m) + 1}</text>`).join('')}
             <path class="pl-wline" d="M${WX0} ${WY} L${WX1} ${WY}"/>
           </svg>
         </div>
@@ -236,25 +245,25 @@
         <!-- where each commitment happens -->
         <i class="pl-drop a-wipe-down" data-in="1" style="left:${WX0}px;top:${CB}px;height:${r1(WY - 16 - CB)}px;--d:.62s;--dur:.5s"></i>
         <i class="pl-drop a-wipe-down" data-in="1" style="left:${WX1}px;top:${CB}px;height:${r1(WY - 16 - CB)}px;--d:1.28s;--dur:.5s"></i>
-        <span class="label pl-mark a-fade" data-in="1" style="left:${WX0 + 18}px;top:${r1(WY - 58)}px;--d:.5s">Start</span>
-        <span class="label pl-mark e a-fade" data-in="1" style="left:${r1(WX1 - 18)}px;top:${r1(WY - 58)}px;--d:1.3s">Quarter end</span>
+        <span class="label pl-mark a-fade" data-in="1" style="left:${WX0 + 18}px;top:${r1(WY - 58)}px;--d:.5s">${t('Start', 'البداية')}</span>
+        <span class="label pl-mark e a-fade" data-in="1" style="left:${r1(WX1 - 18)}px;top:${r1(WY - 58)}px;--d:1.3s">${t('Quarter end', 'نهاية الربع')}</span>
         <svg class="pl-span a-fade" data-in="1" viewBox="${QX0 - 4} ${BY - 16} ${QX1 - QX0 + 8} ${C2T - BY + 20}" style="left:${QX0 - 4}px;top:${BY - 16}px;width:${QX1 - QX0 + 8}px;height:${C2T - BY + 20}px;--d:.85s;--dur:.6s" aria-hidden="true">
           <path class="pl-sp" d="M${QX0} ${BY - 12} V${BY} H${QVX - 128} M${QVX + 128} ${BY} H${QX1} V${BY - 12}" pathLength="100"/>
           <path class="pl-sp st" d="M${QVX} ${BY + 20} V${C2T - 2}"/>
         </svg>
-        <span class="pl-oneq a-scale" data-in="1" style="left:${QVX}px;top:${BY}px;--d:.95s;--dur:.7s">One quarter</span>
+        <span class="pl-oneq a-scale" data-in="1" style="left:${QVX}px;top:${BY}px;--d:.95s;--dur:.7s">${t('One quarter', 'ربع سنة واحد')}</span>
 
         <div class="pl-c pl-c1 glass a-left" data-in="1" style="left:144px;top:${CT}px;height:${CH}px;--d:.3s">
-          <i class="pl-cglow"></i>${cic('form')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">01</b>Open nominations</h3>
-          <p class="pl-cx">Accept peer and leader nominations through a simple form.</p></div>
+          <i class="pl-cglow"></i>${cic('form')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">01</b>${t('Open nominations', 'فتح باب الترشيح')}</h3>
+          <p class="pl-cx">${t('Accept peer and leader nominations through a simple form.', 'استقبال ترشيحات الزملاء والقادة عبر نموذج بسيط.')}</p></div>
         </div>
         <div class="pl-c pl-c2 glass" data-in="1" style="left:${QVX - 370}px;top:${C2T}px;--d:.72s">
-          <i class="pl-cglow"></i>${cic('cycle')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">02</b>Run one full cycle</h3>
-          <p class="pl-cx"><span class="pl-chain">Capture → Curate → Feature → Reinforce</span> <span class="pl-nb">within the quarter.</span></p></div>
+          <i class="pl-cglow"></i>${cic('cycle')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">02</b>${t('Run one full cycle', 'تنفيذ دورة كاملة')}</h3>
+          <p class="pl-cx"><span class="pl-chain">${t('Capture → Curate → Feature → Reinforce', 'رصد → انتقاء → إبراز → ترسيخ')}</span> <span class="pl-nb">${t('within the quarter.', 'خلال الربع.')}</span></p></div>
         </div>
         <div class="pl-c pl-c3 glass a-right" data-in="1" style="left:${1920 - 144 - 600}px;top:${CT}px;height:${CH}px;--d:1.08s">
-          <i class="pl-cglow"></i>${cic('chart')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">03</b>Report what changed</h3>
-          <p class="pl-cx">On a quarterly dashboard.</p></div>
+          <i class="pl-cglow"></i>${cic('chart')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">03</b>${t('Report what changed', 'عرض ما تغيّر')}</h3>
+          <p class="pl-cx">${t('On a quarterly dashboard.', 'على لوحة مؤشرات ربع سنوية.')}</p></div>
         </div>
         <style>${QKF.join('\n')}</style>
       </div>
@@ -262,20 +271,20 @@
 
       <!-- stop 2 · how we'll judge it: the KPI panel (the group is hidden while off stage) -->
       <div class="pl-g2">
-      <div class="kicker pl-judge a-wipe" data-in="2" style="--d:.15s">How we’ll measure impact</div>
+      <div class="kicker pl-judge a-wipe" data-in="2" style="--d:.15s">${t('How we’ll measure impact', 'كيف نقيس الأثر')}</div>
       <div class="pl-rail a-wipe" data-in="2" style="top:${RAIL_Y}px;--d:.2s;--dur:1s"></div>
       <div class="pl-car" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light lg"></i></div>
       <div class="pl-car c2" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light"></i></div>
       <div class="pl-kpis" data-stagger style="left:${KX}px;top:${RAIL_Y}px;--stagger:.07s;--d:.28s">${KPIS.map(kpi).join('')}</div>
-      <p class="pl-cap a-fade" data-in="2" style="--d:1s;--dur:.8s">Proposed targets, confirmed at launch.</p>
+      <p class="pl-cap a-fade" data-in="2" style="--d:1s;--dur:.8s">${t('Proposed targets, confirmed at launch.', 'مستهدفات مقترحة، تُؤكَّد عند الإطلاق.')}</p>
       <div class="pl-need glass a-unfold" data-in="2" style="--d:.78s">
-        <span class="label pl-need-l">What it takes</span>
-        <p class="pl-need-t">An executive sponsor <i>·</i> curation time from HR and Internal Communications <i>·</i> our existing channels</p>
+        <span class="label pl-need-l">${t('What it takes', 'متطلبات التنفيذ')}</span>
+        <p class="pl-need-t">${t('An executive sponsor <i>·</i> curation time from HR and Internal Communications <i>·</i> our existing channels', 'راعٍ تنفيذي <i>·</i> وقت للانتقاء من الموارد البشرية والاتصال الداخلي <i>·</i> قنواتنا القائمة')}</p>
       </div>
-      <h2 class="pl-final" data-in="2" data-split style="--d:.62s;--wstep:.03s">After one quarter, the data decides:</h2>
+      <h2 class="pl-final" data-in="2" data-split style="--d:.62s;--wstep:.03s">${t('After one quarter, the data decides:', 'بعد ربع سنة واحد، البيانات تقرّر:')}</h2>
       <div class="pl-herow" data-spark="2" data-spark-delay=".8" style="top:${HERO_Y}px">
-        <p class="pl-hglow" data-split aria-hidden="true">scale, adjust or stop.</p>
-        <p class="pl-hero" data-in="2" data-split style="--d:.86s;--wstep:.07s">scale, adjust or stop.</p>
+        <p class="pl-hglow" data-split aria-hidden="true">${HERO}</p>
+        <p class="pl-hero" data-in="2" data-split style="--d:.86s;--wstep:.07s">${HERO}</p>
       </div>
       <div class="pl-fork" aria-hidden="true" style="left:${FX}px;top:${FY}px;width:${FW}px">
         <svg viewBox="0 0 ${FW} 140" style="width:${FW}px">${fork}</svg>

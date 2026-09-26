@@ -11,16 +11,24 @@
    Deck.NIGHT_PAIR, the camera at Deck.NIGHT_OFFSET, the words placed by the same
    formula); v2 scene 11 calls back to it. */
 (function () {
+  const t = Deck.t;
   const OFFSET = Deck.NIGHT_OFFSET;   // this scene's camera pan, held on every stop (shared with 11)
   const CARD = { x: 1176, y: 420, w: 600 };   // keep in step with .nt-card-w in 02-night.css
-  const ROWS = [
+  const ROWS = t([
     'Overnight incidents · timestamped',
     'Signal faults still open',
     'Diversions in force at handover',
     'Camera outages · zone + ticket',
     'Anything the day shift must call',
     'Signed off by night supervisor',
-  ];
+  ], [
+    'حوادث الليل · موثّقة بالوقت',
+    'أعطال الإشارات التي لم تُغلق',
+    'التحويلات السارية عند التسليم',
+    'أعطال الكاميرات · المنطقة + رقم البلاغ',
+    'ما يجب أن تحسمه المناوبة النهارية',
+    'اعتماد مشرف المناوبة الليلية',
+  ]);
   const CARD_CY = CARD.y + 192;       // the card's centre (it is 384px tall)
   // the old handover: loose notes dropped around the desk [left, top, w, h, tilt°]
   const SCRAPS = [
@@ -65,17 +73,20 @@
 
   Deck.scene({
     id: 'night',
-    title: 'One night',
+    title: t('One night', 'ليلة واحدة'),
     act: 0,
     bg: 'deep',
     tag: 'illustrative',
     transition: 'dolly',
-    cues: ['03:12 · Nouf rebuilt the night handover', 'Pull back · two people know'],
+    cues: t(['03:12 · Nouf rebuilt the night handover', 'Pull back · two people know'], ['03:12 · نوف أعادت تصميم التسليم الليلي', 'ابتعاد الكاميرا · شخصان فقط يعلمان']),
     holds: [10, 8],
-    notes: [
+    notes: t([
       'Here is one of those moments. Nouf is an illustrative story. At 03:12, in the traffic operations centre, she rebuilt the night handover — unasked, in one afternoon. The morning shift no longer rebuilds the night; it is on live incidents from minute one.',
       'Now pull back. Across the whole organisation, who knows this happened? Two people: Nouf, and the colleague who sat next to her. Pause, and let the empty field land.',
-    ],
+    ], [
+      'إليكم إحدى تلك اللحظات. نوف قصة توضيحية. عند الساعة 03:12، في مركز عمليات المرور، أعادت تصميم التسليم الليلي، دون أن يكلّفها أحد، في ظهيرة واحدة. لم تعد المناوبة الصباحية تعيد تجميع أحداث الليل؛ بل تباشر الحوادث الجارية من الدقيقة الأولى.',
+      'والآن لنبتعد قليلًا. على مستوى المنظمة كلها، من يعلم أن هذا حدث؟ شخصان فقط: نوف، والزميل الذي كان يجلس بجانبها. توقّف لحظة، ودع الحقل الفارغ يقول الباقي.',
+    ]),
     field: [
       { dim: .24, lit: 0, travel: 0, offset: OFFSET, pins: [], warm: 0, drift: 1.2, links: .3, wave: .3, streaks: .05, sparkle: .4, calm: [[100, 110, 1820, 420, .6], [1120, 400, 1780, 900, .7], [100, 840, 1420, 950, .6]] },
       // the pull-back: the pair is the only light — no flares, no shooting lights, no stories travelling,
@@ -88,7 +99,7 @@
 
       <div class="nt-film" style="transform-origin:${REST[0][0].toFixed(0)}px ${REST[0][1].toFixed(0)}px">
         <div class="nt-band">
-          <div class="nt-zoom">
+          <div class="nt-zoom"${t('', ' data-rtl-keep')}>
             <div class="photo nt-photo" style="background-image:url('assets/photos/nouf.jpg')"></div>
             <div class="nt-screens"><i style="--x:790px;--y:230px;--w:240px;--ft:3.1s"></i><i style="--x:915px;--y:232px;--w:230px;--dl:-1.2s;--ft:4.3s"></i><i style="--x:1225px;--y:222px;--w:280px;--dl:-2.6s;--ft:3.7s"></i><i style="--x:40px;--y:216px;--w:190px;--dl:-.7s;--ft:5.2s"></i></div>
             <i class="nt-face"></i>
@@ -97,21 +108,21 @@
         </div>
 
         <div class="nt-ui">
-          <div class="kicker nt-kicker a-wipe" data-in="0" style="--d:.45s">Traffic operations centre · night shift</div>
-          <div class="nt-clock num a-blur" data-in="0" style="--d:.2s;--dur:1.2s" aria-label="03:12"><i class="nt-clock-glow"></i><span class="nt-dg">03</span><span class="nt-colon"><b></b><b></b></span><span class="nt-dg">12</span></div>
-          <h2 class="nt-head" data-in="0" data-split style="--d:.4s">Nouf rebuilt the night handover — unasked, in one afternoon.</h2>
+          <div class="kicker nt-kicker a-wipe" data-in="0" style="--d:.45s">${t('Traffic operations centre · night shift', 'مركز عمليات المرور · المناوبة الليلية')}</div>
+          <div class="nt-clock num a-blur" data-in="0" style="--d:.2s;--dur:1.2s" aria-label="03:12"${t('', ' data-flip')}><i class="nt-clock-glow"></i><span class="nt-dg">03</span><span class="nt-colon"><b></b><b></b></span><span class="nt-dg">12</span></div>
+          <h2 class="nt-head" data-in="0" data-split style="--d:.4s">${t('Nouf rebuilt the night handover — unasked, in one afternoon.', 'أعادت نوف تصميم التسليم الليلي\u00A0— دون تكليف، في ظهيرة واحدة.')}</h2>
 
           <div class="nt-scraps">${SCRAPS.map(scrapHtml).join('')}</div>
 
           <div class="nt-card-w" data-spark="0" data-spark-xy="${CARD.x + CARD.w - 49},${CARD.y + 43}" data-spark-delay=".75">
             <i class="nt-card-pool"></i>
             <div class="glass live nt-card">
-              <div class="nt-card-h">${Deck.icon('document-certified', 'nt-card-ic')}<span class="nt-card-t">NIGHT HANDOVER · v2</span><span class="nt-card-slot"></span></div>
-              ${ROWS.map((r, k) => `<div class="nt-row" style="--k:${k}"><span class="nt-box">${check}</span><span class="nt-row-t">${r}</span></div>`).join('')}
+              <div class="nt-card-h">${Deck.icon('document-certified', 'nt-card-ic')}<span class="nt-card-t">${t('NIGHT HANDOVER · v2', 'التسليم الليلي · الإصدار 2')}</span><span class="nt-card-slot"></span></div>
+              ${ROWS.map((r, k) => `<div class="nt-row" style="--k:${k}"><span class="nt-box"${t('', ' data-flip')}>${check}</span><span class="nt-row-t">${r}</span></div>`).join('')}
             </div>
           </div>
 
-          <p class="nt-ba" data-in="0" style="--d:1.45s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
+          <p class="nt-ba" data-in="0" style="--d:1.45s"><span class="nt-ba-k">${t('Morning shift, first hour:', 'الساعة الأولى للمناوبة الصباحية:')}</span> <span class="nt-before">${t('rebuilding the night', 'إعادة تجميع أحداث الليل')}<i></i></span> → <span class="nt-after">${t('on live incidents from minute one.', 'مباشرة الحوادث الجارية من الدقيقة الأولى.')}</span></p>
         </div>
       </div>
 
@@ -119,9 +130,9 @@
       <b class="nt-p"><i class="light"></i></b><b class="nt-p"><i class="light"></i></b>
       <div class="nt-know" style="left:${KNOW.x}px;top:${KNOW.y}px">
         <!-- the words' slow glow: a static text-shadow copy that breathes in opacity (02-night.css) -->
-        <div class="nt-know-glow" aria-hidden="true"><div class="nt-know-h">Two people know.</div><p class="nt-know-s">Nouf, and the colleague who sat next to her.</p></div>
-        <h2 class="nt-know-h" data-in="1" data-split style="--d:.8s">Two people know.</h2>
-        <p class="nt-know-s" data-in="1" style="--d:1s;--dur:.5s">Nouf, and the colleague who sat next to her.</p>
+        <div class="nt-know-glow" aria-hidden="true"><div class="nt-know-h">${t('Two people know.', 'شخصان فقط يعلمان.')}</div><p class="nt-know-s">${t('Nouf, and the colleague who sat next to her.', 'نوف، والزميل الذي كان يجلس بجانبها.')}</p></div>
+        <h2 class="nt-know-h" data-in="1" data-split style="--d:.8s">${t('Two people know.', 'شخصان فقط يعلمان.')}</h2>
+        <p class="nt-know-s" data-in="1" style="--d:1s;--dur:.5s">${t('Nouf, and the colleague who sat next to her.', 'نوف، والزميل الذي كان يجلس بجانبها.')}</p>
       </div>
     `,
     init(ctx) {

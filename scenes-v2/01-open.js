@@ -7,21 +7,25 @@
    Stop 1 · key: "One person's story can light the way for others." with the light;
    the tagline above it is a quiet support line. */
 (function () {
+  const t = Deck.t;
   const BIRTH = [159, 900];   // the light's birthplace: the centre of .op-light (keep in step with .op-line in 01-open.css)
   Deck.scene({
     id: 'open',
-    title: 'Behind a Better Life',
+    title: t('Behind a Better Life', 'خلف حياة أفضل'),
     act: 0,
     bg: 'night',
     transition: 'iris',       // the title opens out of the light resting under the question
     irisBurst: 1400,
     chrome: { mark: false, progress: false },
-    cues: ['Title', 'Tagline · the light is born'],
+    cues: t(['Title', 'Tagline · the light is born'], ['العنوان', 'الشعار · يولد الضوء']),
     holds: [5, 7],
-    notes: [
+    notes: t([
       'Hold that thought — we will come back to it. Now introduce yourselves: the team, Lead Forward 2026, Behind a Better Life. Say the purpose up front: in fifteen minutes, the need, the design, and how we would measure the impact.',
       'Real stories. Visible values. Repeatable impact. One person’s story can light the way for others — that light is the thread through everything that follows.',
-    ],
+    ], [
+      'احتفظوا بهذه الفكرة، فسنعود إليها. والآن قدّموا أنفسكم: الفريق، وLead Forward 2026، و«خلف حياة أفضل». واذكروا الغاية من البداية: في خمس عشرة دقيقة نعرض الحاجة، والتصميم، وكيف سنقيس الأثر.',
+      'قصص حقيقية. قيم ظاهرة. أثر قابل للتكرار. قصة شخص واحد يمكن أن تنير الطريق للآخرين، وهذا الضوء هو الخيط الذي يربط كل ما سيأتي.',
+    ]),
     field: [
       { dim: .5, lit: 0, travel: .3, offset: [0, 0], links: .45, wave: .5, streaks: .16, sparkle: 1.4, calm: [[100, 90, 1120, 980, .72]] },
       { dim: .72, lit: .02, travel: .6, litFrom: [300, 900], links: .7, streaks: .22 },
@@ -29,7 +33,7 @@
     html: `
       <div class="op-cam">
         <!-- the plate: the photo and its working video wall move together (far layer) -->
-        <div class="op-plate amb-ken-strong">
+        <div class="op-plate amb-ken-strong"${t('', ' data-rtl-keep')}>
           <div class="photo op-photo" style="background-image:url('assets/photos/ops-centre-night.jpg')"></div>
           <div class="op-wall">
             ${Array.from({ length: 18 }, (_, i) => `<b style="--x:${(i * 37) % 96}%;--y:${(i * 53) % 88}%;--w:${18 + (i * 7) % 26}px;--t:${2.4 + (i % 5) * .7}s;--dl:${-i * .43}s"></b>`).join('')}
@@ -47,17 +51,20 @@
       <div class="op-near">${[[1180, 120, 120, 'a'], [1760, 300, 170, 'b'], [1500, 760, 210, 'a'], [1860, 860, 120, 'b'], [1180, 980, 150, 'b'], [1320, 420, 70, 'a']].map(([x, y, sz, k], i) => `<i class="${k}" style="left:${x}px;top:${y}px;--sz:${sz}px;--dl:${-i * 3.7}s"></i>`).join('')}</div>
 
       <div class="op-logo a-materialize" data-in="0" style="--d:.2s;--dur:1.6s">${Deck.logo()}</div>
-      <div class="kicker op-kicker a-wipe" data-in="0" style="--d:.9s">Lead Forward 2026 · Capstone · Inspire Others</div>
-      <h1 class="display op-title" data-in="0" data-split style="--d:1.05s">Behind a<br>Better Life</h1>
-      <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" data-glow="خلف حياة أفضل" style="--d:1.9s;--dur:1.4s">خلف حياة أفضل</div>
+      <div class="kicker op-kicker a-wipe" data-in="0" style="--d:.9s">${t('Lead Forward 2026 · Capstone · Inspire Others', 'Lead Forward 2026 · المشروع الختامي · إلهام الآخرين')}</div>
+      ${t(`<h1 class="display op-title" data-in="0" data-split style="--d:1.05s">Behind a<br>Better Life</h1>
+      <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" data-glow="خلف حياة أفضل" style="--d:1.9s;--dur:1.4s">خلف حياة أفضل</div>`,
+      // Arabic: the Arabic name is the title; the English name is the support line under it
+      `<h1 class="display op-title" data-in="0" data-split style="--d:1.05s">خلف<br>حياة أفضل</h1>
+      <div class="op-ar op-en a-blur" data-in="0" lang="en" data-glow="Behind a Better Life" style="--d:1.9s;--dur:1.4s">Behind a Better Life</div>`)}
 
       <!-- the birth of the story light: motes gather, then it ignites with a flare -->
       <div class="op-birth" style="left:${BIRTH[0]}px;top:${BIRTH[1]}px"><i class="op-bloom"></i><i class="op-flare"></i>${Array.from({ length: 12 }, (_, i) => `<b style="--a:${i * 30 + 8}deg;--r:${120 + (i * 47) % 90}px;--k:${i}"></b>`).join('')}</div>
       <div class="op-rule a-wipe" data-in="1"></div>
-      <p class="op-tag" data-in="1" data-split style="--d:.15s">Real stories. Visible values. Repeatable impact.</p>
+      <p class="op-tag" data-in="1" data-split style="--d:.15s">${t('Real stories. Visible values. Repeatable impact.', 'قصص حقيقية. قيم ظاهرة. أثر قابل للتكرار.')}</p>
       <div class="op-line" data-in="1" style="--d:.8s;--dur:.7s">
         <span class="op-light" data-spark="1" data-spark-at="c" data-spark-delay=".9"><b class="op-ring"></b><b class="op-ring" style="animation-delay:-1.6s"></b></span>
-        <span class="op-line-t">One person’s story can light the way for others.</span>
+        <span class="op-line-t">${t('One person’s story can light the way for others.', 'قصة شخص واحد يمكن أن تنير الطريق للآخرين.')}</span>
       </div>
     `,
     init(ctx) {

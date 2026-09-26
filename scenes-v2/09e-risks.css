@@ -98,3 +98,16 @@
 #s-risks .rk-ci { flex: none; width: 46px; height: 46px; border-radius: 30%; display: grid; place-items: center; font-size: 28px; color: var(--teal);
   border: 1.5px solid rgba(37, 199, 188, .4); background: rgba(10, 36, 64, .7); }
 #stage.lite #s-risks .rk-lead, #stage.lite #s-risks .rk-run { display: none; }
+
+/* ── Arabic (right to left): the table is mirrored, so each row reads risk → guard → owner from the right ── */
+/* split words: Arabic marks and bowls reach past the Latin word mask (and the
+   word's own box, which bounds its light sweep): both grow, the layout stays */
+html[lang="ar"] #s-risks [data-split] .w, html[lang="ar"] #s-risks [data-split] .w > span { padding: .3em .12em .36em; margin: -.3em -.12em -.36em; }
+html[lang="ar"] #s-risks .rk-risk { line-height: 1.28; }
+html[lang="ar"] #s-risks .rk-guard { line-height: 1.45; }
+html[lang="ar"] #s-risks .rk-owner { line-height: 1.4; }
+/* the kicker: room for Arabic marks inside its wipe's clip, and the wipe opens from the right */
+html[lang="ar"] #s-risks .rk-kick { top: 144px; line-height: 1.6; }
+html[lang="ar"] #s-risks [data-in].a-wipe.rk-kick:not(.is-in) { clip-path: inset(0 0 0 100%); }
+/* each guard still reaches in towards its shield (the guard is flipped back, so its offset runs the other way) */
+html[lang="ar"] #s-risks .rk-guard[data-in].a-right:not(.is-in) { transform: translateX(-90px); }

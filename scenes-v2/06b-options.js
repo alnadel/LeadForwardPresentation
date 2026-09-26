@@ -24,6 +24,9 @@
    All state keys off .st-n / .is-in; one-shot lights play only on a live click and rest
    invisible, so back navigation lands on the same frame. */
 (function () {
+  const t = Deck.t, AR = Deck.rtl;
+  // Arabic: digits with % after Arabic words stay as written ("8%"), in a left-to-right isolate
+  const bidi = (s) => s.replace(/[+\u2212]?\d+%|[+\u2212]\d+/g, (m) => '\u2066' + m + '\u2069');
   /* ── geometry (stage px) ── */
   const T = 326;                    // top of the table (stop 0; the table steps down DROP px at stop 1)
   const H = 556;                    // column height
@@ -36,12 +39,13 @@
   const SEAM = 540 - T;             // the chapter card's centre line, column-relative
   const WALK = 7.5;                 // s: one lap of the reading band over the five rows
 
+  // (k names the option in the markup; l is its letter on screen: A B C, in Arabic أ ب ج)
   const OPTS = [
-    { k: 'A', t: 'Awards', s: 'Employee of the month or year.', w: 'Rewards a few; popularity can decide.' },
-    { k: 'B', t: 'A new<br>platform', s: 'Buy a digital recognition tool.', w: 'Cost and adoption risk; points don’t teach.' },
-    { k: 'C', t: 'A story<br>campaign', s: 'Real stories on the channels we already have.', w: 'Needs curation time and leaders’ participation, <em>both built into the plan.</em>' },
+    { k: 'A', l: t('A', 'أ'), t: t('Awards', 'الجوائز'), s: t('Employee of the month or year.', 'موظف الشهر أو السنة.'), w: t('Rewards a few; popularity can decide.', 'تكافئ القلة، وقد تحسمها الشعبية.') },
+    { k: 'B', l: t('B', 'ب'), t: t('A new<br>platform', 'منصة<br>جديدة'), s: t('Buy a digital recognition tool.', 'شراء أداة رقمية للتقدير.'), w: t('Cost and adoption risk; points don’t teach.', 'تكلفة ومخاطر في التبنّي، والنقاط لا تُعلِّم.') },
+    { k: 'C', l: t('C', 'ج'), t: t('A story<br>campaign', 'حملة<br>قصص'), s: t('Real stories on the channels we already have.', 'قصص حقيقية عبر قنواتنا القائمة.'), w: t('Needs curation time and leaders’ participation, <em>both built into the plan.</em>', 'تتطلب وقتًا للانتقاء ومشاركة القادة، <em>وكلاهما مدمج في الخطة.</em>') },
   ];
-  const CRIT = ['Reaches everyone', 'The learning travels', 'Fair and credible', 'Low cost', 'Fast to launch'];
+  const CRIT = t(['Reaches everyone', 'The learning travels', 'Fair and credible', 'Low cost', 'Fast to launch'], ['الوصول إلى الجميع', 'انتقال التعلّم', 'العدالة والمصداقية', 'انخفاض التكلفة', 'سرعة الإطلاق']);
   // 2 strong · 1 partial · 0 weak, per row: [A, B, C]
   const RATE = [
     [0, 1, 2],
@@ -164,8 +168,10 @@
   const ARTS = [artA, artB, artC];
 
   /* ── stop 1: a line of light from the recommendation ("C: a story campaign") to C's tally ── */
-  const LK = [[1098, 226], [1240, 226], [1326, 288], [1396, 368]];   // cubic: start, c1, c2, end (stage px)
-  const LBOX = [1090, 214, 318, 166];                                // its box: x, y, w, h
+  // (in Arabic it leaves the recommendation's highlight at its end, the left, as measured with the deck's
+  // font, and meets the tally at its right end: the stage is mirrored, so these are mirrored coordinates)
+  const LK = AR ? [[934, 226], [1164, 226], [1320, 280], [1410, 368]] : [[1098, 226], [1240, 226], [1326, 288], [1396, 368]];   // cubic: start, c1, c2, end (stage px)
+  const LBOX = AR ? [926, 214, 496, 166] : [1090, 214, 318, 166];                                // its box: x, y, w, h
   const bz = (t, k) => { const u = 1 - t; return u * u * u * LK[0][k] + 3 * u * u * t * LK[1][k] + 3 * u * t * t * LK[2][k] + t * t * t * LK[3][k]; };
   const linkD = `M${LK[0].join(' ')} C${LK[1].join(' ')} ${LK[2].join(' ')} ${LK[3].join(' ')}`;
   // a light rides it on transforms (the compositor): the curve sampled into keyframes, eased in the sampling
@@ -186,7 +192,7 @@
         ${c === 2 ? '<i class="op-slab"></i>' : ''}
         <div class="op-card glass" data-in="0">
           <i class="op-aglow"></i>
-          <span class="op-bd">${o.k}</span>
+          <span class="op-bd">${o.l}</span>
           <h3 class="op-t">${o.t}</h3>
           <p class="op-s">${o.s}</p>
           ${rows}
@@ -194,7 +200,7 @@
           ${c === 2 ? '<i class="op-cband"></i><i class="op-run"></i>' : ''}
         </div>
         <svg class="op-art art-${o.k.toLowerCase()} a-drop" data-in="0" style="--d:${r2(ART_D + c * ART_STEP)}s;--dur:.9s" viewBox="0 0 270 170" aria-hidden="true">${ARTS[c]}</svg>
-        ${c === 2 ? `<div class="op-tally a-drop" data-in="1" style="--d:.95s;--dur:.8s"><div>${Array.from({ length: 5 }, (_, k) => `<b style="--k:${k}"></b>`).join('')}<span>${C_STRONG} of 5 strong</span></div></div>` : ''}
+        ${c === 2 ? `<div class="op-tally a-drop" data-in="1" style="--d:.95s;--dur:.8s"><div>${Array.from({ length: 5 }, (_, k) => `<b style="--k:${k}"></b>`).join('')}<span>${t(`${C_STRONG} of 5 strong`, `قوي في ${C_STRONG} من 5`)}</span></div></div>` : ''}
         <i class="op-edge t"></i><i class="op-edge b"></i>
       </div>`;
   }).join('');
@@ -204,16 +210,19 @@
 
   Deck.scene({
     id: 'options',
-    title: 'Three ways to close the gap',
+    title: t('Three ways to close the gap', 'ثلاث طرق لسدّ الفجوة'),
     act: 2,
     bg: 'navy',
     transition: 'chapter',
-    cues: ['Three options · five criteria', 'We recommend C · the story campaign'],
+    cues: t(['Three options · five criteria', 'We recommend C · the story campaign'], ['ثلاثة خيارات · خمسة معايير', 'نوصي بالخيار ج · حملة القصص']),
     holds: [16, 11],
-    notes: [
+    notes: t([
       'We did not start from the answer. We weighed three ways to close the gap: awards, a new recognition platform, and a story campaign. Awards reward a few. A platform costs money and teaches little. Doing nothing keeps reach at 8%.',
       'So we recommend the story campaign. It reaches everyone, the learning travels, it is fair by design, it costs little and it starts now, on the channels we already have. Awards and tools can plug into it later.',
-    ],
+    ], [
+      'لم نبدأ من الإجابة. وازنّا بين ثلاث طرق لسدّ الفجوة: الجوائز (أ)، ومنصة تقدير جديدة (ب)، وحملة قصص (ج). الجوائز تكافئ القلة، والمنصة مكلفة وقليلة الأثر في التعلّم، والبقاء على الوضع الحالي يُبقي مدى وصول التقدير عند 8%.',
+      'لذلك نوصي بالخيار ج: حملة القصص. تصل إلى الجميع، وينتقل بها التعلّم، وهي عادلة بالتصميم، وقليلة التكلفة، وتبدأ الآن عبر قنواتنا القائمة. ويمكن ربط الجوائز والأدوات بها لاحقًا.',
+    ].map(bidi)),
     field: [
       { dim: .3, lit: .02, travel: .22, offset: [-110, 170], litFrom: null, warm: .12, links: .45, wave: .55, streaks: .1, sparkle: 1.1, drift: 1,
         calm: [[100, 120, 1560, 290, .75], [110, 300, 1810, 930, .85]] },
@@ -224,11 +233,11 @@
       <i class="op-pool ab"></i><i class="op-pool c"></i>
 
       <div class="op-head">
-        <div class="kicker a-wipe" data-in="0" style="--d:.05s">Strategic options</div>
+        <div class="kicker a-wipe" data-in="0" style="--d:.05s">${t('Strategic options', 'الخيارات الاستراتيجية')}</div>
         <i class="op-hglow"></i>
-        <h2 class="h2 op-h" data-in="0" data-out="1" data-split style="--d:.12s">We weighed three ways to close the gap.</h2>
-        <h2 class="h2 op-h op-hero" data-in="1" data-split data-spark="1" data-spark-delay=".5" style="--d:.34s;--wstep:.045s">We recommend <em class="hl">C: a story campaign</em><br>on the channels we already have.</h2>
-        <p class="op-sub a-fade" data-in="1" style="--d:.95s;--dur:.8s">Awards and tools can plug into it later.</p>
+        <h2 class="h2 op-h" data-in="0" data-out="1" data-split style="--d:.12s">${t('We weighed three ways to close the gap.', 'وازنّا بين ثلاث طرق لسدّ الفجوة.')}</h2>
+        <h2 class="h2 op-h op-hero" data-in="1" data-split data-spark="1" data-spark-delay=".5" style="--d:.34s;--wstep:.045s">${t('We recommend <em class="hl">C: a story campaign</em><br>on the channels we already have.', 'نوصي <em class="hl">بالخيار ج: حملة قصص</em><br>عبر قنواتنا القائمة.')}</h2>
+        <p class="op-sub a-fade" data-in="1" style="--d:.95s;--dur:.8s">${t('Awards and tools can plug into it later.', 'ويمكن ربط الجوائز والأدوات بها لاحقًا.')}</p>
       </div>
 
       <!-- the table: it steps down at stop 1 to make room for the recommendation -->
@@ -236,12 +245,12 @@
       <!-- the criteria: support, small and dim -->
       <div class="op-crit" data-in="0" style="left:${LX}px;top:${T}px;width:${LW}px;height:${H}px;--d:.2s">
         <div class="op-leg">
-          <span>${mark(2, 'sm')}Strong</span>
-          <span>${mark(1, 'sm')}Partial</span>
-          <span>${mark(0, 'sm')}Weak</span>
+          <span>${mark(2, 'sm')}${t('Strong', 'قوي')}</span>
+          <span>${mark(1, 'sm')}${t('Partial', 'جزئي')}</span>
+          <span>${mark(0, 'sm')}${t('Weak', 'ضعيف')}</span>
         </div>
         ${crit}
-        <div class="op-cl op-cwo" style="top:${WO}px"><span class="op-wi">${warn}</span>Watch-out</div>
+        <div class="op-cl op-cwo" style="top:${WO}px"><span class="op-wi">${warn}</span>${t('Watch-out', 'المحاذير')}</div>
       </div>
 
       <!-- C's lift: a soft shadow and a teal floor light under the card (stop 1) -->
@@ -268,6 +277,8 @@
 
       <i class="op-spk" data-spark="0" data-spark-xy="${colX(2) + CW / 2},${T - 34}" data-spark-delay=".62"></i>
     `,
+    // Arabic: pictograms keep their drawn orientation (the engine flips them back with the text)
+    init(ctx) { if (AR) ctx.$$('.op-wi').forEach((e) => e.setAttribute('data-flip', '')); },
     leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
       window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor

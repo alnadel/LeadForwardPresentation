@@ -12,6 +12,7 @@
    Every state is a pure function of the stop (.st-n classes in the CSS); the
    ambient loops are CSS animations, so there are no timers to keep in step. */
 (function () {
+  const t = Deck.t;
   const rnd = (s) => { s = Math.sin(s * 12.9898 + 78.233) * 43758.5453; return s - Math.floor(s); };
 
   // The floor plane is the full stage, tilted about the line y = OY (see the CSS:
@@ -113,27 +114,43 @@
 
   const points = [
     // t: the point's title (the key line, one key phrase lit); s: its support line
-    { n: '01', tone: 'go', t: '<em>Good work</em> happens', s: 'Employees help, solve problems and go the extra mile in their daily work.', at: 0, d: .6 },
-    { n: '02', tone: 'gap', t: 'Visibility stays <em>local</em>', s: 'These contributions are often noticed only by the immediate team or manager.', at: 1, d: .05 },
-    { n: '03', tone: 'gap', t: 'Learning <em>does not travel</em>', s: 'Useful behaviours are not consistently shared across departments or repeated.', at: 1, d: .3 },
+    { n: '01', tone: 'go', t: t('<em>Good work</em> happens', '<em>العمل الجيد</em> يحدث'), s: t('Employees help, solve problems and go the extra mile in their daily work.', 'يساعد الموظفون، ويحلّون المشكلات، ويبذلون جهدًا إضافيًا في عملهم اليومي.'), at: 0, d: .6 },
+    { n: '02', tone: 'gap', t: t('Visibility stays <em>local</em>', 'الظهور يبقى <em>محليًا</em>'), s: t('These contributions are often noticed only by the immediate team or manager.', 'غالبًا لا يلاحظ هذه الإسهامات إلا الفريق المباشر أو المدير.'), at: 1, d: .05 },
+    { n: '03', tone: 'gap', t: t('Learning <em>does not travel</em>', 'التعلّم <em>لا ينتقل</em>'), s: t('Useful behaviours are not consistently shared across departments or repeated.', 'السلوكيات المفيدة لا تُشارَك بانتظام بين الإدارات ولا تتكرر.'), at: 1, d: .3 },
   ];
 
   // dust drifting up through the light above the map (foreground depth)
   const dust = Array.from({ length: 22 }, (_, i) => `<i style="left:${((i * 139 + 23) % 100) * 19.2}px;top:${(56 + (i * 67) % 40) * 10.8}px;--t:${12 + (i % 5) * 2.6}s;--dl:${-i * 1.7}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 17) % 60)}px;--dy:${-140 - (i * 37) % 180}px"></i>`).join('');
 
+  // Arabic: each point is flipped back as one block (the engine's rtlLeaves), so its number sits at
+  // the block's other end from where its layout puts it. The spark (after the number, in reading
+  // order) is placed on the number as it shows: the point's block mirrored about its own centre.
+  function arSpark(ctx) {
+    const pos = (el) => { let x = 0, y = 0; for (let e = el; e && e !== ctx.el; e = e.offsetParent) { x += e.offsetLeft; y += e.offsetTop; } return { x, y, w: el.offsetWidth, h: el.offsetHeight }; };
+    ctx.$$('.gp-n[data-spark]').forEach((n) => {
+      const f = n.closest('.rtl-flip'), r = pos(n);
+      if (f && f !== n) { const b = pos(f); r.x = 2 * b.x + b.w - r.x - r.w; }
+      n.dataset.sparkXy = Math.round(r.x + r.w + 34) + ',' + Math.round(r.y + r.h / 2);
+    });
+  }
+
   Deck.scene({
     id: 'gap',
-    title: 'The gap',
+    title: t('The gap', 'الفجوة'),
     act: 1,
     bg: 'night',
     transition: 'chapter',
-    cues: ['Inspiration is not always visible · good work happens', 'Visibility stays local · learning does not travel', 'We close the gap · the initiative'],
+    cues: t(['Inspiration is not always visible · good work happens', 'Visibility stays local · learning does not travel', 'We close the gap · the initiative'], ['الإلهام لا يظهر دائمًا · العمل الجيد يحدث', 'الظهور يبقى محليًا · التعلّم لا ينتقل', 'نسدّ الفجوة · المبادرة']),
     holds: [8, 10, 9],
-    notes: [
+    notes: t([
       'Inspiration is happening at Tahakom every day, but it is not always visible. Each shape is one team, and each light is good work: colleagues who help, solve problems and go the extra mile.',
       'But visibility stays local: the team or manager notices, and it stops at the wall. And learning does not travel: useful behaviours are not shared across departments, so the story fades halfway.',
       'The contributions exist; the gap is making them visible, recognised and shared. Behind a Better Life closes that gap through real employee stories: a story-to-impact campaign, which the rest of this case sets out.',
-    ],
+    ], [
+      'الإلهام يحدث في تحكم كل يوم، لكنه لا يظهر دائمًا. كل شكل يمثّل فريقًا، وكل ضوء يمثّل عملًا جيدًا: زملاء يساعدون، ويحلّون المشكلات، ويبذلون جهدًا إضافيًا.',
+      'لكن الظهور يبقى محليًا: يلاحظه الفريق أو المدير، ثم يتوقف عند الجدار. والتعلّم لا ينتقل: السلوكيات المفيدة لا تُشارَك بين الإدارات، فتخبو القصة في منتصف الطريق.',
+      'الإسهامات موجودة؛ والفجوة في إظهارها وتقديرها ومشاركتها. و«خلف حياة أفضل» تسدّ هذه الفجوة عبر قصص حقيقية من الموظفين: حملة من القصة إلى الأثر، تعرضها بقية مبرّرات المبادرة.',
+    ]),
     field: [
       { dim: .34, lit: 0, travel: .12, warm: 0, offset: [150, -80], links: .45, wave: .45, streaks: .1, sparkle: .9, calm: [[100, 120, 1820, 290, .7], [100, 300, 1820, 560, .6], [100, 560, 1820, 960, .35]] },
       { wave: .6, sparkle: 1.1 },
@@ -156,7 +173,7 @@
       <div class="gp-map">
         <div class="gp-plane">
           <div class="gp-drift">
-            <i class="gp-sw"></i>
+            <i class="gp-sw"${t('', ' data-rtl-keep')}></i>
             ${DISTRICTS.map(district).join('')}
             ${BRIDGES.map(bridge).join('')}
           </div>
@@ -165,8 +182,8 @@
       <div class="amb-dust gp-dust">${dust}</div>
 
       <div class="pad gp-head">
-        <div class="kicker" data-in="0">Gap assessment</div>
-        <h2 class="h2 gp-h" data-in="0" data-dim="2" data-split style="--d:.15s">Inspiration is happening — but it is not always visible.</h2>
+        <div class="kicker" data-in="0">${t('Gap assessment', 'تقييم الفجوة')}</div>
+        <h2 class="h2 gp-h" data-in="0" data-dim="2" data-split style="--d:.15s">${t('Inspiration is happening — but it is not always visible.', 'الإلهام يحدث\u00A0— لكنه لا يظهر دائمًا.')}</h2>
       </div>
 
       ${points.map((p, k) => `
@@ -179,14 +196,14 @@
       <!-- stop 2: the dimmed headline and its small follow-on line are context;
            the payoff and the initiative are what the room takes away -->
       <div class="gp-close">
-        <p class="gp-c1" data-in="2" style="--d:.3s">Meaningful contributions exist — the gap is making them visible, recognised and shared across Tahakom.</p>
-        <p class="gp-c2" data-in="2" data-split style="--d:.5s">Behind a Better Life closes that gap through <em class="hl">real employee stories.</em></p>
+        <p class="gp-c1" data-in="2" style="--d:.3s">${t('Meaningful contributions exist — the gap is making them visible, recognised and shared across Tahakom.', 'الإسهامات المؤثرة موجودة\u00A0— والفجوة في إظهارها وتقديرها ومشاركتها على مستوى تحكم.')}</p>
+        <p class="gp-c2" data-in="2" data-split style="--d:.5s">${t('Behind a Better Life closes that gap through <em class="hl">real employee stories.</em>', '«خلف حياة أفضل» تسدّ هذه الفجوة عبر <em class="hl">قصص حقيقية من الموظفين.</em>')}</p>
         <div class="gp-ask-w a-unfold" data-in="2" style="--d:.7s;--dur:.9s">
           <div class="glass live gp-ask amb-sheen">
             <span class="gp-ask-lt" data-spark="2" data-spark-at="c" data-spark-delay="1.05"><b></b></span>
-            <span class="gp-ask-k">The initiative</span>
+            <span class="gp-ask-k">${t('The initiative', 'المبادرة')}</span>
             <span class="gp-ask-sep"></span>
-            <span class="gp-ask-t">A <em>story-to-impact</em> campaign</span>
+            <span class="gp-ask-t">${t('A <em>story-to-impact</em> campaign', 'حملة <em>من القصة إلى الأثر</em>')}</span>
           </div>
         </div>
       </div>
@@ -194,6 +211,7 @@
     leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
       window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
+      if (Deck.rtl) arSpark(ctx);
       // the walls' middle layers show only while the walls stand (stop 1); on the other stops they
       // are transparent, so once they have faded they are hidden (each is a full-district layer)
       if (n === 1) ctx.el.classList.add('gp-walls');

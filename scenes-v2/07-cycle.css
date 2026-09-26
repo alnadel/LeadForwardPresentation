@@ -362,3 +362,21 @@
 #s-cycle .cy-clock { position: absolute; left: 0; top: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 #s-cycle.st-0 .cy-clock.lane, #s-cycle.st-1 .cy-clock.orbit { animation: cyClock 60s linear infinite; }
 @keyframes cyClock { from { opacity: 0; } to { opacity: .001; } }
+
+/* ── Arabic (right to left) ─────────────────────────────────────────────────
+   The scene is mirrored: the award road runs right to left into its wall, the story lane runs
+   right to left through its stations, and the ring turns the other way, رصد at the upper left.
+   Text blocks are flipped back by the engine; these rules only undo what a mirror gets wrong in
+   them. A flipped block's own transform runs mirrored, so its horizontal moves are reversed here. */
+html[lang="ar"] #s-cycle .cy-st { transform: translate(50%, -100%); }
+html[lang="ar"] #s-cycle .cy-st:not(.is-in) { transform: translate(50%, -100%) translateY(30px); }
+html[lang="ar"] #s-cycle .cy-end:not(.is-in) { transform: translateY(-50%) translateX(-60px); }
+/* each principle's rule starts bright where its words start (the right) */
+html[lang="ar"] #s-cycle .cy-p::before { background: linear-gradient(270deg, rgba(37, 199, 188, .8), rgba(255, 255, 255, .12)); transform-origin: 100% 50%; }
+/* "The cycle repeats": its glow copy says the same words */
+html[lang="ar"] #s-cycle .cy-rep { text-indent: 0; line-height: 1.3; }
+html[lang="ar"] #s-cycle .cy-rep span::before { content: 'الدورة\A تتكرر'; }
+/* the split headlines' word masks (and the words' text-clipped shine, which paints only inside each
+   word's box) leave room for the marks above and below Arabic letters: hamza, dots, kasra */
+html[lang="ar"] #s-cycle [data-split] .w, html[lang="ar"] #s-cycle [data-split] .w > span { padding: .32em 0 .38em; margin: -.32em 0 -.38em; }
+html[lang="ar"] #s-cycle .cy-h { line-height: 1.16; }

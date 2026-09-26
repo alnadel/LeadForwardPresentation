@@ -292,3 +292,30 @@
 #s-benchmark .bm-sep { width: 1px; height: 16px; margin-right: 22px; background: rgba(255, 255, 255, .24); }
 #s-benchmark .bm-src { margin: 8px 0 0; font: 400 16px/1.35 var(--font); color: rgba(255, 255, 255, .52); white-space: nowrap; }
 #s-benchmark .bm-src b { font-weight: 700; }
+
+/* ── Arabic (right to left) ─────────────────────────────────────────────────
+   The scene is mirrored, so the willingness stands on the right and the channel runs right to
+   left into the organisation. Text blocks are flipped back by the engine; these rules only undo
+   what a mirror gets wrong inside them. */
+/* a signed delta reads "+48" with its unit after it (to its left): the sign stays in front
+   (each part is a flex item that the engine flips back on its own, while the row itself is mirrored
+   with the scene: laid out right to left in the mirror, it shows the unit, then +48, left to right) */
+html[lang="ar"] #s-benchmark .bm-hn, html[lang="ar"] #s-benchmark .bm-mv { direction: rtl; }
+html[lang="ar"] #s-benchmark .bm-hn b, html[lang="ar"] #s-benchmark .bm-mv b { order: -1; }
+html[lang="ar"] #s-benchmark .bm-hn b { margin-top: 12px; font-size: 50px; }
+html[lang="ar"] #s-benchmark .bm-mv b { margin-top: 8px; font-size: 36px; }
+/* the split headlines' word masks (and the words' text-clipped shine, which paints only inside each
+   word's box) leave room for the marks above and below Arabic letters: hamza, dots, kasra */
+html[lang="ar"] #s-benchmark [data-split] .w, html[lang="ar"] #s-benchmark [data-split] .w > span { padding: .32em 0 .38em; margin: -.32em 0 -.38em; }
+/* the reservoir's level ticks point back at the reservoir */
+html[lang="ar"] #s-benchmark .bm-tick::after { right: auto; left: -16px; }
+/* the legend's gaps sit between its items */
+html[lang="ar"] #s-benchmark .bm-key, html[lang="ar"] #s-benchmark .bm-sep { margin-right: 0; margin-left: 22px; }
+/* wipes reveal from where the Arabic starts (the right) */
+html[lang="ar"] #s-benchmark .rtl-flip[data-in].a-wipe:not(.is-in) { clip-path: inset(0 0 0 100%); }
+/* the evidence cards: the Arabic names run longer, so the two mechanism cards tighten a little and
+   the second one ends on the plinth's far edge */
+html[lang="ar"] #s-benchmark .bm-ev { padding: 12px 18px 13px 16px; column-gap: 14px; }
+html[lang="ar"] #s-benchmark .bm-ev-n { font-size: 19px; }
+html[lang="ar"] #s-benchmark .bm-ev.mech { left: 1022px !important; }
+html[lang="ar"] #s-benchmark .bm-ev.mech ~ .bm-ev.mech { left: auto !important; right: 144px; }
