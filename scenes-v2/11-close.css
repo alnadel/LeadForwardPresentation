@@ -56,13 +56,31 @@
 #s-close .cl-way .amb-shimmer { animation-duration: 7s; padding: 0 .08em; }
 #s-close .cl-thanks { margin-top: 36px; font: 700 26px/1 var(--font); letter-spacing: .42em; text-transform: uppercase; color: var(--ink-1); padding-left: .42em; }
 
-/* the ask, kept on screen for Q&A */
-#s-close .cl-ask { position: absolute; left: 144px; top: 800px; width: 1632px; display: flex; align-items: center; justify-content: space-between; gap: 40px;
-  padding: 28px 44px; border-radius: 14px; background: rgba(4, 12, 24, .74); border: 1px solid rgba(37, 199, 188, .45); box-shadow: 0 0 60px rgba(37, 199, 188, .14), 0 24px 60px rgba(0, 0, 0, .4); }
-#s-close .cl-ask-h { margin-top: 14px; font: 700 44px/1.05 var(--font); letter-spacing: -.02em; color: var(--white); white-space: nowrap; }
-#s-close .cl-ask-r { display: flex; gap: 14px; }
-#s-close .cl-step { display: inline-flex; align-items: center; gap: 12px; height: 58px; padding: 0 20px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .05); font: 700 23px/1 var(--font); color: var(--ink-1); white-space: nowrap; }
-#s-close .cl-step b { font-size: 22px; color: var(--teal); letter-spacing: .1em; }
-/* while hidden, clip nothing above the strip (the shared a-unfold hidden clip reaches 80px up and
-   would show the strip's glow as a faint line during stop 0) */
+/* a soft dark pool behind the brand block: the lit field and the city lights stay at the edges */
+#s-close .cl-hush { position: absolute; left: 60px; top: 30px; width: 1800px; height: 720px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(3, 8, 16, .8), rgba(3, 8, 16, .66) 45%, rgba(3, 8, 16, .3) 75%, transparent); }
+
+/* the ask, kept on screen for Q&A: the hero card (glass, with a light travelling round its edge) */
+#s-close .cl-ask { position: absolute; left: 144px; top: 740px; width: 1632px; height: 214px; display: flex; align-items: center; padding: 0 56px; border-radius: 26px;
+  background: linear-gradient(165deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .07)), rgba(4, 12, 24, .84);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .5), 0 0 80px rgba(37, 199, 188, .16), inset 0 1px 0 rgba(255, 255, 255, .16); }
+#s-close .cl-ask::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(60% 120% at 22% 0%, rgba(37, 199, 188, .12), transparent 70%); }
+#s-close .cl-ask-l { flex: none; }
+#s-close .cl-ask .kicker { font-size: 22px; }
+#s-close .cl-ask-h { margin-top: 18px; font: 700 72px/1.02 var(--font); letter-spacing: -.024em; color: var(--white); white-space: nowrap; text-shadow: 0 0 40px rgba(37, 199, 188, .18); }
+#s-close .cl-ask-div { flex: none; width: 2px; height: 150px; margin: 0 64px 0 auto; border-radius: 1px;
+  background: linear-gradient(180deg, transparent, rgba(37, 199, 188, .6), transparent); }
+#s-close .cl-ask-r { position: relative; flex: none; display: flex; flex-direction: column; gap: 8px; padding-right: 8px; }
+/* the three commitments on a rail; a light runs down it now and then */
+#s-close .cl-rail { position: absolute; left: 24px; top: 26px; bottom: 26px; width: 2px; background: rgba(37, 199, 188, .35); overflow: hidden; }
+#s-close .cl-rail b { position: absolute; left: -1px; top: 0; width: 4px; height: 46px; border-radius: 2px; background: linear-gradient(180deg, transparent, var(--sea)); box-shadow: 0 0 10px var(--sea); opacity: 0; }
+#s-close.st-1 .cl-rail b { animation: clRail 6s cubic-bezier(.45, 0, .55, 1) 2.4s infinite; }
+@keyframes clRail { 0% { transform: translateY(-46px); opacity: 0; } 10% { opacity: 1; } 45% { transform: translateY(110px); opacity: 1; } 55%, 100% { transform: translateY(110px); opacity: 0; } }
+#s-close .cl-step { position: relative; display: flex; align-items: center; gap: 22px; height: 50px; font: 700 32px/1 var(--font); letter-spacing: -.008em; color: var(--ink-1); white-space: nowrap; }
+#s-close .cl-step b { flex: none; width: 50px; height: 50px; border-radius: 28%; display: grid; place-items: center; font: 700 21px/1 var(--font); letter-spacing: .06em; color: var(--sea);
+  border: 1.5px solid rgba(37, 199, 188, .7); background: #071A2C; box-shadow: 0 0 18px rgba(37, 199, 188, .25); }
+/* settled: keep the deep shadow unclipped; while hidden, clip nothing above the card (the shared
+   a-unfold hidden clip reaches 80px up and would show the card's glow as a faint line during stop 0) */
+#s-close .cl-ask[data-in].is-in { clip-path: inset(-160px round 26px); }
 #s-close .cl-ask[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }

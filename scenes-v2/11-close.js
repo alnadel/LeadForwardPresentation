@@ -31,9 +31,9 @@
 
   /* stories travelling across the lit field, in the band between the brand block and the ask */
   const STORIES = [
-    { d: 'M-80 716 C 360 660, 700 776, 1000 716 S 1640 684, 2000 742', t: 11, dl: -1.5 },
-    { d: 'M2000 690 C 1600 748, 1260 668, 940 742 S 320 700, -80 752', t: 13, dl: -7.5 },
-    { d: 'M-80 762 C 420 730, 820 700, 1180 752 S 1700 776, 2000 716', t: 15, dl: -11 },
+    { d: 'M-80 672 C 360 636, 700 712, 1000 676 S 1640 650, 2000 694', t: 11, dl: -1.5 },
+    { d: 'M2000 656 C 1600 700, 1260 640, 940 690 S 320 664, -80 700', t: 13, dl: -7.5 },
+    { d: 'M-80 704 C 420 684, 820 660, 1180 698 S 1700 712, 2000 676', t: 15, dl: -11 },
   ];
   const stories = STORIES.map((s) => `<i class="cl-story" style="offset-path:path('${s.d}');--t:${s.t}s;--dl:${s.dl}s"><b></b><i class="light sm"></i></i>`).join('');
 
@@ -56,9 +56,10 @@
       // travel starts at 0 so the callback frame matches 02.2; the loop raises it once the chain is complete
       { dim: .8, travel: 0, offset: Deck.NIGHT_OFFSET, pins: PAIR, litFrom: PAIR[0], chain: true, warm: 0, drift: .35, links: .55, wave: .45, streaks: .1, sparkle: 1,
         calm: [[KNOW.x + 20, KNOW.y, KNOW.x + 740, KNOW.y + 120, .85]] },
-      // keep the lit field off the lockup, the lines below it and the ask strip
-      { dim: .9, lit: 1, travel: 2.2, warm: .15, drift: .6, pins: [], links: .5, wave: .6, streaks: .18, sparkle: 1.6,
-        calm: [[800, 24, 1120, 180, 1], [360, 180, 1560, 425, .92], [400, 430, 1520, 640, .8], [120, 790, 1800, 960, .75]] },
+      // the lit field frames the brand block: calm (nearly dark) behind the lockup, the title
+      // block and the ask card, alive at the sides and in the band where the stories travel
+      { dim: .9, lit: 1, travel: 2.2, warm: .15, drift: .6, pins: [], links: .42, wave: .5, streaks: .16, sparkle: 1.4,
+        calm: [[720, 10, 1200, 196, 1], [200, 150, 1720, 470, 1], [280, 440, 1640, 640, .95], [100, 720, 1820, 980, .9]] },
     ],
     html: `
       <div class="cl-sky a-fade" data-in="1" style="--dur:2.6s">
@@ -69,6 +70,8 @@
         </div>
         <div class="amb-leak cl-leak"></div>
       </div>
+      <!-- a soft dark pool keeps the lit field and the city lights off the words -->
+      <div class="cl-hush a-fade" data-in="1" style="--d:.1s;--dur:1.6s"></div>
       <div class="cl-stories a-fade" data-in="1" style="--d:1s;--dur:1.2s">${stories}</div>
 
       <!-- the same image as 02.2: a soft halo between two lights, one on each colleague -->
@@ -89,15 +92,17 @@
         <div class="cl-thanks a-fade" data-in="1" style="--d:.84s">Thank you</div>
       </div>
 
-      <div class="cl-ask a-unfold" data-in="1" style="--d:.8s">
+      <div class="cl-ask glass live a-unfold" data-in="1" style="--d:.8s">
         <div class="cl-ask-l">
           <div class="kicker">The ask</div>
           <div class="cl-ask-h">Approve a one-quarter pilot.</div>
         </div>
-        <div class="cl-ask-r" data-stagger style="--stagger:.08s">
-          <span class="cl-step a-materialize" data-in="1" style="--d:.95s"><b>01</b>Open nominations</span>
-          <span class="cl-step a-materialize" data-in="1" style="--d:.95s"><b>02</b>Run one full cycle</span>
-          <span class="cl-step a-materialize" data-in="1" style="--d:.95s"><b>03</b>Report what changed</span>
+        <i class="cl-ask-div"></i>
+        <div class="cl-ask-r" data-stagger style="--stagger:.1s">
+          <i class="cl-rail"><b></b></i>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>01</b>Open nominations</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>02</b>Run one full cycle</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>03</b>Report what changed</span>
         </div>
       </div>
     `,

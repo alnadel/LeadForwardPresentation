@@ -35,105 +35,110 @@
 /* local shades land with the plan and with the lane (named 'shade', not 'veil',
    so projector-contrast mode never reveals them early) */
 #s-pilot .pl-shade-1 { background:
-  radial-gradient(640px 300px at 420px 612px, rgba(3, 8, 16, .6), transparent 75%),
-  radial-gradient(560px 240px at 1470px 612px, rgba(3, 8, 16, .55), transparent 75%),
-  linear-gradient(180deg, transparent 22%, rgba(3, 8, 16, .6) 38%, rgba(3, 8, 16, .64) 80%, rgba(3, 8, 16, .55) 100%); }
+  radial-gradient(900px 160px at 620px 290px, rgba(3, 8, 16, .55), transparent 75%),
+  linear-gradient(180deg, transparent 20%, rgba(3, 8, 16, .58) 34%, rgba(3, 8, 16, .66) 70%, rgba(3, 8, 16, .6) 100%); }
 #s-pilot .pl-shade-2 { background: linear-gradient(180deg, rgba(3, 8, 16, .25) 0%, rgba(3, 8, 16, .5) 30%, rgba(3, 8, 16, .72) 52%, rgba(3, 8, 16, .9) 72%, rgba(3, 8, 16, .94) 100%); }
 
 /* ── stop 0 · the ask ── */
 #s-pilot .pl-kicker { position: absolute; left: 144px; top: 150px; transition: opacity .8s var(--ease-soft); }
 #s-pilot .pl-title { position: absolute; left: 138px; top: 172px; font-size: 144px; white-space: nowrap; transform-origin: 6px 0;
   transition: transform 1s var(--ease-io), opacity .9s var(--ease-soft); }
-/* stop 2: the ask steps back to a heading so the decision line can lead */
-#s-pilot.st-2 .pl-title { transform: scale(.5); opacity: .62; }
+/* from stop 1: the ask steps back to a heading so the plan (then the decision) can lead */
+#s-pilot.st-1 .pl-title { transform: scale(.5); opacity: .72; }
 
 /* ── stop 1 · one quarter ── */
-#s-pilot .pl-sub { position: absolute; left: 144px; top: 356px; color: var(--ink-1); }
-#s-pilot .pl-plan { position: absolute; inset: 0; transform-origin: 960px 610px; }
+#s-pilot .pl-sub { position: absolute; left: 144px; top: 262px; font-size: 40px; line-height: 1.25; color: var(--ink-1); white-space: nowrap; }
+#s-pilot .pl-plan { position: absolute; inset: 0; transform-origin: 952px 650px; }
 #s-pilot .pl-plan.is-out { opacity: 0; transform: scale(.86); filter: blur(8px); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-io), filter .6s var(--ease-soft); }
 #s-pilot .pl-sub.is-out { filter: blur(6px); transition: opacity .5s var(--ease-soft), transform .6s var(--ease-soft), filter .5s var(--ease-soft); }
+/* a pool of light behind the quarter */
+#s-pilot .pl-rglow { position: absolute; width: 760px; height: 760px; margin: -380px 0 0 -380px; border-radius: 50%; pointer-events: none; opacity: 0; transform: scale(.6);
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .22), rgba(37, 199, 188, .07) 50%, transparent); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
+#s-pilot.st-1 .pl-rglow { opacity: 1; transform: none; transition: opacity 1.2s var(--ease-soft) .3s, transform 1.6s var(--ease-out) .3s; animation: plRGlow 6s ease-in-out 2s infinite; }
+@keyframes plRGlow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .65; transform: scale(1.08); } }
 
 /* the story flows along the connector into the start of the quarter */
-#s-pilot .pl-conn { position: absolute; left: 144px; top: 609px; width: 656px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .05), rgba(37, 199, 188, .55)); overflow: visible; }
-#s-pilot .pl-conn b { position: absolute; left: 0; top: -2px; width: 120px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .9)); box-shadow: 0 0 12px rgba(3, 255, 203, .5); opacity: 0; }
+#s-pilot .pl-conn { position: absolute; left: 144px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .05), rgba(37, 199, 188, .6)); overflow: visible; }
+#s-pilot .pl-conn b { position: absolute; left: 0; top: -2px; width: 130px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .95)); box-shadow: 0 0 14px rgba(3, 255, 203, .55); opacity: 0; }
 #s-pilot.st-1 .pl-conn b { animation: plConn 3.4s cubic-bezier(.45, 0, .55, 1) 1.2s infinite; }
-@keyframes plConn { 0% { transform: translateX(-40px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(560px); opacity: 0; } }
+@keyframes plConn { 0% { transform: translateX(-40px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(520px); opacity: 0; } }
 
 /* the ring: one revolution is one quarter */
-#s-pilot .pl-ring { position: absolute; width: 320px; height: 320px; overflow: visible; opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-pilot .pl-ring { position: absolute; width: 400px; height: 400px; overflow: visible; opacity: 0; transition: opacity .4s var(--ease-soft); }
 #s-pilot.st-1 .pl-ring { opacity: 1; }
-#s-pilot .pl-track { fill: rgba(3, 8, 16, .5); stroke: rgba(255, 255, 255, .14); stroke-width: 3; }
-#s-pilot .pl-prog { fill: none; stroke: var(--teal); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100;
-  filter: drop-shadow(0 0 8px rgba(37, 199, 188, .6)); transition: stroke-dashoffset .95s var(--ease-io) .3s; }
+#s-pilot .pl-track { fill: rgba(3, 10, 20, .62); stroke: rgba(255, 255, 255, .16); stroke-width: 4; }
+#s-pilot .pl-prog { fill: none; stroke: url(#plProgG); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100;
+  filter: drop-shadow(0 0 10px rgba(37, 199, 188, .7)); transition: stroke-dashoffset .95s var(--ease-io) .3s; }
 #s-pilot.st-1 .pl-prog { stroke-dashoffset: 0; }
-#s-pilot .pl-ticks line { stroke: rgba(255, 255, 255, .6); stroke-width: 2.5; stroke-linecap: round; }
-#s-pilot .pl-months text { fill: var(--ink-3); font: 700 22px/1 var(--font); letter-spacing: .08em; text-anchor: middle; dominant-baseline: central; }
-#s-pilot .pl-core text { fill: var(--teal); font: 700 22px/1 var(--font); letter-spacing: .12em; text-transform: uppercase; text-anchor: middle; }
+#s-pilot .pl-ticks line { stroke: rgba(255, 255, 255, .7); stroke-width: 3; stroke-linecap: round; }
+#s-pilot .pl-months text { fill: var(--ink-2); font: 700 24px/1 var(--font); letter-spacing: .08em; text-anchor: middle; dominant-baseline: central; }
+#s-pilot .pl-core text { fill: var(--sea); font: 700 26px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; text-anchor: middle; }
 #s-pilot .pl-ticks, #s-pilot .pl-months, #s-pilot .pl-core { opacity: 0; transition: opacity .6s var(--ease-soft); }
 #s-pilot.st-1 .pl-ticks { opacity: 1; transition-delay: .45s; }
 #s-pilot.st-1 .pl-months { opacity: 1; transition-delay: .7s; }
 #s-pilot.st-1 .pl-core { opacity: 1; transition-delay: .9s; }
 /* an outer ring of dots turns slowly, like a dial */
-#s-pilot .pl-dash { position: absolute; width: 400px; height: 400px; overflow: visible; opacity: 0; transition: opacity .8s var(--ease-soft) .6s; }
-#s-pilot .pl-dash circle { fill: none; stroke: rgba(37, 199, 188, .5); stroke-width: 3; stroke-linecap: round; stroke-dasharray: .1 15.4; }
+#s-pilot .pl-dash { position: absolute; width: 480px; height: 480px; overflow: visible; opacity: 0; transition: opacity .8s var(--ease-soft) .6s; }
+#s-pilot .pl-dash circle { fill: none; stroke: rgba(37, 199, 188, .55); stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: .1 15.6; }
 #s-pilot.st-1 .pl-dash { opacity: 1; animation: plDial 36s linear infinite; }
 @keyframes plDial { to { transform: rotate(360deg); } }
 
 /* the leading light: one fast lap with the draw, then it keeps lapping (9 s a lap) with a comet tail */
 #s-pilot .pl-orb { position: absolute; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
-#s-pilot .pl-orb .light { position: absolute; left: -149px; top: -11px; }
-#s-pilot .pl-orb::before { content: ''; position: absolute; left: -198px; top: -60px; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .34), transparent); }
+#s-pilot .pl-orb .light { position: absolute; left: calc(-1 * var(--r) - 11px); top: -11px; }
+#s-pilot .pl-orb::before { content: ''; position: absolute; left: calc(-1 * var(--r) - 70px); top: -70px; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .38), transparent); }
 #s-pilot .pl-comet { position: absolute; border-radius: 50%; opacity: 0; transition: opacity .3s var(--ease-soft);
   background: conic-gradient(from 175deg, rgba(3, 255, 203, 0) 0deg, rgba(3, 255, 203, .25) 45deg, rgba(160, 255, 236, .95) 90deg, rgba(3, 255, 203, 0) 90.5deg);
-  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 13px), #000 calc(100% - 11px), #000 calc(100% - 1px), transparent 100%);
-          mask: radial-gradient(closest-side, transparent calc(100% - 13px), #000 calc(100% - 11px), #000 calc(100% - 1px), transparent 100%);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 15px), #000 calc(100% - 13px), #000 calc(100% - 1px), transparent 100%);
+          mask: radial-gradient(closest-side, transparent calc(100% - 15px), #000 calc(100% - 13px), #000 calc(100% - 1px), transparent 100%);
   filter: drop-shadow(0 0 8px rgba(3, 255, 203, .8)); }
 #s-pilot.st-1 .pl-orb, #s-pilot.st-1 .pl-comet { opacity: 1; animation: plFirst .95s var(--ease-io) .3s both, plLap 9s linear 1.25s infinite; }
 @keyframes plFirst { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes plLap { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-#s-pilot .pl-pin { position: absolute; width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 28%; border: 2px solid var(--teal); background: #06121F; box-shadow: 0 0 16px rgba(37, 199, 188, .4); }
-#s-pilot .pl-pin.sm { width: 14px; height: 14px; margin: -7px 0 0 -7px; background: var(--teal); }
-#s-pilot .pl-lead { position: absolute; width: 40px; height: 2px; margin-top: -1px; background: rgba(37, 199, 188, .6); }
+#s-pilot .pl-pin { position: absolute; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 28%; border: 2.5px solid var(--sea); background: #06121F; box-shadow: 0 0 20px rgba(37, 199, 188, .55); }
+#s-pilot .pl-pin.sm { width: 16px; height: 16px; margin: -8px 0 0 -8px; background: var(--teal); border-color: var(--teal); }
+#s-pilot .pl-lead { position: absolute; height: 2px; margin-top: -1px; background: linear-gradient(90deg, rgba(37, 199, 188, .8), rgba(37, 199, 188, .3)); }
 #s-pilot .pl-mark { position: absolute; color: var(--ink-3); white-space: nowrap; }
 
-/* the three commitments: at the start, along the arc, where the loop closes */
-#s-pilot .pl-c { position: absolute; width: 600px; }
-#s-pilot .pl-c1 { left: 144px; bottom: 494px; }
-#s-pilot .pl-c3 { left: 144px; top: 632px; }
-#s-pilot .pl-c2 { left: 1176px; top: 548px; }
-#s-pilot .pl-n { display: block; font: 700 22px/1 var(--font); letter-spacing: .1em; color: var(--teal); margin-bottom: 10px; }
-#s-pilot .pl-ct { margin: 0; font: 700 36px/1.12 var(--font); letter-spacing: -.012em; color: var(--white); }
-#s-pilot .pl-cx { margin: 8px 0 0; font: 400 28px/1.32 var(--font); color: var(--ink-2); text-wrap: pretty; }
-#s-pilot .pl-c1 .pl-cx { max-width: 500px; }
+/* the three commitments, in glass: at the start, along the arc, where the loop closes */
+#s-pilot .pl-c { position: absolute; width: 600px; padding: 26px 30px 28px; border-radius: 22px; }
+#s-pilot .pl-c[data-in].is-in { transition-duration: 1s, 1.1s, .9s, 1.1s; }
+#s-pilot .pl-c1 { left: 144px; top: 386px; }
+#s-pilot .pl-c3 { left: 144px; top: 716px; }
+#s-pilot .pl-c2 { width: 606px; }
+#s-pilot .pl-ct { margin: 0; display: flex; align-items: baseline; gap: 16px; font: 700 40px/1.12 var(--font); letter-spacing: -.014em; color: var(--white); }
+#s-pilot .pl-n { font: 700 26px/1 var(--font); letter-spacing: .08em; color: var(--teal); }
+#s-pilot .pl-cx { margin: 12px 0 0; font: 400 30px/1.32 var(--font); color: var(--ink-2); text-wrap: pretty; }
 #s-pilot .pl-chain { white-space: nowrap; color: var(--ink-1); }
+#s-pilot .pl-chain .arr { color: var(--teal); }
 #s-pilot .pl-nb { white-space: nowrap; }
 
 /* ── stop 2 · how we'll judge it ── */
-#s-pilot .pl-judge { position: absolute; left: 144px; top: 290px; }
+#s-pilot .pl-judge { position: absolute; left: 144px; top: 266px; }
 #s-pilot .pl-rig { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
 #s-pilot .pl-lane { position: absolute; left: 0; right: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .07));
+  background: linear-gradient(180deg, rgba(37, 199, 188, .05), rgba(255, 255, 255, .08));
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
           mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); }
-#s-pilot .pl-edge { position: absolute; left: 0; right: 0; height: 2px; background: rgba(255, 255, 255, .24); }
-#s-pilot .pl-edge.t { top: 0; background: rgba(255, 255, 255, .16); }
+#s-pilot .pl-edge { position: absolute; left: 0; right: 0; height: 2px; background: rgba(255, 255, 255, .28); }
+#s-pilot .pl-edge.t { top: 0; background: linear-gradient(90deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .55), rgba(37, 199, 188, .2)); box-shadow: 0 0 12px rgba(37, 199, 188, .35); }
 #s-pilot .pl-edge.b { bottom: 0; }
-#s-pilot .pl-lanedash { position: absolute; left: 0; top: 21px; width: 1920px; height: 4px; }
-#s-pilot .pl-lanedash line { stroke: rgba(255, 255, 255, .3); stroke-width: 4; stroke-dasharray: 34 26; }
+#s-pilot .pl-lanedash { position: absolute; left: 0; top: 22px; width: 1920px; height: 4px; }
+#s-pilot .pl-lanedash line { stroke: rgba(255, 255, 255, .32); stroke-width: 4; stroke-dasharray: 34 26; }
 
-/* a gantry: two posts, a truss, a variable-message readout and a sensor head (compact: 80%) */
-#s-pilot .pl-g { position: absolute; width: 260px; height: 144px; transform: scale(.8); transform-origin: 50% 100%; opacity: .3; transition: opacity .6s var(--ease-soft); }
+/* a gantry: two posts, a truss, a variable-message readout and a sensor head (90%) */
+#s-pilot .pl-g { position: absolute; width: 260px; height: 144px; transform: scale(.9); transform-origin: 50% 100%; opacity: .3; transition: opacity .6s var(--ease-soft); }
 #s-pilot.st-2 .pl-g { opacity: 1; transition-delay: var(--on); }
 #s-pilot .pl-frame { position: absolute; inset: 0; width: 260px; height: 144px; overflow: visible; }
-#s-pilot .pl-frame rect { fill: rgba(214, 226, 240, .5); }
-#s-pilot .pl-frame .pl-truss { fill: none; stroke: rgba(214, 226, 240, .46); stroke-width: 1.6; stroke-linejoin: round; }
-#s-pilot .pl-frame .pl-head { fill: rgba(214, 226, 240, .78); }
+#s-pilot .pl-frame rect { fill: rgba(214, 226, 240, .55); }
+#s-pilot .pl-frame .pl-truss { fill: none; stroke: rgba(214, 226, 240, .5); stroke-width: 1.6; stroke-linejoin: round; }
+#s-pilot .pl-frame .pl-head { fill: rgba(214, 226, 240, .8); }
 #s-pilot .pl-lens { position: absolute; left: 126px; top: 66px; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); opacity: .6; box-shadow: 0 0 8px var(--teal); }
-#s-pilot .pl-vms { position: absolute; left: 30px; top: 0; width: 200px; height: 54px; border-radius: 8px; display: grid; place-items: center;
-  background: radial-gradient(rgba(37, 199, 188, .12) 1px, transparent 1.4px) 0 0 / 5px 5px, #041320;
-  border: 1.5px solid rgba(37, 199, 188, .38); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); }
-/* 26px in the box, 21px on stage after the gantry's 80% scale — above the 20px floor */
+#s-pilot .pl-vms { position: absolute; left: 26px; top: 0; width: 208px; height: 56px; border-radius: 9px; display: grid; place-items: center;
+  background: radial-gradient(rgba(37, 199, 188, .14) 1px, transparent 1.4px) 0 0 / 5px 5px, linear-gradient(180deg, #06192A, #031019);
+  border: 1.5px solid rgba(37, 199, 188, .42); box-shadow: 0 8px 22px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .08); }
+/* 26px in the box, 23px on stage after the gantry's 90% scale */
 #s-pilot .pl-vms span { font: 700 26px/1 var(--font); letter-spacing: .18em; margin-right: -.18em; text-transform: uppercase; color: var(--teal); opacity: .62; }
 #s-pilot .pl-beam { position: absolute; left: 75px; top: 74px; width: 110px; height: 98px; opacity: .1;
   background: linear-gradient(180deg, rgba(37, 199, 188, .9), rgba(37, 199, 188, .15)); clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); }
@@ -142,12 +147,12 @@
 /* the story light on the lane */
 #s-pilot .pl-car { position: absolute; left: 0; width: 0; height: 0; opacity: 0; transform: translateX(-60px); transition: opacity .4s var(--ease-soft); }
 #s-pilot .pl-car .light { position: absolute; left: -17px; top: -17px; }
-#s-pilot .pl-car::before { content: ''; position: absolute; left: -130px; top: -40px; width: 260px; height: 80px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .24), transparent); }
-#s-pilot .pl-tail { position: absolute; right: 8px; top: -2px; width: 230px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .25) 55%, rgba(3, 255, 203, .75)); }
+#s-pilot .pl-car::before { content: ''; position: absolute; left: -150px; top: -46px; width: 300px; height: 92px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .28), transparent); }
+#s-pilot .pl-tail { position: absolute; right: 8px; top: -2px; width: 260px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .25) 55%, rgba(3, 255, 203, .8)); }
 #s-pilot.st-2 .pl-car { opacity: 1; animation: plCarFirst 1s linear .5s both, plCar 10s linear 1.5s infinite; }
 /* a second story, half a lap behind the first: it fades in mid-lane once the build has settled */
 #s-pilot .pl-car.c2 .light { left: -11px; top: -11px; }
-#s-pilot .pl-car.c2 .pl-tail { width: 170px; opacity: .8; }
+#s-pilot .pl-car.c2 .pl-tail { width: 190px; opacity: .8; }
 #s-pilot.st-2 .pl-car.c2 { animation: plCar 10s linear -3.5s infinite; transition: opacity .8s var(--ease-soft) 1.6s; }
 @keyframes plCarFirst { from { transform: translateX(-60px); } to { transform: translateX(1980px); } }
 @keyframes plCar { from { transform: translateX(-60px); } to { transform: translateX(1980px); } }
@@ -169,41 +174,62 @@
   31%, 70% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
   100% { opacity: .62; text-shadow: none; color: var(--teal); } }
 @keyframes plVms {
-  0%, 9%, 50%, 59% { border-color: rgba(3, 255, 203, .85); box-shadow: 0 0 26px rgba(37, 199, 188, .45), 0 6px 18px rgba(0, 0, 0, .45); }
-  13%, 49.9%, 63%, 100% { border-color: rgba(37, 199, 188, .38); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); } }
+  0%, 9%, 50%, 59% { border-color: rgba(3, 255, 203, .9); box-shadow: 0 0 30px rgba(37, 199, 188, .5), 0 8px 22px rgba(0, 0, 0, .5); }
+  13%, 49.9%, 63%, 100% { border-color: rgba(37, 199, 188, .42); box-shadow: 0 8px 22px rgba(0, 0, 0, .5); } }
 @keyframes plVmsOnce {
-  0%, 70% { border-color: rgba(3, 255, 203, .85); box-shadow: 0 0 26px rgba(37, 199, 188, .45), 0 6px 18px rgba(0, 0, 0, .45); }
-  100% { border-color: rgba(37, 199, 188, .38); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); } }
-@keyframes plBeam { 0%, 50% { opacity: .1; } 1.5%, 7%, 51.5%, 57% { opacity: .7; } 12%, 49.9%, 62%, 100% { opacity: .1; } }
-@keyframes plBeamOnce { 0% { opacity: .1; } 12%, 55% { opacity: .7; } 100% { opacity: .1; } }
+  0%, 70% { border-color: rgba(3, 255, 203, .9); box-shadow: 0 0 30px rgba(37, 199, 188, .5), 0 8px 22px rgba(0, 0, 0, .5); }
+  100% { border-color: rgba(37, 199, 188, .42); box-shadow: 0 8px 22px rgba(0, 0, 0, .5); } }
+@keyframes plBeam { 0%, 50% { opacity: .1; } 1.5%, 7%, 51.5%, 57% { opacity: .75; } 12%, 49.9%, 62%, 100% { opacity: .1; } }
+@keyframes plBeamOnce { 0% { opacity: .1; } 12%, 55% { opacity: .75; } 100% { opacity: .1; } }
 @keyframes plLens { 0%, 9%, 50%, 59% { opacity: 1; transform: scale(1.4); } 13%, 49.9%, 63%, 100% { opacity: .6; transform: none; } }
 @keyframes plLensOnce { 0%, 70% { opacity: 1; transform: scale(1.4); } 100% { opacity: .6; transform: none; } }
 
-#s-pilot .pl-glab { position: absolute; width: 400px; text-align: center; color: var(--teal); }
+#s-pilot .pl-glab { position: absolute; width: 400px; text-align: center; font-size: 24px; color: var(--teal); text-shadow: 0 2px 10px rgba(0, 0, 0, .6); }
 
-/* the baseline and what we need, side by side */
-#s-pilot .pl-card { position: absolute; top: 578px; width: 800px; padding: 22px 32px 24px; border-radius: 14px;
-  background: linear-gradient(160deg, rgba(12, 28, 46, .82), rgba(4, 12, 24, .72)); border: 1px solid rgba(255, 255, 255, .14); box-shadow: 0 20px 50px rgba(0, 0, 0, .35); }
+/* the baseline and what we need, side by side, in glass */
+#s-pilot .pl-card { position: absolute; top: 560px; width: 800px; height: 190px; padding: 24px 32px 0; border-radius: 22px; }
 #s-pilot .pl-base { left: 144px; }
 #s-pilot .pl-need { left: 976px; }
-#s-pilot .pl-card::before { content: ''; position: absolute; left: 0; top: 22px; bottom: 22px; width: 3px; border-radius: 2px; background: var(--teal); box-shadow: 0 0 12px rgba(37, 199, 188, .6); }
-#s-pilot .pl-base::before { background: var(--purple-lt); box-shadow: 0 0 12px rgba(201, 166, 211, .5); }
 #s-pilot .pl-card-l { color: var(--teal); }
 #s-pilot .pl-base .pl-card-l { color: var(--purple-lt); }
-#s-pilot .pl-base-t { margin: 12px 0 0; font: 400 29px/1.2 var(--font); color: var(--ink-2); white-space: nowrap; }
-#s-pilot .pl-base-t b { font-weight: 700; font-size: 46px; line-height: 1; vertical-align: -5px; color: var(--purple-lt); letter-spacing: -.02em; }
+#s-pilot .pl-base-t { margin: 8px 0 0; font: 400 30px/1.2 var(--font); color: var(--ink-2); white-space: nowrap; }
+#s-pilot .pl-fig { font-weight: 700; font-size: 60px; line-height: 1; vertical-align: -8px; color: var(--purple-lt); letter-spacing: -.025em; text-shadow: 0 0 30px rgba(157, 103, 170, .45); }
+#s-pilot .pl-fig .num { display: inline-block; }
 #s-pilot .pl-base-t i, #s-pilot .pl-need-t i { font-style: normal; color: var(--teal); margin: 0 .15em; }
-#s-pilot .pl-base-t2 { margin: 8px 0 0; font: 400 29px/1.3 var(--font); color: var(--ink-2); white-space: nowrap; }
+#s-pilot .pl-base-t2 { margin: 8px 0 0; font: 400 30px/1.3 var(--font); color: var(--ink-2); white-space: nowrap; }
 #s-pilot .pl-base-t2 .arr { color: var(--teal); }
-#s-pilot .pl-need-t { margin: 14px 0 0; font: 400 29px/1.36 var(--font); color: var(--ink-2); text-wrap: balance; }
+#s-pilot .pl-need-t { margin: 18px 0 0; font: 400 30px/1.4 var(--font); color: var(--ink-1); text-wrap: balance; }
+/* settled: keep the deep shadow unclipped; while hidden, clip nothing above the cards */
+#s-pilot .pl-card[data-in].is-in { clip-path: inset(-160px round 22px); }
+#s-pilot .pl-card[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }
 
 /* the decision: the hero of the stop */
-#s-pilot .pl-final { position: absolute; left: 144px; top: 786px; margin: 0; font: 700 60px/1.1 var(--font); letter-spacing: -.022em; color: var(--white); white-space: nowrap; }
-#s-pilot .pl-final .pl-hero { color: var(--teal); }
-#s-pilot.st-2 .pl-final.is-in .pl-hero { animation: plHero 4.8s ease-in-out 2s infinite; }
-@keyframes plHero { 0%, 100% { text-shadow: 0 0 0 rgba(3, 255, 203, 0); } 50% { text-shadow: 0 0 30px rgba(3, 255, 203, .45); } }
-/* once the decision has landed, the rig steps back a little */
+#s-pilot .pl-final { position: absolute; left: 144px; top: 786px; margin: 0; font: 700 48px/1.1 var(--font); letter-spacing: -.02em; color: var(--ink-1); white-space: nowrap; }
+#s-pilot .pl-herow { position: absolute; left: 140px; }
+#s-pilot .pl-hero { display: inline-block; margin: 0; font: 700 94px/1.06 var(--font); letter-spacing: -.03em; color: var(--teal); white-space: nowrap; }
+#s-pilot.st-2 .pl-hero.is-in { animation: plHero 5s ease-in-out 2.6s infinite; }
+@keyframes plHero { 0%, 100% { filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .5)); } }
+/* once the decision has landed, everything before it steps back a little */
 #s-pilot .pl-rig-in { position: absolute; inset: 0; transition: opacity .4s var(--ease-soft); }
-#s-pilot.st-2 .pl-rig-in { opacity: .74; transition: opacity 1s var(--ease-soft) 1.7s; }
-/* while hidden, clip nothing above the cards (the shared a-unfold hidden clip reaches 80px up) */
-#s-pilot .pl-card[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }
+#s-pilot.st-2 .pl-rig-in { opacity: .72; transition: opacity 1s var(--ease-soft) 1.9s; }
+#s-pilot .pl-card > * { transition: opacity .4s var(--ease-soft); }
+#s-pilot.st-2 .pl-card > * { opacity: .9; transition: opacity 1s var(--ease-soft) 2s; }
+
+/* the fork: the path splits three ways after "stop." (it draws behind a leading light, then
+   a story travels the stem and divides into all three branches, every 5 s) */
+#s-pilot .pl-fork { position: absolute; left: 960px; top: 830px; width: 820px; height: 140px; pointer-events: none; }
+#s-pilot .pl-fork svg { position: absolute; inset: 0; width: 820px; height: 140px; overflow: visible; }
+#s-pilot .pl-fb { fill: none; stroke: rgba(37, 199, 188, .7); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; transition: stroke-dashoffset .3s var(--ease-soft); }
+#s-pilot.st-2 .pl-fb { stroke-dashoffset: 0; transition: stroke-dashoffset .9s cubic-bezier(.5, 0, .3, 1) 1.45s; }
+#s-pilot .pl-fl { position: absolute; left: 0; top: 0; width: 0; height: 0; offset-rotate: 0deg; offset-distance: 0%; opacity: 0; }
+#s-pilot .pl-fl .light { position: absolute; left: -7px; top: -7px; }
+/* first: the leading light that draws each branch; then the ambient split every 5 s */
+#s-pilot.st-2 .pl-fl { animation: plFlDraw .9s cubic-bezier(.5, 0, .3, 1) 1.45s both, plFl 5s cubic-bezier(.45, 0, .4, 1) 2.6s infinite; }
+@keyframes plFlDraw { 0% { offset-distance: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes plFl { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 56% { opacity: 1; } 62%, 100% { offset-distance: 100%; opacity: 0; } }
+#s-pilot .pl-fn { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 28%; border: 2.5px solid rgba(37, 199, 188, .75); background: #06121F;
+  opacity: 0; transform: scale(.4); transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft); }
+#s-pilot.st-2 .pl-fn { opacity: 1; transform: none; transition: opacity .4s var(--ease-soft) 1.95s, transform .6s var(--ease-back) 1.95s; animation: plFn 5s ease-out 2.6s infinite; }
+@keyframes plFn { 0%, 58%, 100% { background: #06121F; border-color: rgba(37, 199, 188, .75); box-shadow: 0 0 0 rgba(3, 255, 203, 0); }
+  64% { background: var(--teal); border-color: var(--sea); box-shadow: 0 0 26px rgba(3, 255, 203, .7); } }
+#stage.lite #s-pilot .pl-fl { display: none; }
