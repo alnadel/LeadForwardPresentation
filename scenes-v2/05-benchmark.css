@@ -1,215 +1,294 @@
-/* 05 · Reading the numbers (v2) — two columns, three big numbers, one reading */
+/* 05 · Reading the numbers (v3) — two plinths, one reading */
 
-/* the engine's count-up eases out-cubic; the dots and gaps travel on the same curve */
-#s-benchmark { --bm-count: cubic-bezier(.33, 1, .68, 1); }
+/* the engine's count-up eases out-cubic; the columns rise on the same curve */
+#s-benchmark { --bm-rise: cubic-bezier(.33, 1, .68, 1); }
+#s-benchmark .will { --c: var(--teal); }
+#s-benchmark .mech { --c: var(--purple-lt); }
+#s-benchmark .bm-defs { position: absolute; width: 0; height: 0; }
 
-/* ── column colours ─────────────────────────────────────────────────────── */
-#s-benchmark .mech { --c: var(--purple-lt); --c2: var(--purple); --glow: rgba(157, 103, 170, .75); --fl: #E6CCEE; }
-#s-benchmark .will { --c: var(--teal); --c2: var(--teal); --glow: rgba(37, 199, 188, .75); --fl: #A8FFF0; }
-
-/* ── ambient washes: a plum pool behind the mechanism, a teal one behind the willingness ── */
-#s-benchmark .bm-wash { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + .2s); }
-#s-benchmark.st-0 .bm-wash { opacity: 1; }
-/* (every pool and glow on this stop is drawn at half size and scaled up (the keyframes carry the ×2):
-   a soft gradient scales cleanly, at a quarter of the layer) */
-#s-benchmark .bm-wash::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2); }
-#s-benchmark .bm-wash.mech { left: 135px; top: 430px; width: 590px; height: 380px; }
-#s-benchmark .bm-wash.mech::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .26), rgba(96, 38, 80, .1) 58%, transparent); animation: bmWash 9s ease-in-out infinite alternate; }
-#s-benchmark .bm-wash.will { left: 1165px; top: 370px; width: 610px; height: 380px; }
-#s-benchmark .bm-wash.will::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .18), rgba(37, 199, 188, .06) 58%, transparent); animation: bmWash 8s ease-in-out -4s infinite alternate-reverse; }
-@keyframes bmWash { from { transform: translate(-60px, 20px) scale(1.8); opacity: .55; } to { transform: translate(80px, -28px) scale(2.16); opacity: 1; } }
-/* a plum glow breathes behind the mechanism's deltas, out of phase with the hero's */
-#s-benchmark .bm-mglow { position: absolute; left: -35px; top: -5px; width: 450px; height: 390px; pointer-events: none; opacity: 0;
-  transition: opacity 1.2s var(--ease-soft) calc(var(--enter, 0s) + .9s); }
-#s-benchmark.st-0 .bm-mglow { opacity: 1; }
-#s-benchmark .bm-mglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2);
-  background: radial-gradient(closest-side, rgba(157, 103, 170, .4), rgba(124, 60, 107, .16) 55%, transparent); animation: bmHalo 5.2s ease-in-out -2.6s infinite; }
-#s-benchmark .bm-mglow::after { background: radial-gradient(closest-side, rgba(157, 103, 170, .3), transparent); animation: bmHalo2 7.1s ease-in-out -3.2s infinite; }
-
-/* ── header: the headline steps out at stop 1 ───────────────────────────── */
+/* ── header: the headline hands over to the reading at stop 1 ─────────── */
 #s-benchmark .bm-kick { position: relative; height: 20px; }
 #s-benchmark .bm-kick .kicker { position: absolute; left: 0; top: 0; white-space: nowrap; }
-#s-benchmark .bm-h { margin-top: 26px; font-size: 72px; white-space: nowrap; }
-#s-benchmark .bm-mark { position: absolute; width: 0; height: 0; }
+#s-benchmark .bm-h { position: absolute; left: 0; top: 46px; font-size: 72px; white-space: nowrap; }
+#s-benchmark .bm-head em { font-style: normal; }
+#s-benchmark .bm-head em.t { color: var(--teal); }
+#s-benchmark .bm-head em.p { color: var(--purple-lt); }
+#s-benchmark .bm-read { position: absolute; left: 0; top: 44px; font-size: 52px; letter-spacing: -.022em; white-space: nowrap; }
+#s-benchmark .bm-take { position: absolute; left: 0; top: 110px; margin: 0; font: 700 88px/1.02 var(--font); letter-spacing: -.028em; color: var(--white); white-space: nowrap; }
 
-/* ── the luminous divider: draws down from the top (clip), keeps its glow unclipped ── */
-#s-benchmark .bm-divider { position: absolute; left: 959px; top: 346px; width: 2px; height: 446px;
-  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .34) 12%, rgba(170, 255, 238, .5) 50%, rgba(255, 255, 255, .34) 88%, transparent);
-  box-shadow: 0 0 18px rgba(3, 255, 203, .22);
-  transition: clip-path var(--dur, 1s) var(--ease-out) var(--delay), top 1.1s var(--ease-out) .05s, height 1.1s var(--ease-out) .05s; }
-#s-benchmark .bm-divider[data-in] { clip-path: inset(-40px -40px -40px -40px); }
-#s-benchmark .bm-divider[data-in]:not(.is-in) { opacity: 1; transform: none; filter: none; clip-path: inset(0 -40px 100% -40px); }
-#s-benchmark.st-1 .bm-divider { top: 196px; height: 404px; }
-/* ambient: a slow light travels down the divider */
-#s-benchmark .bm-div-run { position: absolute; left: -4px; top: 0; width: 10px; height: 100%; opacity: 0; }
-#s-benchmark .bm-divider.is-in .bm-div-run { animation: bmRun 6.2s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 1.6s) infinite; }
-#s-benchmark .bm-div-run::before { content: ''; position: absolute; left: 2px; top: -80px; width: 6px; height: 160px; border-radius: 3px;
-  background: linear-gradient(180deg, transparent, rgba(3, 255, 203, .5) 35%, #CFFFF4 50%, rgba(3, 255, 203, .5) 65%, transparent); box-shadow: 0 0 22px rgba(3, 255, 203, .55); }
-#s-benchmark .bm-div-run::after { content: ''; position: absolute; left: -45px; top: -60px; width: 100px; height: 120px; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .22), transparent); }
-@keyframes bmRun { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 1; } 78% { opacity: 1; } 90%, 100% { transform: translateY(100%); opacity: 0; } }
-/* the divider draws down behind a leading light (live build only) */
-#s-benchmark .bm-divider::after { content: ''; position: absolute; left: -9px; top: -10px; width: 20px; height: 20px; border-radius: 28%; opacity: 0;
-  background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 16px var(--sea), 0 0 44px rgba(3, 255, 203, .6); }
-#s-benchmark.bm-live .bm-divider::after { animation: bmTip 1s var(--ease-out) var(--delay) backwards; }
-@keyframes bmTip { 0% { transform: translateY(0); opacity: 0; } 16% { opacity: 1; } 72% { opacity: 1; } 100% { transform: translateY(440px); opacity: 0; } }
+/* ── the plinths ────────────────────────────────────────────────────────── */
+#s-benchmark .bm-plinth { position: absolute; }
+#s-benchmark .bm-plinth svg { display: block; overflow: visible; }
+#s-benchmark .bm-plinth[data-in]:not(.is-in) { transform: translateY(26px); filter: none; }
+#s-benchmark .bm-plinth polygon { stroke-width: 1; stroke-linejoin: round; }
+#s-benchmark .bm-plinth.will .t { fill: url(#bm-lw); stroke: rgba(37, 199, 188, .38); }
+#s-benchmark .bm-plinth.mech .t { fill: url(#bm-lm); stroke: rgba(201, 166, 211, .34); }
+#s-benchmark .bm-plinth .f { fill: url(#bm-lf); stroke: rgba(255, 255, 255, .08); }
+#s-benchmark .bm-plinth .s { fill: #040913; stroke: rgba(255, 255, 255, .06); }
+#s-benchmark .bm-plinth .grid path { fill: none; stroke: rgba(255, 255, 255, .07); stroke-width: 1; }
+#s-benchmark .bm-plinth .edge { fill: none; stroke: var(--c); stroke-width: 2; }
+#s-benchmark .bm-plinth .edge-glow { fill: none; stroke: var(--c); stroke-width: 9; opacity: .2; }
+/* a light runs along each front edge as the plinths land (live build only) */
+#s-benchmark .bm-plinth-sweep { position: absolute; left: 0; top: 49px; width: 150px; height: 6px; margin-left: -75px; border-radius: 3px; opacity: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--c) 60%, #fff); box-shadow: 0 0 16px var(--c); }
+#s-benchmark.bm-live .bm-plinth-sweep { animation: bmSweep 1.3s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + .35s) backwards; }
+#s-benchmark.bm-live .mech .bm-plinth-sweep { animation-delay: calc(var(--enter, 0s) + .5s); }
+@keyframes bmSweep { 0% { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 80% { opacity: 1; } 100% { transform: translateX(668px); opacity: 0; } }
 
-/* ── columns ────────────────────────────────────────────────────────────── */
-#s-benchmark .bm-col { position: absolute; top: 346px; width: 732px; height: 446px; }
-#s-benchmark .bm-col.mech { left: 144px; }
-#s-benchmark .bm-col.will { left: 1044px; }
-#s-benchmark .bm-lab { position: absolute; left: 0; top: 0; display: inline-flex; align-items: center; gap: 14px; font: 700 22px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--c); white-space: nowrap; }
+/* the category labels */
+#s-benchmark .bm-lab { position: absolute; top: 334px; display: inline-flex; align-items: center; gap: 14px; font: 700 22px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--c); white-space: nowrap; }
 #s-benchmark .bm-lab i { width: 14px; height: 14px; flex: none; border-radius: 28%; background: currentColor; box-shadow: 0 0 12px currentColor; }
-/* stop 1: the reading becomes each column's header */
-#s-benchmark .bm-say { position: absolute; left: 0; top: -150px; margin: 0; font: 700 58px/1.04 var(--font); letter-spacing: -.024em; color: var(--c); white-space: nowrap; }
 
-/* the metrics: step back at stop 1 */
-#s-benchmark .bm-body { position: absolute; left: 0; top: 52px; width: 732px; transform-origin: 0 0;
-  transition: transform 1.1s var(--ease-out), opacity .9s var(--ease-soft); }
-#s-benchmark.st-1 .bm-body { transform: translateY(-92px) scale(.72); opacity: .45; transition-delay: .04s; }
+/* the washes behind each half (half size, scaled ×2) */
+#s-benchmark .bm-wash { position: absolute; top: 460px; width: 560px; height: 300px; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + .2s); }
+#s-benchmark.st-0 .bm-wash { opacity: 1; }
+#s-benchmark .bm-wash.will { left: 200px; }
+#s-benchmark .bm-wash.mech { left: 1120px; }
+#s-benchmark .bm-wash::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2); }
+#s-benchmark .bm-wash.will::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 58%, transparent); animation: bmWash 8s ease-in-out -4s infinite alternate-reverse; }
+#s-benchmark .bm-wash.mech::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .26), rgba(96, 38, 80, .1) 58%, transparent); animation: bmWash 9s ease-in-out infinite alternate; }
+@keyframes bmWash { from { transform: translate(-70px, 24px) scale(1.8); opacity: .5; } to { transform: translate(80px, -30px) scale(2.16); opacity: 1; } }
 
-/* ── a metric: a big delta, its name, and a slim mini-bar ──────────────── */
-#s-benchmark .bm-m { position: relative; }
-#s-benchmark .bm-m[data-in]:not(.is-in) { opacity: 1; transform: none; filter: none; }
-#s-benchmark .bm-m + .bm-m { margin-top: 44px; }
-#s-benchmark .bm-fig { position: relative; display: flex; align-items: last baseline; gap: 22px; }
-#s-benchmark .bm-n { flex: none; display: inline-block; font: 700 136px/.8 var(--font); letter-spacing: -.03em; color: var(--c); white-space: nowrap;
-  opacity: 0; transform: translateY(26px); filter: blur(8px);
-  transition: opacity .5s var(--ease-soft) var(--delay), transform .8s var(--ease-out) var(--delay), filter .6s var(--ease-soft) var(--delay); }
-#s-benchmark .bm-n.neg::before { content: '\2212'; }
-#s-benchmark .bm-n.pos::before { content: '+'; }
+/* light pools on the plinth tops (half size, scaled ×2) */
+#s-benchmark .bm-pool { position: absolute; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + .4s); }
+#s-benchmark.st-0 .bm-pool { opacity: 1; }
+#s-benchmark .bm-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2); }
+#s-benchmark .bm-pool.will::before { background: radial-gradient(closest-side, rgba(3, 255, 203, .3), rgba(37, 199, 188, .1) 55%, transparent); }
+#s-benchmark .bm-pool.mech::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .4), rgba(124, 60, 107, .13) 55%, transparent); }
+#s-benchmark.st-0 .bm-pool::before { animation: bmPool 7s ease-in-out var(--pd) infinite alternate; }
+@keyframes bmPool { from { transform: translateX(-40px) scale(1.8); opacity: .5; } to { transform: translateX(40px) scale(2.15); opacity: 1; } }
+
+/* ── columns: rise out of the plinth, sink back into it ──────────────── */
+#s-benchmark .bm-rw { position: absolute; }
+#s-benchmark .bm-rise { position: absolute; left: 0; top: 0; transition-timing-function: var(--bm-rise); }
+#s-benchmark .bm-rise[data-in]:not(.is-in), #s-benchmark .bm-rise[data-out].is-out { opacity: 1; filter: none; transform: translateY(var(--h)); }
+#s-benchmark .bm-rise[data-out].is-out { transition: transform .62s cubic-bezier(.5, 0, .75, .3); }
+#s-benchmark .bm-cs, #s-benchmark .bm-tk, #s-benchmark .bm-bd, #s-benchmark .bm-lit { display: block; overflow: visible; }
+#s-benchmark .bm-cs polygon { stroke-linejoin: round; }
+/* Tahakom: solid; teal for the willingness, plum for the mechanism */
+#s-benchmark .tw .f { fill: url(#bm-tf); }
+#s-benchmark .tw .s { fill: url(#bm-ts); }
+#s-benchmark .tw .uf { fill: url(#bm-uf); }
+#s-benchmark .tw .us { fill: url(#bm-us); }
+#s-benchmark .tw .t { fill: #C4FFF6; stroke: #F0FFFC; stroke-width: 1; }
+#s-benchmark .tw { filter: drop-shadow(0 0 18px rgba(3, 255, 203, .35)); }
+#s-benchmark .tp .f { fill: url(#bm-pf); }
+#s-benchmark .tp .s { fill: url(#bm-ps); }
+#s-benchmark .tp .t { fill: #E8D0EE; stroke: #FBF3FC; stroke-width: 1; }
+#s-benchmark .tp { filter: drop-shadow(0 0 14px rgba(157, 103, 170, .5)); }
+/* the benchmark: a dashed glass ghost */
+#s-benchmark .gg .f { fill: url(#bm-gf); stroke: rgba(255, 255, 255, .62); stroke-width: 1.4; stroke-dasharray: 6 5; }
+#s-benchmark .gg .s { fill: rgba(255, 255, 255, .035); stroke: rgba(255, 255, 255, .34); stroke-width: 1.2; stroke-dasharray: 6 5; }
+#s-benchmark .gg .t { fill: rgba(255, 255, 255, .16); stroke: rgba(255, 255, 255, .8); stroke-width: 1.4; }
+
+/* ambient (stop 0): a light climbs the hero's surplus, the part above the benchmark */
+#s-benchmark .bm-climb { position: absolute; left: 0; overflow: hidden; }
+#s-benchmark .bm-climb b { position: absolute; left: 0; right: 0; bottom: 0; height: 110px; opacity: 0;
+  background: linear-gradient(0deg, transparent, rgba(255, 255, 255, .5) 50%, transparent); }
+#s-benchmark.st-0:not(.st-1) .bm-climb b { animation: bmClimb 4.6s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 2.3s) infinite; }
+@keyframes bmClimb { 0% { transform: translateY(110px); opacity: 0; } 18% { opacity: 1; } 68% { opacity: .9; } 84%, 100% { transform: translateY(calc(-1 * var(--hs))); opacity: 0; } }
+/* …a glow breathes behind the hero column's top */
+#s-benchmark .bm-beam { position: absolute; width: 90px; height: 140px; pointer-events: none; opacity: 0; transition: opacity .9s var(--ease-soft); }
+#s-benchmark.st-0:not(.st-1) .bm-beam { opacity: 1; transition: opacity 1.2s var(--ease-soft) calc(var(--enter, 0s) + 1.5s); }
+#s-benchmark .bm-beam::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2);
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .34), rgba(3, 255, 203, .08) 60%, transparent); }
+#s-benchmark.st-0:not(.st-1) .bm-beam::before { animation: bmBeam 4.4s ease-in-out infinite; }
+@keyframes bmBeam { 0%, 100% { transform: scale(1.7); opacity: .45; } 50% { transform: scale(2.2); opacity: 1; } }
+/* …and motes rise off the willingness */
+#s-benchmark .bm-motes, #s-benchmark .bm-bub { position: absolute; }
+#s-benchmark .bm-motes { width: 0; height: 0; }
+#s-benchmark .bm-bub { overflow: hidden; }
+#s-benchmark .bm-motes i, #s-benchmark .bm-bub i { position: absolute; width: 3px; height: 3px; border-radius: 28%; opacity: 0;
+  background: rgba(255, 255, 255, .8); box-shadow: 0 0 6px rgba(3, 255, 203, .8); }
+#s-benchmark.st-0:not(.st-1) .bm-motes i { animation: v2Dust var(--t) linear var(--dl) infinite; }
+
+/* ── the hero dimension: the benchmark level, the surplus, the bracket ─── */
+#s-benchmark .bm-dim, #s-benchmark .bm-surf, #s-benchmark .bm-arc, #s-benchmark .bm-broken { position: absolute; overflow: visible; }
+#s-benchmark .bm-dim .collar { fill: rgba(255, 255, 255, .12); stroke: rgba(255, 255, 255, .9); stroke-width: 1.6; stroke-dasharray: 5 4; stroke-linejoin: round; }
+#s-benchmark .bm-dim .lvl { fill: none; stroke-width: 1.5; stroke-dasharray: 4 5; }
+#s-benchmark .bm-dim .lvl.b { stroke: rgba(255, 255, 255, .62); }
+#s-benchmark .bm-dim .lvl.t { stroke: rgba(3, 255, 203, .75); }
+#s-benchmark .bm-dim .br { fill: none; stroke: var(--sea); stroke-width: 2.6; stroke-linecap: round; }
+#s-benchmark .bm-dim .br-glow { fill: none; stroke: rgba(3, 255, 203, .22); stroke-width: 12; stroke-linecap: round; }
+
+/* ── the numbers ────────────────────────────────────────────────────────── */
 #s-benchmark .bm-dg { position: relative; display: inline-block; }
-#s-benchmark .mech .bm-n { min-width: 204px; }   /* both mechanism rows share one column for "pts" */
 #s-benchmark .bm-gh { visibility: hidden; }
-#s-benchmark .bm-ct { position: absolute; left: 0; top: 0; transform-origin: 30% 80%; }
-#s-benchmark .bm-cap { display: flex; flex-direction: column; gap: 6px; opacity: 0; transform: translateX(-18px);
-  transition: opacity .5s var(--ease-soft) calc(var(--delay) + .12s), transform .8s var(--ease-out) calc(var(--delay) + .12s); }
-#s-benchmark .bm-cap b { font: 700 40px/1 var(--font); color: var(--c); }
-#s-benchmark .bm-cap em { font: 500 32px/1.05 var(--font); font-style: normal; color: var(--ink-1); white-space: nowrap; }
-#s-benchmark .bm-m.is-in .bm-n, #s-benchmark .bm-m.is-in .bm-cap { opacity: 1; transform: none; filter: none; }
-
-/* the hero: +48 in sea green, glowing */
-#s-benchmark .hero .bm-n { font-size: 220px; line-height: .78; color: var(--sea); text-shadow: 0 0 30px rgba(3, 255, 203, .4); }
-#s-benchmark .hero .bm-cap { gap: 8px; }
-#s-benchmark .hero .bm-cap b { font-size: 62px; color: var(--sea); text-shadow: 0 0 24px rgba(3, 255, 203, .35); }
-#s-benchmark .hero .bm-cap em { font-size: 34px; }
-#s-benchmark.st-0 .hero .bm-m.is-in .bm-n { animation: bmHeroGlow 3.6s ease-in-out calc(var(--delay) + 1.4s) infinite; }
-@keyframes bmHeroGlow { 0%, 100% { text-shadow: 0 0 24px rgba(3, 255, 203, .3); } 50% { text-shadow: 0 0 56px rgba(3, 255, 203, .85), 0 0 120px rgba(3, 255, 203, .3); } }
-#s-benchmark .hero .bm-ct.counted { animation: bmPunch 1s var(--ease-out); }
-@keyframes bmPunch { 0% { transform: scale(1); filter: brightness(1); } 16% { transform: scale(1.14); filter: brightness(1.6); } 100% { transform: scale(1); filter: brightness(1); } }
-/* a ring bursts from +48 as it lands (live build only) */
-#s-benchmark .hero .bm-fig::before { content: ''; position: absolute; left: 190px; top: 90px; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 28%;
-  border: 3px solid rgba(3, 255, 203, .9); box-shadow: 0 0 30px rgba(3, 255, 203, .6); opacity: 0; pointer-events: none; }
-#s-benchmark.bm-live .hero .bm-fig::before { animation: bmRing 1.3s var(--ease-out) calc(var(--delay) + .9s) backwards; }
-@keyframes bmRing { 0% { transform: scale(.4); opacity: 0; } 16% { opacity: 1; } 100% { transform: scale(3.4); opacity: 0; } }
-/* a glow breathes behind +48 */
-#s-benchmark .bm-halo { position: absolute; left: 85px; top: -85px; width: 470px; height: 330px; pointer-events: none; opacity: 0;
-  transition: opacity 1.2s var(--ease-soft) calc(var(--enter, 0s) + 1.5s); }
-#s-benchmark.st-0 .bm-halo { opacity: 1; }
-#s-benchmark .bm-halo::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2);
-  background: radial-gradient(closest-side, rgba(3, 255, 203, .36), rgba(37, 199, 188, .15) 55%, transparent); animation: bmHalo 3.8s ease-in-out infinite; }
-@keyframes bmHalo { 0%, 100% { opacity: .32; transform: scale(1.68); } 50% { opacity: 1; transform: scale(2.2); } }
-/* …and a second, slower layer, so the glow never settles into one rhythm */
-#s-benchmark .bm-halo::after, #s-benchmark .bm-mglow::after, #s-benchmark .bm-tglow::after { content: ''; position: absolute; inset: 12% 16%; border-radius: 50%; transform: scale(2); }
-#s-benchmark .bm-halo::after { background: radial-gradient(closest-side, rgba(3, 255, 203, .26), transparent); animation: bmHalo2 5.9s ease-in-out -1.3s infinite; }
-@keyframes bmHalo2 { 0%, 100% { opacity: .15; transform: translateX(-46px) scale(1.8); } 50% { opacity: 1; transform: translateX(52px) scale(2.28); } }
+#s-benchmark .bm-ct { position: absolute; left: 0; top: 0; }
+/* the hero: +48 in sea green */
+#s-benchmark .bm-hero { position: absolute; }
+#s-benchmark .bm-hn { position: relative; display: inline-flex; align-items: flex-start; font: 700 190px/.8 var(--font); letter-spacing: -.035em; color: var(--sea); white-space: nowrap;
+  text-shadow: 0 0 34px rgba(3, 255, 203, .38); }
+#s-benchmark .bm-hn b { margin: 6px 0 0 14px; font: 700 54px/1 var(--font); letter-spacing: 0; }
+#s-benchmark .bm-hname { margin-top: 20px; font: 500 34px/1 var(--font); color: var(--ink-1); white-space: nowrap; }
+#s-benchmark .bm-hglow { position: absolute; left: 60px; top: 10px; width: 190px; height: 90px; pointer-events: none; }
+#s-benchmark .bm-hglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2); opacity: .5;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .3), rgba(37, 199, 188, .1) 55%, transparent); }
+#s-benchmark.st-0:not(.st-1) .bm-hglow::before { animation: bmBeam 3.8s ease-in-out -1.2s infinite; }
 /* the hero lands with a bloom of light (live build only) */
-#s-benchmark .hero .bm-fig::after { content: ''; position: absolute; left: 70px; top: -15px; width: 260px; height: 190px; border-radius: 50%; pointer-events: none; opacity: 0;
-  background: radial-gradient(closest-side, rgba(200, 255, 244, .45), transparent); }
-/* (the one-shots fill backwards only: each ends invisible, where its resting style is, and a finished
-   animation holds no layer) */
-#s-benchmark.bm-live .hero .bm-fig::after { animation: bmBloom 1.4s var(--ease-out) calc(var(--delay) + .9s) backwards; }
-@keyframes bmBloom { 0% { opacity: 0; transform: scale(1); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(2.6); } }
+#s-benchmark .bm-hero::after { content: ''; position: absolute; left: 40px; top: -20px; width: 300px; height: 200px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(200, 255, 244, .42), transparent); }
+#s-benchmark.bm-live .bm-hero::after { animation: bmBloom 1.4s var(--ease-out) calc(var(--enter, 0s) + 1.8s) backwards; }
+@keyframes bmBloom { 0% { opacity: 0; transform: scale(1); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(2.4); } }
+/* the mechanism: −14, −15 above their pairs */
+#s-benchmark .bm-mn { position: absolute; width: 380px; margin-left: -190px; text-align: center; }
+#s-benchmark .bm-mv { display: inline-flex; align-items: flex-start; font: 700 124px/.8 var(--font); letter-spacing: -.03em; color: var(--purple-lt); white-space: nowrap; }
+#s-benchmark .bm-mv b { margin: 4px 0 0 10px; font: 700 40px/1 var(--font); letter-spacing: 0; }
+#s-benchmark .bm-mname { margin-top: 14px; font: 500 26px/1 var(--font); color: rgba(255, 255, 255, .84); white-space: nowrap; }
 
-/* ── the mini-bar: 0–100%, benchmark ring, Tahakom dot ─────────────────── */
-#s-benchmark .bm-bar { position: relative; height: 48px; margin-top: 24px; }
-#s-benchmark .hero .bm-bar { margin-top: 28px; }
-#s-benchmark .bm-track { position: absolute; left: 0; right: 0; top: 12px; height: 2px; margin-top: -1px; border-radius: 1px; background: rgba(255, 255, 255, .15);
-  clip-path: inset(0 100% 0 0); transition: clip-path .7s var(--ease-out) var(--delay); }
-#s-benchmark .bm-track::before, #s-benchmark .bm-track::after { content: ''; position: absolute; top: -5px; width: 2px; height: 12px; border-radius: 1px; background: rgba(255, 255, 255, .22); }
-#s-benchmark .bm-track::before { left: 0; }
-#s-benchmark .bm-track::after { right: 0; }
-#s-benchmark .bm-m.is-in .bm-track { clip-path: inset(-8px -4px -8px -4px); }
+/* the shortfall: a dashed, hatched void up to the benchmark level */
+#s-benchmark .bm-miss { position: absolute; }
+#s-benchmark .bm-miss[data-in]:not(.is-in) { transform: none; filter: none; }
+#s-benchmark .bm-miss svg { display: block; overflow: visible; }
+#s-benchmark .bm-miss polygon { stroke-linejoin: round; stroke-dasharray: 7 5; }
+#s-benchmark .bm-miss .f { fill: url(#bm-hatch); stroke: var(--purple-lt); stroke-width: 1.6; }
+#s-benchmark .bm-miss .s { fill: rgba(157, 103, 170, .1); stroke: rgba(201, 166, 211, .55); stroke-width: 1.2; }
+#s-benchmark .bm-miss .t { fill: rgba(201, 166, 211, .16); stroke: rgba(232, 208, 238, .85); stroke-width: 1.4; }
+#s-benchmark .bm-miss-pulse { position: absolute; left: 0; top: 17px; right: 26px; bottom: 0; opacity: 0;
+  background: linear-gradient(180deg, rgba(201, 166, 211, .34), rgba(157, 103, 170, .06)); }
+#s-benchmark.st-0:not(.st-1) .bm-miss-pulse { animation: bmMiss 3.2s ease-in-out var(--pd) infinite; }
+@keyframes bmMiss { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
-/* the gap between benchmark and Tahakom draws with the dot */
-#s-benchmark .bm-seg { position: absolute; top: 12px; height: 4px; margin-top: -2px; border-radius: 2px; left: calc(var(--lo) * 1%); width: calc((var(--hi) - var(--lo)) * 1%);
-  transition: clip-path .72s var(--bm-count) calc(var(--delay) + .2s); }
-#s-benchmark .to-l .bm-seg { clip-path: inset(-10px -10px -10px 100%); background: linear-gradient(to left, rgba(255, 255, 255, .4), var(--c2)); }
-#s-benchmark .to-r .bm-seg { clip-path: inset(-10px 100% -10px -10px); background: linear-gradient(to right, rgba(255, 255, 255, .4), var(--c2)); }
-#s-benchmark .hero .bm-seg { height: 6px; margin-top: -3px; border-radius: 3px; background: linear-gradient(to right, rgba(255, 255, 255, .35), var(--teal) 55%, var(--sea)); box-shadow: 0 0 18px rgba(3, 255, 203, .45); }
-#s-benchmark .bm-m.is-in .bm-seg { clip-path: inset(-10px -10px -10px -10px); }
-
-#s-benchmark .bm-ring { position: absolute; top: 12px; left: calc(var(--b) * 1%); width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, .72); background: #0A0E1A; transform: scale(0); transition: transform .5s var(--ease-back) calc(var(--delay) + .06s); }
-#s-benchmark .bm-m.is-in .bm-ring { transform: none; }
-
-#s-benchmark .bm-dot { position: absolute; top: 12px; left: calc(var(--t) * 1%); width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 28%;
-  background: var(--c2); border: 2px solid var(--c); box-shadow: 0 0 16px var(--glow);
-  opacity: 0; transform: translateX(var(--from)) scale(.5);
-  transition: opacity .25s var(--ease-soft) calc(var(--delay) + .14s), transform .72s var(--bm-count) calc(var(--delay) + .2s); }
-#s-benchmark .hero .bm-dot { width: 24px; height: 24px; margin: -12px 0 0 -12px; background: var(--sea); border-color: #C8FFF3; box-shadow: 0 0 20px rgba(3, 255, 203, .9); }
-#s-benchmark .bm-m.is-in .bm-dot { opacity: 1; transform: none; }
-/* a halo breathes behind each dot */
-#s-benchmark .bm-dot::after { content: ''; position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%;
-  background: radial-gradient(closest-side, var(--glow), transparent); opacity: .3; animation: bmDotHalo 3.4s ease-in-out infinite; }
-#s-benchmark .hero .bm-dot::after { width: 110px; height: 110px; margin: -55px 0 0 -55px; background: radial-gradient(closest-side, rgba(3, 255, 203, .7), transparent); }
-#s-benchmark .mech .bm-m + .bm-m .bm-dot::after { animation-delay: -1.7s; }
-@keyframes bmDotHalo { 0%, 100% { opacity: .2; transform: scale(.6); } 50% { opacity: .85; transform: scale(1.1); } }
-
-/* ambient: light flows along the gap, benchmark to Tahakom */
-#s-benchmark .bm-flow { position: absolute; top: 12px; left: calc(var(--b) * 1%); width: 44px; height: 4px; margin: -2px 0 0 -22px; border-radius: 2px; opacity: 0; box-shadow: 0 0 12px var(--fl); }
-#s-benchmark .to-l .bm-flow { background: linear-gradient(270deg, transparent, var(--fl) 70%, #fff); }
-#s-benchmark .to-r .bm-flow { background: linear-gradient(90deg, transparent, var(--fl) 70%, #fff); }
-#s-benchmark .hero .bm-flow { width: 70px; height: 6px; margin: -3px 0 0 -35px; }
-#s-benchmark .bm-m.is-in .bm-flow { animation: bmFlow 3.2s cubic-bezier(.45, .05, .55, .95) calc(var(--delay) + 1.4s) infinite; }
-#s-benchmark .mech .bm-m + .bm-m .bm-flow { animation-duration: 3.6s; animation-delay: calc(var(--delay) + 2.4s); }
-#s-benchmark .hero .bm-flow { animation-duration: 2.8s; }
-@keyframes bmFlow { 0% { transform: translateX(0); opacity: 0; } 14% { opacity: 1; } 68% { opacity: 1; } 80% { transform: translateX(var(--run)); opacity: 0; } 100% { transform: translateX(var(--run)); opacity: 0; } }
-
-/* the raw pair: tiny and dim, beneath each dot */
-#s-benchmark .bm-v { position: absolute; top: 28px; transform: translateX(-50%); font: 400 18px/1 var(--font); white-space: nowrap; opacity: 0;
-  transition: opacity .5s var(--ease-soft) calc(var(--delay) + .9s); }
-#s-benchmark .bm-vt { left: calc(var(--t) * 1%); color: var(--c); }
-#s-benchmark .bm-vb { left: calc(var(--b) * 1%); color: rgba(255, 255, 255, .6); }
-#s-benchmark .bm-m.is-in .bm-v { opacity: .9; }
+/* the exact pairs, engraved on the plinth fronts */
+#s-benchmark .bm-eng { position: absolute; top: 816px; width: 90px; margin-left: -45px; text-align: center; font: 700 20px/1 var(--font); letter-spacing: .02em; white-space: nowrap; }
+#s-benchmark .bm-eng[data-in]:not(.is-in) { transform: none; filter: none; }
+#s-benchmark .bm-eng.tw { color: var(--sea); }
+#s-benchmark .bm-eng.tp { color: var(--purple-lt); }
+#s-benchmark .bm-eng.gg { font-weight: 400; color: rgba(255, 255, 255, .64); }
 
 /* supporting: connection / loyalty */
-#s-benchmark .bm-aux { position: absolute; left: 0; top: 318px; margin: 0; display: flex; align-items: baseline; gap: 14px; white-space: nowrap; }
-#s-benchmark .bm-aux b { font: 700 30px/1 var(--font); color: var(--teal); opacity: .85; }
-#s-benchmark .bm-aux b small { font-size: 20px; }
-#s-benchmark .bm-aux span { font: 400 22px/1 var(--font); color: rgba(255, 255, 255, .7); }
+#s-benchmark .bm-aux { position: absolute; margin: 0; display: flex; align-items: baseline; gap: 12px; white-space: nowrap; }
+#s-benchmark .bm-aux b { font: 700 28px/1 var(--font); color: var(--teal); }
+#s-benchmark .bm-aux b small { font-size: 18px; }
+#s-benchmark .bm-aux span { font: 400 21px/1 var(--font); color: rgba(255, 255, 255, .68); }
 #s-benchmark .bm-aux em { font: 400 18px/1 var(--font); font-style: normal; color: rgba(255, 255, 255, .5); }
 
-/* ── stop 1: the takeaway, the hero of the reading ──────────────────────── */
-#s-benchmark .bm-takebox { position: absolute; left: 144px; top: 690px; }
-#s-benchmark .bm-take { position: relative; margin: 0; font: 700 88px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); white-space: nowrap; }
-#s-benchmark .bm-uline { position: absolute; left: 0; right: 0; bottom: -22px; height: 3px; border-radius: 2px;
-  background: linear-gradient(90deg, var(--sea), rgba(37, 199, 188, .55) 55%, rgba(37, 199, 188, 0)); box-shadow: 0 0 14px rgba(3, 255, 203, .35); }
-#s-benchmark .bm-uline[data-in] { clip-path: inset(-30px -30px -30px -30px); }
-#s-benchmark .bm-uline[data-in]:not(.is-in) { clip-path: inset(-30px 100% -30px -30px); }
-/* ambient: a light runs along the underline */
-#s-benchmark .bm-uline::after { content: ''; position: absolute; left: 0; top: -2px; width: 180px; height: 7px; margin-left: -90px; border-radius: 4px; opacity: 0;
-  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .8) 70%, #fff); box-shadow: 0 0 18px rgba(3, 255, 203, .6); }
-#s-benchmark .bm-uline.is-in::after { animation: bmLine 5.4s cubic-bezier(.45, .05, .55, .95) 2s infinite; }
-@keyframes bmLine { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 62% { opacity: .8; } 76%, 100% { transform: translateX(1000px); opacity: 0; } }
-/* ambient: a glow breathes behind the takeaway (the text itself stays still) */
-#s-benchmark .bm-tglow { position: absolute; left: 180px; top: -70px; width: 880px; height: 240px; pointer-events: none; opacity: 0;
-  transition: opacity 1.2s var(--ease-soft); }
-#s-benchmark.st-1 .bm-tglow { opacity: 1; transition-delay: .7s; }
-#s-benchmark .bm-tglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2);
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .32), rgba(37, 199, 188, .13) 55%, transparent); animation: bmHalo 4s ease-in-out infinite; }
-#s-benchmark .bm-tglow::after { inset: 14% 24%; background: radial-gradient(closest-side, rgba(3, 255, 203, .2), transparent); animation: bmHalo2 6.3s ease-in-out -2s infinite; }
-/* the reading lands with a bloom of light behind it (live click only) */
-#s-benchmark .bm-takebox::before { content: ''; position: absolute; left: 155px; top: -20px; width: 550px; height: 140px; border-radius: 50%; pointer-events: none; opacity: 0;
-  background: radial-gradient(closest-side, rgba(3, 255, 203, .16), transparent); }
-#s-benchmark.bm-read-live .bm-takebox::before { animation: bmBloom 1.6s var(--ease-out) .9s backwards; }
+/* ── stop 1 · the reservoir ─────────────────────────────────────────────── */
+#s-benchmark .bm-tk { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .3)); }
+#s-benchmark .bm-tk polygon, #s-benchmark .bm-tk path { stroke-linejoin: round; }
+#s-benchmark .bm-tk .gb { fill: rgba(255, 255, 255, .03); stroke: rgba(255, 255, 255, .14); stroke-width: 1; }
+#s-benchmark .bm-tk .gl { fill: rgba(255, 255, 255, .02); stroke: rgba(255, 255, 255, .12); stroke-width: 1; }
+#s-benchmark .bm-tk .lf { fill: url(#bm-qf); opacity: .94; }
+#s-benchmark .bm-tk .ls { fill: #0B5C61; opacity: .92; }
+#s-benchmark .bm-tk .lt { fill: #BFFFF5; }
+#s-benchmark .bm-tk .ring { fill: rgba(255, 255, 255, .06); stroke: rgba(255, 255, 255, .9); stroke-width: 1.5; stroke-dasharray: 5 4; }
+#s-benchmark .bm-tk .gf { fill: rgba(255, 255, 255, .045); stroke: rgba(210, 255, 248, .6); stroke-width: 1.5; }
+#s-benchmark .bm-tk .gs { fill: rgba(255, 255, 255, .03); stroke: rgba(210, 255, 248, .38); stroke-width: 1.2; }
+#s-benchmark .bm-tk .gt { fill: rgba(255, 255, 255, .06); stroke: rgba(210, 255, 248, .65); stroke-width: 1.4; }
+#s-benchmark .bm-tk .hi { fill: none; stroke: rgba(255, 255, 255, .18); stroke-width: 6; stroke-linecap: round; }
+#s-benchmark .bm-tk .port { fill: #0A3A44; stroke: var(--sea); stroke-width: 1.2; }
+#s-benchmark .bm-tk-ic { position: absolute; width: 92px; height: 92px; font-size: 92px; color: rgba(3, 50, 56, .5); }
+/* a halo breathes round the reservoir; a glow breathes along the channel once it is built */
+#s-benchmark .bm-halo { position: absolute; width: 280px; height: 260px; pointer-events: none; opacity: 0; transition: opacity .6s var(--ease-soft); }
+#s-benchmark.st-1 .bm-halo { opacity: 1; transition: opacity 1.2s var(--ease-soft) .9s; }
+#s-benchmark .bm-halo::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2);
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .26), rgba(37, 199, 188, .08) 60%, transparent); }
+#s-benchmark.st-1 .bm-halo::before { animation: bmBeam 4.2s ease-in-out infinite; }
+#s-benchmark .bm-arcglow { position: absolute; overflow: visible; pointer-events: none; opacity: 0; }
+#s-benchmark .bm-arcglow path { fill: none; stroke: rgba(3, 255, 203, .16); stroke-width: 70; stroke-linecap: round; }
+#s-benchmark.st-1 .bm-arcglow { animation: bmArcGlow 3.6s ease-in-out 2.4s infinite; }
+@keyframes bmArcGlow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+#s-benchmark.st-1 .bm-bub i { animation: v2Dust var(--t) linear var(--dl) infinite; }
+/* the surface shimmers */
+#s-benchmark .bm-surf polygon { fill: #fff; opacity: .55; }
+#s-benchmark .bm-surfw { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-benchmark.st-1 .bm-surf { animation: bmSurf 3.4s ease-in-out 2.3s infinite backwards; }
+@keyframes bmSurf { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
+#s-benchmark .bm-tick { position: absolute; width: 56px; margin-top: -10px; text-align: right; font: 700 18px/1 var(--font); white-space: nowrap; }
+#s-benchmark .bm-tick[data-in]:not(.is-in) { transform: none; filter: none; }
+#s-benchmark .bm-tick::after { content: ''; position: absolute; right: -16px; top: 9px; width: 10px; height: 2px; background: currentColor; }
+#s-benchmark .bm-tick.t { color: var(--sea); }
+#s-benchmark .bm-tick.b { font-weight: 400; color: rgba(255, 255, 255, .62); }
+
+/* ── stop 1 · the organisation ──────────────────────────────────────────── */
+#s-benchmark .bm-bd polygon { stroke-linejoin: round; }
+#s-benchmark .bm-bd .f { fill: url(#bm-bf); stroke: rgba(201, 166, 211, .42); stroke-width: 1.2; }
+#s-benchmark .bm-bd .s { fill: #0A1222; stroke: rgba(201, 166, 211, .28); stroke-width: 1.1; }
+#s-benchmark .bm-bd .t { fill: #2B2542; stroke: rgba(232, 208, 238, .55); stroke-width: 1.2; }
+#s-benchmark .bm-bd .w { fill: rgba(255, 255, 255, .08); }
+#s-benchmark .bm-bd .door { fill: #0A1830; stroke: rgba(3, 255, 203, .5); stroke-width: 1.2; }
+#s-benchmark .bm-bd .sky { fill: #0A1830; stroke: rgba(3, 255, 203, .6); stroke-width: 1.2; }
+/* the windows light in a wave that spreads from the skybridge door once the channel reaches it */
+#s-benchmark .bm-lit { position: absolute; left: 0; top: 0; clip-path: circle(0 at var(--cx) var(--cy)); transition: clip-path 1.3s var(--ease-soft); }
+#s-benchmark.st-1 .bm-lit { clip-path: circle(460px at var(--cx) var(--cy)); transition-delay: 2.3s; }
+#s-benchmark .bm-lit rect { fill: #A6FFF3; }
+#s-benchmark .bm-lit .sky-lit { fill: #D6FFF8; }
+/* each story light that arrives lights the door */
+#s-benchmark .bm-doorglow { position: absolute; width: 60px; height: 60px; pointer-events: none; opacity: 0; }
+#s-benchmark .bm-doorglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2); background: radial-gradient(closest-side, rgba(3, 255, 203, .55), transparent); }
+#s-benchmark.st-1 .bm-doorglow { animation: bmDoor 1.8s ease-out var(--dd) infinite; }
+@keyframes bmDoor { 0% { opacity: 0; } 16% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ── stop 1 · the channel ───────────────────────────────────────────────── */
+/* today: a thin plum line along the ground, broken between the plinths; a plum light trickles
+   along it and dies at the break */
+#s-benchmark .bm-broken[data-in]:not(.is-in) { transform: none; filter: none; }
+#s-benchmark .bm-broken path { fill: none; stroke: #C9A6D3; stroke-width: 3; stroke-dasharray: 5 8; stroke-linecap: round; }
+#s-benchmark .bm-broken path.gl { stroke: rgba(157, 103, 170, .3); stroke-width: 10; stroke-dasharray: none; }
+#s-benchmark .bm-broken circle { fill: #E8D0EE; }
+#s-benchmark .bm-trick { position: absolute; width: 0; height: 0; }
+#s-benchmark .bm-trick::before { content: ''; position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 28%; opacity: 0;
+  background: #E8D0EE; box-shadow: 0 0 10px var(--purple-lt), 0 0 24px rgba(157, 103, 170, .85); }
+#s-benchmark.st-1 .bm-trick::before { animation: bmTrick 4.6s cubic-bezier(.3, 0, .6, 1) 1.6s infinite; }
+@keyframes bmTrick { 0% { transform: translateX(0) scale(.6); opacity: 0; } 10% { opacity: .95; transform: translateX(calc(var(--run) * .08)) scale(1); }
+  66% { opacity: .85; } 84% { transform: translateX(var(--run)) scale(.45); opacity: 0; } 100% { transform: translateX(var(--run)) scale(.45); opacity: 0; } }
+/* the channel to build: an arc of light drawn from the reservoir into the tower */
+#s-benchmark .bm-arc[data-in]:not(.is-in) { transform: none; filter: none; opacity: 1; }
+#s-benchmark .bm-arc path { fill: none; stroke-linecap: round; stroke-dasharray: 1 1.2; stroke-dashoffset: 1.05;
+  transition: stroke-dashoffset var(--dur, 1s) cubic-bezier(.45, 0, .55, 1) var(--delay); }
+#s-benchmark .bm-arc.is-in path { stroke-dashoffset: 0; }
+#s-benchmark .bm-arc .glow { stroke: rgba(3, 255, 203, .14); stroke-width: 36; }
+#s-benchmark .bm-arc .tube { stroke: rgba(37, 199, 188, .55); stroke-width: 13; }
+#s-benchmark .bm-arc .core { stroke: #D6FFF8; stroke-width: 3; }
+/* lights on the arc (motion path, in stage coordinates) */
+#s-benchmark .bm-path { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-benchmark .bm-path > i { position: absolute; left: 0; top: 0; width: 0; height: 0; offset-path: var(--path); offset-rotate: auto; offset-distance: 0%; opacity: 0; }
+#s-benchmark .bm-path .light { position: absolute; left: -7px; top: -7px; }
+#s-benchmark .bm-lead .light { left: -11px; top: -11px; }
+/* its leading light draws it (live click only) */
+#s-benchmark.bm-read-live .bm-lead { animation: bmLead 1.05s cubic-bezier(.45, 0, .55, 1) 1.3s backwards; }
+@keyframes bmLead { 0% { offset-distance: 0%; opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+/* story lights ride it, a third of a lap apart */
+#s-benchmark .bm-car::before { content: ''; position: absolute; right: 4px; top: -2px; width: 76px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .75)); }
+#s-benchmark.st-1 .bm-car { animation: bmCar var(--lap) linear var(--cd) infinite; }
+@keyframes bmCar { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 80% { offset-distance: 100%; opacity: 1; } 86%, 100% { offset-distance: 100%; opacity: 0; } }
+
+/* the test gate: a hoop on the arc, a gauge above it; it pings as each light passes */
+#s-benchmark .bm-gate { position: absolute; width: 0; height: 0; }
+#s-benchmark .bm-hoop, #s-benchmark .bm-hoop-ping { position: absolute; left: -10px; top: -38px; width: 20px; height: 76px; border-radius: 50%; transform: rotate(var(--a)); }
+#s-benchmark .bm-hoop { border: 3px solid var(--sea); box-shadow: 0 0 16px rgba(3, 255, 203, .6), inset 0 0 8px rgba(3, 255, 203, .45); }
+#s-benchmark .bm-hoop-ping { border: 2px solid var(--sea); opacity: 0; pointer-events: none; }
+#s-benchmark.st-1 .bm-hoop-ping { animation: bmPing 1.8s var(--ease-out) var(--ping) infinite; }
+@keyframes bmPing { 0% { transform: rotate(var(--a)) scale(.9); opacity: 0; } 14% { opacity: .95; } 100% { transform: rotate(var(--a)) scale(1.9); opacity: 0; } }
+#s-benchmark .bm-gauge { position: absolute; left: -23px; top: 62px; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 12px; color: var(--sea);
+  background: linear-gradient(160deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .03)), rgba(7, 20, 36, .85); border: 1px solid rgba(3, 255, 203, .5); box-shadow: 0 0 18px rgba(3, 255, 203, .25); }
+#s-benchmark .bm-gauge svg { width: 30px; height: 30px; }
+#s-benchmark .bm-gauge::after { content: ''; position: absolute; left: 50%; bottom: 100%; width: 1.5px; height: 22px; background: linear-gradient(rgba(3, 255, 203, 0), rgba(3, 255, 203, .6)); }
+
+/* the plinths' names move onto their fronts */
+#s-benchmark .bm-plq { position: absolute; top: 817px; font: 700 18px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--c); white-space: nowrap; }
+#s-benchmark .bm-plq[data-in]:not(.is-in) { transform: none; filter: none; }
+
+/* the evidence, as small cards */
+#s-benchmark .bm-ev { position: absolute; top: 388px; display: grid; grid-template-columns: auto auto; column-gap: 16px; row-gap: 6px; align-items: baseline;
+  padding: 12px 22px 13px 18px; border-radius: 14px; border: 1px solid var(--eb);
+  background: linear-gradient(160deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .02)), rgba(7, 14, 28, .6); box-shadow: 0 18px 40px rgba(0, 0, 0, .3); }
+#s-benchmark .bm-ev.will { --eb: rgba(37, 199, 188, .4); }
+#s-benchmark .bm-ev.mech { --eb: rgba(201, 166, 211, .34); }
+#s-benchmark .bm-ev.aux { --eb: rgba(37, 199, 188, .22); }
+#s-benchmark .bm-ev-d { grid-row: 1 / 3; align-self: center; font: 700 32px/1 var(--font); color: var(--c); white-space: nowrap; }
+#s-benchmark .bm-ev.aux .bm-ev-d { font-size: 26px; opacity: .85; }
+#s-benchmark .bm-ev-d small { font-size: 18px; }
+#s-benchmark .bm-ev-n { font: 500 20px/1.1 var(--font); color: rgba(255, 255, 255, .82); white-space: nowrap; }
+#s-benchmark .bm-ev-v { font: 400 18px/1.1 var(--font); color: rgba(255, 255, 255, .56); white-space: nowrap; }
 
 /* ── supporting detail: legend, caveat, sources ─────────────────────────── */
-#s-benchmark .bm-foot { position: absolute; left: 144px; top: 880px; width: 1632px; }
+#s-benchmark .bm-foot { position: absolute; left: 144px; top: 882px; width: 1632px; }
 #s-benchmark .bm-cav { margin: 0; display: flex; align-items: center; font: 400 18px/1.3 var(--font); color: rgba(255, 255, 255, .6); white-space: nowrap; }
-#s-benchmark .bm-key { display: inline-flex; align-items: center; gap: 9px; margin-right: 22px; color: rgba(255, 255, 255, .72); }
-#s-benchmark .bm-key i { width: 13px; height: 13px; flex: none; }
-#s-benchmark .bm-key .k-t { border-radius: 28%; background: linear-gradient(135deg, var(--purple) 50%, var(--teal) 50%); }
-#s-benchmark .bm-key .k-b { border-radius: 50%; border: 2px solid rgba(255, 255, 255, .72); }
+#s-benchmark .bm-key { display: inline-flex; align-items: center; gap: 9px; margin-right: 22px; color: rgba(255, 255, 255, .74); }
+#s-benchmark .bm-key i { width: 13px; height: 16px; flex: none; }
+#s-benchmark .bm-key .k-t { background: linear-gradient(135deg, var(--purple) 50%, var(--teal) 50%); border-radius: 2px; }
+#s-benchmark .bm-key .k-b { border: 1.5px dashed rgba(255, 255, 255, .78); background: rgba(255, 255, 255, .1); border-radius: 2px; }
 #s-benchmark .bm-sep { width: 1px; height: 16px; margin-right: 22px; background: rgba(255, 255, 255, .24); }
 #s-benchmark .bm-src { margin: 8px 0 0; font: 400 16px/1.35 var(--font); color: rgba(255, 255, 255, .52); white-space: nowrap; }
 #s-benchmark .bm-src b { font-weight: 700; }
