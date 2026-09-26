@@ -451,7 +451,9 @@
         const ring = $('#tx-ring');
         ring.style.left = (SPK.shown ? SPK.x : 960) + 'px'; ring.style.top = (SPK.shown ? SPK.y : 540) + 'px';
         ring.classList.remove('run'); void ring.offsetWidth; ring.classList.add('run');
-        if (F) F.burst(SPK.shown ? SPK.x : 960, SPK.shown ? SPK.y : 540, { radius: 2200, dur: 1.4 });
+        // irisBurst: per-scene radius of the field flash (0 = none), e.g. a scene that opens on a dark field
+        const ib = rec.def.irisBurst == null ? 2200 : rec.def.irisBurst;
+        if (F && ib) F.burst(SPK.shown ? SPK.x : 960, SPK.shown ? SPK.y : 540, { radius: ib, dur: 1.4 });
         requestAnimationFrame(() => { rec.el.classList.remove('iris-from'); rec.el.classList.add('iris-run'); });
         build();
         txAfter(1300, finishTx);

@@ -85,6 +85,8 @@
         if (ctx.step >= 1 || chainT0 === -1) { Field.setLit(1); if (ctx.step === 0) Field.set({ travel: TRAVEL }); return; }
         if (chainT0 == null) { Field.setLit(0); return; }
         const u = (performance.now() - chainT0) / 1000 / CHAIN_DUR;
+        // done: latch fully lit (the easing below turns back down past u ≈ 2.7)
+        if (u >= 1) { chainT0 = -1; Field.setLit(1); Field.set({ travel: TRAVEL }); return; }
         // ease-in: a slow first hop from the pair, then it accelerates outwards
         Field.setLit(u <= 0 ? 0 : Math.min(1, u * u * (1.6 - .6 * u)));
         Field.set({ travel: u >= 1 ? TRAVEL : 0 });

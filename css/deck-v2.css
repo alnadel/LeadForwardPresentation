@@ -129,7 +129,7 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 [data-in].a-none:not(.is-in)         { transform: none; filter: none; }
 /* v2 entrances */
 [data-in].a-unfold                   { clip-path: inset(-80px round 18px); }   /* settled: shadows stay unclipped */
-[data-in].a-unfold:not(.is-in)       { transform: translateY(40px) scale(.96); filter: none; clip-path: inset(-80px -80px 100% -80px round 18px); opacity: 1; }
+[data-in].a-unfold:not(.is-in)       { transform: translateY(40px) scale(.96); filter: none; clip-path: inset(0 -80px 100% -80px round 18px); opacity: 1; }
 [data-in].a-materialize:not(.is-in)  { transform: scale(.55); filter: blur(14px) brightness(2.2); }
 [data-in].a-flip                     { transform-origin: 50% 100%; }
 [data-in].a-flip:not(.is-in)         { transform: perspective(900px) rotateX(-75deg) translateY(30px); filter: blur(6px); }

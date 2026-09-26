@@ -9,7 +9,7 @@ Everything in `docs/SCENE_GUIDE.md` still applies (stops, `data-in` / `data-out`
 - Source material: the v1 scene with the same content (`scenes/NN-*.js/.css`). Copy and adapt it freely, but keep the v2 ids and stop counts from `docs/STORYBOARD-v2.md`.
 
 ## New in the engine
-- `transition: 'push' | 'rise' | 'dolly' | 'mosaic' | 'iris'` on the scene, as given in the storyboard.
+- `transition: 'push' | 'rise' | 'dolly' | 'mosaic' | 'iris'` on the scene, as given in the storyboard. An `iris` scene can set `irisBurst: <radius>` (default 2200, 0 = none) to limit the field flash.
 - **The spark:** put `data-spark="n"` on the element that stop n is about. `data-spark-at="l|r|t|b|c|tl|tr"` sets where the light rests (default: 34px left of the element, vertically centred). `data-spark-xy="x,y"` overrides with stage coordinates, which you need when the element lives inside a transformed or scaled group.
   - Use at most one target per stop; the engine flies the light there, lands it with a ripple and flashes the element (`.sparked`).
   - A stop with no target fades the light out. `spark: 'keep'` keeps it parked instead; `spark: false` disables it for the scene.

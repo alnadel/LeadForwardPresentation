@@ -44,6 +44,7 @@
     bg: 'deep',
     transition: 'iris',
     spark: false,
+    irisBurst: 520, // a small flash only: the field must still read dark before the chain
     chrome: { mark: false, progress: false },
     cues: ['Two people knew — the chain', 'Behind a Better Life · thank you · the ask stays on screen for Q&A'],
     holds: [9, 30],
