@@ -5,10 +5,10 @@
 #s-comms.st-0 .cm-wash { opacity: 1; }
 #s-comms .cm-wash::before { content: ''; position: absolute; inset: 0; border-radius: 50%; }
 #s-comms .cm-wash.w1 { left: -200px; top: 220px; width: 1300px; height: 820px; }
-#s-comms .cm-wash.w1::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .15), rgba(37, 199, 188, .05) 58%, transparent); animation: cmWash 9s ease-in-out infinite alternate; }
+#s-comms .cm-wash.w1::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 58%, transparent); animation: cmWash 9s ease-in-out infinite alternate; }
 #s-comms .cm-wash.w2 { left: 900px; top: 300px; width: 1200px; height: 760px; }
-#s-comms .cm-wash.w2::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .18), rgba(96, 38, 80, .07) 58%, transparent); animation: cmWash 11s ease-in-out -5s infinite alternate-reverse; }
-@keyframes cmWash { from { transform: translate(-70px, 24px) scale(.9); opacity: .5; } to { transform: translate(80px, -30px) scale(1.08); opacity: 1; } }
+#s-comms .cm-wash.w2::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .24), rgba(96, 38, 80, .09) 58%, transparent); animation: cmWash 11s ease-in-out -5s infinite alternate-reverse; }
+@keyframes cmWash { from { transform: translate(-120px, 40px) scale(.88); opacity: .45; } to { transform: translate(130px, -46px) scale(1.1); opacity: 1; } }
 
 /* ── header ─────────────────────────────────────────────────────────────── */
 #s-comms .cm-hbox { position: relative; height: 84px; margin-top: 26px; }
@@ -43,15 +43,22 @@
 #s-comms .cm-mk::after { content: ''; position: absolute; inset: -2px; border-radius: 28%; opacity: 0;
   background: radial-gradient(circle at 35% 30%, #fff 0 16%, var(--sea) 46%, var(--teal)); box-shadow: 0 0 14px var(--sea), 0 0 30px rgba(3, 255, 203, .5);
   animation: cmFlare 9s linear var(--dl) infinite; }
+#s-comms .cm-mk::before { content: ''; position: absolute; inset: -2px; border-radius: 28%; opacity: 0;
+  background: radial-gradient(circle at 35% 30%, #fff 0 16%, var(--sea) 46%, var(--teal)); box-shadow: 0 0 14px var(--sea), 0 0 30px rgba(3, 255, 203, .5);
+  animation: cmFlare 9s linear var(--dl2) infinite; }
 @keyframes cmFlare { 0% { opacity: 1; transform: scale(1.35); } 3% { transform: scale(1); } 14% { opacity: .15; } 22%, 100% { opacity: 0; transform: scale(1); } }
 
 /* the flares and the cards' catch-lights wait for the story light to arrive (live build) */
-#s-comms .cm-mk::after, #s-comms .cm-catch { visibility: hidden; transition: visibility 0s linear 0s; }
-#s-comms.st-0 .cm-mk::after, #s-comms.st-0 .cm-catch { visibility: visible; transition: visibility 0s linear calc(var(--enter, 0s) + 1.5s); }
+#s-comms .cm-mk::before, #s-comms .cm-mk::after, #s-comms .cm-catch { visibility: hidden; transition: visibility 0s linear 0s; }
+#s-comms.st-0 .cm-mk::before, #s-comms.st-0 .cm-mk::after, #s-comms.st-0 .cm-catch { visibility: visible; transition: visibility 0s linear calc(var(--enter, 0s) + 1.5s); }
 
 /* the story light travelling the cadence line (x 144 → 1774 in 7 s, then it rests 2 s) */
 #s-comms .cm-runner { position: absolute; left: 144px; top: 0; width: 0; height: 0; }
 #s-comms .cm-story { position: absolute; left: 0; top: 0; width: 0; height: 0; animation: cmStory 9s linear infinite; }
+#s-comms .cm-story.s2 { animation-delay: -4.5s; }
+/* a soft pool of light rides with each story */
+#s-comms .cm-story::after { content: ''; position: absolute; left: -220px; top: -130px; width: 440px; height: 260px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .22), rgba(37, 199, 188, .08) 55%, transparent); }
 #s-comms .cm-story .light { position: absolute; left: -11px; top: -11px; }
 #s-comms .cm-story::before { content: ''; position: absolute; left: -150px; top: -3px; width: 150px; height: 6px; border-radius: 3px;
   background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .6)); }
@@ -75,10 +82,10 @@
   background: radial-gradient(60% 100% at 50% 0%, rgba(3, 255, 203, .16), transparent); }
 @keyframes cmCatch { 0% { opacity: 0; } 2% { opacity: 1; } 16% { opacity: 0; } 100% { opacity: 0; } }
 /* a glow breathes behind the email card */
-#s-comms .cm-eglow { position: absolute; width: 720px; height: 620px; margin: -310px 0 0 -360px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease-soft); }
+#s-comms .cm-eglow { position: absolute; width: 1000px; height: 560px; margin: -280px 0 0 -500px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease-soft); }
 #s-comms.st-0 .cm-eglow { opacity: 1; transition-delay: calc(var(--enter, 0s) + 1s); }
 #s-comms .cm-eglow::before, #s-comms .cm-eglow::after { content: ''; position: absolute; inset: 0; border-radius: 50%; }
-#s-comms .cm-eglow::before { background: radial-gradient(closest-side, rgba(3, 255, 203, .22), rgba(37, 199, 188, .08) 55%, transparent); animation: cmHalo 4.4s ease-in-out infinite; }
+#s-comms .cm-eglow::before { background: radial-gradient(closest-side, rgba(3, 255, 203, .26), rgba(37, 199, 188, .09) 55%, transparent); animation: cmHalo 4.4s ease-in-out infinite; }
 #s-comms .cm-eglow::after { inset: 16% 20%; background: radial-gradient(closest-side, rgba(3, 255, 203, .16), transparent); animation: cmHalo2 6.6s ease-in-out -2s infinite; }
 @keyframes cmHalo { 0%, 100% { opacity: .35; transform: scale(.84); } 50% { opacity: 1; transform: scale(1.1); } }
 @keyframes cmHalo2 { 0%, 100% { opacity: .2; transform: translateX(-50px) scale(.9); } 50% { opacity: 1; transform: translateX(56px) scale(1.14); } }

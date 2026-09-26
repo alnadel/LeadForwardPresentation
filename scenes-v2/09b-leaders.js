@@ -13,7 +13,8 @@
    Stop 1: the headline swaps to "Leaders spotlight others, never themselves.";
    the role texts step out and two quiet lists (do / don't) take their place. The
    cascade stays behind, dimmed and set back to the right; the leaders go dark and
-   two soft spotlights from the top of the tree sweep across the teams.
+   two soft spotlights from the top of the tree sweep across the teams; soft teal and
+   plum washes breathe behind the lists.
    All state keys off .st-n / data-step, so back navigation lands on the same frame;
    the one-shot lights of the build play only on a live click. */
 (function () {
@@ -145,6 +146,7 @@
       </div>
 
       <!-- stop 1: leaders spotlight others, never themselves -->
+      <i class="ld-lglow g1"></i><i class="ld-lglow g2"></i>
       <div class="ld-lists">
         <div class="ld-list do">
           <div class="ld-lh a-wipe" data-in="1" style="--d:.42s"><i></i>Leaders do</div>

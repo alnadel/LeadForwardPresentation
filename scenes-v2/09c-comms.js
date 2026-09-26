@@ -6,7 +6,7 @@
    (live glass) and carries the chip "preferred by 123 of 158", where the spark lands.
    A support strip across the foot: every story in Arabic and English, approved by
    the colleague before it is shared.
-   Ambient (stop 0): a story light travels the cadence line (each mark flares and each
+   Ambient (stop 0): two story lights, half a lap apart, travel the cadence line (each mark flares and each
    card's top edge catches the light as it passes), a light keeps running the ALWAYS
    stretch, the email card's edge light turns, and a glow breathes behind it.
    Stop 1: "Designed with what colleagues asked for." The map steps away; four rows
@@ -35,8 +35,9 @@
   ];
   // build: the columns light left to right (s after the build starts)
   const COL_D = [.3, .44, .62, .76];
-  // the story light: it crosses the line (x 144 → 1774) in RUN s, then rests; one lap is LAP s.
-  // Each mark and each card edge flares on the same clock, so they stay in step with it.
+  // the story lights: each crosses the line (x 144 → 1774) in RUN s, then rests; one lap is LAP s,
+  // and a second light runs half a lap behind. Each mark and each card edge flares on the same
+  // clock as the lights, so they stay in step.
   const LAP = 9, RUN = 7, XA = 144, XB = 1774;
   const passAt = (x) => (x - XA) / (XB - XA) * RUN;
   const dl = (t) => ((t % LAP) - LAP).toFixed(2) + 's';
@@ -47,7 +48,7 @@
     let marks = '';
     for (let i = 0; i < c.marks; i++) {
       const mx = x0 + (i + .5) * w / c.marks;
-      marks += `<i class="cm-mk m${c.marks}" style="left:${r1(mx - x0)}px;--dl:${dl(passAt(mx))};--md:${(COL_D[j] + .25 + i / Math.max(1, c.marks) * .35).toFixed(2)}s"></i>`;
+      marks += `<i class="cm-mk m${c.marks}" style="left:${r1(mx - x0)}px;--dl:${dl(passAt(mx))};--dl2:${dl(passAt(mx) + LAP / 2)};--md:${(COL_D[j] + .25 + i / Math.max(1, c.marks) * .35).toFixed(2)}s"></i>`;
     }
     return `
       <div class="cm-col c${j}" style="left:${x0}px;width:${w}px;--d:${COL_D[j]}s">
@@ -61,7 +62,7 @@
     const d = (COL_D[j] + .1 + (k === 2 ? .12 : 0)).toFixed(2);
     return `
       <div class="cm-card glass${c.hero ? ' live hero' : ''} a-unfold" data-in="0" style="left:${x}px;top:${CARD_Y}px;width:${CW}px;height:${CARD_H}px;--d:${d}s;--dur:1s">
-        <i class="cm-catch" style="--dl:${dl(passAt(x + CW / 2))}"></i>
+        <i class="cm-catch" style="--dl:${dl(passAt(x + CW / 2))}"></i><i class="cm-catch" style="--dl:${dl(passAt(x + CW / 2) + LAP / 2)}"></i>
         <span class="cm-ic">${Deck.icon(c.i)}</span>
         <h3 class="cm-t">${c.t}</h3>
         <p class="cm-l">${c.l}</p>
@@ -122,9 +123,9 @@
       <div class="cm-map" data-out="1">
         <div class="cm-rail" style="top:${RAIL}px">
           ${segs}
-          <div class="cm-runner a-fade" data-in="0" style="--d:1.5s"><i class="cm-story"><b class="light"></b></i></div>
+          <div class="cm-runner a-fade" data-in="0" style="--d:1.5s"><i class="cm-story"><b class="light"></b></i><i class="cm-story s2"><b class="light"></b></i></div>
         </div>
-        <i class="cm-eglow" style="left:${cx(1) + CW / 2}px;top:${CARD_Y + CARD_H / 2 + 40}px"></i>
+        <i class="cm-eglow" style="left:${cx(1) + CW / 2 + 60}px;top:${CARD_Y + CARD_H + 60}px"></i>
         ${cards}
         <div class="cm-chip a-pop" data-in="0" data-spark="0" data-spark-delay=".75" style="left:${cx(1)}px;top:${CARD_Y + CARD_H + 26}px;--d:1.02s">
           <i class="cm-stem"></i>

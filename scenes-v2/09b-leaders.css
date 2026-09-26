@@ -8,7 +8,7 @@
 #s-leaders .ld-wash.w1::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 55%, transparent); animation: ldWash 8s ease-in-out infinite alternate; }
 #s-leaders .ld-wash.w2 { left: -260px; top: 300px; width: 1200px; height: 760px; }
 #s-leaders .ld-wash.w2::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .2), rgba(96, 38, 80, .08) 58%, transparent); animation: ldWash 10s ease-in-out -5s infinite alternate-reverse; }
-@keyframes ldWash { from { transform: translate(-60px, 24px) scale(.9); opacity: .5; } to { transform: translate(70px, -28px) scale(1.08); opacity: 1; } }
+@keyframes ldWash { from { transform: translate(-110px, 40px) scale(.88); opacity: .45; } to { transform: translate(120px, -44px) scale(1.1); opacity: 1; } }
 
 /* ── header ─────────────────────────────────────────────────────────────── */
 #s-leaders .ld-hbox { position: relative; height: 98px; margin-top: 24px; }
@@ -135,8 +135,8 @@
           mask-image: linear-gradient(180deg, rgba(0, 0, 0, .15) 0%, #000 72%, rgba(0, 0, 0, .9) 90%, transparent 100%); }
 /* the sweep is a skew about the apex, so each pool stays on the teams' row; the pool
    counter-skews on the same clock, so it keeps its shape */
-#s-leaders .ld-cone.c1 { --sw: 11s; --sd: 0s; --a0: 30deg; --a1: -6deg; }
-#s-leaders .ld-cone.c2 { --sw: 13s; --sd: -4s; --a0: -30deg; --a1: 6deg; }
+#s-leaders .ld-cone.c1 { --sw: 8.5s; --sd: 0s; --a0: 30deg; --a1: -6deg; }
+#s-leaders .ld-cone.c2 { --sw: 10s; --sd: -4s; --a0: -30deg; --a1: 6deg; }
 #s-leaders .ld-cone, #s-leaders .ld-pool { animation: ldSweep var(--sw) ease-in-out var(--sd) infinite alternate; }
 #s-leaders .ld-pool { animation-name: ldUnskew; }
 @keyframes ldSweep { from { transform: skewX(var(--a0)); } to { transform: skewX(var(--a1)); } }
@@ -146,6 +146,14 @@
 #stage.lite #s-leaders .ld-cone, #stage.lite #s-leaders .ld-pool { animation: none; }
 
 /* ── stop 1: the quiet lists ────────────────────────────────────────────── */
+/* soft column washes breathe behind the lists: teal behind what leaders do, plum behind what they don't */
+#s-leaders .ld-lglow { position: absolute; top: 250px; width: 900px; height: 700px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-leaders.st-1 .ld-lglow { opacity: 1; transition: opacity 1.2s var(--ease-soft) .5s; }
+#s-leaders .ld-lglow.g1 { left: -200px; }
+#s-leaders .ld-lglow.g2 { left: 420px; }
+#s-leaders .ld-lglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; animation: ldWash 7s ease-in-out infinite alternate; }
+#s-leaders .ld-lglow.g1::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .06) 58%, transparent); }
+#s-leaders .ld-lglow.g2::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .24), rgba(96, 38, 80, .08) 58%, transparent); animation-delay: -3.5s; animation-direction: alternate-reverse; }
 #s-leaders .ld-lists { position: absolute; left: 144px; top: 462px; width: 1130px; height: 360px; }
 #s-leaders .ld-list { position: absolute; top: 0; }
 #s-leaders .ld-list.do { left: 0; }
