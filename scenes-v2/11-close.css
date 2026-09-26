@@ -5,19 +5,30 @@
 #s-close .cl-mid, #s-close .cl-p { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 #s-close .cl-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: clHalo 3s ease-in-out -.75s infinite; }
 @keyframes clHalo { 0%, 100% { transform: scale(.94); opacity: .6; } 50% { transform: scale(1.2); opacity: 1; } }
-#s-close .cl-p .light { position: absolute; left: -11px; top: -11px; animation: clPairB 3s ease-in-out infinite; }
-#s-close .cl-p + .cl-p .light { animation-delay: -1.5s; }
-@keyframes clPairB {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--sea), 0 0 36px rgba(3, 255, 203, .6), 0 0 90px rgba(37, 199, 188, .35); }
-  50% { transform: scale(1.25); box-shadow: 0 0 22px var(--sea), 0 0 74px 10px rgba(3, 255, 203, .62), 0 0 170px 38px rgba(37, 199, 188, .42); }
-}
+/* each light breathes deeply: the square scales (transform) while its glow crossfades from the
+   resting glow (::before, the .light glow) to the deep glow (::after); the two glows are static
+   box-shadows, only their opacity moves. Same keyframe values and clock as before. */
+#s-close .cl-p .light { position: absolute; left: -11px; top: -11px; box-shadow: none; animation: clPairB 3s ease-in-out infinite; }
+#s-close .cl-p .light::before, #s-close .cl-p .light::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+#s-close .cl-p .light::before { box-shadow: 0 0 12px var(--sea), 0 0 36px rgba(3, 255, 203, .6), 0 0 90px rgba(37, 199, 188, .35); animation: clPairRest 3s ease-in-out infinite; }
+#s-close .cl-p .light::after { box-shadow: 0 0 22px var(--sea), 0 0 74px 10px rgba(3, 255, 203, .62), 0 0 170px 38px rgba(37, 199, 188, .42); opacity: 0; animation: clPairDeep 3s ease-in-out infinite; }
+#s-close .cl-p + .cl-p .light, #s-close .cl-p + .cl-p .light::before, #s-close .cl-p + .cl-p .light::after { animation-delay: -1.5s; }
+@keyframes clPairB { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+@keyframes clPairRest { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes clPairDeep { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
-#s-close .cl-knew { position: absolute; width: 760px; text-align: center; filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); }
-/* the same slow glow as 02.1's "Two people know." */
-#s-close.st-0 .cl-knew { animation: clKnow 3s ease-in-out 2.4s infinite; }
-@keyframes clKnow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .46)); } }
+#s-close .cl-knew { position: absolute; width: 760px; text-align: center; }
 #s-close .cl-knew .h1 { font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }
-#s-close .cl-knew.is-out { transform: translateY(-16px); filter: blur(6px); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft), filter .6s var(--ease-soft); }
+#s-close .cl-knew h2.h1 { position: relative; }   /* above its glow */
+/* the same slow glow as 02.1's "Two people know.": a glow-only copy of the line under it
+   (transparent text; its static text-shadow 52px equals the old drop-shadow(0 0 26px), since
+   Chrome's drop-shadow blur is twice a text-shadow's); only the copy's opacity breathes */
+#s-close .cl-knew .cl-kglow { position: absolute; left: 0; top: 0; width: 100%; color: transparent; text-shadow: 0 0 52px rgba(3, 255, 203, .46); opacity: 0; pointer-events: none; }
+#s-close .cl-kglow .w { overflow: visible; }
+#s-close.st-0 .cl-kglow { animation: clKnow 3s ease-in-out 2.4s infinite; }
+@keyframes clKnow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+/* (the running glow always overrode a blur here, so the exit never blurred; it still does not) */
+#s-close .cl-knew.is-out { transform: translateY(-16px); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
 
 /* ── stop 1 · the dusk skyline rises under the lit field; its sky fades out so the
    colleague field reads above the city like its lights ── */
@@ -29,13 +40,17 @@
 #s-close .cl-photo { background-position: 60% 100%; background-size: cover; opacity: .84; }
 #s-close .cl-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(3, 8, 16, .62) 0%, rgba(3, 8, 16, .3) 38%, transparent 66%); }
 /* traffic: short packets of light run along the roads */
-#s-close .cl-trails { position: absolute; left: 0; top: 0; width: 1920px; height: 640px; overflow: visible; mix-blend-mode: screen; }
-#s-close .cl-car { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 34 966; stroke-dashoffset: 1000; opacity: 0; }
-#s-close .cl-car.w { stroke: rgba(255, 240, 220, .95); filter: drop-shadow(0 0 5px rgba(255, 226, 190, .9)); }
-#s-close .cl-car.r { stroke: rgba(255, 150, 130, .9); filter: drop-shadow(0 0 5px rgba(255, 120, 100, .8)); }
-#s-close.st-1 .cl-car { animation: clCar var(--t) cubic-bezier(.4, 0, .9, .6) var(--dl) infinite; }
-@keyframes clCar { 0% { stroke-dashoffset: 1000; opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
-#s-close .cl-leak { opacity: .9; }
+/* (no blend modes on the traffic and the leak: over the dusk plate normal compositing looks the same as
+   screen, within a few levels, and spares the GPU a backdrop pass every frame) */
+#s-close .cl-trails { position: absolute; left: 0; top: 0; width: 1920px; height: 640px; overflow: visible; }
+/* a car: a round-capped bar of light 3 px thick, centred on its origin and driven along its road by
+   transform keyframes (@keyframes clCar0…4 are built in 11-close.js); its glow is a static box-shadow
+   (10 px here equals the old drop-shadow(0 0 5px) on the stroke) */
+#s-close .cl-car { position: absolute; top: -1.5px; height: 3px; border-radius: 1.5px; opacity: 0; }
+#s-close .cl-car.w { background: rgba(255, 240, 220, .95); box-shadow: 0 0 10px rgba(255, 226, 190, .86); }
+#s-close .cl-car.r { background: rgba(255, 150, 130, .9); box-shadow: 0 0 10px rgba(255, 120, 100, .72); }
+@keyframes clCarO { 0% { opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
+#s-close .cl-leak { opacity: .9; mix-blend-mode: normal; }
 #stage.lite #s-close .cl-trails { display: none; }
 
 /* stories travel across the city, in the band between the lines and the ask */
@@ -58,6 +73,7 @@
 #s-close .cl-way .light { animation: ambBreathe 3s ease-in-out infinite; }
 /* a gentle light passes through "Light the way." now and then */
 #s-close .cl-way .amb-shimmer { animation-duration: 7s; padding: 0 .08em; }
+#s-close:not(.st-1) .cl-way .amb-shimmer { animation: none; }   /* only while it is on screen */
 #s-close .cl-thanks { margin-top: 30px; font: 700 22px/1 var(--font); letter-spacing: .42em; text-transform: uppercase; color: rgba(255, 255, 255, .8); padding-left: .42em; }
 
 /* a soft dark pool behind the brand block: the lit field and the city lights stay at the edges */

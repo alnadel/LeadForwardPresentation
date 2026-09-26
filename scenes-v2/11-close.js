@@ -27,8 +27,46 @@
     { d: 'M1650 640 Q1762 470 1818 327', k: 'r', t: 4.6, n: 2 },
     { d: 'M1800 640 Q1832 470 1826 327', k: 'r', t: 5.8, n: 2 },
   ];
+  // each car is a short bar of light (the old 34/1000 dash of its road, round-capped) driven along
+  // the road with transforms: its keyframes sample the road (a quadratic curve) by arc length on
+  // the old dash's clock (cubic-bezier(.4, 0, .9, .6) across the lap), with the bar turned to the
+  // road's heading. Nothing repaints while it drives.
+  const CAR_EASE = [.4, 0, .9, .6], CAR_N = 32;
+  const cb = (p1, p2, s) => 3 * (1 - s) * (1 - s) * s * p1 + 3 * (1 - s) * s * s * p2 + s * s * s;   // one axis, from 0 to 1
+  const ease = (u) => {                                   // CSS cubic-bezier: progress at time u
+    let lo = 0, hi = 1;
+    for (let k = 0; k < 40; k++) { const m = (lo + hi) / 2; if (cb(CAR_EASE[0], CAR_EASE[2], m) < u) lo = m; else hi = m; }
+    return cb(CAR_EASE[1], CAR_EASE[3], (lo + hi) / 2);
+  };
+  const carKeys = ROADS.map((r, i) => {
+    const [x0, y0, cx, cy, x1, y1] = r.d.match(/-?[\d.]+/g).map(Number);
+    const at = (t) => [(1 - t) * (1 - t) * x0 + 2 * (1 - t) * t * cx + t * t * x1, (1 - t) * (1 - t) * y0 + 2 * (1 - t) * t * cy + t * t * y1];
+    const tan = (t) => Math.atan2(2 * (1 - t) * (cy - y0) + 2 * t * (y1 - cy), 2 * (1 - t) * (cx - x0) + 2 * t * (x1 - cx)) * 180 / Math.PI;
+    const M = 600, len = [0];                               // arc-length table
+    for (let k = 1, p = at(0); k <= M; k++) { const q = at(k / M); len.push(len[k - 1] + Math.hypot(q[0] - p[0], q[1] - p[1])); p = q; }
+    const L = len[M], dash = L * .034;
+    const tAt = (sl) => {                                   // curve parameter at arc length sl (clamped)
+      if (sl <= 0) return 0; if (sl >= L) return 1;
+      let k = 1; while (len[k] < sl) k++;
+      return (k - 1 + (sl - len[k - 1]) / (len[k] - len[k - 1])) / M;
+    };
+    let prev = null, out = '';
+    for (let k = 0; k <= CAR_N; k++) {
+      const u = k / CAR_N, sc = ease(u) * L + dash / 2;    // the bar's centre
+      const t = tAt(sc), [px, py] = at(t);
+      const over = Math.max(0, sc - L);                     // past the end: carry on along the last heading
+      let a = tan(t);
+      if (prev != null) { while (a - prev > 180) a -= 360; while (a - prev < -180) a += 360; }
+      prev = a;
+      const ex = px + over * Math.cos(a * Math.PI / 180), ey = py + over * Math.sin(a * Math.PI / 180);
+      out += `${+(u * 100).toFixed(3)}% { transform: translate(${ex.toFixed(1)}px, ${ey.toFixed(1)}px) rotate(${a.toFixed(2)}deg); } `;
+    }
+    return { css: `@keyframes clCar${i} { ${out}}`, w: +(dash + 3).toFixed(1) };
+  });
+  const carCss = carKeys.map((c) => c.css).join('\n') + '\n' + ROADS.map((r, i) =>
+    `#s-close.st-1 .cl-car.k${i} { animation: clCar${i} ${r.t}s linear var(--dl) infinite, clCarO ${r.t}s cubic-bezier(.4, 0, .9, .6) var(--dl) infinite; }`).join('\n');
   const trails = ROADS.map((r, i) => Array.from({ length: r.n }, (_, j) =>
-    `<path class="cl-car ${r.k}" d="${r.d}" pathLength="1000" style="--t:${r.t}s;--dl:${(-(j / r.n) * r.t - i * .7).toFixed(2)}s"/>`).join('')).join('');
+    `<i class="cl-car ${r.k} k${i}" style="left:${-carKeys[i].w / 2}px;width:${carKeys[i].w}px;--dl:${(-(j / r.n) * r.t - i * .7).toFixed(2)}s"></i>`).join('')).join('');
 
   /* stories travelling across the lit field, in the band between the brand block and the team line */
   const STORIES = [
@@ -64,11 +102,12 @@
         calm: [[720, 10, 1200, 196, 1], [200, 150, 1720, 470, 1], [280, 440, 1640, 596, .95], [360, 668, 1560, 728, .9], [100, 720, 1820, 980, .9]] },
     ],
     html: `
+      <style>${carCss}</style>
       <div class="cl-sky a-fade" data-in="1" style="--dur:2.6s">
         <div class="cl-cam amb-ken-strong">
           <div class="photo cl-photo" style="background-image:url('assets/photos/riyadh-dusk.jpg')"></div>
           <div class="cl-shade"></div>
-          <svg class="cl-trails" viewBox="0 0 1920 640" aria-hidden="true">${trails}</svg>
+          <div class="cl-trails" aria-hidden="true">${trails}</div>
         </div>
         <div class="amb-leak cl-leak"></div>
       </div>
@@ -82,6 +121,7 @@
         <b class="cl-p"><i class="light"></i></b><b class="cl-p"><i class="light"></i></b>
       </div>
       <div class="cl-knew" data-out="1" style="left:${KNOW.x}px;top:${KNOW.y}px">
+        <div class="h1 cl-kglow" data-split aria-hidden="true">Two people knew.</div>
         <h2 class="h1" data-in="0" data-split style="--d:.15s">Two people knew.</h2>
       </div>
 

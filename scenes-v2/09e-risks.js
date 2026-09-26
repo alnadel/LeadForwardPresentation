@@ -46,10 +46,10 @@
             <path class="rk-arm" d="${ARM_T}" pathLength="100"/>
             <path class="rk-arm" d="${ARM_B}" pathLength="100"/>
           </svg>
+          <svg class="rk-armg" viewBox="0 0 150 ${H}" aria-hidden="true"><path d="${ARM_T}"/><path d="${ARM_B}"/></svg>
           <i class="rk-lead" style="offset-path:path('${RUN_T}')"><b class="light sm"></b></i>
           <i class="rk-lead" style="offset-path:path('${RUN_B}')"><b class="light sm"></b></i>
-          <i class="rk-chk" style="offset-path:path('${RUN_T}')"></i>
-          <i class="rk-chk" style="offset-path:path('${RUN_B}')"></i>
+          <i class="rk-chk t"></i><i class="rk-chk b"></i>
           <i class="rk-anchor" style="left:${XG}px;top:${MID}px"></i>
           <i class="rk-node" style="left:${XB}px;top:${MID}px"><b></b></i>
         </div>

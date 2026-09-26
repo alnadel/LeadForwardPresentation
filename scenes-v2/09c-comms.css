@@ -46,7 +46,10 @@
 #s-comms .cm-mk::before { content: ''; position: absolute; inset: -2px; border-radius: 28%; opacity: 0;
   background: radial-gradient(circle at 35% 30%, #fff 0 16%, var(--sea) 46%, var(--teal)); box-shadow: 0 0 14px var(--sea), 0 0 30px rgba(3, 255, 203, .5);
   animation: cmFlare 9s linear var(--dl2) infinite; }
-@keyframes cmFlare { 0% { opacity: 1; transform: scale(1.35); } 3% { transform: scale(1); } 14% { opacity: .15; } 22%, 100% { opacity: 0; transform: scale(1); } }
+/* the flare eases up over 225 ms (no hard on); --dl/--dl2 (09c-comms.js) start it just before the
+   light passes and never before the story light has arrived, so nothing pops when it turns visible */
+@keyframes cmFlare { 0% { opacity: 0; transform: scale(1.35); animation-timing-function: ease-in-out; } 2.5% { opacity: 1; transform: scale(1.35); animation-timing-function: linear; }
+  5.5% { transform: scale(1); } 16.5% { opacity: .15; } 24.5%, 100% { opacity: 0; transform: scale(1); } }
 
 /* the flares and the cards' catch-lights wait for the story light to arrive (live build) */
 #s-comms .cm-mk::before, #s-comms .cm-mk::after, #s-comms .cm-catch { visibility: hidden; transition: visibility 0s linear 0s; }
@@ -80,7 +83,7 @@
   animation: cmCatch 9s linear var(--dl) infinite; }
 #s-comms .cm-catch::after { content: ''; position: absolute; left: 10%; right: 10%; top: 0; height: 120px; border-radius: 0 0 50% 50%;
   background: radial-gradient(60% 100% at 50% 0%, rgba(3, 255, 203, .16), transparent); }
-@keyframes cmCatch { 0% { opacity: 0; } 2% { opacity: 1; } 16% { opacity: 0; } 100% { opacity: 0; } }
+@keyframes cmCatch { 0% { opacity: 0; animation-timing-function: ease-in-out; } 2.5% { opacity: 1; animation-timing-function: linear; } 16% { opacity: 0; } 100% { opacity: 0; } }
 /* a glow breathes behind the email card */
 #s-comms .cm-eglow { position: absolute; width: 1000px; height: 560px; margin: -280px 0 0 -500px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease-soft); }
 #s-comms.st-0 .cm-eglow { opacity: 1; transition-delay: calc(var(--enter, 0s) + 1s); }
@@ -145,10 +148,12 @@
   clip-path: inset(-12px 100% -12px -12px); transition: clip-path .3s var(--ease-soft); }
 #s-comms.st-1 .cm-lead { clip-path: inset(-12px -12px -12px -12px); transition: clip-path .6s var(--ease-out) var(--d); }
 #s-comms .cm-lead::after { content: ''; position: absolute; right: -4px; top: -5px; width: 12px; height: 12px; border-top: 2px solid var(--teal); border-right: 2px solid var(--teal); transform: rotate(45deg); }
-#s-comms .cm-lead b { position: absolute; left: 0; top: -3px; width: 80px; height: 8px; border-radius: 4px; opacity: 0;
-  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .9) 70%, #fff); box-shadow: 0 0 14px rgba(3, 255, 203, .6);
+/* the running light rides a full-width carrier that slides by transform (-30px → 100% − 70px) */
+#s-comms .cm-lead b { position: absolute; left: 0; top: 0; width: 100%; height: 2px; opacity: 0;
   animation: cmLead 5.6s cubic-bezier(.45, 0, .55, 1) infinite; animation-delay: calc(var(--k) * 1.4s); }
-@keyframes cmLead { 0% { left: -30px; opacity: 0; } 4% { opacity: 1; } 22% { opacity: 1; } 27%, 100% { left: calc(100% - 70px); opacity: 0; } }
+#s-comms .cm-lead b::before { content: ''; position: absolute; left: -30px; top: -3px; width: 80px; height: 8px; border-radius: 4px;
+  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .9) 70%, #fff); box-shadow: 0 0 14px rgba(3, 255, 203, .6); }
+@keyframes cmLead { 0% { transform: translateX(0); opacity: 0; } 4% { opacity: 1; } 22% { opacity: 1; } 27%, 100% { transform: translateX(calc(100% - 40px)); opacity: 0; } }
 /* …and where it arrives, the decision's edge flares */
 #s-comms .cm-arrive { position: absolute; left: 1036px; top: -55px; width: 110px; height: 110px; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .38), rgba(37, 199, 188, .1) 55%, transparent);

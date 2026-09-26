@@ -60,9 +60,10 @@
   const kpi = (x, i) => {
     const cx = KX + i * (KW + KG) + KW / 2, num = typeof x.t === 'number';
     const base = typeof x.b === 'number' ? `<b class="pl-kb-n">${x.b}%</b>` : `<span class="pl-kb-t">${x.b}</span>`;
+    // each target carries a glow-only copy of itself (.pl-kt-g) that brightens as the light passes
     const target = num
-      ? `<span class="pl-kt-v n">${x.pre ? `<small>${x.pre}</small>` : ''}<span class="num" data-count="${x.t}" data-from="${x.b}" data-delay="${r2(.95 + i * .06)}" data-dur="1">${x.t}</span>%</span>`
-      : `<span class="pl-kt-v">${x.t}</span>`;
+      ? `<span class="pl-kt-v n">${x.pre ? `<small>${x.pre}</small>` : ''}<span class="num" data-count="${x.t}" data-from="${x.b}" data-delay="${r2(.95 + i * .06)}" data-dur="1">${x.t}</span>%<span class="pl-kt-g" aria-hidden="true">${x.pre ? `<small>${x.pre}</small>` : ''}<span class="num">${x.t}</span>%</span></span>`
+      : `<span class="pl-kt-v">${x.t}<span class="pl-kt-g" aria-hidden="true">${x.t}</span></span>`;
     return `
     <div class="pl-k glass a-unfold" data-in="2" style="--tf:${r2(FIRST_AT + frac(cx) * FIRST)}s;--ts:${cycleAt(cx)}s">
       <i class="pl-k-pip"></i><i class="pl-k-beam"></i>
@@ -172,6 +173,7 @@
       </div>
       <h2 class="pl-final" data-in="2" data-split style="--d:.62s;--wstep:.03s">After one quarter we come back with one recommendation:</h2>
       <div class="pl-herow" data-spark="2" data-spark-delay=".8" style="top:${HERO_Y}px">
+        <p class="pl-hglow" data-split aria-hidden="true">scale, adjust or stop.</p>
         <p class="pl-hero" data-in="2" data-split style="--d:.86s;--wstep:.07s">scale, adjust or stop.</p>
       </div>
       <div class="pl-fork" aria-hidden="true" style="left:${FX}px;top:${FY}px;width:${FW}px">

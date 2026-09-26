@@ -9,24 +9,26 @@
 #s-pilot .pl-photo { opacity: .94; }
 
 /* the video wall keeps working: glow, data blips, a scan line and a sweep */
-#s-pilot .pl-wall { position: absolute; left: 150px; top: 344px; width: 1604px; height: 372px; overflow: hidden; mix-blend-mode: screen;
+/* (no blend modes on the room's light layers: over this dark plate, normal compositing looks the same
+   as screen, within a few levels, and spares the GPU a backdrop pass every frame) */
+#s-pilot .pl-wall { position: absolute; left: 150px; top: 344px; width: 1604px; height: 372px; overflow: hidden;
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 36%, rgba(0, 0, 0, .3) 50%, rgba(0, 0, 0, .15) 100%);
           mask-image: linear-gradient(180deg, #000 0%, #000 36%, rgba(0, 0, 0, .3) 50%, rgba(0, 0, 0, .15) 100%); }
 #s-pilot .pl-wglow { position: absolute; inset: 0; background: radial-gradient(55% 70% at 28% 55%, rgba(37, 199, 188, .3), transparent 70%), radial-gradient(45% 60% at 74% 42%, rgba(37, 199, 188, .24), transparent 70%);
   animation: plGlow 6s ease-in-out infinite; }
 @keyframes plGlow { 0%, 100% { opacity: .3; } 50% { opacity: .85; } }
-#s-pilot .pl-wall b { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: 4px; border-radius: 2px; background: rgba(37, 199, 188, .95); box-shadow: 0 0 12px rgba(3, 255, 203, .85); opacity: 0; animation: plBlip var(--t) steps(1) var(--dl) infinite; }
-@keyframes plBlip { 0%, 100% { opacity: 0; } 12% { opacity: .95; } 28% { opacity: .25; } 36% { opacity: .8; } 58% { opacity: 0; } }
+#s-pilot .pl-wall b { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: 4px; border-radius: 2px; background: rgba(37, 199, 188, .95); box-shadow: 0 0 12px rgba(3, 255, 203, .85); opacity: 0; animation: plBlip var(--t) ease-in-out var(--dl) infinite; }
+@keyframes plBlip { 0%, 100% { opacity: 0; } 12% { opacity: .95; } 28% { opacity: .25; } 38% { opacity: .8; } 58% { opacity: 0; } }
 #s-pilot .pl-wscan { position: absolute; left: 0; right: 0; top: 0; height: 70px; background: linear-gradient(180deg, transparent, rgba(3, 255, 203, .2), transparent); animation: plScan 4.6s cubic-bezier(.5, 0, .5, 1) infinite; }
 @keyframes plScan { 0% { transform: translateY(-70px); opacity: 0; } 15%, 85% { opacity: 1; } 100% { transform: translateY(380px); opacity: 0; } }
 #s-pilot .pl-wsweep { position: absolute; top: 0; bottom: 0; left: -24%; width: 24%; background: linear-gradient(100deg, transparent, rgba(160, 240, 232, .16), transparent); animation: plSweep 9s ease-in-out infinite; }
 @keyframes plSweep { from { transform: translateX(0); } to { transform: translateX(520%); } }
-#s-pilot .pl-leak { opacity: .95; }
+#s-pilot .pl-leak { opacity: .95; mix-blend-mode: normal; }
 
 /* the veil keeps the ceiling band dark for the ask and lets the wall glow */
 #s-pilot .pl-veil { background: linear-gradient(180deg, rgba(3, 8, 16, .9) 0%, rgba(3, 8, 16, .8) 25%, rgba(3, 8, 16, .5) 40%, rgba(3, 8, 16, .54) 68%, rgba(3, 8, 16, .9) 100%); }
 /* a warm light leak drifts along the ceiling cove, behind the title */
-#s-pilot .pl-cove { position: absolute; left: 0; top: 70px; width: 1100px; height: 300px; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;
+#s-pilot .pl-cove { position: absolute; left: 0; top: 70px; width: 1100px; height: 300px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(255, 190, 130, .3), rgba(255, 170, 110, .1) 55%, transparent); animation: plCove 15s ease-in-out infinite alternate; }
 @keyframes plCove { from { transform: translate3d(-260px, 0, 0) scaleX(.9); opacity: .5; } to { transform: translate3d(1080px, 30px, 0) scaleX(1.15); opacity: 1; } }
 #s-pilot .pl-dust { position: absolute; inset: 0; pointer-events: none; }
@@ -55,8 +57,11 @@
 #s-pilot .pl-sub.is-out { filter: blur(6px); transition: opacity .5s var(--ease-soft), transform .6s var(--ease-soft), filter .5s var(--ease-soft); }
 /* a pool of light behind the quarter */
 #s-pilot .pl-rglow { position: absolute; width: 760px; height: 760px; margin: -380px 0 0 -380px; border-radius: 50%; pointer-events: none; opacity: 0; transform: scale(.6);
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .22), rgba(37, 199, 188, .07) 50%, transparent); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
-#s-pilot.st-1 .pl-rglow { opacity: 1; transform: none; transition: opacity 1.2s var(--ease-soft) .3s, transform 1.6s var(--ease-out) .3s; animation: plRGlow 6s ease-in-out 2s infinite; }
+  transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
+#s-pilot .pl-rglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .22), rgba(37, 199, 188, .07) 50%, transparent); }
+#s-pilot.st-1 .pl-rglow { opacity: 1; transform: none; transition: opacity 1.2s var(--ease-soft) .3s, transform 1.6s var(--ease-out) .3s; }
+#s-pilot.st-1 .pl-rglow::before { animation: plRGlow 6s ease-in-out 2s infinite; }
 @keyframes plRGlow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .65; transform: scale(1.08); } }
 
 /* the story flows along the connector into the start of the quarter */
@@ -166,19 +171,27 @@
    into the tile and the target brightens (numbers never change while parked) */
 #s-pilot .pl-k-pip { position: absolute; left: 50%; top: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 28%; z-index: 1;
   background: #06121F; border: 2px solid rgba(37, 199, 188, .8); box-shadow: 0 0 10px rgba(37, 199, 188, .4); }
-#s-pilot .pl-k-beam { position: absolute; left: 10%; right: 10%; top: 0; height: 190px; pointer-events: none; opacity: 0;
+/* lit: a sea pip with its glow over the resting one (::before for the quick first pass, ::after for the laps) */
+#s-pilot .pl-k-pip::before, #s-pilot .pl-k-pip::after { content: ''; position: absolute; inset: -2px; border-radius: 28%; opacity: 0; pointer-events: none;
+  background: var(--sea); border: 2px solid var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .8); }
+#s-pilot .pl-k-beam { position: absolute; left: 10%; right: 10%; top: 0; height: 190px; pointer-events: none; }
+#s-pilot .pl-k-beam::before, #s-pilot .pl-k-beam::after { content: ''; position: absolute; inset: 0; opacity: 0;
   background: radial-gradient(60% 100% at 50% 0%, rgba(3, 255, 203, .16), rgba(37, 199, 188, .05) 60%, transparent); }
-#s-pilot.st-2 .pl-k-pip { animation: plPipOnce 1s linear var(--tf) 1, plPip 10s linear var(--ts) infinite; }
-#s-pilot.st-2 .pl-k-beam { animation: plBeamOnce 1s linear var(--tf) 1, plBeam 10s linear var(--ts) infinite; }
-#s-pilot.st-2 .pl-kt-v { animation: plRead 10s linear var(--ts) infinite; }
-@keyframes plPip { 0%, 9%, 50%, 59% { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .8); }
-  13%, 49.9%, 63%, 100% { background: #06121F; border-color: rgba(37, 199, 188, .8); box-shadow: 0 0 10px rgba(37, 199, 188, .4); } }
-@keyframes plPipOnce { 0%, 60% { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .8); }
-  100% { background: #06121F; border-color: rgba(37, 199, 188, .8); box-shadow: 0 0 10px rgba(37, 199, 188, .4); } }
-@keyframes plBeam { 0%, 50% { opacity: .15; } 2%, 8%, 52%, 58% { opacity: 1; } 14%, 49.9%, 64%, 100% { opacity: 0; } }
-@keyframes plBeamOnce { 0% { opacity: 0; } 15%, 55% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes plRead { 0%, 50% { text-shadow: 0 0 24px rgba(3, 255, 203, .22); } 3%, 9%, 53%, 59% { text-shadow: 0 0 30px rgba(3, 255, 203, .75); }
-  15%, 49.9%, 65%, 100% { text-shadow: 0 0 24px rgba(3, 255, 203, .22); } }
+/* the target's read: a glow-only copy of the figure (transparent text, a strong text-shadow) over it */
+#s-pilot .pl-kt-v { position: relative; }
+#s-pilot .pl-kt-g { position: absolute; left: 0; top: 0; white-space: nowrap; color: transparent; text-shadow: 0 0 30px rgba(3, 255, 203, .72); opacity: 0; pointer-events: none; }
+/* each light eases the pip, the beam and the read up over 220 ms as it arrives (the start is
+   pulled .11 s earlier so the peak still lands on the pass), then lets them go */
+#s-pilot.st-2 .pl-k-pip::before { animation: plPipOnce 1s linear calc(var(--tf) - .08s) 1; }
+#s-pilot.st-2 .pl-k-pip::after { animation: plPip 10s linear calc(var(--ts) - .11s) infinite; }
+#s-pilot.st-2 .pl-k-beam::before { animation: plBeamOnce 1s linear var(--tf) 1; }
+#s-pilot.st-2 .pl-k-beam::after { animation: plBeam 10s linear calc(var(--ts) - .11s) infinite; }
+#s-pilot.st-2 .pl-kt-g { animation: plRead 10s linear calc(var(--ts) - .11s) infinite; }
+@keyframes plPip { 0%, 50% { opacity: 0; animation-timing-function: ease-in-out; } 2.2%, 9%, 52.2%, 59% { opacity: 1; } 13%, 49.9%, 63%, 100% { opacity: 0; } }
+@keyframes plPipOnce { 0% { opacity: 0; animation-timing-function: ease-in-out; } 16%, 60% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes plBeam { 0%, 50% { opacity: 0; animation-timing-function: ease-in-out; } 2.2%, 8%, 52.2%, 58% { opacity: 1; } 14%, 49.9%, 64%, 100% { opacity: 0; } }
+@keyframes plBeamOnce { 0% { opacity: 0; } 18%, 55% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes plRead { 0%, 50% { opacity: 0; animation-timing-function: ease-in-out; } 3%, 9%, 53%, 59% { opacity: 1; } 15%, 49.9%, 65%, 100% { opacity: 0; } }
 
 /* the caption flags the targets as proposals; "what we need" is a quiet strip */
 #s-pilot .pl-cap { position: absolute; left: 144px; top: 634px; margin: 0; font: 400 19px/1.2 var(--font); color: rgba(255, 255, 255, .62); }
@@ -193,8 +206,12 @@
 #s-pilot .pl-final { position: absolute; left: 144px; top: 750px; margin: 0; font: 700 38px/1.1 var(--font); letter-spacing: -.018em; color: var(--ink-1); white-space: nowrap; }
 #s-pilot .pl-herow { position: absolute; left: 140px; }
 #s-pilot .pl-hero { display: inline-block; margin: 0; font: 700 104px/1.06 var(--font); letter-spacing: -.032em; color: var(--sea); white-space: nowrap; }
-#s-pilot.st-2 .pl-hero.is-in { animation: plHero 5s ease-in-out 2.6s infinite; }
-@keyframes plHero { 0%, 100% { filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .5)); } }
+#s-pilot .pl-hero { position: relative; }
+#s-pilot .pl-hglow { position: absolute; left: 0; top: 0; display: inline-block; margin: 0; font: 700 104px/1.06 var(--font); letter-spacing: -.032em; white-space: nowrap;
+  color: transparent; text-shadow: 0 0 52px rgba(3, 255, 203, .5); opacity: 0; pointer-events: none; }
+#s-pilot .pl-hglow .w { overflow: visible; }
+#s-pilot.st-2 .pl-hglow { animation: plHero 5s ease-in-out 2.6s infinite; }
+@keyframes plHero { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
 /* the fork: the path splits three ways after "stop." (it draws behind a leading light, then
    a story travels the stem and divides into all three branches, every 5 s) */
@@ -206,11 +223,13 @@
 #s-pilot .pl-fl .light { position: absolute; left: -7px; top: -7px; }
 /* first: the leading light that draws each branch; then the ambient split every 5 s */
 #s-pilot.st-2 .pl-fl { animation: plFlDraw .9s cubic-bezier(.5, 0, .3, 1) 1.45s both, plFl 5s cubic-bezier(.45, 0, .4, 1) 2.6s infinite; }
-@keyframes plFlDraw { 0% { offset-distance: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes plFlDraw { 0% { offset-distance: 0%; opacity: 0; } 18% { opacity: 1; } 82% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 @keyframes plFl { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 56% { opacity: 1; } 62%, 100% { offset-distance: 100%; opacity: 0; } }
 #s-pilot .pl-fn { position: absolute; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 28%; border: 2.5px solid rgba(37, 199, 188, .75); background: #06121F;
   opacity: 0; transform: scale(.4); transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft); }
-#s-pilot.st-2 .pl-fn { opacity: 1; transform: none; transition: opacity .4s var(--ease-soft) 1.95s, transform .6s var(--ease-back) 1.95s; animation: plFn 5s ease-out 2.6s infinite; }
-@keyframes plFn { 0%, 58%, 100% { background: #06121F; border-color: rgba(37, 199, 188, .75); box-shadow: 0 0 0 rgba(3, 255, 203, 0); }
-  64% { background: var(--teal); border-color: var(--sea); box-shadow: 0 0 26px rgba(3, 255, 203, .7); } }
+#s-pilot .pl-fn::after { content: ''; position: absolute; inset: -2.5px; border-radius: 28%; opacity: 0; pointer-events: none;
+  background: var(--teal); border: 2.5px solid var(--sea); box-shadow: 0 0 26px rgba(3, 255, 203, .7); }
+#s-pilot.st-2 .pl-fn { opacity: 1; transform: none; transition: opacity .4s var(--ease-soft) 1.95s, transform .6s var(--ease-back) 1.95s; }
+#s-pilot.st-2 .pl-fn::after { animation: plFn 5s ease-out 2.6s infinite; }
+@keyframes plFn { 0%, 58%, 100% { opacity: 0; } 64% { opacity: 1; } }
 #stage.lite #s-pilot .pl-fl { display: none; }

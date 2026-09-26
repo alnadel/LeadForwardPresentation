@@ -85,13 +85,13 @@
   const owners = OWNERS.map((o, i) => `
         <div class="rm-own" data-in="1" style="top:${OY[i]}px;--ot:${r2(OWN_FIRST + OF[i] * OWN_LAP)}s">
           <i class="rm-oband"></i>
-          <span class="rm-oi">${Deck.icon(o.i)}</span>
+          <span class="rm-oi">${Deck.icon(o.i)}<i class="rm-lit-ic">${Deck.icon(o.i)}</i></span>
           <b class="rm-role">${o.r}</b>
           <p class="rm-duty">${o.d}</p>
         </div>`).join('');
   const budget = BUDGET.map((b, i) => `
         <div class="rm-bl" data-in="1" style="top:${258 + i * 86}px;--d:${r2(.92 + i * .1)}s;--bt:${r2(2.2 + i * 2.5)}s">
-          <span class="rm-bi">${Deck.icon(b.i)}</span>
+          <span class="rm-bi">${Deck.icon(b.i)}<i class="rm-lit-ic">${Deck.icon(b.i)}</i></span>
           <p><b>${b.k}</b> ${b.t}</p>
         </div>`).join('');
 

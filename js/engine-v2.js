@@ -854,7 +854,15 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     fit();
     requestAnimationFrame(loopFrame);
     const h = readHash();
+    // the glass edge light: one masked ring per .glass card, sized to the card's diagonal so its
+    // rotating gradient always covers the ring (measured after fonts load)
+    const edges = () => $$('.glass', scenesEl).forEach((g) => {
+      if (/^(IMG|INPUT|svg)$/i.test(g.tagName) || g.querySelector(':scope > .gl-edge')) return;
+      const e = document.createElement('i'); e.className = 'gl-edge'; e.innerHTML = '<i></i>'; g.appendChild(e);
+      e.style.setProperty('--gs', Math.ceil(Math.hypot(g.offsetWidth, g.offsetHeight) + 12) + 'px');
+    });
     const begin = () => {
+      edges();
       const q = location.search, gate = !h && (/[?&]gate\b/.test(q) || (!navigator.webdriver && !/[?&]nogate\b/.test(q)));
       const start = () => {
         if (h) go(h.i, h.st, { instant: true });

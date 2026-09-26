@@ -40,7 +40,11 @@
   // clock as the lights, so they stay in step.
   const LAP = 9, RUN = 7, XA = 144, XB = 1774;
   const passAt = (x) => (x - XA) / (XB - XA) * RUN;
-  const dl = (t) => ((t % LAP) - LAP).toFixed(2) + 's';
+  // each flare starts at its first pass after the story light has arrived (GATE s: the runner's
+  // fade-in plus the push entrance), LEAD s early so it has eased up as the light arrives;
+  // after that it keeps the lap's clock. Nothing is mid-flare when the flares turn visible.
+  const GATE = 1.85;
+  const dl = (t, lead = 0) => { let d = (((t - lead) % LAP) + LAP) % LAP; while (d < GATE) d += LAP; return d.toFixed(2) + 's'; };
   const r1 = (v) => Math.round(v * 10) / 10;
 
   const segs = COLS.map((c, j) => {
@@ -48,7 +52,7 @@
     let marks = '';
     for (let i = 0; i < c.marks; i++) {
       const mx = x0 + (i + .5) * w / c.marks;
-      marks += `<i class="cm-mk m${c.marks}" style="left:${r1(mx - x0)}px;--dl:${dl(passAt(mx))};--dl2:${dl(passAt(mx) + LAP / 2)};--md:${(COL_D[j] + .25 + i / Math.max(1, c.marks) * .35).toFixed(2)}s"></i>`;
+      marks += `<i class="cm-mk m${c.marks}" style="left:${r1(mx - x0)}px;--dl:${dl(passAt(mx), .12)};--dl2:${dl(passAt(mx) + LAP / 2, .12)};--md:${(COL_D[j] + .25 + i / Math.max(1, c.marks) * .35).toFixed(2)}s"></i>`;
     }
     return `
       <div class="cm-col c${j}" style="left:${x0}px;width:${w}px;--d:${COL_D[j]}s">
@@ -62,7 +66,7 @@
     const d = (COL_D[j] + .1 + (k === 2 ? .12 : 0)).toFixed(2);
     return `
       <div class="cm-card glass${c.hero ? ' live hero' : ''} a-unfold" data-in="0" style="left:${x}px;top:${CARD_Y}px;width:${CW}px;height:${CARD_H}px;--d:${d}s;--dur:1s">
-        <i class="cm-catch" style="--dl:${dl(passAt(x + CW / 2))}"></i><i class="cm-catch" style="--dl:${dl(passAt(x + CW / 2) + LAP / 2)}"></i>
+        <i class="cm-catch" style="--dl:${dl(passAt(x + CW / 2), .05)}"></i><i class="cm-catch" style="--dl:${dl(passAt(x + CW / 2) + LAP / 2, .05)}"></i>
         <span class="cm-ic">${Deck.icon(c.i)}</span>
         <h3 class="cm-t">${c.t}</h3>
         <p class="cm-l">${c.l}</p>

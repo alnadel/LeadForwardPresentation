@@ -41,8 +41,12 @@
 #s-risks .rk-arm { stroke: rgba(3, 255, 203, .85); stroke-width: 3; }
 #s-risks .rk-row.is-in .rk-stem { stroke-dashoffset: 0; transition: stroke-dashoffset .32s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .36s); }
 #s-risks .rk-row.is-in .rk-arm { stroke-dashoffset: 0; transition: stroke-dashoffset .28s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .66s); }
-#s-risks.st-0 .rk-arm { animation: rkArm 8s ease-out calc(var(--ck) + .72s) infinite; }
-@keyframes rkArm { 0% { stroke: #fff; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .9)); } 18%, 100% { stroke: rgba(3, 255, 203, .85); filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); } }
+/* the check lights the bracket: a white copy of the two arms with their glow (static), laid over them;
+   only the copy's opacity moves (it eases up over 220 ms, centred on the moment the light arrives) */
+#s-risks .rk-lk svg.rk-armg { opacity: 0; pointer-events: none; }
+#s-risks .rk-armg path { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .9)); }
+#s-risks.st-0 .rk-armg { animation: rkArm 8s ease-out calc(var(--ck) + .61s) infinite; }
+@keyframes rkArm { 0% { opacity: 0; animation-timing-function: ease-in-out; } 2.75% { opacity: 1; } 20.75%, 100% { opacity: 0; } }
 /* the guard's anchor, and the lock node that clicks shut once the bracket has closed */
 #s-risks .rk-anchor { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 30%; background: rgba(37, 199, 188, .9);
   opacity: 0; transition: opacity .3s var(--ease-soft); }
@@ -51,27 +55,43 @@
   box-shadow: 0 0 18px rgba(3, 255, 203, .5); transform: scale(.3); opacity: 0; transition: transform .3s var(--ease-soft), opacity .3s var(--ease-soft); }
 #s-risks .rk-row.is-in .rk-node { transform: none; opacity: 1; transition: transform .5s var(--ease-back) calc(var(--delay) + .9s), opacity .2s var(--ease-soft) calc(var(--delay) + .9s); }
 #s-risks .rk-node b { position: absolute; left: 4px; top: 4px; width: 7px; height: 7px; border-radius: 30%; background: var(--sea); }
-#s-risks.st-0 .rk-node b { animation: rkCore 8s ease-out calc(var(--ck) + .7s) infinite; }
-/* each lock breathes while parked: the guard is always on */
-#s-risks.st-0 .rk-row.is-in .rk-node { animation: rkBreathe 3.4s ease-in-out calc(var(--ck) - 1.2s) infinite; }
-@keyframes rkBreathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(3, 255, 203, 0), 0 0 16px rgba(3, 255, 203, .35); } 50% { box-shadow: 0 0 0 9px rgba(3, 255, 203, .1), 0 0 44px rgba(3, 255, 203, .7); } }
-@keyframes rkCore { 0% { background: #fff; box-shadow: 0 0 14px var(--sea), 0 0 30px rgba(3, 255, 203, .8); } 20%, 100% { background: var(--sea); box-shadow: 0 0 0 rgba(3, 255, 203, 0); } }
+#s-risks .rk-node b::after { content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0; pointer-events: none;
+  background: #fff; box-shadow: 0 0 14px var(--sea), 0 0 30px rgba(3, 255, 203, .8); }
+#s-risks.st-0 .rk-node b::after { animation: rkCore 8s ease-out calc(var(--ck) + .59s) infinite; }
+/* each lock breathes while parked: the guard is always on (the breath's ring and wide glow fade in and out) */
+#s-risks .rk-node::before { content: ''; position: absolute; inset: -2.5px; border-radius: 30%; opacity: 0; pointer-events: none;
+  box-shadow: 0 0 0 9px rgba(3, 255, 203, .1), 0 0 44px rgba(3, 255, 203, .7); }
+#s-risks.st-0 .rk-row.is-in .rk-node { box-shadow: 0 0 16px rgba(3, 255, 203, .35); }
+#s-risks.st-0 .rk-row.is-in .rk-node::before { animation: rkBreathe 3.4s ease-in-out calc(var(--ck) - 1.2s) infinite; }
+@keyframes rkBreathe { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+@keyframes rkCore { 0% { opacity: 0; animation-timing-function: ease-in-out; } 2.75% { opacity: 1; } 22.75%, 100% { opacity: 0; } }
 #s-risks .rk-node::after { content: ''; position: absolute; inset: -5px; border-radius: 30%; border: 2px solid var(--sea); opacity: 0; pointer-events: none; }
 /* one-shot (live entrance only): the click ring */
 #s-risks.rk-live .rk-row.is-in .rk-node::after { animation: rkClick .9s var(--ease-out) calc(var(--delay) + .92s) both; }
-@keyframes rkClick { 0% { transform: scale(.8); opacity: 0; } 12% { opacity: 1; } 100% { transform: scale(3.4); opacity: 0; } }
+@keyframes rkClick { 0% { transform: scale(.8); opacity: 0; } 18% { opacity: 1; } 100% { transform: scale(3.4); opacity: 0; } }
 
 /* one-shot (live entrance only): the leading light that runs the stem and closes the bracket */
-#s-risks .rk-lead, #s-risks .rk-chk { position: absolute; left: 0; top: 0; width: 0; height: 0; offset-rotate: 0deg; offset-distance: 0%; opacity: 0; pointer-events: none; }
+#s-risks .rk-lead, #s-risks .rk-chk { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+#s-risks .rk-lead { offset-rotate: 0deg; offset-distance: 0%; opacity: 0; }
 #s-risks .rk-lead .light { position: absolute; left: -7px; top: -7px; }
 #s-risks.rk-live .rk-row.is-in .rk-lead { animation: rkLead .62s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .34s) both; }
-@keyframes rkLead { 0% { offset-distance: 0%; opacity: 0; } 10% { opacity: 1; } 86% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes rkLead { 0% { offset-distance: 0%; opacity: 0; } 25% { opacity: 1; } 75% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 
 /* ambient: every 8 s each lock is checked in turn — a light runs up the stem and round the bracket */
 #s-risks .rk-chk::before { content: ''; position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 30%; background: var(--sea);
-  box-shadow: 0 0 10px var(--sea), 0 0 24px rgba(3, 255, 203, .6); }
-#s-risks.st-0 .rk-chk { animation: rkChk 8s cubic-bezier(.45, 0, .4, 1) var(--ck) infinite; }
-@keyframes rkChk { 0% { offset-distance: 0%; opacity: 0; } 2% { opacity: 1; } 12% { opacity: 1; } 16% { offset-distance: 100%; opacity: 0; } 100% { offset-distance: 100%; opacity: 0; } }
+  box-shadow: 0 0 10px var(--sea), 0 0 24px rgba(3, 255, 203, .6); opacity: 0; }
+/* the run is the same stem → bracket path, walked with transforms: its three straight legs are
+   keyframes at the times cubic-bezier(.45, 0, .4, 1) reaches them, each with its piece of that curve */
+#s-risks.st-0 .rk-chk.t { animation: rkChkT 8s linear var(--ck) infinite; }
+#s-risks.st-0 .rk-chk.b { animation: rkChkB 8s linear var(--ck) infinite; }
+#s-risks.st-0 .rk-chk::before { animation: rkChk 8s linear var(--ck) infinite; }
+@keyframes rkChkT { 0% { transform: translate(106px, 56px); animation-timing-function: cubic-bezier(.514, 0, .72, .521); }
+  7.56% { transform: translate(40px, 56px); animation-timing-function: cubic-bezier(.283, .368, .596, .724); }
+  10.52% { transform: translate(40px, 22px); animation-timing-function: cubic-bezier(.251, .601, .568, 1); } 16%, 100% { transform: translate(22px, 22px); } }
+@keyframes rkChkB { 0% { transform: translate(106px, 56px); animation-timing-function: cubic-bezier(.514, 0, .72, .521); }
+  7.56% { transform: translate(40px, 56px); animation-timing-function: cubic-bezier(.283, .368, .596, .724); }
+  10.52% { transform: translate(40px, 90px); animation-timing-function: cubic-bezier(.251, .601, .568, 1); } 16%, 100% { transform: translate(22px, 90px); } }
+@keyframes rkChk { 0% { opacity: 0; animation-timing-function: ease-in-out; } 2.75% { opacity: 1; } 12% { opacity: 1; animation-timing-function: ease-in-out; } 16%, 100% { opacity: 0; } }
 
 /* …then runs on along the row's edges to the dock, which glows: the hold wraps the whole risk */
 #s-risks .rk-cm { position: absolute; left: 0; width: 0; height: 0; opacity: 0; pointer-events: none; }
@@ -83,10 +103,11 @@
 @keyframes rkCm { 0% { transform: translateX(var(--x0)); opacity: 0; } 3% { opacity: 1; } 14% { opacity: 1; } 17% { transform: translateX(36px); opacity: 0; } 100% { transform: translateX(36px); opacity: 0; } }
 #s-risks .rk-dock::after { content: ''; position: absolute; inset: -12px; border-radius: 34%; opacity: 0; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .55), rgba(37, 199, 188, .15) 60%, transparent); }
-#s-risks.st-0 .rk-dock { animation: rkDock 8s ease-out calc(var(--ck) + 2.45s) infinite; }
-#s-risks.st-0 .rk-dock::after { animation: rkDockGlow 8s ease-out calc(var(--ck) + 2.45s) infinite; }
-@keyframes rkDock { 0% { border-color: rgba(3, 255, 203, .95); } 24%, 100% { border-color: rgba(157, 103, 170, .6); } }
-@keyframes rkDockGlow { 0% { opacity: 1; transform: scale(1.3); } 24%, 100% { opacity: 0; transform: scale(.8); } }
+#s-risks .rk-dock::before { content: ''; position: absolute; inset: -1.5px; border-radius: 30%; border: 1.5px dashed rgba(3, 255, 203, .95); opacity: 0; pointer-events: none; }
+#s-risks.st-0 .rk-dock::before { animation: rkDock 8s ease-out calc(var(--ck) + 2.33s) infinite; }
+#s-risks.st-0 .rk-dock::after { animation: rkDockGlow 8s ease-out calc(var(--ck) + 2.33s) infinite; }
+@keyframes rkDock { 0% { opacity: 0; animation-timing-function: ease-in-out; } 3% { opacity: 1; } 27%, 100% { opacity: 0; } }
+@keyframes rkDockGlow { 0% { opacity: 0; transform: scale(1.3); animation-timing-function: ease-in-out; } 3% { opacity: 1; transform: scale(1.3); } 27%, 100% { opacity: 0; transform: scale(.8); } }
 
 /* ── the change caption ── */
 #s-risks .rk-cap { position: absolute; left: 144px; top: 876px; margin: 0; display: flex; align-items: center; gap: 16px;
