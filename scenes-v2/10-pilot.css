@@ -145,6 +145,10 @@
 #s-pilot .pl-car::before { content: ''; position: absolute; left: -130px; top: -40px; width: 260px; height: 80px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .24), transparent); }
 #s-pilot .pl-tail { position: absolute; right: 8px; top: -2px; width: 230px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .25) 55%, rgba(3, 255, 203, .75)); }
 #s-pilot.st-2 .pl-car { opacity: 1; animation: plCarFirst 1s linear .5s both, plCar 10s linear 1.5s infinite; }
+/* a second story, half a lap behind the first: it fades in mid-lane once the build has settled */
+#s-pilot .pl-car.c2 .light { left: -11px; top: -11px; }
+#s-pilot .pl-car.c2 .pl-tail { width: 170px; opacity: .8; }
+#s-pilot.st-2 .pl-car.c2 { animation: plCar 10s linear -3.5s infinite; transition: opacity .8s var(--ease-soft) 1.6s; }
 @keyframes plCarFirst { from { transform: translateX(-60px); } to { transform: translateX(1980px); } }
 @keyframes plCar { from { transform: translateX(-60px); } to { transform: translateX(1980px); } }
 
@@ -154,10 +158,10 @@
 #s-pilot.st-2 .pl-beam, #s-pilot.st-2 .pl-foot { animation: plBeamOnce 1s linear var(--tf) 1, plBeam 10s linear var(--ts) infinite; }
 #s-pilot.st-2 .pl-lens { animation: plLensOnce 1s linear var(--tf) 1, plLens 10s linear var(--ts) infinite; }
 @keyframes plTxt {
-  0%, 2.4% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
-  2.5%, 3.9% { opacity: .3; text-shadow: none; color: var(--teal); }
-  4%, 9% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
-  13%, 100% { opacity: .62; text-shadow: none; color: var(--teal); } }
+  0%, 2.4%, 50%, 52.4% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
+  2.5%, 3.9%, 52.5%, 53.9% { opacity: .3; text-shadow: none; color: var(--teal); }
+  4%, 9%, 54%, 59% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
+  13%, 49.9%, 63%, 100% { opacity: .62; text-shadow: none; color: var(--teal); } }
 @keyframes plTxtOnce {
   0% { opacity: 0; text-shadow: none; color: var(--teal); }
   1%, 18% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
@@ -165,14 +169,14 @@
   31%, 70% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
   100% { opacity: .62; text-shadow: none; color: var(--teal); } }
 @keyframes plVms {
-  0%, 9% { border-color: rgba(3, 255, 203, .85); box-shadow: 0 0 26px rgba(37, 199, 188, .45), 0 6px 18px rgba(0, 0, 0, .45); }
-  13%, 100% { border-color: rgba(37, 199, 188, .38); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); } }
+  0%, 9%, 50%, 59% { border-color: rgba(3, 255, 203, .85); box-shadow: 0 0 26px rgba(37, 199, 188, .45), 0 6px 18px rgba(0, 0, 0, .45); }
+  13%, 49.9%, 63%, 100% { border-color: rgba(37, 199, 188, .38); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); } }
 @keyframes plVmsOnce {
   0%, 70% { border-color: rgba(3, 255, 203, .85); box-shadow: 0 0 26px rgba(37, 199, 188, .45), 0 6px 18px rgba(0, 0, 0, .45); }
   100% { border-color: rgba(37, 199, 188, .38); box-shadow: 0 6px 18px rgba(0, 0, 0, .45); } }
-@keyframes plBeam { 0% { opacity: .1; } 1.5%, 7% { opacity: .7; } 12%, 100% { opacity: .1; } }
+@keyframes plBeam { 0%, 50% { opacity: .1; } 1.5%, 7%, 51.5%, 57% { opacity: .7; } 12%, 49.9%, 62%, 100% { opacity: .1; } }
 @keyframes plBeamOnce { 0% { opacity: .1; } 12%, 55% { opacity: .7; } 100% { opacity: .1; } }
-@keyframes plLens { 0%, 9% { opacity: 1; transform: scale(1.4); } 13%, 100% { opacity: .6; transform: none; } }
+@keyframes plLens { 0%, 9%, 50%, 59% { opacity: 1; transform: scale(1.4); } 13%, 49.9%, 63%, 100% { opacity: .6; transform: none; } }
 @keyframes plLensOnce { 0%, 70% { opacity: 1; transform: scale(1.4); } 100% { opacity: .6; transform: none; } }
 
 #s-pilot .pl-glab { position: absolute; width: 400px; text-align: center; color: var(--teal); }
@@ -201,3 +205,5 @@
 /* once the decision has landed, the rig steps back a little */
 #s-pilot .pl-rig-in { position: absolute; inset: 0; transition: opacity .4s var(--ease-soft); }
 #s-pilot.st-2 .pl-rig-in { opacity: .74; transition: opacity 1s var(--ease-soft) 1.7s; }
+/* while hidden, clip nothing above the cards (the shared a-unfold hidden clip reaches 80px up) */
+#s-pilot .pl-card[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }

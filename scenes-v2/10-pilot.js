@@ -33,14 +33,21 @@
     { x: 1572, label: 'Repeatable behaviour' },
   ];
   // the light's path runs x -60 → 1980: one quick pass with the build, then
-  // a slow lap every 10 s while the presenter talks (keep in step with .pl-car)
+  // a slow lap every 10 s while the presenter talks, with a second story half a
+  // lap behind, so each readout blinks twice a cycle (keep in step with .pl-car)
   const X0 = -60, X1 = 1980, FIRST_AT = 0.5, FIRST = 1, SLOW = 10;
   const frac = (x) => (x - X0) / (X1 - X0);
   const r2 = (v) => Math.round(v * 100) / 100;
   let truss = 'M8 20H252M8 40H252';
   for (let x = 8; x < 252; x += 16) truss += `M${x} 40L${x + 8} 20L${x + 16} 40`;
+  // the readout cycle blinks at 0% and 50%, once for each light; the far gantries
+  // start it half a lap early so they also catch the second light's first pass
+  const cycleAt = (x) => {
+    const tf = FIRST_AT + frac(x) * FIRST, ts = FIRST_AT + FIRST + frac(x) * SLOW;
+    return r2(ts - SLOW / 2 >= tf + 1.05 ? ts - SLOW / 2 : ts);
+  };
   const gantry = (g, i) => `
-    <div class="pl-g" style="left:${g.x - 130}px;top:${LANE_Y - 144}px;--on:${r2(0.25 + i * 0.08)}s;--tf:${r2(FIRST_AT + frac(g.x) * FIRST)}s;--ts:${r2(FIRST_AT + FIRST + frac(g.x) * SLOW)}s">
+    <div class="pl-g" style="left:${g.x - 130}px;top:${LANE_Y - 144}px;--on:${r2(0.25 + i * 0.08)}s;--tf:${r2(FIRST_AT + frac(g.x) * FIRST)}s;--ts:${cycleAt(g.x)}s">
       <svg class="pl-frame" viewBox="0 0 260 144" aria-hidden="true">
         <rect x="14" y="40" width="7" height="100" rx="2"/><rect x="239" y="40" width="7" height="100" rx="2"/>
         <rect x="8" y="138" width="19" height="4" rx="1"/><rect x="233" y="138" width="19" height="4" rx="1"/>
@@ -141,6 +148,7 @@
         ${GANTRIES.map(gantry).join('')}
       </div></div>
       <div class="pl-car" style="top:${CAR_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light lg"></i></div>
+      <div class="pl-car c2" style="top:${CAR_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light"></i></div>
       ${GANTRIES.map(glabel).join('')}
 
       <div class="pl-card pl-base a-unfold" data-in="2" style="--d:.5s">

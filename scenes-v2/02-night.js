@@ -106,18 +106,18 @@
         <div class="nt-ui">
           <div class="kicker nt-kicker a-wipe" data-in="1" style="--d:.45s">Traffic operations centre · night shift</div>
           <div class="nt-clock num a-blur" data-in="1" style="--d:.25s;--dur:1.3s">03<span class="nt-colon">:</span>12</div>
-          <h2 class="nt-head" data-in="1" data-split style="--d:.5s">Nouf rebuilt the night handover — unasked, in one afternoon.</h2>
+          <h2 class="nt-head" data-in="1" data-split style="--d:.4s">Nouf rebuilt the night handover — unasked, in one afternoon.</h2>
 
           <div class="nt-scraps">${SCRAPS.map(scrapHtml).join('')}</div>
 
-          <div class="nt-card-w" data-spark="1" data-spark-xy="1722,461" data-spark-delay="1.2">
+          <div class="nt-card-w" data-spark="1" data-spark-xy="1722,461" data-spark-delay="1.05">
             <div class="paper nt-card">
               <div class="nt-card-h"><span>NIGHT HANDOVER · v2</span></div>
               ${ROWS.map((r, k) => `<div class="nt-row" style="--k:${k}"><span class="nt-box">${check}</span><span>${r}</span></div>`).join('')}
             </div>
           </div>
 
-          <p class="nt-ba" data-in="1" style="--d:1.1s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night</span> → <span class="nt-after">on live incidents from minute one.</span></p>
+          <p class="nt-ba" data-in="1" style="--d:.9s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night</span> → <span class="nt-after">on live incidents from minute one.</span></p>
         </div>
       </div>
 

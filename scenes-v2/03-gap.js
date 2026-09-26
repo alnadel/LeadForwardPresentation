@@ -72,7 +72,7 @@
   };
 
   const points = [
-    { n: '01', tone: 'go', t: 'Good work happens', s: 'Employees help, solve problems and go the extra mile in their daily work.', at: 0, d: .75 },
+    { n: '01', tone: 'go', t: 'Good work happens', s: 'Employees help, solve problems and go the extra mile in their daily work.', at: 0, d: .6 },
     { n: '02', tone: 'gap', t: 'Visibility stays local', s: 'These contributions are often noticed only by the immediate team or manager.', at: 1, d: .05 },
     { n: '03', tone: 'gap', t: 'Learning does not travel', s: 'Useful behaviours are not consistently shared across departments or repeated.', at: 1, d: .3 },
   ];
@@ -137,8 +137,8 @@
       <div class="gp-close">
         <p class="gp-c1" data-in="2" style="--d:.3s">Meaningful contributions exist — the gap is making them visible, recognised and shared across Tahakom.</p>
         <p class="gp-c2" data-in="2" data-split style="--d:.5s">Behind a Better Life closes that gap through <em class="hl">real employee stories.</em></p>
-        <div class="gp-ask a-scale" data-in="2" style="--d:1s;--dur:1s">
-          <span class="gp-ask-lt" data-spark="2" data-spark-at="c" data-spark-delay="1.3"></span>
+        <div class="gp-ask a-scale" data-in="2" style="--d:.85s;--dur:.9s">
+          <span class="gp-ask-lt" data-spark="2" data-spark-at="c" data-spark-delay="1.15"></span>
           <span class="kicker">Today’s ask</span><span class="gp-ask-sep">·</span><span class="gp-ask-t">Approve a one-quarter pilot</span>
         </div>
       </div>

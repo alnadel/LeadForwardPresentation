@@ -63,3 +63,6 @@
 #s-close .cl-ask-r { display: flex; gap: 14px; }
 #s-close .cl-step { display: inline-flex; align-items: center; gap: 12px; height: 58px; padding: 0 20px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .05); font: 700 23px/1 var(--font); color: var(--ink-1); white-space: nowrap; }
 #s-close .cl-step b { font-size: 22px; color: var(--teal); letter-spacing: .1em; }
+/* while hidden, clip nothing above the strip (the shared a-unfold hidden clip reaches 80px up and
+   would show the strip's glow as a faint line during stop 0) */
+#s-close .cl-ask[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }
