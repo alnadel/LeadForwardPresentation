@@ -1,8 +1,17 @@
-/* 00 · The hook (v2) — the talk opens on the question, before any title or
-   introduction: the question alone at display size, a warm light turning behind
-   it, light shafts from above, a horizon of light the story light rests on, and
-   slow ripples across the floor. The next click opens the title out of that light. */
+/* 00 · The hook (v2) — the talk opens cold on the question, before any title or
+   introduction. On a live load the frame awakens from near-black: a warm light
+   blooms, the question rises word by word, two glints run in along the horizon
+   and meet where the story light lands, and a wave of light wakes the colleague
+   field while the room (rays, bokeh, dust, ripples) fades up around it.
+   Parked: the warm light turns and breathes, the atmosphere pushes in, ripples
+   spread from the light, glints run out along the horizon.
+   The next click opens the title out of that light (01 enters with 'iris'): the
+   horizon gathers into the light, the question lifts away, the light flares.
+   All state is keyed off .st-0 (a settled landing shows the parked frame); the
+   field wave plays only on a live build. */
 (function () {
+  const LIGHT = [960, 716];   // where the story light rests (the horizon's centre)
+  const LAND = 1.75;          // s after --enter: the light lands (keep in step with 00-hook.css)
   // near-camera bokeh: large soft squares drifting slowly at the edges of the frame
   const BOKEH = [[120, 170, 96, 18, -4], [1690, 130, 130, 22, -9], [300, 820, 150, 24, -13], [1540, 790, 110, 20, -2], [40, 520, 70, 16, -7], [1820, 470, 84, 19, -11], [880, 70, 60, 17, -5]];
   const bokeh = BOKEH.map(([x, y, sz, t, dl], i) => `<i style="left:${x}px;top:${y}px;--sz:${sz}px;--t:${t}s;--dl:${dl}s;--bx:${(i % 2 ? -1 : 1) * (40 + i * 9)}px;--by:${(i % 3 - 1) * 36}px"></i>`).join('');
@@ -24,6 +33,8 @@
       { dim: .6, lit: 0, travel: 0, offset: [0, 0], pins: [], warm: .3, links: .7, wave: .7, streaks: .14, sparkle: 1.4, drift: 1.2, calm: [[180, 330, 1740, 690, .6]] },
     ],
     html: `
+      <!-- the house lights: near-black over the field until the light lands (live cold open only) -->
+      <div class="hk-curtain"></div>
       <div class="nt-warm"><i></i></div>
       <div class="nt-deep">
         <div class="nt-rays"></div>
@@ -32,11 +43,24 @@
       </div>
       <div class="amb-dust nt-dust">${dust}</div>
       <div class="nt-bokeh">${bokeh}</div>
+      <!-- the arrival: two glints run in along the horizon and meet where the light lands -->
+      <div class="hk-meet" style="left:${LIGHT[0]}px;top:${LIGHT[1]}px"><b class="l"></b><b class="r"></b></div>
+      <!-- the hand-off: the light flares as the title opens out of it -->
+      <div class="hk-flare" style="left:${LIGHT[0]}px;top:${LIGHT[1]}px"><i></i><b></b></div>
 
-      <div class="nt-q" data-spark="0" data-spark-xy="960,716" data-spark-delay="1.05">
-        <h1 class="display" data-in="0" data-split style="--d:.3s">When was the last time</h1>
-        <h1 class="display" data-in="0" data-split style="--d:.58s">a colleague inspired you?</h1>
+      <div class="nt-q" data-spark="0" data-spark-xy="${LIGHT[0]},${LIGHT[1]}" data-spark-delay="${LAND}">
+        <h1 class="display" data-in="0" data-split style="--d:.3s;--wstep:.085s">When was the last time</h1>
+        <h1 class="display" data-in="0" data-split style="--d:.74s;--wstep:.085s">a colleague inspired you?</h1>
       </div>
     `,
+    step(n, prev, ctx) {
+      // the arrival glints play once, on a live build (a settled landing shows the parked frame)
+      ctx.el.classList.toggle('hk-live', n === 0 && !ctx.instant);
+      // one-shot, live only: as the light lands, a wave of light wakes the whole colleague field
+      if (n === 0 && !ctx.instant && window.Field) {
+        const enter = parseFloat(getComputedStyle(ctx.el).getPropertyValue('--enter')) || 0;
+        ctx.after((enter + LAND) * 1000, () => Field.burst(LIGHT[0], LIGHT[1], { radius: 2100, dur: 3.2 }));
+      }
+    },
   });
 })();

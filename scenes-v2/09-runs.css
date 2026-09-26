@@ -89,7 +89,8 @@
 /* the design-decision column: a faint inner panel the connectors lead into */
 #s-runs .rn-deccol { position: absolute; left: 1040px; top: 14px; right: 14px; bottom: 14px; border-radius: 18px; pointer-events: none;
   background: linear-gradient(90deg, rgba(37, 199, 188, .07), rgba(255, 255, 255, .025) 40%, rgba(255, 255, 255, .02)); box-shadow: inset 1px 0 0 rgba(37, 199, 188, .22); }
-#s-runs .rn-colh span { position: absolute; top: 34px; font: 700 22px/1 var(--font); letter-spacing: .2em; text-transform: uppercase; color: rgba(37, 199, 188, .9); }
+/* column heads are captions: the room reads the field names and their questions */
+#s-runs .rn-colh span { position: absolute; top: 38px; font: 700 18px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: rgba(255, 255, 255, .5); }
 #s-runs .rn-colh::after { content: ''; position: absolute; left: 120px; right: 38px; top: 74px; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .08)); }
 /* the spine: the story enters at the port (where the spark rests) and walks down */
 #s-runs .rn-spine { position: absolute; left: 61px; top: 44px; width: 2px; height: 520px; background: linear-gradient(180deg, rgba(3, 255, 203, .8), rgba(37, 199, 188, .4) 70%, rgba(37, 199, 188, 0)); }
@@ -98,10 +99,11 @@
 #s-runs .rn-row + .rn-row::before { content: ''; position: absolute; left: 120px; right: 38px; top: -8px; height: 1px; background: rgba(255, 255, 255, .08); }
 #s-runs .rn-chip { position: absolute; left: 32px; top: 26px; width: 60px; height: 60px; border-radius: 28%; display: grid; place-items: center; font: 700 24px/1 var(--font); color: var(--teal);
   border: 1.5px solid rgba(37, 199, 188, .6); background: #0A2440; animation: rnChip 11s ease-in-out infinite; animation-delay: calc(var(--k) * 2.42s); }
-#s-runs .rn-key { position: absolute; left: 120px; top: 44px; font: 700 24px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--teal);
+#s-runs .rn-key { position: absolute; left: 120px; top: 35px; font: 700 42px/1 var(--font); letter-spacing: -.018em; color: var(--white);
   animation: rnKey 11s ease-in-out infinite; animation-delay: calc(var(--k) * 2.42s); }
-#s-runs .rn-q { position: absolute; left: 300px; top: 34px; margin: 0; font: 500 36px/1.2 var(--font); letter-spacing: -.005em; color: var(--white); white-space: nowrap; }
-#s-runs .rn-dec { position: absolute; left: 1064px; top: 0; width: 530px; height: 112px; margin: 0; display: flex; align-items: center; font: 400 30px/1.3 var(--font); color: var(--ink-2); text-wrap: pretty; }
+#s-runs .rn-q { position: absolute; left: 318px; top: 36px; margin: 0; font: 500 35px/1.2 var(--font); letter-spacing: -.008em; color: rgba(255, 255, 255, .9); white-space: nowrap; }
+/* the design decision: support, in the quiet column */
+#s-runs .rn-dec { position: absolute; left: 1064px; top: 0; width: 520px; height: 112px; margin: 0; display: flex; align-items: center; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .6); text-wrap: pretty; }
 /* connector: question → decision. It draws with the build (a leading light), then a light fires along it as the walker passes */
 #s-runs .rn-con { position: absolute; left: 972px; top: 50px; width: 66px; height: 12px; }
 #s-runs .rn-con::before { content: ''; position: absolute; left: 0; right: 3px; top: 5px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .15), rgba(37, 199, 188, .85));
@@ -145,7 +147,7 @@
   0%, 7%, 26%, 100% { background: #0A2440; color: var(--teal); border-color: rgba(37, 199, 188, .6); box-shadow: 0 0 0 rgba(37, 199, 188, 0); }
   11%, 20% { background: var(--teal); color: var(--navy); border-color: var(--teal); box-shadow: 0 0 30px rgba(37, 199, 188, .65); }
 }
-@keyframes rnKey { 0%, 7%, 26%, 100% { text-shadow: 0 0 0 rgba(3, 255, 203, 0); color: var(--teal); } 11%, 20% { text-shadow: 0 0 20px rgba(3, 255, 203, .6); color: var(--sea); } }
+@keyframes rnKey { 0%, 7%, 26%, 100% { text-shadow: 0 0 0 rgba(3, 255, 203, 0); } 11%, 20% { text-shadow: 0 0 26px rgba(3, 255, 203, .6); } }
 @keyframes rnCon { 0%, 12% { transform: translateX(0); opacity: 0; } 13% { opacity: 1; } 19% { transform: translateX(60px); opacity: 1; } 21%, 100% { transform: translateX(60px); opacity: 0; } }
 
 /* ── 1 · quarterly rhythm ────────────────────────────────────────────── */
@@ -154,9 +156,12 @@
   background: linear-gradient(90deg, rgba(37, 199, 188, .14), rgba(37, 199, 188, .03) 58%, rgba(37, 199, 188, .1)); }
 #s-runs .rn-cap { position: absolute; left: 34px; top: 38px; width: 56px; height: 56px; border-radius: 28%; border: 2px solid var(--teal); background: rgba(37, 199, 188, .22);
   box-shadow: 0 0 30px rgba(37, 199, 188, .5); z-index: 1; }
-#s-runs .rn-lane-lab { position: absolute; left: 122px; top: 28px; font: 700 24px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--teal); z-index: 1; }
-#s-runs .rn-lane-lab b { margin: 0 .5em; font-weight: 700; color: var(--ink-4); }
-#s-runs .rn-lane-s { position: absolute; left: 122px; top: 64px; margin: 0; font: 400 34px/1.2 var(--font); color: var(--ink-1); white-space: nowrap; z-index: 1; }
+/* the lane reads like a month card: a small label, the stage name, a quiet line of support */
+#s-runs .rn-lane-lab { position: absolute; left: 122px; top: 20px; display: flex; align-items: baseline; white-space: nowrap; z-index: 1; }
+#s-runs .rn-lane-lab span { font: 700 21px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(37, 199, 188, .9); }
+#s-runs .rn-lane-lab b { margin: 0 .55em; font: 700 21px/1 var(--font); color: var(--ink-4); }
+#s-runs .rn-lane-lab strong { font: 700 46px/1 var(--font); letter-spacing: -.02em; color: var(--white); }
+#s-runs .rn-lane-s { position: absolute; left: 122px; top: 80px; margin: 0; font: 400 23px/1.2 var(--font); color: rgba(255, 255, 255, .6); white-space: nowrap; z-index: 1; }
 #s-runs .rn-track { position: absolute; left: 1010px; right: 118px; top: 65px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, 0), rgba(37, 199, 188, .65)); z-index: 1; }
 #s-runs .rn-tray { position: absolute; right: 34px; top: 30px; width: 72px; height: 72px; border-radius: 28%; display: grid; place-items: center; font-size: 38px; color: var(--teal); z-index: 1;
   border: 1.5px solid rgba(37, 199, 188, .65); background-color: rgba(6, 33, 61, .9); animation: rnTray 2s ease-out infinite; }
@@ -173,14 +178,14 @@
 
 /* one quarter, month by month: three glass cards on the quarter's axis */
 #s-runs .rn-qtr { position: absolute; left: var(--m); top: 486px; width: 1632px; height: 440px; }
-#s-runs .rn-qtr-lab { position: absolute; left: 0; top: 0; font: 700 24px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
+#s-runs .rn-qtr-lab { position: absolute; left: 0; top: 4px; font: 700 19px/1 var(--font); letter-spacing: .2em; text-transform: uppercase; color: rgba(255, 255, 255, .55); }
 #s-runs .rn-axis { position: absolute; left: 0; width: 1300px; top: 64px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .8), rgba(37, 199, 188, .45)); }
 #s-runs .rn-weeks i { position: absolute; top: -6px; width: 2px; height: 14px; margin-left: -1px; background: rgba(255, 255, 255, .24); }
 #s-runs .rn-tick { position: absolute; top: 54px; width: 22px; height: 22px; margin-left: -11px; border-radius: 28%; border: 2px solid rgba(37, 199, 188, .6); background: #0A2440;
   animation: rnTick 13s ease-in-out infinite; animation-delay: calc(var(--k) * 3.907s); }
 #s-runs .rn-tick::after { content: ''; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 28%; background: var(--teal); }
 #s-runs .rn-months { position: absolute; left: 0; top: 96px; }
-#s-runs .rn-m { position: absolute; top: 0; width: 412px; height: 330px; border-radius: 22px; }
+#s-runs .rn-m { position: absolute; top: 0; width: 412px; height: 300px; border-radius: 22px; }
 /* the month the playhead is in lights up */
 #s-runs .rn-m::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
   box-shadow: inset 0 0 0 1.5px rgba(3, 255, 203, .7), 0 0 50px rgba(37, 199, 188, .28);
@@ -189,9 +194,10 @@
 @keyframes rnMonthG { 0% { opacity: 0; } 3%, 26% { opacity: 1; } 31%, 100% { opacity: 0; } }
 #s-runs .rn-mi { position: absolute; left: 28px; top: 28px; width: 64px; height: 64px; border-radius: 28%; display: grid; place-items: center; font-size: 36px; color: var(--teal);
   border: 1.5px solid rgba(37, 199, 188, .55); background: rgba(10, 36, 64, .9); animation: rnMonth 13s ease-in-out infinite; animation-delay: calc(var(--k) * 3.907s); }
-#s-runs .rn-m-lab { position: absolute; left: 110px; top: 50px; font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
-#s-runs .rn-m-k { position: absolute; left: 28px; top: 112px; font: 700 52px/1.05 var(--font); letter-spacing: -.02em; color: var(--white); animation: rnMonthK 13s ease-in-out infinite; animation-delay: calc(var(--k) * 3.907s); }
-#s-runs .rn-m-t { position: absolute; left: 28px; top: 184px; width: 356px; margin: 0; font: 400 30px/1.3 var(--font); color: var(--ink-2); text-wrap: pretty; }
+/* month → stage is what the room reads: the month label in teal, the stage name large */
+#s-runs .rn-m-lab { position: absolute; left: 110px; top: 50px; font: 700 22px/1 var(--font); letter-spacing: .18em; text-transform: uppercase; color: rgba(37, 199, 188, .92); }
+#s-runs .rn-m-k { position: absolute; left: 28px; top: 110px; font: 700 62px/1.05 var(--font); letter-spacing: -.02em; color: var(--white); animation: rnMonthK 13s ease-in-out infinite; animation-delay: calc(var(--k) * 3.907s); }
+#s-runs .rn-m-t { position: absolute; left: 28px; top: 192px; width: 356px; margin: 0; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .6); text-wrap: pretty; }
 @keyframes rnMonth {
   0% { background: rgba(10, 36, 64, .9); color: var(--teal); border-color: rgba(37, 199, 188, .55); box-shadow: 0 0 0 rgba(37, 199, 188, 0); }
   3%, 26% { background: var(--teal); color: #062036; border-color: var(--teal); box-shadow: 0 0 30px rgba(37, 199, 188, .6); }
@@ -205,14 +211,14 @@
 @keyframes rnMonthK { 0% { text-shadow: 0 0 0 rgba(37, 199, 188, 0); } 3%, 26% { text-shadow: 0 0 28px rgba(37, 199, 188, .6); } 31%, 100% { text-shadow: 0 0 0 rgba(37, 199, 188, 0); } }
 /* past month 3: the quarter's stories drop into the annual collection */
 #s-runs .rn-ext { position: absolute; left: 1300px; width: 64px; top: 64px; height: 2px; background: repeating-linear-gradient(90deg, rgba(201, 166, 211, .8) 0 6px, transparent 6px 12px); }
-#s-runs .rn-annual { position: absolute; left: 1364px; top: 96px; width: 268px; height: 330px; border-radius: 22px; }
+#s-runs .rn-annual { position: absolute; left: 1364px; top: 96px; width: 268px; height: 300px; border-radius: 22px; }
 #s-runs .rn-coll { position: absolute; left: 28px; top: 28px; display: grid; width: 64px; height: 64px; border-radius: 28%; border: 1.5px solid rgba(201, 166, 211, .75); background: rgba(157, 103, 170, .16);
   grid-template-columns: repeat(2, 14px); gap: 8px; place-content: center; animation: rnColl 13s ease-out infinite; }
 #s-runs .rn-coll i { width: 14px; height: 14px; border-radius: 28%; background: var(--purple-lt); box-shadow: 0 0 10px rgba(201, 166, 211, .6); }
 #s-runs .rn-an-lab { left: 110px; color: var(--purple-lt); }
-#s-runs .rn-an-t { position: absolute; left: 28px; top: 116px; width: 220px; margin: 0; font: 500 34px/1.18 var(--font); letter-spacing: -.01em; color: var(--white); }
+#s-runs .rn-an-t { position: absolute; left: 28px; top: 112px; width: 220px; margin: 0; font: 500 28px/1.2 var(--font); letter-spacing: -.01em; color: rgba(255, 255, 255, .86); }
 /* the collection: a small fan of featured stories that brightens when the quarter's story arrives */
-#s-runs .rn-stack { position: absolute; left: 28px; bottom: 30px; width: 212px; height: 96px; }
+#s-runs .rn-stack { position: absolute; left: 28px; bottom: 26px; width: 212px; height: 96px; }
 #s-runs .rn-stack i { position: absolute; left: 0; bottom: 0; width: 140px; height: 76px; border-radius: 14px; border: 1.5px solid rgba(201, 166, 211, .42);
   background: linear-gradient(160deg, rgba(157, 103, 170, .34), rgba(30, 12, 26, .85)); box-shadow: 0 10px 24px rgba(0, 0, 0, .4); }
 #s-runs .rn-stack i:nth-child(1) { transform: translate(0, -16px) scale(.86); opacity: .55; transform-origin: 0 100%; }
@@ -245,21 +251,22 @@
 /* ── 2 · recognition: three tiers as nested squircles (the hero) ─────── */
 #s-runs .rn-h2 { width: 800px; white-space: normal; }
 #s-runs .rn-tiers { position: absolute; left: var(--m); top: 398px; width: 800px; }
-#s-runs .rn-t { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 20px; }
+#s-runs .rn-t { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 30px; }
 #s-runs .rn-tn { flex: none; width: 56px; height: 56px; font-size: 22px; animation: rnTier 4.5s ease-out infinite; }
 #s-runs .rn-t:nth-child(1) .rn-tn { animation-delay: .37s; }
 #s-runs .rn-t:nth-child(2) .rn-tn { animation-delay: 1.99s; }
 #s-runs .rn-t:nth-child(3) .rn-tn { animation-delay: 3.56s; }
-#s-runs .rn-tt { margin: 4px 0 0; font: 700 38px/1.12 var(--font); letter-spacing: -.014em; color: var(--white); }
-#s-runs .rn-ts { margin: 6px 0 0; max-width: 720px; font: 400 30px/1.3 var(--font); color: var(--ink-2); text-wrap: pretty; }
+/* the three tier names are what the room reads; each description is support */
+#s-runs .rn-tt { margin: 2px 0 0; font: 700 46px/1.08 var(--font); letter-spacing: -.02em; color: var(--white); }
+#s-runs .rn-ts { margin: 8px 0 0; max-width: 700px; font: 400 23px/1.4 var(--font); color: rgba(255, 255, 255, .6); text-wrap: pretty; }
 @keyframes rnTier {
   0%, 30%, 100% { background: rgba(255, 255, 255, .06); border-color: var(--line-2); color: var(--white); box-shadow: 0 0 0 rgba(37, 199, 188, 0); }
   6% { background: var(--teal); border-color: var(--teal); color: var(--navy); box-shadow: 0 0 34px rgba(37, 199, 188, .6); }
 }
 #s-runs .rn-pr { position: absolute; left: var(--m); top: 836px; width: 860px; }
 #s-runs .rn-pr::before { content: ''; position: absolute; left: 0; top: -22px; width: 780px; height: 1px; background: linear-gradient(90deg, rgba(37, 199, 188, .6), rgba(37, 199, 188, 0)); }
-#s-runs .rn-pr-k { display: block; font: 700 22px/1 var(--font); letter-spacing: .24em; text-transform: uppercase; color: var(--teal); }
-#s-runs .rn-pr-t { margin: 12px 0 0; font: 700 50px/1.1 var(--font); letter-spacing: -.02em; color: var(--white); white-space: nowrap; }
+#s-runs .rn-pr-k { display: block; font: 700 20px/1 var(--font); letter-spacing: .24em; text-transform: uppercase; color: rgba(37, 199, 188, .9); }
+#s-runs .rn-pr-t { margin: 12px 0 0; font: 700 54px/1.1 var(--font); letter-spacing: -.02em; color: var(--white); white-space: nowrap; }
 #s-runs .rn-pr-t em { font-style: normal; color: var(--teal); }
 
 /* a pool of light behind the frames */

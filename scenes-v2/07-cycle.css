@@ -1,5 +1,8 @@
 /* 07 · The cycle (v2) */
-#s-cycle .cy-h { margin-top: 30px; font-size: 76px; max-width: 1500px; }
+#s-cycle .cy-h { margin-top: 30px; font-size: 80px; max-width: 1560px; }
+/* the contrast the audience takes away: the award "stops" (purple, the award lane), the story "keeps going" (teal, the loop) */
+#s-cycle .cy-stop { font-style: normal; color: var(--purple-lt); }
+#s-cycle .cy-keep { text-shadow: 0 0 44px rgba(37, 199, 188, .38); }
 #s-cycle .cy-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
 
 /* ── stop 0 · two lanes ─────────────────────────────────────────────── */
@@ -71,10 +74,11 @@
 #s-cycle .cy-ln.pass .cy-lrip { animation: cyLRip 1.5s var(--ease-out); }
 @keyframes cyLRip { 0% { opacity: 0; transform: scale(1); } 10% { opacity: .9; } 100% { opacity: 0; transform: scale(2.1); } }
 
-#s-cycle .cy-st { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; font: 700 44px/1.1 var(--font); letter-spacing: -.012em; }
+/* lane labels: support (they read as the diagram, one step quieter than the headline) */
+#s-cycle .cy-st { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; font: 600 34px/1.1 var(--font); letter-spacing: -.008em; }
 #s-cycle .cy-st:not(.is-in) { transform: translate(-50%, -100%) translateY(30px); }
-#s-cycle .cy-st.p { color: var(--purple-lt); }
-#s-cycle .cy-st.t { color: var(--white); text-shadow: 0 0 30px rgba(37, 199, 188, .35); }
+#s-cycle .cy-st.p { color: rgba(201, 166, 211, .82); }
+#s-cycle .cy-st.t { color: rgba(255, 255, 255, .8); text-shadow: 0 0 26px rgba(37, 199, 188, .3); }
 
 /* the wall where the award lane ends — a boundary, not a failure */
 #s-cycle .cy-wallw { position: absolute; width: 0; height: 0; }
@@ -86,7 +90,7 @@
 #s-cycle.st-0 .cy-wglow { opacity: .4; transition-delay: calc(var(--enter, 0s) + 1s); }
 #s-cycle .cy-wglow.go { animation: cyWGlow 1.4s var(--ease-out); }
 @keyframes cyWGlow { 0% { opacity: .4; transform: scale(1); } 12% { opacity: 1; transform: scale(1.12); } 100% { opacity: .4; transform: scale(1); } }
-#s-cycle .cy-end { position: absolute; transform: translateY(-50%); white-space: nowrap; font: 500 40px/1.2 var(--font); color: var(--purple-lt); }
+#s-cycle .cy-end { position: absolute; transform: translateY(-50%); white-space: nowrap; font: 500 32px/1.2 var(--font); color: rgba(201, 166, 211, .9); }
 #s-cycle .cy-end:not(.is-in) { transform: translateY(-50%) translateX(60px); }
 
 /* the travelling lights (positioned by the loop) */
@@ -201,21 +205,24 @@
 
 /* the four stage cards, outside the ring */
 #s-cycle .cy-cw { position: absolute; width: 492px; }
-#s-cycle .cy-card { padding: 28px 34px 30px; }
+#s-cycle .cy-card { padding: 24px 32px 26px; }
 #s-cycle .cy-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
   box-shadow: 0 0 0 2px rgba(3, 255, 203, .75), 0 0 46px rgba(37, 199, 188, .35), inset 0 0 36px rgba(37, 199, 188, .14); }
 #s-cycle .cy-card.pass::after { animation: cyCardPass 1.9s var(--ease-soft) .3s; }
 @keyframes cyCardPass { 0% { opacity: 0; } 22% { opacity: 1; } 100% { opacity: 0; } }
 #s-cycle .cy-ch { display: flex; align-items: center; gap: 18px; }
-#s-cycle .cy-ic { font-size: 46px; color: var(--teal); filter: drop-shadow(0 0 10px rgba(37, 199, 188, .4)); }
-#s-cycle .cy-t { font: 700 40px/1.1 var(--font); letter-spacing: .1em; text-transform: uppercase; color: var(--white); }
-#s-cycle .cy-s { margin: 14px 0 0; font: 400 28px/1.38 var(--font); color: var(--ink-2); text-wrap: pretty; }
+#s-cycle .cy-ic { font-size: 44px; color: var(--teal); filter: drop-shadow(0 0 10px rgba(37, 199, 188, .4)); }
+/* the stage name is what the room reads; the sentence under it is support */
+#s-cycle .cy-t { font: 700 52px/1.05 var(--font); letter-spacing: -.018em; color: var(--white); }
+#s-cycle .cy-card.pass .cy-t { animation: cyNamePass 1.9s var(--ease-soft) .3s; }
+@keyframes cyNamePass { 0%, 100% { text-shadow: 0 0 0 rgba(3, 255, 203, 0); } 24% { text-shadow: 0 0 30px rgba(3, 255, 203, .55); } }
+#s-cycle .cy-s { margin: 12px 0 0; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .62); text-wrap: pretty; }
 /* stop 2: each card unfolds its principle */
 #s-cycle .cy-pf { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .5s var(--ease-soft), opacity .3s var(--ease-soft); }
-#s-cycle.st-2 .cy-pf { max-height: 90px; opacity: 1; transition: max-height .8s var(--ease-out) calc(.3s + var(--k) * .14s), opacity .6s var(--ease-soft) calc(.45s + var(--k) * .14s); }
-#s-cycle .cy-p { position: relative; display: flex; align-items: center; gap: 14px; margin-top: 20px; padding-top: 18px; font: 700 24px/1.1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: var(--teal); }
+#s-cycle.st-2 .cy-pf { max-height: 70px; opacity: 1; transition: max-height .8s var(--ease-out) calc(.3s + var(--k) * .14s), opacity .6s var(--ease-soft) calc(.45s + var(--k) * .14s); }
+#s-cycle .cy-p { position: relative; display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 15px; font: 700 19px/1.1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(37, 199, 188, .86); }
 #s-cycle .cy-p::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: linear-gradient(90deg, rgba(37, 199, 188, .8), rgba(255, 255, 255, .12)); transform-origin: 0 50%; }
-#s-cycle .cy-p i { width: 14px; height: 14px; border-radius: 28%; background: var(--teal); box-shadow: 0 0 12px rgba(37, 199, 188, .8); flex: none; }
+#s-cycle .cy-p i { width: 11px; height: 11px; border-radius: 28%; background: var(--teal); box-shadow: 0 0 12px rgba(37, 199, 188, .8); flex: none; }
 
 /* ── stop 2 · the cycle repeats ─────────────────────────────────────── */
 #s-cycle .cy-core { position: absolute; width: 0; height: 0; pointer-events: none; }

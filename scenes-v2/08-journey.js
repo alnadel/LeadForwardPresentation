@@ -81,7 +81,7 @@
     cues: ['Capture · Faisal nominates Nouf', 'Curate → Feature · the checks tick, the post publishes', 'Reinforce · certificate and four teams', 'The chain · recognition becomes behaviour'],
     holds: [11, 12, 10, 9],
     notes: [
-      'Now one story through it — illustrative, not a real case. Faisal takes thirty seconds to nominate Nouf: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”',
+      'Now follow Nouf’s story through the cycle — illustrative, not a real case. Faisal takes thirty seconds to nominate Nouf: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”',
       'Curate: facts checked with the shift lead, Nouf’s consent, and one value, Excellence. Nothing goes out without consent. Then Feature: a short post on a channel we already have. Reactions, not reach numbers.',
       'Reinforce: her leader acknowledges her with a certificate, and the takeaway travels. In this illustrative story four teams adopt the new handover, and we claim no more than that.',
       'Then Nouf nominates the next colleague, and the cycle starts again: recognition becomes behaviour. Again, the story is illustrative; the mechanism is what we ask you to pilot.',
@@ -96,7 +96,10 @@
       <!-- the rail: the cycle in miniature -->
       <div class="jn-rail">
         <div class="kicker" data-in="0">One story</div>
-        <p class="jn-intro" data-in="0" style="--d:.1s">Now follow Nouf’s story through it.</p>
+      </div>
+      <!-- the stage being discussed: the one word the room reads first (it changes with the story) -->
+      <div class="jn-stage" data-in="0" style="--d:.12s">
+        ${STAGES.map((s, i) => `<div class="jn-sg"><b>0${i + 1}</b><span>${s}</span></div>`).join('')}
       </div>
       <div class="jn-ring a-fade" data-in="0" style="left:${RCX - 150}px;top:${RCY - 150}px;--d:.2s">
         <svg viewBox="0 0 300 300" aria-hidden="true">
@@ -201,6 +204,7 @@
       </div>
 
       <!-- 3 · THE CHAIN: a new light leaves the ring -->
+      <i class="jn-glow g3" data-at="3"></i>
       <svg class="jn-trail" viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-trace" d="${SPLIT}" pathLength="100"/><path class="jn-tr" d="${SPLIT}"/></svg>
       <div class="jn-newlight">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="offset-path:path('${SPLIT}');--c:${k}"></i>`).join('')}</div>
       <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass live"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
@@ -209,6 +213,7 @@
     `,
     init(ctx) {
       ctx.at3 = 0;
+      ctx.sgs = ctx.$$('.jn-sg');
       ctx.nds = ctx.$$('.jn-nd');
       ctx.lis = ctx.$$('.jn-li');
       ctx.prog = ctx.$('.jn-rprog');
@@ -249,5 +254,7 @@
       d.classList.toggle('spk', i === spk);
     });
     ctx.lis.forEach((d, i) => { d.classList.toggle('cur', i === cur); d.classList.toggle('done', i < done && i !== cur); });
+    // the stage title: the current stage stands; earlier ones leave upward, later ones wait below
+    ctx.sgs.forEach((d, i) => { d.classList.toggle('on', i === cur); d.classList.toggle('pre', i < cur); });
   }
 })();

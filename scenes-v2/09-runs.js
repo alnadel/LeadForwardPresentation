@@ -159,7 +159,7 @@
         <div class="rn-card glass a-unfold" data-in="0" style="--d:.34s;--dur:1.1s">
           <i class="rn-deccol a-fade" data-in="0" style="--d:.8s;--dur:1.2s"></i>
           <div class="rn-bandw a-fade" data-in="0" style="--d:1.5s"><i class="rn-band"></i></div>
-          <div class="rn-colh a-fade" data-in="0" style="--d:.6s"><span style="left:120px">Field</span><span style="left:300px">The question</span><span style="left:1064px">Design decision</span></div>
+          <div class="rn-colh a-fade" data-in="0" style="--d:.6s"><span style="left:120px">Field</span><span style="left:318px">The question</span><span style="left:1064px">Design decision</span></div>
           <i class="rn-spine a-wipe-down" data-in="0" style="--d:.5s;--dur:1.2s"></i>
           <i class="rn-port" data-spark="0" data-spark-at="c"></i>
           <div class="rn-rows" data-stagger style="--stagger:.1s;--d:.5s">${rows}</div>
@@ -172,7 +172,7 @@
         <h2 class="h2 rn-h rn-h1" data-in="1" data-split style="--d:.28s">The operating cycle <em class="hl">keeps stories moving.</em></h2>
         <div class="rn-lane glass" data-in="1" style="--d:.4s">
           <span class="rn-cap" data-spark="1" data-spark-at="c" data-spark-delay=".45"></span>
-          <div class="rn-lane-lab">Always open<b>·</b>Capture</div>
+          <div class="rn-lane-lab"><span>Always open</span><b>·</b><strong>Capture</strong></div>
           <p class="rn-lane-s">Accept peer and leader nominations through a simple form.</p>
           <span class="rn-track"></span>
           <span class="rn-tray">${Deck.icon('person-message')}</span>
