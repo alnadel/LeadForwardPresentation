@@ -74,7 +74,7 @@
   Deck.scene({
     id: 'journey',
     title: 'One story, through the cycle',
-    act: 3,
+    act: 2,
     bg: 'night',
     tag: 'illustrative',
     transition: 'dolly',

@@ -123,7 +123,7 @@
   Deck.scene({
     id: 'runs',
     title: 'How it runs',
-    act: 3,
+    act: 2,
     bg: 'night',
     transition: 'push',
     cues: ['01 Story format · four fields', '02 Quarterly rhythm · always open, month by month', '03 Recognition · three tiers · Featured Story'],

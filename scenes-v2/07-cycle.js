@@ -103,7 +103,7 @@
   Deck.scene({
     id: 'cycle',
     title: 'The cycle',
-    act: 3,
+    act: 2,
     bg: 'teal',
     transition: 'iris',
     cues: ['What is new · two lanes', 'The cycle · four stages', 'The cycle repeats'],

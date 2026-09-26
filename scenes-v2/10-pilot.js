@@ -87,7 +87,7 @@
     title: 'The pilot',
     act: 4,
     bg: 'night',
-    transition: 'chapter',
+    transition: 'rise',
     cues: ['Approve the pilot.', 'One quarterly cycle · three commitments', 'How we’ll judge it · what we need · scale, adjust or stop'],
     holds: [6, 12, 12],
     notes: [

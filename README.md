@@ -5,14 +5,13 @@ A presenter-driven animated deck. Each click plays the next build and then **sto
 It merges two earlier cuts: the **Story Cycle** film (Nouf and Faisal) and the **Executive Cut** (the final PowerPoint content). It runs fully offline in Chrome or Edge.
 
 ## To present: copy the `Present` folder and double-click
-**`Present/`** is everything you need, and nothing else. It is four files, fully offline, with no libraries, fonts folder or assets to carry: the fonts, photographs and code are all inside the one HTML file.
+**`Present/`** is everything you need, and nothing else. It is three files, fully offline, with no libraries, fonts folder or assets to carry: the fonts, photographs and code are all inside the one HTML file.
 
 | File | What it does |
 | --- | --- |
 | `Present (Windows).bat` | **Double-click to present.** Opens the deck full screen in its own clean Chrome (or Edge) window. |
 | `Present (Mac).command` | **Double-click to present** on a Mac. The first time, if macOS says it cannot verify the file, right-click it and choose **Open**. |
 | `Behind-a-Better-Life.html` | The deck itself. Double-clicking it also works: it opens in your default browser, and the first key or click goes full screen and begins. |
-| `Behind-a-Better-Life-backup.pdf` | Backup: every stop as a static page with its speaker notes. It opens on any computer. |
 
 The deck opens on black with a quiet "press any key or click to begin". Press **S** first if you want the speaker view on your laptop. Then press any key (or the clicker) and the talk begins with the question. Keep the files together in one folder; if you received a .zip, extract it first.
 
@@ -118,7 +117,6 @@ These changed from, or were added to, the approved deck. Check each one with the
 - Look at the 8% stop (the sea-green squares: v2 scene 05 stop 3, v1 scene 05 stop 3) on the real projector. If it looks washed out, press **C**.
 - If animation stutters, press **L**.
 - Turn off notifications and sleep, and close Teams and Outlook.
-- Backup: `Behind-a-Better-Life-backup.pdf` in each folder has every stop as a static page with its notes. It opens on any computer.
 
 ## Editing
 - The v1 source is `index.html`, with each scene in `scenes/NN-id.js` + `.css`, the engine in `js/engine.js` + `js/field.js`, and the design system in `css/deck.css`.
@@ -126,6 +124,5 @@ These changed from, or were added to, the approved deck. Check each one with the
 - Scene authoring rules are in [`docs/SCENE_GUIDE.md`](docs/SCENE_GUIDE.md).
 - Rebuild the v1 single file with `python3 tools/build.py` (it writes `Present-v1-full/Behind-a-Better-Life.html`).
 - Screenshot every stop with `node tools/shoot.js --motion` (Playwright). Then check that ambient motion is running with `python3 tools/motion.py shots`, and that back navigation matches forward navigation with `node tools/backcheck.js` followed by `python3 tools/backdiff.py`.
-- Regenerate a PDF backup with `node tools/shoot.js --file Present/Behind-a-Better-Life.html --out shots/all --wait 4000`, then `python3 tools/export_pdf.py shots/all Present/Behind-a-Better-Life-backup.pdf` (use `Present-v1-full/` for v1).
 
 The people in the photographs are AI-generated illustrations, not Tahakom employees.

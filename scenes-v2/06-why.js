@@ -63,9 +63,9 @@
   Deck.scene({
     id: 'why',
     title: 'Why it matters',
-    act: 2,
+    act: 1,
     bg: 'night',
-    transition: 'chapter',
+    transition: 'push',
     cues: ['Recognition creates value at two connected levels · the prism flow', 'Becomes organisational value when the story is shared · retention caveat', 'Strategic value · over Riyadh · the values Tahakom already has'],
     holds: [10, 8, 10],
     notes: [

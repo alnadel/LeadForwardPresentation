@@ -37,9 +37,9 @@
    style "from stop n on" with  #s-id.st-2 .thing { … }. */
 (function () {
   const Deck = (window.Deck = {});
-  Deck.ACTS = ['The moment', 'The gap', 'Why it matters', 'The cycle', 'The pilot'];
+  Deck.ACTS = ['The moment', 'The case', 'The campaign', 'Leading it', 'The plan'];
   // pace targets for the speaker view: minutes elapsed by the end of each act
-  Deck.ACT_TARGETS = [2, 6, 7.75, 12.25, 15];     // minutes: when each act should be finished (v2 timing)
+  Deck.ACT_TARGETS = [1.5, 6.25, 10.25, 12, 15];   // minutes: when each act should be finished (v3 timing)
   Deck.VERSION = 'v2';
   // The two colleagues who knew (03 · One night, stop 3). Scene 17 starts the
   // nomination chain from exactly these field positions. Stage px.
