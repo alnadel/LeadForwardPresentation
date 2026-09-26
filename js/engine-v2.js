@@ -37,7 +37,16 @@
    style "from stop n on" with  #s-id.st-2 .thing { … }. */
 (function () {
   const Deck = (window.Deck = {});
-  Deck.ACTS = ['The moment', 'The case', 'The campaign', 'Leading it', 'The plan'];
+  // language: English, or Arabic (right to left) with ?lang=ar or <html lang="ar"> (the Arabic build).
+  // Scenes write every string as Deck.t(english, arabic). In Arabic the scenes and the field are
+  // mirrored (#scenes, #field: scale -1 1) and each text block, photo and logo is flipped back on
+  // its own (rtlLeaves), so layouts read right to left while text and pictures stay the right way round.
+  Deck.lang = (/[?&]lang=ar\b/.test(location.search) || document.documentElement.lang === 'ar') ? 'ar' : 'en';
+  Deck.rtl = Deck.lang === 'ar';
+  if (Deck.rtl) document.documentElement.lang = 'ar';
+  Deck.t = (en, ar) => (Deck.rtl && ar != null ? ar : en);
+  const T = Deck.t;
+  Deck.ACTS = T(['The moment', 'The case', 'The campaign', 'Leading it', 'The plan'], ['اللحظة', 'المبرّرات', 'الحملة', 'القيادة', 'الخطة']);
   // pace targets for the speaker view: minutes elapsed by the end of each act
   Deck.ACT_TARGETS = [1.5, 6.25, 10.25, 12, 15];   // minutes: when each act should be finished (v3 timing)
   Deck.VERSION = 'v2';
@@ -75,7 +84,7 @@
   };
   Deck.logo = function (cls) {
     // the white lockup, cropped to its artwork
-    return '<svg class="' + (cls || '') + '" viewBox="12 12 1056 1056" fill="currentColor" aria-hidden="true">' + ((window.TK_ART || {}).logo || {}).body + '</svg>';
+    return '<svg class="' + (cls || '') + '" data-flip viewBox="12 12 1056 1056" fill="currentColor" aria-hidden="true">' + ((window.TK_ART || {}).logo || {}).body + '</svg>';
   };
 
   function ease(t) { return 1 - Math.pow(1 - t, 3); }
@@ -176,6 +185,50 @@
     };
     walk(el, { n: 0 });
   }
+
+  /* ── right to left (Arabic) ────────────────────────────────────────────
+     #scenes and #field are mirrored in CSS, so every layout runs right to left. Here each
+     text block (the nearest block-level box around a text node), each photo or image, each
+     SVG <text> and anything marked [data-flip] is flipped back on its own, so it reads the
+     right way round. Only the outermost of nested candidates is flipped. [data-noflip] on an
+     element makes the search skip past it to its parent, and [data-rtl-keep] leaves a
+     subtree mirrored. A block's flip is about its own centre, whatever its transform-origin
+     (the translate makes up the difference). Scenes that create text later can call Deck.rtlFlip(el). */
+  function rtlLeaves(root) {
+    const inl = (d) => /^(inline|inline-block|inline-flex|inline-grid|contents)$/.test(d) || d.startsWith('ruby');
+    const cand = new Set();
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    let n;
+    while ((n = tw.nextNode())) {
+      if (!n.textContent.trim()) continue;
+      let e = n.parentElement;
+      if (!e || e.closest('style, script, [data-rtl-keep]')) continue;
+      if (e instanceof SVGElement) { const t = e.closest('text'); if (t) cand.add(t); continue; }
+      while (e && e !== root && !e.hasAttribute('data-flip') && (e.hasAttribute('data-noflip') || inl(getComputedStyle(e).display))) e = e.parentElement;
+      if (e && e !== root) cand.add(e);
+    }
+    root.querySelectorAll('*').forEach((e) => {
+      if (e.closest('[data-rtl-keep]')) return;
+      if (e.hasAttribute('data-flip') || e.tagName === 'IMG' || (e instanceof HTMLElement && /url\(/.test(getComputedStyle(e).backgroundImage))) cand.add(e);
+    });
+    const hasText = (e) => /\S/.test(e.textContent || '');
+    cand.forEach((e) => {
+      for (let p = e.parentElement; p && p !== root; p = p.parentElement) if (cand.has(p)) return;
+      const pre = getComputedStyle(e);
+      if (pre.scale !== 'none' || pre.translate !== 'none') console.warn('rtl: flip overrides scale/translate on', e.getAttribute('class') || e.tagName);
+      e.classList.add('rtl-flip');
+      if (e instanceof SVGElement && !(e instanceof SVGSVGElement)) { e.style.transformBox = 'fill-box'; e.style.transformOrigin = 'center'; if (e.tagName === 'text') e.setAttribute('direction', 'rtl'); return; }
+      const cs = getComputedStyle(e), w = e.offsetWidth;
+      const pc = w ? parseFloat(cs.transformOrigin) / w * 100 : 50;
+      if (Math.abs(pc - 50) > .5) e.style.setProperty('--rtl-dx', (100 - 2 * pc).toFixed(2) + '%');
+      if (hasText(e) && !(e instanceof SVGElement)) {
+        e.setAttribute('dir', 'rtl');
+        if (cs.textAlign === 'left') e.style.textAlign = 'right';
+        else if (cs.textAlign === 'right') e.style.textAlign = 'left';
+      }
+    });
+  }
+  Deck.rtlFlip = (el) => { if (Deck.rtl && el) rtlLeaves(el); };
 
   /* ── mounting ──────────────────────────────────────────────────────── */
   function mount() {
@@ -302,9 +355,11 @@
     return ({ l: { x: r.x - g, y: cy }, r: { x: r.x + r.w + g, y: cy }, t: { x: cx, y: r.y - g }, b: { x: cx, y: r.y + r.h + g }, c: { x: cx, y: cy },
       tl: { x: r.x - g, y: r.y + 8 }, tr: { x: r.x + r.w + g, y: r.y + 8 } })[at] || { x: r.x - g, y: cy };
   }
+  // scene x → screen x: the spark lives outside #scenes, which is mirrored in Arabic
+  const sx = (x) => (Deck.rtl ? 1920 - x : x);
   function sparkPlace(x, y) {
     SPK.x = x; SPK.y = y;
-    SPK.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+    SPK.el.style.transform = 'translate(' + sx(x).toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
   }
   function sparkShow(on) { SPK.shown = on; SPK.el.classList.toggle('on', on); if (!on) { cancelAnimationFrame(SPK.raf); SPK.el.classList.remove('fly'); SPK.hist.length = 0; } }
   function sparkFly(tx, ty, delay, onLand) {
@@ -323,7 +378,7 @@
         const x = (1 - e) * (1 - e) * x0 + 2 * (1 - e) * e * cx + e * e * tx, y = (1 - e) * (1 - e) * y0 + 2 * (1 - e) * e * cy + e * e * ty;
         sparkPlace(x, y);
         SPK.hist.unshift([x, y]); SPK.hist.length = Math.min(SPK.hist.length, 24);
-        SPK.trail.forEach((g, i) => { const h = SPK.hist[Math.min(SPK.hist.length - 1, (i + 1) * 3)]; if (h) g.style.transform = 'translate(' + h[0].toFixed(1) + 'px,' + h[1].toFixed(1) + 'px)'; });
+        SPK.trail.forEach((g, i) => { const h = SPK.hist[Math.min(SPK.hist.length - 1, (i + 1) * 3)]; if (h) g.style.transform = 'translate(' + sx(h[0]).toFixed(1) + 'px,' + h[1].toFixed(1) + 'px)'; });
         if (u < 1) SPK.raf = requestAnimationFrame(tick);
         else { SPK.el.classList.remove('fly'); SPK.hist.length = 0; land(); }
       };
@@ -459,7 +514,7 @@
         txAfter(1400, finishTx);
       } else if (kind === 'iris') {
         const ring = $('#tx-ring');
-        ring.style.left = (SPK.shown ? SPK.x : 960) + 'px'; ring.style.top = (SPK.shown ? SPK.y : 540) + 'px';
+        ring.style.left = sx(SPK.shown ? SPK.x : 960) + 'px'; ring.style.top = (SPK.shown ? SPK.y : 540) + 'px';
         ring.classList.remove('run'); void ring.offsetWidth; ring.classList.add('run');
         // irisBurst: per-scene radius of the field flash (0 = none), e.g. a scene that opens on a dark field
         const ib = rec.def.irisBurst == null ? 2200 : rec.def.irisBurst;
@@ -607,12 +662,13 @@
   /* ── overview ──────────────────────────────────────────────────────── */
   function buildOverview() {
     const o = $('#overview');
-    o.innerHTML = '<h2>Behind a Better Life · scenes</h2><div class="grid"></div>' +
-      '<div class="keys"><b>→</b> <b>Space</b> <b>PgDn</b> next stop &nbsp; <b>←</b> <b>PgUp</b> back &nbsp; <b>]</b> <b>[</b> next / previous scene &nbsp; <b>S</b> speaker view &nbsp; <b>B</b> blackout &nbsp; <b>F</b> fullscreen &nbsp; <b>H</b> hide progress &nbsp; <b>C</b> projector contrast &nbsp; <b>A</b> autoplay &nbsp; <b>L</b> lite mode &nbsp; <b>T</b> tech check &nbsp; <b>G</b> this overview &nbsp; type a number + <b>Enter</b> to jump</div>';
+    o.innerHTML = '<h2>' + T('Behind a Better Life · scenes', 'خلف حياة أفضل · المشاهد') + '</h2><div class="grid"></div>' +
+      (Deck.rtl ? '<div class="keys"><b>←</b> <b>Space</b> <b>PgDn</b> المحطة التالية &nbsp; <b>→</b> <b>PgUp</b> رجوع &nbsp; <b>S</b> عرض المتحدث &nbsp; <b>B</b> شاشة سوداء &nbsp; <b>F</b> ملء الشاشة &nbsp; <b>H</b> إخفاء التقدم &nbsp; <b>C</b> تباين جهاز العرض &nbsp; <b>L</b> الوضع الخفيف &nbsp; <b>G</b> هذه النظرة العامة &nbsp; اكتب رقمًا ثم <b>Enter</b> للانتقال</div>' : '') +
+      (Deck.rtl ? '' : '<div class="keys"><b>→</b> <b>Space</b> <b>PgDn</b> next stop &nbsp; <b>←</b> <b>PgUp</b> back &nbsp; <b>]</b> <b>[</b> next / previous scene &nbsp; <b>S</b> speaker view &nbsp; <b>B</b> blackout &nbsp; <b>F</b> fullscreen &nbsp; <b>H</b> hide progress &nbsp; <b>C</b> projector contrast &nbsp; <b>A</b> autoplay &nbsp; <b>L</b> lite mode &nbsp; <b>T</b> tech check &nbsp; <b>G</b> this overview &nbsp; type a number + <b>Enter</b> to jump</div>');
     const grid = $('.grid', o);
     S.forEach((r, i) => {
       const it = document.createElement('div'); it.className = 'it';
-      it.innerHTML = '<div class="n">' + String(i + 1).padStart(2, '0') + '</div><div class="t">' + r.def.title + '</div><div class="a">' + Deck.ACTS[r.def.act || 0] + ' · ' + r.n + (r.n > 1 ? ' stops' : ' stop') + '</div>';
+      it.innerHTML = '<div class="n">' + String(i + 1).padStart(2, '0') + '</div><div class="t">' + r.def.title + '</div><div class="a">' + Deck.ACTS[r.def.act || 0] + ' · ' + r.n + T(r.n > 1 ? ' stops' : ' stop', r.n > 1 ? ' محطات' : ' محطة') + '</div>';
       it.addEventListener('click', (e) => { e.stopPropagation(); toggleOverview(false); go(i, 0, { instant: false }); });
       grid.appendChild(it);
     });
@@ -646,7 +702,7 @@
   function openPresenter() {
     if (presenter && !presenter.closed) { presenter.focus(); return; }
     presenter = window.open('', 'bbl-speaker', 'width=1100,height=720');
-    if (!presenter) { toast('Allow pop-ups to open the speaker view'); return; }
+    if (!presenter) { toast(T('Allow pop-ups to open the speaker view', 'اسمح بالنوافذ المنبثقة لفتح عرض المتحدث')); return; }
     const d = presenter.document;
     d.open();
     d.write(PRESENTER_HTML);
@@ -669,13 +725,13 @@
       const cues = rec.def.cues || [];
       let nx;
       if (step < rec.n - 1) nx = cues[step + 1];
-      else if (cur < S.length - 1) nx = '<span class="sc">Next scene · ' + String(cur + 2).padStart(2, '0') + ' ' + S[cur + 1].def.title + '</span> — ' + ((S[cur + 1].def.cues || [])[0] || '');
-      else nx = 'End of presentation';
+      else if (cur < S.length - 1) nx = '<span class="sc">' + T('Next scene · ', 'المشهد التالي · ') + String(cur + 2).padStart(2, '0') + ' ' + S[cur + 1].def.title + '</span> — ' + ((S[cur + 1].def.cues || [])[0] || '');
+      else nx = T('End of presentation', 'نهاية العرض');
       d.getElementById('scene').textContent = String(cur + 1).padStart(2, '0') + ' · ' + rec.def.title;
       const a = rec.def.act || 0;
-      const tm = Deck.ACT_TARGETS[a]; d.getElementById('act').textContent = Deck.ACTS[a] + '  ·  aim to finish this act by ' + Math.floor(tm) + ':' + String(Math.round((tm % 1) * 60)).padStart(2, '0');
+      const tm = Deck.ACT_TARGETS[a]; d.getElementById('act').textContent = Deck.ACTS[a] + T('  ·  aim to finish this act by ', '  ·  أنهِ هذا الفصل بحلول ') + Math.floor(tm) + ':' + String(Math.round((tm % 1) * 60)).padStart(2, '0');
       d.getElementById('cue').textContent = cues[step] || '';
-      d.getElementById('stop').textContent = 'Stop ' + (step + 1) + ' of ' + rec.n;
+      d.getElementById('stop').textContent = T('Stop ' + (step + 1) + ' of ' + rec.n, 'المحطة ' + (step + 1) + ' من ' + rec.n);
       d.getElementById('next').innerHTML = nx || '';
       d.getElementById('notes').innerHTML = notesFor(rec, step);
       const nowP = d.querySelector('#notes p.now');
@@ -699,7 +755,7 @@
   Deck.startTime = () => startTime;
   Deck.resetTimer = () => { startTime = Date.now(); };
 
-  const PRESENTER_HTML = `<!doctype html><html><head><meta charset="utf-8"><title>Speaker view — Behind a Better Life (v2)</title>
+  const PRESENTER_HTML = (Deck.rtl ? `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>عرض المتحدث — خلف حياة أفضل</title>` : `<!doctype html><html><head><meta charset="utf-8"><title>Speaker view — Behind a Better Life (v2)</title>`) + `
 <style>
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:#0B0F17;color:#E9EEF5;font-family:Somar,'Segoe UI',Arial,sans-serif}
 body{display:grid;grid-template-columns:1fr 300px;grid-template-rows:auto 1fr auto;height:100vh}
@@ -722,14 +778,14 @@ aside ol{list-style:none;margin:0;padding:0}aside li{padding:9px 20px;font:400 1
 footer{grid-column:1/3;padding:12px 28px;border-top:1px solid #1E2635;display:flex;align-items:center;gap:18px;font:700 12px Arial;color:#6E7A8E;letter-spacing:.12em}
 .track{flex:1;height:4px;background:#1E2635;border-radius:3px;overflow:hidden}#bar{height:100%;background:#25C7BC;width:0}
 </style></head><body>
-<header><div><small>Clock</small><div id="clock">--:--</div></div><div><small>Elapsed</small><div id="timer">00:00</div></div><div class="sp"></div>
-<button onclick="deck.resetTimer()">Reset timer</button><button onclick="deck.prev()">◀ Back</button><button class="go" onclick="deck.next()">Next ▶</button></header>
+<header><div><small>${T('Clock', 'الساعة')}</small><div id="clock">--:--</div></div><div><small>${T('Elapsed', 'المنقضي')}</small><div id="timer">00:00</div></div><div class="sp"></div>
+<button onclick="deck.resetTimer()">${T('Reset timer', 'إعادة المؤقّت')}</button><button onclick="deck.prev()">${T('◀ Back', 'رجوع ▶')}</button><button class="go" onclick="deck.next()">${T('Next ▶', '◀ التالي')}</button></header>
 <main><div id="act"></div><div id="scene"></div>
-<div class="box"><small>Now <span id="stop"></span></small><div id="cue"></div></div>
-<div class="box"><small>Next click</small><div id="next"></div></div>
-<div class="box"><small>Speaker notes</small><div id="notes"></div></div></main>
+<div class="box"><small>${T('Now', 'الآن')} <span id="stop"></span></small><div id="cue"></div></div>
+<div class="box"><small>${T('Next click', 'النقرة التالية')}</small><div id="next"></div></div>
+<div class="box"><small>${T('Speaker notes', 'ملاحظات المتحدث')}</small><div id="notes"></div></div></main>
 <aside><ol id="list"></ol></aside>
-<footer><span id="count"></span><div class="track"><div id="bar"></div></div><span>← → / PgUp PgDn work here too</span></footer>
+<footer><span id="count"></span><div class="track"><div id="bar"></div></div><span>${T('← → / PgUp PgDn work here too', 'تعمل الأسهم و PgUp / PgDn هنا أيضًا')}</span></footer>
 <script>
 setInterval(function(){var d=new Date();document.getElementById('clock').textContent=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;document.getElementById('timer').textContent=String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');},500);
@@ -744,8 +800,8 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
   function showGate() {
     gated = true;
     const g = document.createElement('div'); g.id = 'gate';
-    g.innerHTML = '<div class="gate-in"><i class="gate-light"></i><div class="gate-t">Press any key or click to begin</div>' +
-      '<div class="gate-s"><b>S</b> speaker view <span>·</span> <b>F</b> full screen <span>·</span> <b>B</b> black screen</div></div>';
+    g.innerHTML = '<div class="gate-in"><i class="gate-light"></i><div class="gate-t">' + T('Press any key or click to begin', 'اضغط أي مفتاح أو انقر للبدء') + '</div>' +
+      '<div class="gate-s">' + T('<b>S</b> speaker view <span>·</span> <b>F</b> full screen <span>·</span> <b>B</b> black screen', '<b>S</b> عرض المتحدث <span>·</span> <b>F</b> ملء الشاشة <span>·</span> <b>B</b> شاشة سوداء') + '</div></div>';
     document.body.appendChild(g);
     g.addEventListener('click', (e) => { e.stopPropagation(); openGate(); });
   }
@@ -781,7 +837,7 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     if (/^[0-9]$/.test(k)) {
       digits += k; clearTimeout(digitsTimer);
       digitsTimer = setTimeout(() => { digits = ''; }, 1600);
-      toast('Go to scene ' + digits);
+      toast(T('Go to scene ', 'الانتقال إلى المشهد ') + digits);
       return;
     }
     if (k === 'Enter' && digits) {
@@ -803,15 +859,15 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
       case 'End': e.preventDefault(); go(S.length - 1, S[S.length - 1].n - 1, { instant: true }); break;
       case 'b': case 'B': case '.': case 'w': case 'W': case ',': blk.classList.toggle('on'); break;
       case 'f': case 'F': e.preventDefault(); toggleFullscreen(); break;
-      case 'l': case 'L': stage.classList.toggle('lite'); if (window.Field) Field.lite(stage.classList.contains('lite')); toast(stage.classList.contains('lite') ? 'Lite mode on' : 'Lite mode off'); break;
+      case 'l': case 'L': stage.classList.toggle('lite'); if (window.Field) Field.lite(stage.classList.contains('lite')); toast(stage.classList.contains('lite') ? T('Lite mode on', 'الوضع الخفيف: تشغيل') : T('Lite mode off', 'الوضع الخفيف: إيقاف')); break;
       case 'o': case 'O': toggleOverview(); break;
       case 't': case 'T': toggleTech(); break;
       case 's': case 'S': openPresenter(); break;
       case 'g': case 'G': toggleOverview(); break;
       case 'Escape': toggleOverview(false); { const tc = $('#techcheck'); if (tc) tc.classList.remove('on'); } break;
       case 'h': case 'H': chrome.classList.toggle('hidden'); break;
-      case 'c': case 'C': stage.classList.toggle('hc'); if (window.Field) Field.boost(stage.classList.contains('hc') ? 1.35 : 1); toast(stage.classList.contains('hc') ? 'Projector contrast on' : 'Projector contrast off'); break;
-      case 'a': case 'A': auto = !auto; toast(auto ? 'Autoplay on' : 'Autoplay off'); scheduleAuto(); break;
+      case 'c': case 'C': stage.classList.toggle('hc'); if (window.Field) Field.boost(stage.classList.contains('hc') ? 1.35 : 1); toast(stage.classList.contains('hc') ? T('Projector contrast on', 'تباين جهاز العرض: تشغيل') : T('Projector contrast off', 'تباين جهاز العرض: إيقاف')); break;
+      case 'a': case 'A': auto = !auto; toast(auto ? T('Autoplay on', 'التشغيل التلقائي: تشغيل') : T('Autoplay off', 'التشغيل التلقائي: إيقاف')); scheduleAuto(); break;
       case 'r': case 'R': if (e.shiftKey) { startTime = null; go(0, 0, { instant: true }); } break;
       default: return;
     }
@@ -885,6 +941,7 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     });
     const begin = () => {
       edges();
+      if (Deck.rtl) { S.forEach((r) => rtlLeaves(r.el)); document.title = 'خلف حياة أفضل — تحكم · Lead Forward 2026'; }
       const q = location.search, gate = !h && (/[?&]gate\b/.test(q) || (!navigator.webdriver && !/[?&]nogate\b/.test(q)));
       const start = () => {
         if (h) go(h.i, h.st, { instant: true });

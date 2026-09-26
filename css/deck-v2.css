@@ -523,3 +523,21 @@ em.hl { font-style: normal; color: var(--teal); }
 @media (prefers-reduced-motion: reduce) {
   .amb-breathe, .amb-float, .amb-float-2, .amb-spin, .amb-spin-rev, .amb-ken, .amb-ken-2, .amb-twinkle, .amb-ken-strong, .amb-float3d, .amb-float3d-2, .amb-bob, .amb-orbit, .amb-sway, .amb-rays, .amb-leak { animation-duration: 0s !important; }
 }
+
+/* ── Arabic (right to left): see rtlLeaves in engine-v2.js ────────────────────────────────
+   The scenes and the field are mirrored as a whole, so every layout, flow and motion runs
+   right to left. The engine flips each text block, photo and logo back (.rtl-flip), about
+   its own centre. Arabic joins its letters, so tracking is always 0 and nothing is set in
+   capitals. */
+html[lang="ar"] #scenes, html[lang="ar"] #field { scale: -1 1; }
+html[lang="ar"] .rtl-flip { scale: -1 1; translate: var(--rtl-dx, 0px) 0; }
+html[lang="ar"] #stage, html[lang="ar"] #stage *, html[lang="ar"] #gate *, html[lang="ar"] #overview * { letter-spacing: 0 !important; text-transform: none !important; }
+html[lang="ar"] #tx-sweep { scale: -1 1; }
+/* the chrome: the progress runs right to left, act labels read the right way round, and the
+   mark and the illustrative tag move to the left corner (the logo itself is never mirrored) */
+html[lang="ar"] #chrome .progress { scale: -1 1; }
+html[lang="ar"] #chrome .acts > span { scale: -1 1; direction: rtl; text-align: right; }
+html[lang="ar"] #chrome .mark { right: auto; left: 64px; }
+html[lang="ar"] #chrome .tag { right: auto; left: 136px; direction: rtl; }
+html[lang="ar"] #tx-chapter .ch-label, html[lang="ar"] #gate, html[lang="ar"] #overview, html[lang="ar"] #toast { direction: rtl; }
+html[lang="ar"] #chrome .acts > span .nm { margin-left: 0; margin-right: .7em; }

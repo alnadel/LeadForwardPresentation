@@ -13,8 +13,12 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SRC = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
-OUT = os.path.join(ROOT, sys.argv[2] if len(sys.argv) > 2 else os.path.join('Present-v1-full', 'Behind-a-Better-Life.html'))
+# python3 tools/build.py <entry.html> <out.html> [--lang ar]   (--lang ar: the Arabic, right-to-left build)
+ARGS = [a for a in sys.argv[1:] if not a.startswith('--')]
+LANG = sys.argv[sys.argv.index('--lang') + 1] if '--lang' in sys.argv else 'en'
+ARGS = [a for a in ARGS if a != LANG or '--lang' not in sys.argv]
+SRC = ARGS[0] if len(ARGS) > 0 else 'index.html'
+OUT = os.path.join(ROOT, ARGS[1] if len(ARGS) > 1 else os.path.join('Present-v1-full', 'Behind-a-Better-Life.html'))
 MIME = {'.otf': 'font/otf', '.ttf': 'font/ttf', '.woff2': 'font/woff2', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml'}
 
 
@@ -86,6 +90,10 @@ def main():
     html = re.sub(r'<script src="([^"]+)"></script>', inline_js, html)
 
     html = html.replace('</head>', '<style data-src="photos">%s</style>\n</head>' % root_vars, 1)
+    if LANG == 'ar':
+        # the engine reads <html lang="ar">: Arabic text, right-to-left layout
+        html = re.sub(r'<html lang="[a-z]+"', '<html lang="ar"', html, count=1)
+        html = re.sub(r'<title>[^<]*</title>', '<title>خلف حياة أفضل — تحكم · Lead Forward 2026</title>', html, count=1)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, 'w', encoding='utf-8') as f:
         f.write(html)
