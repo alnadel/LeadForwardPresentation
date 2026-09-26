@@ -446,6 +446,9 @@ em.hl { font-style: normal; color: var(--teal); }
 
 /* ── chrome ───────────────────────────────────────────────────────────── */
 #chrome { position: absolute; inset: 0; z-index: 20; pointer-events: none; transition: opacity .6s var(--ease-soft); }
+/* the chrome's parts are small layers of their own, so the full-screen #chrome box itself draws
+   nothing (otherwise it, and a squashing layer over the pips, cost two full-screen layers) */
+#chrome .mark, #chrome .tag, #chrome .progress { will-change: transform; }
 #chrome.hidden { opacity: 0; }
 #chrome.booting { opacity: 0; transition: none; }
 #chrome .mark { position: absolute; right: 64px; top: 52px; width: 50px; color: rgba(255, 255, 255, .9); transition: opacity .6s var(--ease-soft); }

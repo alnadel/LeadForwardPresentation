@@ -430,9 +430,10 @@
       if (kind === 'iris') {
         rec.el.style.setProperty('--ix', SPK.shown ? SPK.x + 'px' : '50%');
         rec.el.style.setProperty('--iy', SPK.shown ? SPK.y + 'px' : '50%');
-        // radius: 1.4x the farthest corner (the old 2300px); a bigger circle only grows its mask layer
+        // radius: just past the farthest corner. Chrome sizes the circle's mask layer to the whole
+        // circle (it measured 9 MP at 1.4x), so any overshoot is GPU memory for nothing
         const ix = SPK.shown ? SPK.x : 960, iy = SPK.shown ? SPK.y : 540;
-        rec.el.style.setProperty('--ir', Math.ceil(1.4 * Math.hypot(Math.max(ix, 1920 - ix), Math.max(iy, 1080 - iy))) + 'px');
+        rec.el.style.setProperty('--ir', Math.ceil(1.04 * Math.hypot(Math.max(ix, 1920 - ix), Math.max(iy, 1080 - iy))) + 'px');
         rec.el.classList.add('iris-from');
       }
       void rec.el.offsetWidth;
