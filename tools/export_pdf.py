@@ -1,7 +1,7 @@
 """Static fallback: one PDF page per stop (the parked frame + cue + speaker notes).
 
-    node tools/shoot.js --file dist/Behind-a-Better-Life.html --out shots/all --wait 3200
-    python3 tools/export_pdf.py shots/all dist/Behind-a-Better-Life-stops.pdf
+    node tools/shoot.js --file Present/Behind-a-Better-Life.html --out shots/all --wait 4000
+    python3 tools/export_pdf.py shots/all Present/Behind-a-Better-Life-backup.pdf
 
 Use it if the venue laptop cannot run the HTML deck: it opens anywhere and
 works with any clicker (no motion)."""
@@ -12,7 +12,7 @@ import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 src = sys.argv[1] if len(sys.argv) > 1 else 'shots/all'
-out = sys.argv[2] if len(sys.argv) > 2 else 'dist/Behind-a-Better-Life-stops.pdf'
+out = sys.argv[2] if len(sys.argv) > 2 else 'Present/Behind-a-Better-Life-backup.pdf'
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 rep = json.load(open(os.path.join(src, 'report.json')))['report']
 W, IH, NH = 1600, 900, 250

@@ -56,6 +56,16 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 /* ── viewport & stage ─────────────────────────────────────────────────── */
 #viewport { position: fixed; inset: 0; overflow: hidden; background: #02060C; cursor: default; user-select: none; -webkit-user-select: none; }
 #viewport.hide-cursor { cursor: none; }
+/* the start gate: black, with one quiet line; the first key or click begins the talk */
+#gate { position: fixed; inset: 0; z-index: 100; background: #02060C; display: flex; align-items: flex-end; justify-content: center; cursor: pointer; }
+#gate .gate-in { margin-bottom: 9vh; text-align: center; font-family: var(--font); color: rgba(255, 255, 255, .5); opacity: 0; animation: gateIn 1.2s var(--ease-soft) .3s forwards; }
+#gate .gate-light { display: block; width: 12px; height: 12px; margin: 0 auto 22px; border-radius: 28%; background: var(--sea); box-shadow: 0 0 14px var(--sea), 0 0 40px rgba(3, 255, 203, .5); animation: gateBreathe 2.8s ease-in-out infinite; }
+#gate .gate-t { font-weight: 700; font-size: 15px; letter-spacing: .32em; text-transform: uppercase; }
+#gate .gate-s { margin-top: 12px; font-size: 13px; letter-spacing: .08em; color: rgba(255, 255, 255, .3); }
+#gate .gate-s b { color: rgba(255, 255, 255, .55); font-weight: 700; }
+#gate .gate-s span { margin: 0 8px; }
+@keyframes gateIn { to { opacity: 1; } }
+@keyframes gateBreathe { 0%, 100% { transform: scale(.85); opacity: .6; } 50% { transform: scale(1.15); opacity: 1; } }
 #stage {
   position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden;
   transform-origin: 0 0;

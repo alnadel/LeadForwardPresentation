@@ -1,7 +1,7 @@
 """Build one self-contained, offline HTML file from a deck page.
 
-    python3 tools/build.py                                   -> dist/Behind-a-Better-Life.html (v1)
-    python3 tools/build.py index-v2.html dist/Behind-a-Better-Life-v2.html
+    python3 tools/build.py index-v2.html Present/Behind-a-Better-Life.html   (v2, the one to present)
+    python3 tools/build.py                                   -> Present-v1-full/Behind-a-Better-Life.html (v1)
 
 Everything is inlined: stylesheets, scripts, the Somar fonts and the photographs.
 Each photograph is embedded once as a CSS custom property (--ph-<name>) and every
@@ -14,7 +14,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
-OUT = os.path.join(ROOT, sys.argv[2] if len(sys.argv) > 2 else os.path.join('dist', 'Behind-a-Better-Life.html'))
+OUT = os.path.join(ROOT, sys.argv[2] if len(sys.argv) > 2 else os.path.join('Present-v1-full', 'Behind-a-Better-Life.html'))
 MIME = {'.otf': 'font/otf', '.ttf': 'font/ttf', '.woff2': 'font/woff2', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml'}
 
 

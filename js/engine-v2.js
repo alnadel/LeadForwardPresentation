@@ -39,7 +39,7 @@
   const Deck = (window.Deck = {});
   Deck.ACTS = ['The moment', 'The gap', 'Why it matters', 'The cycle', 'The pilot'];
   // pace targets for the speaker view: minutes elapsed by the end of each act
-  Deck.ACT_TARGETS = [2.5, 6.5, 8.5, 12.5, 15];   // (v2 keeps the same five acts)
+  Deck.ACT_TARGETS = [2, 6, 7.75, 12.25, 15];     // minutes: when each act should be finished (v2 timing)
   Deck.VERSION = 'v2';
   // The two colleagues who knew (03 · One night, stop 3). Scene 17 starts the
   // nomination chain from exactly these field positions. Stage px.
@@ -652,7 +652,7 @@
       else nx = 'End of presentation';
       d.getElementById('scene').textContent = String(cur + 1).padStart(2, '0') + ' · ' + rec.def.title;
       const a = rec.def.act || 0;
-      d.getElementById('act').textContent = Deck.ACTS[a] + '  ·  aim to finish this act by ' + Deck.ACT_TARGETS[a] + ' min';
+      const tm = Deck.ACT_TARGETS[a]; d.getElementById('act').textContent = Deck.ACTS[a] + '  ·  aim to finish this act by ' + Math.floor(tm) + ':' + String(Math.round((tm % 1) * 60)).padStart(2, '0');
       d.getElementById('cue').textContent = cues[step] || '';
       d.getElementById('stop').textContent = 'Stop ' + (step + 1) + ' of ' + rec.n;
       d.getElementById('next').innerHTML = nx || '';
@@ -715,9 +715,38 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
 <\/script></body></html>`;
 
   /* ── input ─────────────────────────────────────────────────────────── */
+  /* ── the start gate: double-clicking the file is enough to present. The deck waits on
+     black until the first key or click, which enters full screen (unless the browser
+     already is) and plays the cold open. S still opens the speaker view first.
+     Automated runs (navigator.webdriver) and reloads with a #hash skip it. ───────── */
+  let gated = false;
+  function showGate() {
+    gated = true;
+    const g = document.createElement('div'); g.id = 'gate';
+    g.innerHTML = '<div class="gate-in"><i class="gate-light"></i><div class="gate-t">Press any key or click to begin</div>' +
+      '<div class="gate-s"><b>S</b> speaker view <span>·</span> <b>F</b> full screen <span>·</span> <b>B</b> black screen</div></div>';
+    document.body.appendChild(g);
+    g.addEventListener('click', (e) => { e.stopPropagation(); openGate(); });
+  }
+  function openGate() {
+    if (!gated) return;
+    gated = false;
+    const full = document.fullscreenElement || (Math.abs(window.innerWidth - screen.width) < 8 && Math.abs(window.innerHeight - screen.height) < 8);
+    if (!full && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
+    const g = $('#gate'); if (g) g.remove();
+    startTime = Date.now();
+    // replay the first scene live (it sat settled under the gate so the speaker view had a frame)
+    stopScene(S[0]); cur = -1;
+    go(0, 0, {});
+  }
   function onKey(e, fromPresenter) {
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
     const k = e.key;
+    if (gated) {
+      if (k === 's' || k === 'S') { openPresenter(); return; }
+      if (/^(Shift|Control|Alt|Meta|CapsLock|Tab|F11|F12|Escape)$/.test(k) || e.repeat) return;
+      e.preventDefault(); openGate(); return;
+    }
     if (k === 'F5' || ((e.ctrlKey || e.metaKey) && (k === 'r' || k === 'R'))) { e.preventDefault(); if (k === 'F5' && !document.fullscreenElement) toggleFullscreen(); return; }
     if (e.repeat) { e.preventDefault(); return; }
     const nowK = performance.now();
@@ -785,6 +814,7 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     window.addEventListener('keydown', (e) => onKey(e, false));
     viewport.addEventListener('click', (e) => {
       if (e.target.closest('#overview')) return;
+      if (gated) { openGate(); return; }
       const blk = $('#blackout');
       if (blk.classList.contains('on')) { blk.classList.remove('on'); return; }
       Deck.next();
@@ -823,8 +853,10 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     requestAnimationFrame(loopFrame);
     const h = readHash();
     const begin = () => {
+      const q = location.search, gate = !h && (/[?&]gate\b/.test(q) || (!navigator.webdriver && !/[?&]nogate\b/.test(q)));
       const start = () => {
         if (h) go(h.i, h.st, { instant: true });
+        else if (gate) { showGate(); go(0, 0, { instant: true }); }
         else go(0, 0, {});
         document.body.classList.add('ready');
         setTimeout(() => chrome.classList.remove('booting'), 700);
