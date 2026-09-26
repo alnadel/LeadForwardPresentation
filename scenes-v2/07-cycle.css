@@ -300,6 +300,11 @@
 #s-cycle.st-1 .cy-rep.is-in span::before { animation: cyRep 4.5s ease-in-out 2.2s infinite; }
 @keyframes cyRep { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
+/* loops out of sight rest: the lanes once they have fallen away (.cy-parked, set by the script),
+   the ring before stop 1 (the clocks below keep running: the scripted lights read them) */
+#s-cycle.cy-parked .cy-lanes *, #s-cycle.cy-parked .cy-lanes *::before, #s-cycle.cy-parked .cy-lanes *::after,
+#s-cycle:not(.st-1) .cy-ring *, #s-cycle:not(.st-1) .cy-ring *::before, #s-cycle:not(.st-1) .cy-ring *::after { animation-play-state: paused; }
+
 /* the clocks of the JS-driven lights (see the scene script) */
 #s-cycle .cy-clock { position: absolute; left: 0; top: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 #s-cycle.st-0 .cy-clock.lane, #s-cycle.st-1 .cy-clock.orbit { animation: cyClock 60s linear infinite; }

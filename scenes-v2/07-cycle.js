@@ -293,6 +293,9 @@
       const forward = !ctx.instant && prev < n;
       // one-shot flourishes (leading lights, the surge) play only on a forward build
       ctx.el.dataset.play = forward ? String(n) : '';
+      // once the lanes have fallen away (stop 1), their ambient loops rest (no work while unseen)
+      ctx.el.classList.toggle('cy-parked', n >= 1 && !!ctx.instant);
+      if (n >= 1 && !ctx.instant) ctx.after(1300, () => ctx.el.classList.add('cy-parked'));
       // the ring draws when stop 1 is reached going forward; landing on it (a jump, or
       // back from the next scene) finds it drawn, the principles open and both lights orbiting
       if (n >= 1 && (prev < 1 || !ctx.draw0)) {

@@ -154,8 +154,7 @@
 #s-why .wy-city[data-in]:not(.is-in) { transform: translateY(18%) scale(1.14); filter: none; transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
 #s-why .wy-plate { position: absolute; inset: 0; transform-origin: 70% 55%; }
 #s-why .wy-photo { opacity: .95; }
-/* over the dark city a screen blend and a plain one match (max 4/255), so the full-frame leak skips the blend pass */
-#s-why .wy-leak { opacity: 1; mix-blend-mode: normal; }
+#s-why .wy-leak { opacity: 1; }
 #s-why .wy-glints i { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 226, 170, .82), rgba(255, 190, 110, .24) 45%, transparent);
   transform: scale(var(--s)); opacity: .2; animation-name: wyCity; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
@@ -204,6 +203,11 @@
 #s-why.wy-sv-live .wy-p.is-in .wy-p-r b { animation: wyLead 1s var(--ease-out) calc(var(--delay) + .3s) both; }
 @keyframes wyLead { 0% { left: 0; opacity: 0; } 16% { opacity: 1; } 70% { opacity: .9; } 100% { left: 100%; opacity: 0; } }
 #s-why .wy-p-t { margin-top: 16px; font: 700 33px/1.12 var(--font); letter-spacing: -.014em; color: rgba(255, 255, 255, .9); white-space: nowrap; }
+
+/* loops out of sight rest: the flow once it has risen away (.wy-parked, set by the script after
+   the rise), the city before stop 1 */
+#s-why.wy-parked .wy-rise *, #s-why.wy-parked .wy-rise *::before, #s-why.wy-parked .wy-rise *::after,
+#s-why:not(.st-1) .wy-city *, #s-why:not(.st-1) .wy-city *::before, #s-why:not(.st-1) .wy-city *::after { animation-play-state: paused; }
 
 /* lite mode (L): the rise keeps its move but drops the large blur */
 #stage.lite #s-why .wy-rise { filter: none !important; }

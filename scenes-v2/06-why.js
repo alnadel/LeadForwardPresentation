@@ -228,6 +228,9 @@
       const el = ctx.el, live = !ctx.instant;
       el.classList.remove('wy-run-in', 'wy-sv-live');
       void el.offsetWidth;
+      // once the flow has risen out of sight (stop 1), its ambient loops rest (no work while unseen)
+      el.classList.toggle('wy-parked', n >= 1 && !live);
+      if (n >= 1 && live) ctx.after(1400, () => el.classList.add('wy-parked'));
       if (live && n === 0 && prev === -1) {
         el.classList.add('wy-run-in');
         // a ripple leaves the shared story as the light passes through it
