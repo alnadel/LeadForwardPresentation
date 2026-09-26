@@ -23,10 +23,11 @@
    GPU: a board off screen is hidden (no layers); board 2 is small svgs and a few small lights.
    All state is keyed off .st-n / data-step, so back navigation lands on the same frame. */
 (function () {
+  const t = Deck.t;
   const TABS = [
-    { t: 'What makes it inspiring', i: 'eye-lightbulb' },
-    { t: 'Quarterly rhythm', i: 'gear-clock' },
-    { t: 'Recognition', i: 'document-certified' },
+    { t: t('What makes it inspiring', 'ما الذي يجعل القصة مُلهِمة'), i: 'eye-lightbulb' },
+    { t: t('Quarterly rhythm', 'الإيقاع الربعي'), i: 'gear-clock' },
+    { t: t('Recognition', 'التقدير'), i: 'document-certified' },
   ];
   // line icons on a 24 grid (outline, round caps; 1.1 here ≈ 1.8 px at 40 px)
   const ico = (d, cls) => `<svg class="rn-svgi${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
@@ -44,20 +45,20 @@
     arrow: '<path d="M4 12h15"/><path d="m14 7 5 5-5 5"/>',
   };
   const FIELDS = [
-    { k: 'Purpose', i: 'purpose', q: 'What did this contribution enable?', c: 'Each selected story explains why the contribution mattered.' },
-    { k: 'Value', i: 'value', q: 'Which Tahakom value was demonstrated?', c: 'Linked to one primary value and one observable behaviour.' },
-    { k: 'Impact', i: 'impact', q: 'What changed because of the behaviour?', c: 'Evidence is reviewed before a story is featured.' },
-    { k: 'Repeat', i: 'repeat', q: 'What can other employees do?', c: 'Shared across departments with one practical takeaway.' },
+    { k: t('Purpose', 'الغاية'), i: 'purpose', q: t('What did this contribution enable?', 'ماذا أتاحت هذه المساهمة؟'), c: t('Each selected story explains why the contribution mattered.', 'كل قصة مختارة توضّح أهمية المساهمة.') },
+    { k: t('Value', 'القيمة'), i: 'value', q: t('Which Tahakom value was demonstrated?', 'أيّ قيمة من قيم تحكم تجلّت فيها؟'), c: t('Linked to one primary value and one observable behaviour.', 'ترتبط بقيمة رئيسية واحدة وسلوك واحد ملحوظ.') },
+    { k: t('Impact', 'الأثر'), i: 'impact', q: t('What changed because of the behaviour?', 'ما الذي تغيّر بفضل هذا السلوك؟'), c: t('Evidence is reviewed before a story is featured.', 'تُراجَع الأدلة قبل إبراز أي قصة.') },
+    { k: t('Repeat', 'التكرار'), i: 'repeat', q: t('What can other employees do?', 'ما الذي يمكن لبقية الموظفين فعله؟'), c: t('Shared across departments with one practical takeaway.', 'تُشارَك عبر الإدارات مع خلاصة عملية واحدة.') },
   ];
   const MONTHS = [
-    { m: 'Month 1', k: 'Curate', t: 'Review relevance, evidence, consent and value alignment.' },
-    { m: 'Month 2', k: 'Feature', t: 'Prepare and publish selected stories; encourage team discussion.' },
-    { m: 'Month 3', k: 'Reinforce', t: 'Recognise contributors, capture learning and review trends.' },
+    { m: t('Month 1', 'الشهر 1'), k: t('Curate', 'انتقاء'), t: t('Review relevance, evidence, consent and value alignment.', 'مراجعة الملاءمة والأدلة والموافقة والتوافق مع القيم.') },
+    { m: t('Month 2', 'الشهر 2'), k: t('Feature', 'إبراز'), t: t('Prepare and publish selected stories; encourage team discussion.', 'إعداد القصص المختارة ونشرها، وتشجيع النقاش في الفرق.') },
+    { m: t('Month 3', 'الشهر 3'), k: t('Reinforce', 'ترسيخ'), t: t('Recognise contributors, capture learning and review trends.', 'تقدير المساهمين، ورصد الدروس، ومراجعة الاتجاهات.') },
   ];
   const TIERS = [
-    { t: 'Immediate recognition', s: 'Leader acknowledgement and a personal certificate.' },
-    { t: 'Quarterly feature', s: 'Newsletter or internal-channel spotlight across Tahakom.' },
-    { t: 'Annual recognition', s: 'Selected stories featured at a company event or in an annual collection.' },
+    { t: t('Immediate recognition', 'تقدير فوري'), s: t('Leader acknowledgement and a personal certificate.', 'شكر من القائد وشهادة شخصية.') },
+    { t: t('Quarterly feature', 'إبراز ربعي'), s: t('Newsletter or internal-channel spotlight across Tahakom.', 'تسليط الضوء في النشرة أو القنوات الداخلية على مستوى تحكم.') },
+    { t: t('Annual recognition', 'تقدير سنوي'), s: t('Selected stories featured at a company event or in an annual collection.', 'إبراز قصص مختارة في فعالية للشركة أو ضمن المجموعة السنوية.') },
   ];
   const nn = (i) => String(i + 1).padStart(2, '0');
   // the tabs take the width their labels need (the slider fits each tab; keep in step with 09-runs.css)
@@ -253,17 +254,22 @@
 
   Deck.scene({
     id: 'runs',
-    title: 'How it runs',
+    title: t('How it runs', 'آلية التشغيل'),
     act: 2,
     bg: 'night',
     transition: 'push',
-    cues: ['01 What makes it inspiring · four questions · the themes we look for', '02 Quarterly rhythm · always open, month by month', '03 Recognition · three tiers · Featured Story'],
+    cues: t(['01 What makes it inspiring · four questions · the themes we look for', '02 Quarterly rhythm · always open, month by month', '03 Recognition · three tiers · Featured Story'],
+      ['01 ما الذي يجعل القصة مُلهِمة · أربعة أسئلة · المحاور التي نبحث عنها', '02 الإيقاع الربعي · مفتوح دائمًا، شهرًا بعد شهر', '03 التقدير · ثلاثة مستويات · قصة مميّزة']),
     holds: [11, 10, 11],
-    notes: [
+    notes: t([
       'What makes a story inspiring? Clear criteria, published to everyone. A story is featured when it answers four questions: what it enabled, which value it showed, what changed, and what others can repeat. Resilience, innovation, collaboration and service are the themes we look for.',
       'Nominations never close: any peer or leader can nominate through a simple form. Each quarter, one cycle runs: curate in month one, feature in month two, reinforce in month three. Once a year, featured stories become a curated collection.',
       'The story comes first; the reward supports the moment. Three scales: a leader’s acknowledgement and certificate, a quarterly feature across Tahakom, an annual collection. Featured Story, not Best Story: clear criteria, and popularity never decides.',
-    ],
+    ], [
+      'ما الذي يجعل القصة مُلهِمة؟ معايير واضحة ومعلنة للجميع. تُبرَز القصة حين تُجيب عن أربعة أسئلة: ماذا أتاحت، وأيّ قيمة جسّدت، وما الذي تغيّر، وما الذي يمكن للآخرين تكراره. والمحاور التي نبحث عنها هي المرونة والابتكار والتعاون والخدمة.',
+      'الترشيحات لا تُغلق أبدًا: يمكن لأي زميل أو قائد أن يرشّح عبر نموذج بسيط. وفي كل ربع سنة تكتمل دورة واحدة: الانتقاء في الشهر الأول، والإبراز في الشهر الثاني، والترسيخ في الشهر الثالث. ومرة كل عام تصبح القصص المميّزة مجموعة منتقاة.',
+      'القصة أولًا، والمكافأة تدعم اللحظة. ثلاثة مستويات: شكر من القائد وشهادة، وإبراز ربعي على مستوى تحكم، ومجموعة سنوية. قصة مميّزة لا أفضل قصة: معايير واضحة، والشعبية لا تحسم شيئًا.',
+    ]),
     field: [
       { dim: .34, lit: .03, travel: .2, offset: [200, -70], litFrom: null, warm: 0, links: .5, wave: .45, streaks: .1, sparkle: 1, drift: 1,
         calm: [[100, 90, 1820, 200, .75], [100, 210, 1600, 320, .8], [110, 320, 1810, 960, .9]] },
@@ -286,11 +292,11 @@
 
       <!-- 0 · what makes it inspiring: the published criteria -->
       <div class="rn-panel rn-p0" data-in="0" data-out="1">
-        <h2 class="h2 rn-h rn-h0" data-in="0" data-split style="--d:.12s">A story is featured when it answers <em class="hl">four questions.</em></h2>
+        <h2 class="h2 rn-h rn-h0" data-in="0" data-split style="--d:.12s">${t('A story is featured when it answers <em class="hl">four questions.</em>', 'تُبرَز القصة حين تُجيب عن <em class="hl">أربعة</em> <em class="hl">أسئلة.</em>')}</h2>
         <div class="rn-card glass a-unfold" data-in="0" style="--d:.34s;--dur:1.1s">
           <i class="rn-dots"></i>
           <div class="rn-bandw a-fade" data-in="0" style="--d:1.5s"><i class="rn-band"></i></div>
-          <div class="rn-colh a-fade" data-in="0" style="--d:.6s"><span style="left:146px">Field</span><span style="left:340px">The question <b>${ico(IC.arrow)} design decision</b></span></div>
+          <div class="rn-colh a-fade" data-in="0" style="--d:.6s"><span style="left:146px">${t('Field', 'المحور')}</span><span style="left:340px">${t('The question', 'السؤال')} <b>${ico(IC.arrow)} ${t('design decision', 'قرار التصميم')}</b></span></div>
           <i class="rn-spine a-wipe-down" data-in="0" style="--d:.5s;--dur:1.2s"></i>
           <i class="rn-port" data-spark="0" data-spark-at="c"></i>
           <div class="rn-rows" data-stagger style="--stagger:.1s;--d:.5s">${rows}</div>
@@ -299,40 +305,40 @@
         <!-- illustrative: one story card passing the four checks (a single tilted plane) -->
         <div class="rn-story a-swing" data-in="0" style="--d:.78s;--dur:1.2s" aria-hidden="true">
           <div class="rn-sc glass">
-            <div class="rn-sc-cov" style="background-image:url('assets/photos/nouf-question.jpg')"><span class="rn-sc-tag">Story</span></div>
+            <div class="rn-sc-cov" style="background-image:url('assets/photos/nouf-question.jpg')"><span class="rn-sc-tag">${t('Story', 'قصة')}</span></div>
             <span class="rn-sc-av">${Deck.icon('employee-female')}</span>
             <i class="rn-sc-t1"></i><i class="rn-sc-t2"></i>
             <i class="rn-sc-hr"></i>
             ${checks}
-            <div class="rn-sc-ft">${ico(IC.star)}<span>Featured story</span>
-              <div class="rn-sc-ft-on">${ico(IC.star)}<span>Featured story</span></div></div>
+            <div class="rn-sc-ft">${ico(IC.star)}<span>${t('Featured story', 'قصة مميّزة')}</span>
+              <div class="rn-sc-ft-on">${ico(IC.star)}<span>${t('Featured story', 'قصة مميّزة')}</span></div></div>
           </div>
         </div>
         <!-- support: the brief's themes, each tied to a value (small, under the table) -->
-        <p class="rn-themes a-fade" data-in="0" style="--d:1.05s;--dur:.8s"><span class="rn-th-k">Themes we look for:</span> ${['resilience', 'innovation', 'collaboration', 'service'].map((t) => `<b>${t}</b>`).join(' <i>·</i> ')}, each linked to a Tahakom value.</p>
+        <p class="rn-themes a-fade" data-in="0" style="--d:1.05s;--dur:.8s"><span class="rn-th-k">${t('Themes we look for:', 'المحاور التي نبحث عنها:')}</span> ${t(['resilience', 'innovation', 'collaboration', 'service'], ['المرونة', 'الابتكار', 'التعاون', 'الخدمة']).map((w) => `<b>${w}</b>`).join(' <i>·</i> ')}${t(', each linked to a Tahakom value.', '، وكلٌّ منها مرتبط بقيمة من قيم تحكم.')}</p>
       </div>
 
       <!-- 1 · quarterly rhythm -->
       <div class="rn-panel rn-p1" data-in="1" data-out="2">
-        <h2 class="h2 rn-h rn-h1" data-in="1" data-split style="--d:.28s">The operating cycle <em class="hl">keeps stories moving.</em></h2>
+        <h2 class="h2 rn-h rn-h1" data-in="1" data-split style="--d:.28s">${t('The operating cycle <em class="hl">keeps stories moving.</em>', 'دورة التشغيل <em class="hl">تُبقي القصص في حركة.</em>')}</h2>
         <div class="rn-lane glass" data-in="1" style="--d:.4s">
           <span class="rn-cap" data-spark="1" data-spark-at="c" data-spark-delay=".45"></span>
-          <div class="rn-lane-lab"><span>Always open</span><b>·</b><strong>Capture</strong></div>
-          <p class="rn-lane-s">Accept peer and leader nominations through a simple form.</p>
+          <div class="rn-lane-lab"><span>${t('Always open', 'مفتوح دائمًا')}</span><b>·</b><strong>${t('Capture', 'رصد')}</strong></div>
+          <p class="rn-lane-s">${t('Accept peer and leader nominations through a simple form.', 'استقبال ترشيحات الزملاء والقادة عبر نموذج بسيط.')}</p>
           <span class="rn-track"></span>
           <span class="rn-tray">${Deck.icon('person-message')}</span>
         </div>
         <div class="rn-drops a-fade" data-in="1" style="--d:1s">${drops}</div>
         <div class="rn-qtr">
-          <div class="rn-qtr-lab a-fade" data-in="1" style="--d:.55s">One quarter</div>
+          <div class="rn-qtr-lab a-fade" data-in="1" style="--d:.55s">${t('One quarter', 'ربع سنة واحد')}</div>
           <div class="rn-axis a-wipe" data-in="1" style="--d:.5s;--dur:1.2s"><span class="rn-weeks">${weeks}</span></div>
           ${marks}
           <div class="rn-months">${months}</div>
           <div class="rn-ext a-wipe" data-in="1" style="--d:1.1s;--dur:.6s"></div>
           <div class="rn-annual glass plum a-unfold" data-in="1" style="--d:1.02s">
             <span class="rn-coll a-materialize" data-in="1" style="--d:1.1s;--dur:1.1s"><i></i><i></i><i></i><i></i></span>
-            <div class="rn-m-lab rn-an-lab">Annual</div>
-            <p class="rn-an-t">Curated story collection</p>
+            <div class="rn-m-lab rn-an-lab">${t('Annual', 'سنويًا')}</div>
+            <p class="rn-an-t">${t('Curated story collection', 'مجموعة قصص منتقاة')}</p>
             <span class="rn-stack a-fade" data-in="1" style="--d:1.3s"><i></i><i></i><i><b></b></i></span>
           </div>
           <div class="rn-play a-fade" data-in="1" style="--d:1.4s"><span class="rn-fill"></span><span class="rn-play-x"><i class="light"></i></span><span class="rn-shot"><i class="light sm"></i></span></div>
@@ -341,11 +347,11 @@
 
       <!-- 2 · recognition -->
       <div class="rn-panel rn-p2" data-in="2">
-        <h2 class="h2 rn-h rn-h2" data-in="2" data-split style="--d:.28s">Recognition should make the employee <em class="hl">feel seen.</em></h2>
+        <h2 class="h2 rn-h rn-h2" data-in="2" data-split style="--d:.28s">${t('Recognition should make the employee <em class="hl">feel seen.</em>', 'على التقدير أن يُشعر الموظف <em class="hl">بأن</em> <em class="hl">جهده</em> <em class="hl">مرئي.</em>')}</h2>
         <div class="rn-tiers" data-stagger style="--stagger:.14s;--d:.5s">${tiers}</div>
         <div class="rn-pr" data-in="2" style="--d:.95s">
-          <span class="rn-pr-k">Principle</span>
-          <p class="rn-pr-t">Use <em class="amb-shimmer">Featured Story</em> — not Best Story.</p>
+          <span class="rn-pr-k">${t('Principle', 'المبدأ')}</span>
+          <p class="rn-pr-t">${t('Use <em class="amb-shimmer">Featured Story</em> — not Best Story.', '<em class="amb-shimmer">قصة مميّزة</em> — لا أفضل قصة.')}</p>
         </div>
         <!-- illustrative: the three tiers as three objects on equal plinths, and the person they recognise -->
         <div class="rn-glow" style="left:${FL.x}px;top:${FL.y}px"></div>

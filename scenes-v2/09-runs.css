@@ -524,3 +524,19 @@
 #s-runs:not([data-step="0"]) .rn-p0 *, #s-runs:not([data-step="0"]) .rn-p0 *::before, #s-runs:not([data-step="0"]) .rn-p0 *::after,
 #s-runs:not([data-step="1"]) .rn-p1 *, #s-runs:not([data-step="1"]) .rn-p1 *::before, #s-runs:not([data-step="1"]) .rn-p1 *::after,
 #s-runs:not([data-step="2"]) .rn-p2 *, #s-runs:not([data-step="2"]) .rn-p2 *::before, #s-runs:not([data-step="2"]) .rn-p2 *::after { animation-play-state: paused !important; }
+
+/* ── Arabic (right to left): the scene is mirrored and each text block flipped back (engine-v2.js).
+   The boards, the tab slider, the parallax world and the sweep all run mirrored, so the camera pans
+   right to left. ── */
+/* split headlines: Arabic rises and sinks further than Latin, so each word's mask (and the box its
+   light sweep is clipped to) gets more room; the two-line headline gets Arabic line spacing */
+html[lang="ar"] #s-runs [data-split] .w, html[lang="ar"] #s-runs [data-split] .w > span { padding: .14em 0 .36em; margin: -.14em 0 -.36em; }
+html[lang="ar"] #s-runs .rn-h2 { line-height: 1.14; }
+/* arrows point the way Arabic reads (question ← decision) */
+html[lang="ar"] #s-runs .rn-dec-a, html[lang="ar"] #s-runs .rn-colh b svg { scale: -1 1; }
+html[lang="ar"] #s-runs .rn-colh b { margin-left: 0; margin-right: 8px; }
+/* the story card's drawn ticks stay ticks, and its tag sits in the cover's top corner where Arabic starts */
+html[lang="ar"] #s-runs .rn-ck-on .rn-svgi { scale: -1 1; }
+html[lang="ar"] #s-runs .rn-sc-tag { left: auto; right: 12px; font-size: 16px; }
+/* the recognition headline sits a little deeper in Arabic: its tiers step down to keep their air */
+html[lang="ar"] #s-runs .rn-tiers { top: 416px; }

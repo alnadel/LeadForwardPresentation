@@ -24,6 +24,7 @@
    content turns visibility:hidden once it has faded, so its layers go away.
    All state keys off .st-n / data-step, so back navigation lands on the same frame. */
 (function () {
+  const t = Deck.t;
   /* ── stop 0 · the cadence map ── */
   const CW = 306, GAP = 25, X0 = 144;              // five cards across 144 → 1774
   const cx = (k) => X0 + k * (CW + GAP);
@@ -31,17 +32,17 @@
   const CHIP_Y = CARD_Y + CARD_H + 24;
   const MX = 144, MY = 300;                        // the map's own box (x 144–1776, y 300–940): its children are placed in it
   const COLS = [
-    { k: 'Always', a: 0, b: 0, marks: 0 },
-    { k: 'Monthly', a: 1, b: 2, marks: 12 },
-    { k: 'Quarterly', a: 3, b: 3, marks: 4 },
-    { k: 'Annual', a: 4, b: 4, marks: 1 },
+    { k: t('Always', 'دائمًا'), a: 0, b: 0, marks: 0 },
+    { k: t('Monthly', 'شهريًا'), a: 1, b: 2, marks: 12 },
+    { k: t('Quarterly', 'ربع سنوي'), a: 3, b: 3, marks: 4 },
+    { k: t('Annual', 'سنويًا'), a: 4, b: 4, marks: 1 },
   ];
   const CARDS = [
-    { t: 'Intranet<br>story wall', l: 'Every story, plus the nomination form.', dev: 'laptop' },
-    { t: 'Story email', l: 'One story, one takeaway.', dev: 'phone', hero: true },
-    { t: 'Team story<br>moment', l: 'Five minutes in the monthly team meeting.', dev: 'meet' },
-    { t: 'Spotlight', l: 'A 60-second video and a town-hall story.', dev: 'video' },
-    { t: 'Story<br>collection', l: 'The year’s featured stories at a company event.', dev: 'book' },
+    { t: t('Intranet<br>story wall', 'جدار القصص على<br>الشبكة الداخلية'), l: t('Every story, plus the nomination form.', 'كل القصص، ونموذج الترشيح.'), dev: 'laptop' },
+    { t: t('Story email', 'بريد القصة'), l: t('One story, one takeaway.', 'قصة واحدة، وخلاصة واحدة.'), dev: 'phone', hero: true },
+    { t: t('Team story<br>moment', 'لحظة قصة<br>الفريق'), l: t('Five minutes in the monthly team meeting.', 'خمس دقائق في الاجتماع الشهري للفريق.'), dev: 'meet' },
+    { t: t('Spotlight', 'تسليط الضوء'), l: t('A 60-second video and a town-hall story.', 'فيديو مدته 60 ثانية وقصة في اللقاء العام.'), dev: 'video' },
+    { t: t('Story<br>collection', 'مجموعة القصص<br>السنوية'), l: t('The year’s featured stories at a company event.', 'قصص العام المميّزة في فعالية للشركة.'), dev: 'book' },
   ];
   // build: the columns light left to right (s after the build starts)
   const COL_D = [.3, .44, .62, .76];
@@ -136,10 +137,10 @@
   // a share as a ring (pathLength 100, so the arc is exactly the figure)
   const ring = (v) => `<svg class="cm-ring" viewBox="0 0 88 88" style="--v:${v}" aria-hidden="true"><circle class="tr" cx="44" cy="44" r="38"/><circle class="arc" cx="44" cy="44" r="38" pathLength="100" transform="rotate(-90 44 44)"/></svg>`;
   const PAIRS = [
-    { n: '123', s: '<span class="cm-of">/ 158</span>', c: waffle, f: 'prefer email', d: 'The monthly story email leads.' },
-    { n: '47', s: '<span class="cm-pc">%</span>', c: ring(47), f: 'want a monthly rhythm', d: 'One story a month.' },
-    { n: '32', s: '<span class="cm-pc">%</span>', c: ring(32), f: 'want to nominate anonymously', d: 'An anonymous option on the form.' },
-    { n: '49', s: '<span class="cm-pc">%</span>', c: ring(49), f: 'want to approve their story', d: 'Nothing is shared without the colleague’s approval.' },
+    { n: '123', s: '<span class="cm-of">/ 158</span>', c: waffle, f: t('prefer email', 'يفضّلون البريد الإلكتروني'), d: t('The monthly story email leads.', 'بريد القصة الشهري في الصدارة.') },
+    { n: '47', s: '<span class="cm-pc">%</span>', c: ring(47), f: t('want a monthly rhythm', 'يريدون إيقاعًا شهريًا'), d: t('One story a month.', 'قصة واحدة كل شهر.') },
+    { n: '32', s: '<span class="cm-pc">%</span>', c: ring(32), f: t('want to nominate anonymously', 'يريدون الترشيح دون ذكر أسمائهم'), d: t('An anonymous option on the form.', 'خيار للترشيح دون اسم في النموذج.') },
+    { n: '49', s: '<span class="cm-pc">%</span>', c: ring(49), f: t('want to approve their story', 'يريدون الموافقة على قصتهم'), d: t('Nothing is shared without the colleague’s approval.', 'لا يُنشر شيء دون موافقة الزميل.') },
   ];
   const ROW0 = 408, PITCH = 128, NUM_R = 560;       // row centres; the numbers' right edge
   const rows = PAIRS.map((p, i) => {
@@ -157,16 +158,19 @@
 
   Deck.scene({
     id: 'comms',
-    title: 'Where the stories travel',
+    title: t('Where the stories travel', 'مسارات القصص'),
     act: 3,
     bg: 'navy',
     transition: 'push',
-    cues: ['Where the stories travel · cadence and channels', 'Designed with what colleagues asked for'],
+    cues: t(['Where the stories travel · cadence and channels', 'Designed with what colleagues asked for'], ['مسارات القصص · الإيقاع والقنوات', 'صُمّمت وفق ما أراده الزملاء']),
     holds: [22, 16],
-    notes: [
+    notes: t([
       'Where do the stories travel? On channels we already have. The intranet story wall is always open. A story email goes out every month, and email is what 123 of 158 colleagues prefer. Teams give stories five minutes a month. Each quarter brings a short video and a town-hall spotlight, and once a year a story collection. Every story is in Arabic and English.',
       'We designed it with what colleagues told us. Email first. A monthly rhythm, which 47% asked for. An anonymous nomination option for the 32% who want one. And the 49% who want to approve their story get exactly that: nothing is shared without approval.',
-    ],
+    ], [
+      'أين تنتقل القصص؟ عبر قنوات لدينا بالفعل. جدار القصص على الشبكة الداخلية مفتوح دائمًا. ويُرسَل بريد القصة كل شهر، والبريد هو ما يفضّله 123 من 158 زميلًا. وتخصّص الفرق للقصص خمس دقائق كل شهر. وكل ربع سنة يأتي فيديو قصير وتسليط للضوء في اللقاء العام، ومرة في السنة مجموعة القصص السنوية. وكل قصة متاحة بالعربية والإنجليزية.',
+      'صمّمناها وفق ما أخبرنا به الزملاء. البريد أولًا. وإيقاع شهري طلبه 47%. وخيار للترشيح دون ذكر الاسم لـ 32% ممن يريدونه. أما الـ 49% الذين يريدون الموافقة على قصتهم فلهم ذلك تمامًا: لا يُنشر شيء دون موافقتهم.',
+    ]),
     field: [
       { dim: .3, lit: .03, litFrom: null, travel: .35, warm: .05, offset: [-220, -40], links: .5, wave: .55, streaks: .12, sparkle: 1.2, drift: 1,
         calm: [[100, 120, 1300, 270, .8], [100, 300, 1800, 720, .82], [100, 720, 1800, 930, .85]] },
@@ -177,10 +181,10 @@
       <i class="cm-wash w1"><b></b></i><i class="cm-wash w2"><b></b></i>
 
       <div class="pad cm-head">
-        <div class="kicker a-wipe" data-in="0" style="--d:.05s">Communication plan</div>
+        <div class="kicker a-wipe" data-in="0" style="--d:.05s">${t('Communication plan', 'خطة التواصل')}</div>
         <div class="cm-hbox">
-          <h2 class="h2 cm-h cm-h0" data-in="0" data-out="1" data-split style="--d:.12s">Where the stories travel.</h2>
-          <h2 class="h2 cm-h cm-h1" data-in="1" data-split style="--d:.14s;--wstep:.045s">Designed with what <em class="hl">colleagues</em> <em class="hl">asked</em> <em class="hl">for.</em></h2>
+          <h2 class="h2 cm-h cm-h0" data-in="0" data-out="1" data-split style="--d:.12s">${t('Where the stories travel.', 'مسارات القصص.')}</h2>
+          <h2 class="h2 cm-h cm-h1" data-in="1" data-split style="--d:.14s;--wstep:.045s">${t('Designed with what <em class="hl">colleagues</em> <em class="hl">asked</em> <em class="hl">for.</em>', 'صُمّمت وفق <em class="hl">ما</em> <em class="hl">أراده</em> <em class="hl">الزملاء.</em>')}</h2>
         </div>
       </div>
 
@@ -194,20 +198,20 @@
         ${cards}
         <div class="cm-chip a-pop" data-in="0" data-spark="0" data-spark-delay=".75" style="left:${cx(1) - MX}px;top:${CHIP_Y - MY}px;--d:1.02s">
           <i class="cm-stem"></i>
-          <span class="cm-chip-l">Preferred by</span><b class="cm-chip-n num">123 of 158</b>
+          <span class="cm-chip-l">${t('Preferred by', 'يفضّله')}</span><b class="cm-chip-n num">${t('123 of 158', '123 من 158')}</b>
         </div>
         <div class="cm-strip a-fade" data-in="0" style="--d:1.16s;--dur:.8s">
           <span class="cm-lang" aria-hidden="true"><b class="ar">ع</b><i></i><b>A</b></span>
-          <p>Every story in Arabic and English <i class="cm-dot">·</i> approved by the colleague before it is shared.</p>
+          <p>${t('Every story in Arabic and English <i class="cm-dot">·</i> approved by the colleague before it is shared.', 'كل قصة بالعربية والإنجليزية <i class="cm-dot">·</i> بموافقة الزميل قبل نشرها.')}</p>
         </div>
       </div>
 
       <!-- stop 1 · designed with what colleagues asked for -->
       <div class="cm-pairs">
-        <div class="cm-cap a-fade" data-in="1" style="--d:.3s"><span class="c1">Finding</span><span class="c2">Design decision</span></div>
+        <div class="cm-cap a-fade" data-in="1" style="--d:.3s"><span class="c1">${t('Finding', 'النتيجة')}</span><span class="c2">${t('Design decision', 'قرار التصميم')}</span></div>
         <div class="cm-panel glass a-fade" data-in="1" style="--d:.26s;--dur:1s"></div>
         ${rows}
-        <p class="cm-src a-fade" data-in="1" style="--d:1.1s">Source: Tahakom internal survey, 158 responses.</p>
+        <p class="cm-src a-fade" data-in="1" style="--d:1.1s">${t('Source: Tahakom internal survey, 158 responses.', 'المصدر: الاستبيان الداخلي في تحكم، 158 إجابة.')}</p>
       </div>
     `,
     step(n, prev, ctx) {

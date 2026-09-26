@@ -22,6 +22,7 @@
    All state keys off .st-n / data-step, so back navigation lands on the same frame;
    the one-shot lights of the build play only on a live click. */
 (function () {
+  const t = Deck.t;
   /* ── geometry (stage px) ── */
   const TX = 1400;                              // the tree's centre line
   const Y = [420, 590, 760, 890];               // tiers: sponsor · department leaders · managers · colleagues
@@ -40,9 +41,9 @@
   const ROOT1 = [WIN.x + WIN.w / 2 - TX, WIN.y - Y[0]];
 
   const ROLES = [
-    { t: 'Executive sponsor', i: 'person-message', a: 'Opens the campaign with the story of a colleague who inspired them.<br>Chairs the quarterly review and decides: scale, adjust or stop.' },
-    { t: 'Department leaders', i: 'handshake', a: 'Nominate at least one colleague every quarter.<br>Acknowledge each featured colleague in person, within a week.' },
-    { t: 'Managers', i: 'team', a: 'Hold a five-minute story moment in every monthly team meeting.' },
+    { t: t('Executive sponsor', 'الراعي التنفيذي'), i: 'person-message', a: t('Opens the campaign with the story of a colleague who inspired them.<br>Chairs the quarterly review and decides: scale, adjust or stop.', 'يفتتح الحملة بقصة زميل ألهمه.<br>يترأس المراجعة الربعية ويقرّر: التوسّع أو التعديل أو الإيقاف.') },
+    { t: t('Department leaders', 'قادة الإدارات'), i: 'handshake', a: t('Nominate at least one colleague every quarter.<br>Acknowledge each featured colleague in person, within a week.', 'يرشّحون زميلًا واحدًا على الأقل كل ربع سنة.<br>يشكرون كل زميل تُبرَز قصته شخصيًا، خلال أسبوع.') },
+    { t: t('Managers', 'المدراء'), i: 'team', a: t('Hold a five-minute story moment in every monthly team meeting.', 'يخصّصون خمس دقائق للقصة في كل اجتماع شهري للفريق.') },
   ];
 
   /* a person, as a bust (24-unit box) */
@@ -180,25 +181,28 @@
     // a broadcast: a megaphone
     broadcast: ic('<path d="M5.5 13.2v5.6c0 .8.7 1.5 1.5 1.5h2.4l9.1 5.2V6.5l-9.1 5.2H7c-.8 0-1.5.7-1.5 1.5z"/><path d="M10 20.4l1.6 5.6h3"/><path d="M22.5 12.4a5 5 0 0 1 0 7.2M25.6 9.3a9.3 9.3 0 0 1 0 13.4"/>'),
   };
-  const DO = [['nominate', 'Nominate colleagues.'], ['story', 'Tell other people’s stories.'], ['consent', 'Protect consent and fairness.']];
-  const DONT = [['self', 'Nominate themselves.'], ['podium', 'Rank people or pick winners.'], ['broadcast', 'Turn it into a broadcast.']];
+  const DO = [['nominate', t('Nominate colleagues.', 'يرشّحون زملاءهم.')], ['story', t('Tell other people’s stories.', 'يروون قصص الآخرين.')], ['consent', t('Protect consent and fairness.', 'يصونون الموافقة والإنصاف.')]];
+  const DONT = [['self', t('Nominate themselves.', 'يرشّحون أنفسهم.')], ['podium', t('Rank people or pick winners.', 'يرتّبون الناس أو يختارون فائزين.')], ['broadcast', t('Turn it into a broadcast.', 'يحوّلونها إلى بثّ من طرف واحد.')]];
   // a small badge on each tile: a tick (do) or a cross (don't)
   const TICK = '<svg class="ld-bdg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12.4l3.6 3.6 7.4-7.9"/></svg>';
   const CROSS = '<svg class="ld-bdg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8l8 8M16 8l-8 8"/></svg>';
-  const list = (items, d0, badge) => items.map(([i, t], k) => `<li class="ld-li" data-in="1" style="--d:${(d0 + k * .1).toFixed(2)}s"><span class="ld-mk">${ICONS[i]}${badge}</span>${t}</li>`).join('');
+  const list = (items, d0, badge) => items.map(([i, tx], k) => `<li class="ld-li" data-in="1" style="--d:${(d0 + k * .1).toFixed(2)}s"><span class="ld-mk">${ICONS[i]}${badge}</span>${tx}</li>`).join('');
 
   Deck.scene({
     id: 'leaders',
-    title: 'Leaders go first',
+    title: t('Leaders go first', 'القادة يبادرون أولًا'),
     act: 3,
     bg: 'navy',
     transition: 'chapter',
-    cues: ['Leaders go first · sponsor, leaders, managers', 'Leaders spotlight others, never themselves'],
+    cues: t(['Leaders go first · sponsor, leaders, managers', 'Leaders spotlight others, never themselves'], ['القادة يبادرون أولًا · الراعي والقادة والمدراء', 'القادة يسلّطون الضوء على غيرهم، لا على أنفسهم']),
     holds: [22, 16],
-    notes: [
+    notes: t([
       'Inspiration is role-modelled, not announced. So leaders go first. Our sponsor opens the campaign with the story of a colleague who inspired them. Every department leader nominates at least one colleague a quarter and thanks featured colleagues in person. Managers give stories five minutes in every monthly meeting.',
       'And one rule keeps it honest: leaders spotlight others, never themselves. No self-nomination, no rankings, no broadcast. Consent and fairness come first. That is the leadership behaviour we want the campaign to model.',
-    ],
+    ], [
+      'الإلهام يُمارَس بالقدوة ولا يُعلَن. لذلك يبادر القادة أولًا. يفتتح راعينا الحملة بقصة زميل ألهمه. ويرشّح كل قائد إدارة زميلًا واحدًا على الأقل كل ربع سنة، ويشكر شخصيًا الزملاء الذين تُبرَز قصصهم. ويخصّص المدراء للقصص خمس دقائق في كل اجتماع شهري.',
+      'وقاعدة واحدة تحفظ نزاهتها: القادة يسلّطون الضوء على غيرهم، لا على أنفسهم. لا ترشيح للذات، ولا تصنيفات، ولا بثّ من طرف واحد. الموافقة والإنصاف أولًا. هذا هو السلوك القيادي الذي نريد أن تجسّده الحملة.',
+    ]),
     field: [
       { dim: .32, lit: .04, litFrom: [1400, 900], travel: .3, warm: .1, offset: [70, 160], links: .5, wave: .5, streaks: .1, sparkle: 1.1, drift: 1,
         calm: [[100, 120, 1100, 350, .8], [100, 360, 1010, 940, .85], [1010, 360, 1800, 940, .3]] },
@@ -209,12 +213,12 @@
       <i class="ld-wash w1"><b></b></i><i class="ld-wash w2"><b></b></i>
 
       <div class="pad ld-head">
-        <div class="kicker a-wipe" data-in="0" style="--d:.1s">Leadership involvement</div>
+        <div class="kicker a-wipe" data-in="0" style="--d:.1s">${t('Leadership involvement', 'مشاركة القيادة')}</div>
         <div class="ld-hbox">
-          <h1 class="ld-h ld-h0" data-in="0" data-out="1" data-split style="--d:.16s;--wstep:.07s">Leaders go first.</h1>
-          <h2 class="ld-h ld-h1" data-in="1" data-split data-spark="1" data-spark-at="r" data-spark-delay=".7" style="--d:.2s;--wstep:.045s">Leaders <em class="hl">spotlight</em> <em class="hl">others,</em> never themselves.</h2>
+          <h1 class="ld-h ld-h0" data-in="0" data-out="1" data-split style="--d:.16s;--wstep:.07s">${t('Leaders go first.', 'القادة يبادرون أولًا.')}</h1>
+          <h2 class="ld-h ld-h1" data-in="1" data-split data-spark="1" data-spark-at="r" data-spark-delay=".7" style="--d:.2s;--wstep:.045s">${t('Leaders <em class="hl">spotlight</em> <em class="hl">others,</em> never themselves.', 'القادة <em class="hl">يسلّطون</em> <em class="hl">الضوء</em> <em class="hl">على</em> <em class="hl">غيرهم،</em> لا على أنفسهم.')}</h2>
         </div>
-        <p class="ld-sub" data-in="0" data-out="1" style="--d:.44s">Inspiration is role-modelled, not announced.</p>
+        <p class="ld-sub" data-in="0" data-out="1" style="--d:.44s">${t('Inspiration is role-modelled, not announced.', 'الإلهام قدوةٌ تُمارَس، لا شعارٌ يُعلَن.')}</p>
       </div>
 
       <!-- the cascade (right): one sponsor, their leaders, the managers, every colleague -->
@@ -248,18 +252,18 @@
       ${rows}
       <div class="ld-row r4" data-out="1" style="top:${Y[3] - 30}px">
         <span class="ld-chip sm a-materialize" data-in="0" style="--d:.78s">${Deck.icon('users-connected')}</span>
-        <span class="ld-tlab a-fade" data-in="0" style="--d:.82s">Teams</span>
+        <span class="ld-tlab a-fade" data-in="0" style="--d:.82s">${t('Teams', 'الفرق')}</span>
       </div>
 
       <!-- stop 1: leaders spotlight others, never themselves -->
       <div class="ld-lists">
         <div class="ld-list do">
-          <div class="ld-lh a-wipe" data-in="1" style="--d:.42s"><i></i>Leaders do</div>
+          <div class="ld-lh a-wipe" data-in="1" style="--d:.42s"><i></i>${t('Leaders do', 'ما يفعله القادة')}</div>
           <ul>${list(DO, .5, TICK)}</ul>
         </div>
         <i class="ld-div a-wipe-down" data-in="1" style="--d:.5s;--dur:1s"><b></b></i>
         <div class="ld-list dont">
-          <div class="ld-lh a-wipe" data-in="1" style="--d:.62s"><i></i>Leaders don’t</div>
+          <div class="ld-lh a-wipe" data-in="1" style="--d:.62s"><i></i>${t('Leaders don’t', 'ما لا يفعله القادة')}</div>
           <ul>${list(DONT, .7, CROSS)}</ul>
         </div>
       </div>
@@ -277,6 +281,13 @@
         lv.style.width = Math.max(0, x1 - x0) + 'px';
         lv.style.setProperty('--lw', Math.max(0, x1 - x0) + 'px');   // the running lights travel it on transforms
       });
+      // Arabic: the header is flipped back as one block about its left edge (it has no width), so the
+      // engine's layout position of the headline is mirrored; the light rests past the headline's end
+      if (Deck.rtl) {
+        const head = ctx.$('.ld-head'), hb = ctx.$('.ld-hbox'), h1 = ctx.$('.ld-h1');
+        const x0 = head.offsetLeft - (hb.offsetLeft + h1.offsetLeft + h1.offsetWidth);
+        h1.dataset.sparkXy = Math.round(x0 + h1.offsetWidth + 34) + ',' + Math.round(head.offsetTop + hb.offsetTop + h1.offsetTop + h1.offsetHeight / 2);
+      }
       // one-shot lights (the links' leading lights, the root's flare) play only on a live
       // click; their resting state is invisible, so a jump or a step back shows the same frame
       el.classList.remove('ld-live');

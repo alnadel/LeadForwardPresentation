@@ -206,3 +206,15 @@
 
 /* the new headline: its key words in teal, with a soft static glow */
 #s-leaders .ld-h1 em.hl { color: var(--teal); text-shadow: 0 0 36px rgba(37, 199, 188, .3); }
+
+/* ── Arabic (right to left): the scene is mirrored and each text block flipped back (engine-v2.js) ── */
+/* split headlines: Arabic rises and sinks further than Latin, so each word's mask (and the box its
+   light sweep is clipped to) gets more room */
+html[lang="ar"] #s-leaders [data-split] .w, html[lang="ar"] #s-leaders [data-split] .w > span { padding: .14em 0 .36em; margin: -.14em 0 -.36em; }
+/* the header is flipped back as one block about its left edge (it has no width): the headlines hang
+   from that edge the Arabic way, so they land at the right margin; the longer second headline steps
+   down a little to keep its air */
+html[lang="ar"] #s-leaders .ld-h { left: auto; right: 0; }
+html[lang="ar"] #s-leaders .ld-h1 { font-size: 68px; top: 16px; }
+/* Arabic sets larger at the same size: the two lists step down 2px so the longest line clears the photo */
+html[lang="ar"] #s-leaders .ld-li { font-size: 32px; }

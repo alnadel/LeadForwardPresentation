@@ -242,3 +242,22 @@
 @keyframes cmArrive { 0% { opacity: 0; transform: scale(.6); } 5% { opacity: 1; transform: scale(1); } 30%, 100% { opacity: 0; transform: scale(1.3); } }
 #s-comms:not([data-step="1"]) .cm-pairs *, #s-comms:not([data-step="1"]) .cm-pairs *::before { animation-play-state: paused; }
 #s-comms .cm-src { position: absolute; left: 144px; top: 886px; margin: 0; font: 400 18px/1 var(--font); color: rgba(255, 255, 255, .5); white-space: nowrap; }
+
+/* ── Arabic (right to left): the scene is mirrored and each text block flipped back (engine-v2.js).
+   The cadence runs right to left (always → annual), and the findings read from the right into the
+   decisions on the left. ── */
+/* split headlines: Arabic rises and sinks further than Latin, so each word's mask (and the box its
+   light sweep is clipped to) gets more room */
+html[lang="ar"] #s-comms [data-split] .w, html[lang="ar"] #s-comms [data-split] .w > span { padding: .14em 0 .36em; margin: -.14em 0 -.36em; }
+/* the header is flipped back as one block about its left edge (it has no width): the headlines hang
+   from that edge the Arabic way, so they land at the right margin */
+html[lang="ar"] #s-comms .cm-h { left: auto; right: 0; }
+/* each number reads the way Arabic sets figures: the chart on the outside (right), then "123 / 158"
+   and "47%" in their own left-to-right order (the parts are separate boxes, so they are reordered
+   in the mirrored row) */
+html[lang="ar"] #s-comms .cm-num .cm-ch { order: -2; }
+html[lang="ar"] #s-comms .cm-num .cm-of, html[lang="ar"] #s-comms .cm-num .cm-pc { order: -1; direction: ltr; }
+html[lang="ar"] #s-comms .cm-num .cm-pc { margin-left: 0; margin-right: -12px; }
+/* the figures are Latin digits only, so they keep their tight tracking (Arabic text never is tracked) */
+html[lang="ar"] #s-comms .cm-num .num { letter-spacing: -.035em !important; }
+html[lang="ar"] #s-comms .cm-num .cm-of { letter-spacing: -.01em !important; }

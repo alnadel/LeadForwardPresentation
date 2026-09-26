@@ -588,7 +588,7 @@
   function buildChrome() {
     chrome.innerHTML =
       '<div class="mark">' + Deck.art('mark') + '</div>' +
-      '<div class="tag"><span class="tag-illustrative">Illustrative story</span></div>' +
+      '<div class="tag"><span class="tag-illustrative">' + T('Illustrative story', 'قصة توضيحية') + '</span></div>' +
       '<div class="progress"><div class="acts"></div><div class="track"></div><div class="spark"><div class="light"></div></div><div class="pips"></div></div>';
     tagEl = $('.tag', chrome);
     pipsEl = $('.pips', chrome);

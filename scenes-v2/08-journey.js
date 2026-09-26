@@ -9,10 +9,12 @@
      trail, through "Nouf nominates the next colleague", to the next colleague.
    Nouf and Faisal are illustrative. No invented numbers. */
 (function () {
+  const t = Deck.t;
+  const NOUF = t('Nouf Al-Harbi', 'نوف الحربي'), FAISAL = t('Faisal Al-Otaibi', 'فيصل العتيبي');
   // the rail ring (stage px)
   const RCX = 250, RCY = 472, RR = 104;
   const ANG = [-45, 45, 135, 225];
-  const STAGES = ['Capture', 'Curate', 'Feature', 'Reinforce'];
+  const STAGES = t(['Capture', 'Curate', 'Feature', 'Reinforce'], ['رصد', 'انتقاء', 'إبراز', 'ترسيخ']);
   const npos = (a, r) => [RCX + (r || RR) * Math.cos(a * Math.PI / 180), RCY + (r || RR) * Math.sin(a * Math.PI / 180)];
   const N = ANG.map((a) => npos(a));
   const xy = (p) => p[0].toFixed(1) + ',' + p[1].toFixed(1);
@@ -24,6 +26,7 @@
 
   // stop 2: the certificate, the takeaway hub under it, and four teams below
   const TEAMS = ['Traffic Ops · Shift B', 'Enforcement Ops', 'Field Operations', 'Data Centre'];
+  const TEAMS_AR = ['عمليات المرور<br>المناوبة ب', 'عمليات<br>الضبط المروري', 'العمليات<br>الميدانية', 'مركز<br>البيانات'];
   const CERT = { x: 548, y: 150, w: 1228, h: 290 };
   const TILE = { x: 548, y: 668, w: 286, h: 214, gap: 28 };   // the row spans the content column (548–1776)
   const HUB = [CERT.x + CERT.w / 2, 564];                     // the bottom of the "takeaway shared with" pill
@@ -93,10 +96,10 @@
   }).join('');
 
   const tiles = TEAMS.map((t, i) => {
-    const name = t.replace(' · ', '<br>').replace(/^(Enforcement|Field|Data) /, '$1<br>');
+    const name = Deck.t(t.replace(' · ', '<br>').replace(/^(Enforcement|Field|Data) /, '$1<br>'), TEAMS_AR[i]);
     return `<div class="jn-tile a-unfold" data-in="2" style="left:${tileX(i)}px;top:${TILE.y}px;--f:${FLIP(i).toFixed(2)}s;--k:${i};--d:.34s;--dur:.7s">
         <div class="jn-face front"><b>${name}</b><i class="jn-hollow"></i></div>
-        <div class="jn-face back"><b>${name}</b><span class="jn-adopt">${svgCheck}Adopted</span></div>
+        <div class="jn-face back"><b>${name}</b><span class="jn-adopt">${svgCheck}${Deck.t('Adopted', 'تم التبنّي')}</span></div>
       </div>`;
   }).join('');
 
@@ -123,19 +126,25 @@
 
   Deck.scene({
     id: 'journey',
-    title: 'One story, through the cycle',
+    title: t('One story, through the cycle', 'قصة واحدة عبر الدورة'),
     act: 2,
     bg: 'night',
     tag: 'illustrative',
     transition: 'dolly',
-    cues: ['Capture · Faisal nominates Nouf', 'Curate → Feature · the checks tick, the post publishes', 'Reinforce · certificate and four teams', 'The chain · recognition becomes behaviour'],
+    cues: t(['Capture · Faisal nominates Nouf', 'Curate → Feature · the checks tick, the post publishes', 'Reinforce · certificate and four teams', 'The chain · recognition becomes behaviour'],
+      ['رصد · فيصل يرشّح نوف', 'انتقاء ← إبراز · تكتمل بنود المراجعة ويُنشر المنشور', 'ترسيخ · الشهادة وأربعة فرق', 'السلسلة · يتحوّل التقدير إلى سلوك']),
     holds: [11, 12, 10, 9],
-    notes: [
+    notes: t([
       'Now follow Nouf’s story through the cycle — illustrative, not a real case. Faisal takes thirty seconds to nominate Nouf: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”',
       'Curate: facts checked with the shift lead, Nouf’s consent, and one value, Excellence. Nothing goes out without consent. Then Feature: a short post on a channel we already have. Reactions, not reach numbers.',
       'Reinforce: her leader acknowledges her with a certificate, and the takeaway travels. In this illustrative story four teams adopt the new handover, and we claim no more than that.',
       'Then Nouf nominates the next colleague, and the cycle starts again: recognition becomes behaviour. Again, the story is illustrative; the mechanism is what this case proposes.',
-    ],
+    ], [
+      'لنتتبّع الآن قصة نوف عبر الدورة — وهي قصة توضيحية، لا حالة حقيقية. يستغرق فيصل ثلاثين ثانية ليرشّح نوف: «لم يطلب منها أحدٌ أن تُصلحه. بادرت وأصلحته — ثم علّمتنا جميعًا الطريقة.»',
+      'الانتقاء: التحقق من الوقائع مع قائد المناوبة، وموافقة نوف، وقيمة واحدة هي التميّز. لا يُنشر شيء دون موافقة. ثم الإبراز: منشور قصير على قناة لدينا بالفعل. تفاعلات، لا أرقام انتشار.',
+      'الترسيخ: يقدّرها قائدها بشهادة، وتنتقل الخلاصة إلى غيرها. في هذه القصة التوضيحية تتبنّى أربعة فرق آلية التسليم الجديدة، ولا ندّعي أكثر من ذلك.',
+      'ثم ترشّح نوف الزميل التالي، وتبدأ الدورة من جديد: يتحوّل التقدير إلى سلوك. ونؤكد مجددًا أن القصة توضيحية؛ أما الآلية فهي ما تقترحه هذه المبادرة.',
+    ]),
     field: [
       { dim: .24, lit: .02, travel: .12, offset: [-190, -110], litFrom: null, links: .45, wave: .45, streaks: .1, sparkle: .9, calm: [[520, 130, 1800, 940, .85], [110, 130, 470, 940, .45]] },
       {},
@@ -145,7 +154,7 @@
     html: `
       <!-- the rail: the cycle in miniature -->
       <div class="jn-rail">
-        <div class="kicker" data-in="0">One story</div>
+        <div class="kicker" data-in="0">${t('One story', 'قصة واحدة')}</div>
       </div>
       <!-- the stage being discussed: the one word the room reads first (it changes with the story) -->
       <div class="jn-stage" data-in="0" style="--d:.12s">
@@ -169,27 +178,27 @@
       <div class="jn-faisal a-left" data-in="0" data-out="1" style="--d:.1s">
         <div class="jn-fi amb-float3d-2">
           <div class="jn-portrait"><div class="photo amb-ken" style="background-image:url('assets/photos/faisal.jpg')"></div></div>
-          <b class="jn-name">Faisal Al-Otaibi</b>
-          <span class="jn-role">Shift Supervisor</span>
+          <b class="jn-name">${FAISAL}</b>
+          <span class="jn-role">${t('Shift Supervisor', 'مشرف المناوبة')}</span>
         </div>
       </div>
       <div class="jn-form a-swing" data-in="0" data-out="1" style="--d:.2s">
         <div class="paper jn-form-i amb-float3d jn-sheen">
           <div class="jn-strip">
-            <span class="jn-mk">${Deck.art('mark')}</span><b>Nominate a colleague</b>
-            <span class="jn-time">${Deck.icon('gear-clock')}30 seconds</span>
+            <span class="jn-mk">${Deck.art('mark')}</span><b>${t('Nominate a colleague', 'رشّح زميلًا')}</b>
+            <span class="jn-time">${Deck.icon('gear-clock')}${t('30 seconds', '30 ثانية')}</span>
           </div>
           <div class="jn-fb">
-            <div class="jn-lab">Who changed how you work?</div>
+            <div class="jn-lab">${t('Who changed how you work?', 'مَن غيّر طريقة عملك؟')}</div>
             <div class="jn-field jn-pick">
-              <div class="jn-val a-fade" data-in="0" style="--d:.5s;--dur:.5s">${av()}<span class="jn-nm"><b>Nouf Al-Harbi</b><span>Senior Operations Analyst</span></span></div>
+              <div class="jn-val a-fade" data-in="0" style="--d:.5s;--dur:.5s">${av()}<span class="jn-nm"><b>${NOUF}</b><span>${t('Senior Operations Analyst', 'محللة عمليات أولى')}</span></span></div>
             </div>
-            <div class="jn-lab">What changed?</div>
+            <div class="jn-lab">${t('What changed?', 'ما الذي تغيّر؟')}</div>
             <div class="jn-field jn-quote">
-              <p class="a-fade" data-in="0" style="--d:.65s;--dur:.5s">“Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”</p>
+              <p class="a-fade" data-in="0" style="--d:.65s;--dur:.5s">${t('“Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”', '«لم يطلب منها أحدٌ أن تُصلحه. بادرت وأصلحته — ثم علّمتنا جميعًا الطريقة.»')}</p>
             </div>
             <div class="jn-foot">
-              <span class="jn-send"><span class="s1">Send${svgArrow}</span><span class="s2">${svgCheck}Sent</span></span>
+              <span class="jn-send"><span class="s1">${t('Send', 'إرسال')}${svgArrow}</span><span class="s2">${svgCheck}${t('Sent', 'تم الإرسال')}</span></span>
             </div>
           </div>
         </div>
@@ -199,12 +208,12 @@
       <i class="jn-glow g1" data-at="1"></i>
       <div class="jn-cur a-flip" data-in="1" data-out="2" style="--d:.12s;--dur:.8s">
         <div class="paper jn-cur-i amb-float3d-2 jn-sheen">
-          <div class="jn-cur-h"><b>Curation checklist</b><span>Before it is shared</span></div>
-          <div class="jn-nom">${av('sm')}<span class="jn-nm"><b>Nouf Al-Harbi</b><span>Nominated by Faisal Al-Otaibi</span></span></div>
+          <div class="jn-cur-h"><b>${t('Curation checklist', 'قائمة الانتقاء')}</b><span>${t('Before it is shared', 'قبل النشر')}</span></div>
+          <div class="jn-nom">${av('sm')}<span class="jn-nm"><b>${NOUF}</b><span>${t('Nominated by Faisal Al-Otaibi', 'رشّحها فيصل العتيبي')}</span></span></div>
           <div class="jn-checks">
-            <div class="jn-ck" style="--t:.45s"><i class="jn-box">${svgCheck}</i><span>Facts checked with the shift lead</span></div>
-            <div class="jn-ck" style="--t:.7s"><i class="jn-box">${svgCheck}</i><span>Consent from Nouf</span></div>
-            <div class="jn-ck" style="--t:.95s"><i class="jn-box">${svgCheck}</i><span>Value: <em class="jn-value">Excellence</em></span></div>
+            <div class="jn-ck" style="--t:.45s"><i class="jn-box">${svgCheck}</i><span>${t('Facts checked with the shift lead', 'تحقّقنا من الوقائع مع قائد المناوبة')}</span></div>
+            <div class="jn-ck" style="--t:.7s"><i class="jn-box">${svgCheck}</i><span>${t('Consent from Nouf', 'موافقة نوف')}</span></div>
+            <div class="jn-ck" style="--t:.95s"><i class="jn-box">${svgCheck}</i><span>${t('Value:', 'القيمة:')} <em class="jn-value">${t('Excellence', 'التميّز')}</em></span></div>
           </div>
         </div>
       </div>
@@ -217,14 +226,14 @@
         <div class="paper jn-post-i amb-float3d jn-sheen">
           <div class="jn-ph">
             <span class="jn-pav">${Deck.art('mark')}</span>
-            <span class="jn-pk"><b>Behind a Better Life · Story 07</b><span>Traffic Operations Centre</span></span>
+            <span class="jn-pk"><b>${t('Behind a Better Life · Story 07', 'خلف حياة أفضل · القصة 07')}</b><span>${t('Traffic Operations Centre', 'مركز عمليات المرور')}</span></span>
           </div>
-          <h3 class="jn-pt">She rebuilt the night handover in one afternoon.</h3>
-          <div class="jn-pimg"><div class="photo amb-ken-2" style="background-image:url('assets/photos/nouf.jpg')"></div><span class="jn-pval">Excellence</span></div>
+          <h3 class="jn-pt">${t('She rebuilt the night handover in one afternoon.', 'أعادت بناء تسليم المناوبة الليلية في عصرٍ واحد.')}</h3>
+          <div class="jn-pimg"><div class="photo amb-ken-2" style="background-image:url('assets/photos/nouf.jpg')"></div><span class="jn-pval">${t('Excellence', 'التميّز')}</span></div>
           <div class="jn-react">
-            <span class="a-pop" data-in="1" style="--d:${(PUBLISH + .5).toFixed(2)}s;--dur:.6s">${Deck.icon('handshake')}Thank you</span>
-            <span class="a-pop" data-in="1" style="--d:${(PUBLISH + .62).toFixed(2)}s;--dur:.6s">${Deck.icon('eye-lightbulb')}Insightful</span>
-            <span class="a-pop" data-in="1" style="--d:${(PUBLISH + .74).toFixed(2)}s;--dur:.6s">${Deck.icon('person-message')}Comment</span>
+            <span class="a-pop" data-in="1" style="--d:${(PUBLISH + .5).toFixed(2)}s;--dur:.6s">${Deck.icon('handshake')}${t('Thank you', 'شكرًا')}</span>
+            <span class="a-pop" data-in="1" style="--d:${(PUBLISH + .62).toFixed(2)}s;--dur:.6s">${Deck.icon('eye-lightbulb')}${t('Insightful', 'مُلهِم')}</span>
+            <span class="a-pop" data-in="1" style="--d:${(PUBLISH + .74).toFixed(2)}s;--dur:.6s">${Deck.icon('person-message')}${t('Comment', 'تعليق')}</span>
           </div>
         </div>
       </div>
@@ -236,9 +245,9 @@
           <i class="jn-frame"></i>
           <span class="jn-cert-i">${Deck.icon('document-certified')}</span>
           <span class="jn-cert-t">
-            <span class="jn-cert-k">Leader acknowledgement</span>
-            <b>Nouf Al-Harbi</b>
-            <span class="jn-cert-l">Personal certificate · Excellence</span>
+            <span class="jn-cert-k">${t('Leader acknowledgement', 'شكر وتقدير من القائد')}</span>
+            <b>${NOUF}</b>
+            <span class="jn-cert-l">${t('Personal certificate · Excellence', 'شهادة شخصية · التميّز')}</span>
           </span>
           <span class="jn-seal"><svg viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="74" class="jn-seal-r"/><circle cx="80" cy="80" r="64" class="jn-seal-r2"/></svg><span class="jn-seal-i">${Deck.art('mark')}</span></span>
         </div>
@@ -250,7 +259,7 @@
       <!-- the flowing dashes: one path on its own small layer (its repaint never touches the lit branches) -->
       <svg class="jn-lkfs a-fade" data-in="2" data-out="3" viewBox="${LKBOX.join(' ')}" style="left:${LKBOX[0]}px;top:${LKBOX[1]}px;width:${LKBOX[2]}px;height:${LKBOX[3]}px" aria-hidden="true"><path class="jn-lkf" d="${TEAMS.map((t, i) => reachPath(i)).join(' ')}"/></svg>
       <div class="jn-leads jn-lot" data-in="2" data-out="3">${TEAMS.map((t, i) => `<i class="jn-lead" style="offset-path:path('${reachPath(i)}');--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"></i>`).join('')}</div>
-      <div class="jn-hub a-materialize" data-in="2" data-out="3" style="left:${HUB[0]}px;top:${HUB[1] - 32}px;--d:.48s;--dur:.6s"><span class="jn-hub-i"><i class="light sm"></i>Takeaway shared with</span></div>
+      <div class="jn-hub a-materialize" data-in="2" data-out="3" style="left:${HUB[0]}px;top:${HUB[1] - 32}px;--d:.48s;--dur:.6s"><span class="jn-hub-i"><i class="light sm"></i>${t('Takeaway shared with', 'الخلاصة وصلت إلى')}</span></div>
       <div class="jn-tiles" data-out="3" data-stagger style="--stagger:.07s">${tiles}</div>
       <div class="jn-ports jn-lot" data-in="2" data-out="3">${TEAMS.map((t, i) => { const [x, y] = port(i); return `<i class="jn-port" style="left:${x}px;top:${y}px;--k:${i};--f:${FLIP(i).toFixed(2)}s"></i>`; }).join('')}</div>
       <div class="jn-reach jn-lot" data-in="2" data-out="3">
@@ -263,9 +272,9 @@
       <svg class="jn-trc jn-lot" data-in="3" viewBox="${TRBOX.join(' ')}" style="left:${TRBOX[0]}px;top:${TRBOX[1]}px;width:${TRBOX[2]}px;height:${TRBOX[3]}px" aria-hidden="true"><path class="jn-tr" d="${CURVE}"/></svg>
       <i class="jn-trs" style="left:${PILL.x}px;top:${N0[1] - 2}px;width:${NEXT[0] - PILL.x}px"><b></b></i>
       <div class="jn-newlight jn-lot" data-in="3">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="left:${N0[0] - 7}px;top:${N0[1] - 7}px;--c:${k}"></i>`).join('')}</div>
-      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass live"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
+      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass live"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>${t('Nouf nominates the next colleague', 'نوف ترشّح الزميل التالي')}</span>${svgArrow}</span></div>
       <div class="jn-next jn-lot" data-in="3" style="left:${NEXT[0]}px;top:${NEXT[1].toFixed(1)}px"><b class="jn-pool"></b><i class="jn-sq"></i><b class="jn-flash"></b><span class="jn-rings"><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.07s"></b><b class="amb-ring" style="animation-delay:-2.13s"></b></span></div>
-      <h2 class="jn-big" data-in="3" data-split style="--d:.55s">Recognition becomes <em class="hl jn-beh" data-t="behaviour.">behaviour.</em></h2>
+      <h2 class="jn-big" data-in="3" data-split style="--d:.55s">${t('Recognition becomes <em class="hl jn-beh" data-t="behaviour.">behaviour.</em>', 'يتحوّل التقدير إلى <em class="hl jn-beh" data-t="سلوك.">سلوك.</em>')}</h2>
       <style>${KF.join('\n')}</style>
     `,
     init(ctx) {

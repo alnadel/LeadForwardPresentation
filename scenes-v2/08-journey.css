@@ -343,3 +343,15 @@
 
 /* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
    and scaled up (a conic gradient scales cleanly), a quarter of the layer */
+
+/* ── Arabic (right to left): the scene is mirrored and each text block flipped back (engine-v2.js) ── */
+/* split headlines: Arabic rises and sinks further than Latin, so each word's mask (and the box its
+   light sweep is clipped to) gets more room */
+html[lang="ar"] #s-journey [data-split] .w, html[lang="ar"] #s-journey [data-split] .w > span { padding: .14em 0 .36em; margin: -.14em 0 -.36em; }
+/* the hub pill is centred with a translate, which its flip would mirror: centre it the mirrored way;
+   the light leads the label, so the tighter padding moves to its side */
+html[lang="ar"] #s-journey .jn-hub-i { transform: translate(50%, -50%); padding: 0 24px 0 30px; }
+/* drawn marks keep their own direction: the send arrow points the way Arabic reads, the ticks stay ticks */
+html[lang="ar"] #s-journey .jn-send .jn-arr { scale: -1 1; }
+html[lang="ar"] #s-journey .jn-box .jn-tick { scale: -1 1; }
+html[lang="ar"] #s-journey .jn-value { margin-left: 0; margin-right: 6px; }
