@@ -18,7 +18,8 @@
   transition: opacity 1.2s var(--ease-soft) calc(var(--enter, 0s) + .9s); }
 #s-benchmark.st-0 .bm-mglow { opacity: 1; }
 #s-benchmark .bm-mglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(157, 103, 170, .3), rgba(96, 38, 80, .1) 55%, transparent); animation: bmHalo 5.2s ease-in-out -2.6s infinite; }
+  background: radial-gradient(closest-side, rgba(157, 103, 170, .4), rgba(124, 60, 107, .16) 55%, transparent); animation: bmHalo 5.2s ease-in-out -2.6s infinite; }
+#s-benchmark .bm-mglow::after { background: radial-gradient(closest-side, rgba(157, 103, 170, .3), transparent); animation: bmHalo2 7.1s ease-in-out -3.2s infinite; }
 
 /* ── header: the headline steps out at stop 1 ───────────────────────────── */
 #s-benchmark .bm-kick { position: relative; height: 20px; }
@@ -100,10 +101,16 @@
   transition: opacity 1.2s var(--ease-soft) calc(var(--enter, 0s) + 1.5s); }
 #s-benchmark.st-0 .bm-halo { opacity: 1; }
 #s-benchmark .bm-halo::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(3, 255, 203, .3), rgba(37, 199, 188, .1) 55%, transparent); animation: bmHalo 3.8s ease-in-out infinite; }
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .36), rgba(37, 199, 188, .15) 55%, transparent); animation: bmHalo 3.8s ease-in-out infinite; }
 @keyframes bmHalo { 0%, 100% { opacity: .32; transform: scale(.84); } 50% { opacity: 1; transform: scale(1.1); } }
-#s-benchmark.bm-live .bm-halo::after { content: ''; position: absolute; inset: 60px 120px; border-radius: 50%; background: radial-gradient(closest-side, rgba(200, 255, 244, .45), transparent);
-  animation: bmBloom 1.4s var(--ease-out) calc(var(--enter, 0s) + 1.72s) both; }
+/* …and a second, slower layer, so the glow never settles into one rhythm */
+#s-benchmark .bm-halo::after, #s-benchmark .bm-mglow::after, #s-benchmark .bm-tglow::after { content: ''; position: absolute; inset: 12% 16%; border-radius: 50%; }
+#s-benchmark .bm-halo::after { background: radial-gradient(closest-side, rgba(3, 255, 203, .26), transparent); animation: bmHalo2 5.9s ease-in-out -1.3s infinite; }
+@keyframes bmHalo2 { 0%, 100% { opacity: .15; transform: translateX(-46px) scale(.9); } 50% { opacity: 1; transform: translateX(52px) scale(1.14); } }
+/* the hero lands with a bloom of light (live build only) */
+#s-benchmark .hero .bm-fig::after { content: ''; position: absolute; left: -60px; top: -110px; width: 520px; height: 380px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(200, 255, 244, .45), transparent); }
+#s-benchmark.bm-live .hero .bm-fig::after { animation: bmBloom 1.4s var(--ease-out) calc(var(--delay) + .9s) both; }
 @keyframes bmBloom { 0% { opacity: 0; transform: scale(.5); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.3); } }
 
 /* ── the mini-bar: 0–100%, benchmark ring, Tahakom dot ─────────────────── */
@@ -182,7 +189,8 @@
   transition: opacity 1.2s var(--ease-soft); }
 #s-benchmark.st-1 .bm-tglow { opacity: 1; transition-delay: .7s; }
 #s-benchmark .bm-tglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .24), rgba(37, 199, 188, .08) 55%, transparent); animation: bmHalo 4s ease-in-out infinite; }
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .32), rgba(37, 199, 188, .13) 55%, transparent); animation: bmHalo 4s ease-in-out infinite; }
+#s-benchmark .bm-tglow::after { inset: 14% 24%; background: radial-gradient(closest-side, rgba(3, 255, 203, .2), transparent); animation: bmHalo2 6.3s ease-in-out -2s infinite; }
 #s-benchmark .bm-take { position: relative; }
 /* the reading lands with a bloom of light behind it (live click only) */
 #s-benchmark .bm-takebox::before { content: ''; position: absolute; left: -120px; top: -90px; width: 1100px; height: 280px; border-radius: 50%; pointer-events: none; opacity: 0;
