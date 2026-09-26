@@ -1,1 +1,131 @@
-/* The gap (v2) */
+/* 03 · The gap (v2) — district map */
+#s-gap .gp-h { margin-top: 30px; font-size: 72px; white-space: nowrap; }
+/* stop 2: the headline steps back so the payoff outranks it */
+#s-gap .gp-h.is-dim { opacity: .4 !important; filter: none; }
+
+/* the three points, each above its own district */
+#s-gap .gp-pt { position: absolute; top: 334px; width: 410px; }
+#s-gap .gp-n { display: flex; align-items: center; gap: 14px; font: 700 22px/1 var(--font); letter-spacing: .18em; }
+#s-gap .gp-n::after { content: ''; width: 40px; height: 2px; background: currentColor; opacity: .7; }
+#s-gap .gp-pt.go .gp-n { color: var(--teal); }
+#s-gap .gp-pt.gap .gp-n { color: var(--purple-lt); }
+#s-gap .gp-pt-h { margin-top: 15px; color: var(--white); }
+#s-gap .gp-pt-s { margin: 8px 0 0; font: 400 30px/1.34 var(--font); color: var(--ink-2); text-wrap: pretty; }
+/* focus follows the newest points */
+#s-gap[data-step="1"] .gp-pt.p1 { opacity: .5; }
+
+/* ── the map: tilts back and recedes at stop 2; drifts slowly all the time ── */
+#s-gap .gp-map { position: absolute; inset: 0; pointer-events: none; transform-origin: 960px 892px; transition: transform 1.2s var(--ease-io), opacity .9s var(--ease-soft); }
+#s-gap.st-2 .gp-map { transform: perspective(1500px) rotateX(32deg) scale(.95); opacity: .55; transition: transform 1.5s var(--ease-io), opacity 1.1s var(--ease-soft); }
+#s-gap .gp-drift { position: absolute; inset: 0; animation: gpDrift 17s ease-in-out infinite; }
+@keyframes gpDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  25% { transform: translate3d(10px, -6px, 0) rotate(.16deg); }
+  50% { transform: translate3d(-3px, -10px, 0) rotate(-.06deg); }
+  75% { transform: translate3d(-10px, -3px, 0) rotate(-.16deg); }
+}
+
+#s-gap .gp-d { position: absolute; }
+#s-gap .gp-wall { position: absolute; inset: 0; border-radius: 76px; border: 2px solid rgba(255, 255, 255, .24);
+  background: radial-gradient(120% 95% at 50% 38%, rgba(255, 255, 255, .055), rgba(255, 255, 255, .014) 72%);
+  transition: border-color 1.2s var(--ease-soft); }
+#s-gap .gp-in { position: absolute; inset: 0; border-radius: 76px; overflow: hidden; }
+/* stop 0: each district holds a soft pool of its own light, breathing */
+#s-gap .gp-in::before { content: ''; position: absolute; left: var(--sx); top: var(--sy); width: 760px; height: 760px; margin: -380px 0 0 -380px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .22), rgba(37, 199, 188, .09) 45%, rgba(37, 199, 188, .03) 70%, transparent);
+  opacity: 0; transition: opacity 1.4s var(--ease-soft); }
+#s-gap.st-0 .gp-in::before { opacity: 1; transition-delay: calc(var(--enter, 0s) + 1.2s + var(--di) * .2s); animation: gpPool 5.6s ease-in-out calc(var(--di) * -1.9s) infinite; }
+@keyframes gpPool { 0%, 100% { transform: scale(.82); } 50% { transform: scale(1.08); } }
+/* stop 1: the boundary turns purple — the walls read as walls */
+#s-gap.st-1 .gp-wall { border-color: rgba(201, 166, 211, .62); transition-delay: calc(.8s + var(--di) * .22s); }
+
+/* colleagues: pop in at stop 0; many twinkle */
+#s-gap .gp-sq { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 28%; background: rgba(255, 255, 255, var(--a));
+  transform: scale(0); transition: transform .8s var(--ease-back) calc(var(--enter, 0s) + .5s + var(--di) * .14s + var(--rd) * .6s); }
+#s-gap.st-0 .gp-sq { transform: scale(1); }
+#s-gap .gp-sq.tw { animation: gpTw var(--tt) ease-in-out var(--td) infinite; }
+@keyframes gpTw { 0%, 100% { opacity: 1; } 50% { opacity: .15; } }
+
+/* the lights ignite inside every district, then keep pulsing and sending out rings */
+#s-gap .gp-L { --ig: calc(var(--enter, 0s) + 1s + var(--di) * .14s + var(--k) * .14s); }
+#s-gap .gp-L b { position: absolute; inset: -2px; border-radius: 28%; background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--sea) 38%, var(--teal) 80%);
+  box-shadow: 0 0 10px var(--sea), 0 0 30px rgba(3, 255, 203, .55), 0 0 70px rgba(37, 199, 188, .3);
+  opacity: 0; transition: opacity .9s var(--ease-soft); animation: gpBreathe 3.2s ease-in-out var(--bd) infinite; }
+#s-gap.st-0 .gp-L b { opacity: 1; transition-delay: var(--ig); }
+@keyframes gpBreathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.28); filter: brightness(1.35); } }
+#s-gap .gp-L::after { content: ''; position: absolute; inset: -3px; border-radius: 28%; border: 2px solid var(--sea); opacity: 0; }
+#s-gap.st-0 .gp-L::after { animation: gpIgnite 1.3s var(--ease-out) var(--ig) both, gpPing 6.6s var(--ease-out) calc(var(--ig) + 1.5s + var(--pd)) infinite; }
+@keyframes gpIgnite { 0% { opacity: 0; transform: scale(.8); } 12% { opacity: .9; } 100% { opacity: 0; transform: scale(3.2); } }
+@keyframes gpPing { 0% { opacity: 0; transform: scale(.8); } 5% { opacity: .75; } 36% { opacity: 0; transform: scale(3); } 100% { opacity: 0; transform: scale(3); } }
+
+/* stop 1: a ripple leaves a light in the district's own shape, reaches every wall
+   at once and stops there; it turns purple and the wall flashes. First all three
+   together (b), then one district every 3.4 s, in turn (a). */
+#s-gap .gp-rip { position: absolute; inset: 0; border-radius: 76px; border: 3px solid var(--teal); box-shadow: inset 0 0 34px rgba(37, 199, 188, .28);
+  transform-origin: var(--sx) var(--sy); transform: scale(.04); opacity: 0; pointer-events: none; }
+@keyframes gpRip {
+  0% { transform: scale(.04); opacity: 0; border-color: var(--teal); animation-timing-function: cubic-bezier(.42, .12, .78, .88); }
+  12% { opacity: 1; }
+  62% { transform: scale(1); opacity: 1; border-color: var(--teal); animation-timing-function: var(--ease-soft); }
+  70% { border-color: var(--purple-lt); opacity: .95; }
+  100% { transform: scale(1); opacity: 0; border-color: var(--purple-lt); }
+}
+@keyframes gpRipLoop {
+  0% { transform: scale(.04); opacity: 0; border-color: var(--teal); animation-timing-function: cubic-bezier(.42, .12, .78, .88); }
+  2.4% { opacity: 1; }
+  13% { transform: scale(1); opacity: 1; border-color: var(--teal); animation-timing-function: var(--ease-soft); }
+  15% { border-color: var(--purple-lt); opacity: .95; }
+  22% { transform: scale(1); opacity: 0; border-color: var(--purple-lt); }
+  100% { transform: scale(1); opacity: 0; border-color: var(--purple-lt); }
+}
+#s-gap.st-1 .gp-rip.b { animation: gpRip 1.8s linear calc(.3s + var(--di) * .2s) both; }
+#s-gap.st-1 .gp-rip.a { animation: gpRipLoop 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
+
+#s-gap .gp-flash { position: absolute; inset: -1px; border-radius: 77px; border: 3px solid var(--purple-lt); box-shadow: 0 0 26px rgba(157, 103, 170, .8), inset 0 0 24px rgba(157, 103, 170, .45); opacity: 0; }
+@keyframes gpFlash { 0% { opacity: 0; } 14% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes gpFlashLoop { 0%, 12.4% { opacity: 0; } 14.6% { opacity: 1; } 25% { opacity: 0; } 100% { opacity: 0; } }
+#s-gap.st-1 .gp-flash.b { animation: gpFlash 1.1s var(--ease-soft) calc(1.35s + var(--di) * .2s) both; }
+#s-gap.st-1 .gp-flash.a { animation: gpFlashLoop 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
+
+/* stop 1: dashed bridges that give out halfway; stories keep setting out and fading there */
+#s-gap .gp-bridges { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+#s-gap .gp-br { fill: none; stroke: url(#gpBridgeInk); stroke-width: 2.5; stroke-dasharray: 7 7; }
+#s-gap.st-1 .gp-br { animation: gpDash 2.4s linear infinite; }
+@keyframes gpDash { to { stroke-dashoffset: -28; } }
+#s-gap .gp-gate { fill: rgba(37, 199, 188, .9); }
+#s-gap .gp-bls { position: absolute; inset: 0; }
+#s-gap .gp-bl { position: absolute; left: 0; top: 0; width: 18px; height: 18px; offset-rotate: 0deg; offset-distance: 0%; opacity: 0; }
+@keyframes gpSend {
+  0% { offset-distance: 0%; opacity: 0; animation-timing-function: cubic-bezier(.3, .5, .45, 1); }
+  6% { opacity: 1; }
+  38% { opacity: .9; }
+  50% { offset-distance: 50%; opacity: 0; }
+  100% { offset-distance: 50%; opacity: 0; }
+}
+#s-gap.st-1 .gp-bl.p1 { animation: gpSend 4.4s linear .75s infinite; }
+#s-gap.st-1 .gp-bl.p2 { animation: gpSend 4.4s linear 2.95s infinite; }
+
+#s-gap .gp-x { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 28%; border: 2px solid var(--purple-lt); box-shadow: 0 0 14px rgba(157, 103, 170, .8); opacity: 0; transition: opacity .4s var(--ease-soft); }
+/* the break stays marked; each failed story flashes on top of it */
+#s-gap.st-1 .gp-x.m { opacity: .7; transition: opacity .6s var(--ease-soft) 1.4s; }
+@keyframes gpFail { 0%, 44% { opacity: 0; transform: scale(.5); } 50% { opacity: 1; transform: scale(.8); } 74% { opacity: 0; transform: scale(2.6); } 100% { opacity: 0; transform: scale(2.6); } }
+#s-gap.st-1 .gp-x.a.p1 { animation: gpFail 4.4s var(--ease-out) .75s infinite; }
+#s-gap.st-1 .gp-x.a.p2 { animation: gpFail 4.4s var(--ease-out) 2.95s infinite; }
+
+/* ── stop 2: the conclusion and the ask ─────────────────────────────── */
+#s-gap .gp-close { position: absolute; left: var(--m); right: var(--m); top: 350px; }
+#s-gap .gp-c1 { margin: 0; font: 400 32px/1.4 var(--font); color: var(--ink-2); }
+#s-gap .gp-c2 { margin: 18px 0 0; font: 700 56px/1.08 var(--font); letter-spacing: -.022em; color: var(--white); }
+#s-gap .gp-ask { position: relative; display: inline-flex; align-items: center; gap: 18px; margin-top: 40px; padding: 16px 32px 16px 22px; border-radius: 14px; overflow: hidden;
+  border: 1px solid rgba(37, 199, 188, .45); background: linear-gradient(100deg, rgba(37, 199, 188, .14), rgba(37, 199, 188, .05)); }
+#s-gap .gp-ask .kicker::before { display: none; }
+/* the story light docks here (the spark rests in this slot) */
+#s-gap .gp-ask-lt { width: 30px; height: 30px; flex: none; margin-right: 4px; }
+#s-gap .gp-ask-sep { font: 700 28px/1 var(--font); color: var(--teal); }
+#s-gap .gp-ask-t { font: 500 32px/1 var(--font); color: var(--white); }
+/* parked on the ask: the strip glows, and a sheen passes through it */
+#s-gap.st-2 .gp-ask.is-in { animation: gpAsk 3.8s ease-in-out 2s infinite; }
+@keyframes gpAsk { 0%, 100% { border-color: rgba(37, 199, 188, .45); box-shadow: 0 0 0 rgba(37, 199, 188, 0), inset 0 0 0 rgba(37, 199, 188, 0); } 50% { border-color: rgba(3, 255, 203, .9); box-shadow: 0 0 44px rgba(37, 199, 188, .38), inset 0 0 26px rgba(37, 199, 188, .18); } }
+#s-gap .gp-ask::after { content: ''; position: absolute; top: -30%; bottom: -30%; left: -40%; width: 26%; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .16), transparent); transform: skewX(-18deg); opacity: 0; pointer-events: none; }
+#s-gap.st-2 .gp-ask.is-in::after { animation: gpSheen 5.2s ease-in-out 2.4s infinite; }
+@keyframes gpSheen { 0% { left: -40%; opacity: 0; } 8% { opacity: 1; } 50% { left: 120%; opacity: 1; } 51%, 100% { left: 120%; opacity: 0; } }

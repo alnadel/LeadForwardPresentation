@@ -1,6 +1,159 @@
-/* STUB — replaced by the scene implementation. */
-Deck.scene({
-  id: 'night', title: 'One night', act: 0, bg: 'night',
-  cues: ['Stop 1', 'Stop 2', 'Stop 3'],
-  html: `<div class="pad"><div class="kicker" data-in="0">One night (stub)</div>` + [0, 1, 2].map((k) => `<h2 class="h2" data-in="${k}" data-split data-spark="${k}" style="margin-top:40px">One night · stop ${k + 1}</h2>`).join('') + `</div>`,
-});
+/* 02 · One night (v2) — merges v1 02 · Question and 03 · One night.
+   Stop 0: the question alone, a warm light turning behind it.
+   Stop 1: the question falls away and the film frame builds — 03:12, Nouf at her
+   desk under flickering monitor light, loose notes fly together into the new
+   night handover, and the morning changes.
+   Stop 2: the camera pulls back until the whole night is two lit squares in a
+   vast field. Two people know. This is the exact v1 03.3 image (the pins at
+   Deck.NIGHT_PAIR, the camera at Deck.NIGHT_OFFSET, the words placed by the same
+   formula); v2 scene 11 calls back to it. */
+(function () {
+  const OFFSET = Deck.NIGHT_OFFSET;   // this scene's camera pan, held on every stop (shared with 11)
+  const CARD = { x: 1216, y: 424, w: 560 };
+  const ROWS = [
+    'Overnight incidents · timestamped',
+    'Signal faults still open',
+    'Diversions in force at handover',
+    'Camera outages · zone + ticket',
+    'Anything the day shift must call',
+    'Signed off by night supervisor',
+  ];
+  const CARD_CY = CARD.y + 200;       // the card's centre (it is ~400px tall)
+  // the old handover: loose notes dropped around the desk [left, top, w, h, tilt°]
+  const SCRAPS = [
+    [800, 470, 150, 92, -12], [1010, 770, 132, 84, 9], [1250, 432, 168, 98, -6],
+    [1640, 470, 124, 80, 13], [1690, 770, 140, 92, -9], [1330, 850, 160, 72, 5],
+    [880, 650, 120, 104, -15], [1540, 610, 112, 74, 17], [1130, 600, 140, 84, -3],
+    [640, 820, 126, 80, 11], [1450, 720, 118, 78, -8],
+  ];
+
+  const rnd = (s) => { s = Math.sin(s * 12.9898 + 78.233) * 43758.5453; return s - Math.floor(s); };
+
+  // a line of handwriting: a small wavy path
+  function scribble(x, y, len, seed) {
+    let d = 'M' + x + ' ' + y;
+    for (let i = 0, cx = x; cx < x + len; i++, cx += 11) {
+      const up = (i % 2 ? -1 : 1) * (2 + rnd(seed + i) * 3);
+      d += ' q5.5 ' + up.toFixed(1) + ' 11 ' + ((rnd(seed + i * 3) - .5) * 2).toFixed(1);
+    }
+    return '<path d="' + d + '"/>';
+  }
+  function scrapHtml(s, i) {
+    const [x, y, w, h, r] = s;
+    const cx = CARD.x + CARD.w / 2, cy = CARD_CY;
+    const lines = Math.max(2, Math.floor((h - 22) / 18));
+    let paths = '';
+    for (let l = 0; l < lines; l++) paths += scribble(12, 20 + l * 18, (w - 30) * (.45 + rnd(i * 7 + l) * .5), i * 31 + l * 5);
+    return `<div class="nt-scrap" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;--r:${r}deg;--tx:${(cx - x - w / 2).toFixed(0)}px;--ty:${(cy - y - h / 2).toFixed(0)}px;--i:${i}">
+      <div class="nt-scrap-p${i % 3 === 1 ? ' tint' : ''}"><svg viewBox="0 0 ${w} ${h}" aria-hidden="true">${paths}</svg></div></div>`;
+  }
+
+  /* The two colleagues who know: the field pins the squares nearest
+     Deck.NIGHT_PAIR; one DOM light sits on each of them, with only a soft halo
+     between. v2 scene 11 reuses this exact image. */
+  const REST = Field.restOf(Deck.NIGHT_PAIR, OFFSET);
+  const MID = [(REST[0][0] + REST[1][0]) / 2, (REST[0][1] + REST[1][1]) / 2];
+  // the words sit centred under the pair, kept inside the margins (same formula as v1 03 / 17)
+  const KNOW = { x: Math.round(Math.min(Math.max(144, MID[0] - 380), 1776 - 760)), y: Math.round(Math.max(REST[0][1], REST[1][1]) + 84) };
+
+  const check = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5.5 12.5 10 17 18.5 7.5"/></svg>';
+  // dust drifting through the night air (stops 0–1)
+  const dust = Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 137 + 41) % 100}%;top:${28 + (i * 71) % 70}%;--t:${11 + (i % 6) * 2.3}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 70)}px;--dy:${-150 - (i * 29) % 210}px"></i>`).join('');
+
+  Deck.scene({
+    id: 'night',
+    title: 'One night',
+    act: 0,
+    bg: 'deep',
+    tag: 'illustrative',
+    tagFrom: 1,                 // Nouf arrives at stop 1; the question stands alone at stop 0
+    transition: 'dolly',
+    cues: ['When was the last time a colleague inspired you?', '03:12 · Nouf rebuilt the night handover', 'Pull back · two people know'],
+    holds: [7, 10, 8],
+    notes: [
+      'Ask it, then stay quiet for a few seconds: when was the last time a colleague inspired you? Give the room time to picture one person and one moment.',
+      'Nouf is an illustrative story. At 03:12, in the traffic operations centre, she rebuilt the night handover — unasked, in one afternoon. The morning shift no longer rebuilds the night; it is on live incidents from minute one.',
+      'Now pull back. Across the whole organisation, who knows this happened? Two people: Nouf, and the colleague who sat next to her. Pause, and let the empty field land.',
+    ],
+    field: [
+      { dim: .6, lit: 0, travel: 0, offset: OFFSET, pins: [], warm: .3, links: .7, wave: .7, streaks: .14, sparkle: 1.4, drift: 1.2, calm: [[180, 330, 1740, 690, .6]] },
+      { dim: .24, warm: 0, links: .3, wave: .3, streaks: .05, sparkle: .4, calm: [[100, 110, 1820, 420, .6], [1120, 400, 1780, 900, .7], [100, 840, 1420, 950, .6]] },
+      // the pull-back: the pair is the only light — no flares, no shooting lights, no stories travelling
+      // (the right edge is quietened a little: it is where the stop-1 spark landed, so no flash can linger there)
+      { dim: .8, pins: Deck.NIGHT_PAIR, links: .35, wave: 1, streaks: 0, sparkle: 0, travel: 0, drift: 2, calm: [[KNOW.x + 20, KNOW.y, KNOW.x + 740, KNOW.y + 180, .55], [1500, 130, 2010, 800, .7]] },
+    ],
+    html: `
+      <div class="nt-warm"><i></i></div>
+      <div class="amb-dust nt-dust">${dust}</div>
+
+      <div class="nt-q" data-spark="0" data-spark-xy="960,716" data-spark-delay="1.05">
+        <h1 class="display" data-in="0" data-split style="--d:.1s">When was the last time</h1>
+        <h1 class="display" data-in="0" data-split style="--d:.38s">a colleague inspired you?</h1>
+      </div>
+
+      <div class="nt-film" style="transform-origin:${REST[0][0].toFixed(0)}px ${REST[0][1].toFixed(0)}px">
+        <div class="nt-band">
+          <div class="nt-zoom">
+            <div class="photo nt-photo" style="background-image:url('assets/photos/nouf.jpg')"></div>
+            <div class="nt-screens"><i style="--x:790px;--y:230px;--w:240px;--ft:3.1s"></i><i style="--x:915px;--y:232px;--w:230px;--dl:-1.2s;--ft:4.3s"></i><i style="--x:1225px;--y:222px;--w:280px;--dl:-2.6s;--ft:3.7s"></i><i style="--x:40px;--y:216px;--w:190px;--dl:-.7s;--ft:5.2s"></i></div>
+            <i class="nt-face"></i>
+          </div>
+          <div class="fill nt-veil"></div>
+          <div class="fill nt-veil-card"></div>
+        </div>
+
+        <div class="nt-ui">
+          <div class="kicker nt-kicker a-wipe" data-in="1" style="--d:.45s">Traffic operations centre · night shift</div>
+          <div class="nt-clock num a-blur" data-in="1" style="--d:.25s;--dur:1.3s">03<span class="nt-colon">:</span>12</div>
+          <h2 class="nt-head" data-in="1" data-split style="--d:.5s">Nouf rebuilt the night handover — unasked, in one afternoon.</h2>
+
+          <div class="nt-scraps">${SCRAPS.map(scrapHtml).join('')}</div>
+
+          <div class="nt-card-w" data-spark="1" data-spark-xy="1722,461" data-spark-delay="1.2">
+            <div class="paper nt-card">
+              <div class="nt-card-h"><span>NIGHT HANDOVER · v2</span></div>
+              ${ROWS.map((r, k) => `<div class="nt-row" style="--k:${k}"><span class="nt-box">${check}</span><span>${r}</span></div>`).join('')}
+            </div>
+          </div>
+
+          <p class="nt-ba" data-in="1" style="--d:1.1s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night</span> → <span class="nt-after">on live incidents from minute one.</span></p>
+        </div>
+      </div>
+
+      <div class="nt-pair"><i class="nt-halo"></i></div>
+      <b class="nt-p"><i class="light"></i></b><b class="nt-p"><i class="light"></i></b>
+      <div class="nt-know" style="left:${KNOW.x}px;top:${KNOW.y}px">
+        <h2 class="nt-know-h" data-in="2" data-split style="--d:.8s">Two people know.</h2>
+        <p class="nt-know-s" data-in="2" style="--d:1s;--dur:.5s">Nouf, and the colleague who sat next to her.</p>
+      </div>
+    `,
+    init(ctx) {
+      ctx.pairEl = ctx.$('.nt-pair');
+      ctx.lightEls = ctx.$$('.nt-p');
+      // the halo sits between the two colleagues; each light sits on one of them
+      ctx.placePair = (live) => {
+        const lp = live && window.Field ? Field.pinned() : [];
+        const p = lp.length === 2 ? lp : REST;
+        ctx.pairEl.style.transform = 'translate(' + ((p[0][0] + p[1][0]) / 2).toFixed(1) + 'px,' + ((p[0][1] + p[1][1]) / 2).toFixed(1) + 'px)';
+        ctx.lightEls.forEach((el, i) => { el.style.transform = 'translate(' + p[i][0].toFixed(1) + 'px,' + p[i][1].toFixed(1) + 'px)'; });
+      };
+      ctx.placePair(null);
+    },
+    enter(ctx) {
+      ctx.loop(() => {
+        if (ctx.step === 2) ctx.placePair(true);
+      });
+    },
+    step(n, prev, ctx) {
+      if (!window.Field) return;
+      // the question drops: the camera dips with it
+      if (n === 1 && prev === 0 && !ctx.instant) Field.kick(0, 70, 1.5);
+      // the pull-back: no colleague is lit but the pair (clears any lit share still easing out of 01)
+      if (n === 2) Field.setLit(0);
+    },
+    leave() {
+      // the pair stays lit only here; scene 11 relights it
+      if (window.Field) Field.set({ pins: [] });
+    },
+  });
+})();

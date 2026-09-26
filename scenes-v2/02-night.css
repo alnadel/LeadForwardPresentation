@@ -1,1 +1,119 @@
-/* One night (v2) */
+/* 02 · One night (v2) */
+
+/* ── stop 0: the question alone; a warm light turns and breathes behind it ── */
+#s-night .nt-warm { position: absolute; left: 330px; top: 150px; width: 1260px; height: 760px; pointer-events: none; transition: opacity 1s var(--ease-soft), transform 1.2s var(--ease-io);
+  animation: ntWarmOrbit 20s linear infinite; }
+#s-night .nt-warm::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(124, 60, 107, .66), rgba(96, 38, 80, .24) 55%, transparent);
+  animation: ntWarmPulse 6.4s ease-in-out infinite; }
+#s-night .nt-warm i { position: absolute; left: 380px; top: 400px; width: 500px; height: 340px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .26), rgba(37, 199, 188, .06) 60%, transparent);
+  animation: ntWarmPulse 5.2s ease-in-out -2.4s infinite; }
+@keyframes ntWarmOrbit { from { transform: rotate(0deg) translateX(110px) rotate(0deg); } to { transform: rotate(360deg) translateX(110px) rotate(-360deg); } }
+@keyframes ntWarmPulse { 0%, 100% { opacity: .45; transform: scale(.94); } 50% { opacity: 1; transform: scale(1.08); } }
+#s-night.st-1 .nt-warm { opacity: 0; }
+
+#s-night .nt-dust { position: absolute; inset: 0; pointer-events: none; transition: opacity .8s var(--ease-soft); }
+#s-night .nt-dust i { width: 4px; height: 4px; }
+/* the pull-back: nothing else glows but the pair */
+#s-night.st-2 .nt-dust { opacity: 0; }
+
+/* the question: centred at display size; at stop 1 it tips back, drops and blurs away */
+#s-night .nt-q { position: absolute; left: 0; right: 0; top: 356px; text-align: center; transform-origin: 50% 100%;
+  transition: transform 1s var(--ease-out), opacity .7s var(--ease-soft), filter .7s var(--ease-soft); }
+#s-night .nt-q .display { white-space: nowrap; }
+#s-night.st-1 .nt-q { transform: perspective(1100px) translateY(250px) rotateX(62deg) scale(.9); opacity: 0; filter: blur(18px);
+  transition: transform 1s cubic-bezier(.55, 0, .8, .35), opacity .55s var(--ease-soft) .25s, filter .6s var(--ease-soft) .05s; }
+
+/* ── the film: everything that shrinks away at stop 2 ── */
+#s-night .nt-film { position: absolute; inset: 0; transition: transform 1s var(--ease-out), opacity .7s var(--ease-soft); }
+#s-night.st-2 .nt-film { transform: scale(.04); opacity: 0; transition: transform 1.4s cubic-bezier(.62, 0, .28, 1), opacity 1.05s cubic-bezier(.7, 0, .9, .4) .35s; }
+
+/* the photo band opens like a film frame, then keeps travelling */
+#s-night .nt-band { position: absolute; left: 0; top: 400px; width: 1920px; height: 520px; overflow: hidden; clip-path: inset(50% 0 50% 0);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 70px, #000 440px, transparent 520px); mask-image: linear-gradient(180deg, transparent 0, #000 70px, #000 440px, transparent 520px);
+  transition: clip-path .45s var(--ease-soft); }
+#s-night.st-1 .nt-band { clip-path: inset(0 0 0 0); transition: clip-path 1.2s cubic-bezier(.7, 0, .2, 1) .2s; }
+#s-night .nt-zoom { position: absolute; inset: 0; transform: scale(1.2); transform-origin: 28% 46%; transition: transform .45s var(--ease-soft); }
+#s-night.st-1 .nt-zoom { transform: none; transition: transform 2.2s var(--ease-out) .2s; }
+/* a stronger camera drift than v1: a slow push-in with a lateral glide */
+#s-night .nt-photo { background-size: 1920px 640px; background-position: 0 -30px; background-repeat: no-repeat; transform-origin: 28% 46%; }
+#s-night.st-1 .nt-photo { animation: ntKen 18s ease-in-out infinite alternate; }
+@keyframes ntKen { from { transform: scale(1.03) translate3d(1.2%, .4%, 0); } to { transform: scale(1.13) translate3d(-2%, -.2%, 0); } }
+#s-night .nt-veil { background:
+  linear-gradient(90deg, rgba(4, 22, 40, .28) 0%, rgba(4, 22, 40, .22) 34%, rgba(4, 22, 40, .42) 60%, rgba(4, 22, 40, .6) 100%),
+  linear-gradient(0deg, rgba(3, 10, 20, .8) 0%, rgba(3, 10, 20, .3) 20%, transparent 34%); }
+/* the right side darkens behind the handover card */
+#s-night .nt-veil-card { background: linear-gradient(90deg, transparent 34%, rgba(4, 22, 40, .35) 56%, rgba(4, 22, 40, .73) 72%, rgba(4, 22, 40, .75) 100%); }
+
+/* the operations screens flicker, and their light plays on Nouf's face */
+#s-night .nt-screens i { position: absolute; left: calc(var(--x) - var(--w) / 2); top: calc(var(--y) - 80px); width: var(--w); height: 160px; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(120, 205, 240, .58), rgba(37, 199, 188, .18) 60%, transparent); mix-blend-mode: screen; opacity: .5; }
+#s-night.st-1 .nt-screens i { animation: ntFlicker var(--ft, 3.7s) linear var(--dl, 0s) infinite; }
+@keyframes ntFlicker { 0% { opacity: .45; } 5% { opacity: .95; } 8% { opacity: .5; } 12% { opacity: .85; } 38% { opacity: .62; } 42% { opacity: 1; } 45% { opacity: .38; } 50% { opacity: .8; } 74% { opacity: .55; } 78% { opacity: .95; } 82% { opacity: .6; } 100% { opacity: .45; } }
+#s-night .nt-face { position: absolute; left: 400px; top: 60px; width: 380px; height: 330px; border-radius: 50%; background: radial-gradient(closest-side, rgba(130, 200, 235, .3), rgba(37, 199, 188, .1) 55%, transparent);
+  mix-blend-mode: screen; opacity: .6; }
+#s-night.st-1 .nt-face { animation: ntFlicker 3.3s linear -.9s infinite; }
+
+/* ── interface ── */
+#s-night .nt-ui { position: absolute; inset: 0; transition: opacity .6s var(--ease-soft); }
+#s-night.st-2 .nt-ui { opacity: 0; transition: opacity .45s var(--ease-soft); }
+
+#s-night .nt-kicker { position: absolute; left: 144px; top: 150px; }
+#s-night .nt-clock { position: absolute; left: 132px; top: 200px; font: 300 264px/.82 var(--font); letter-spacing: -.03em; color: rgba(255, 255, 255, .8); white-space: nowrap; text-shadow: 0 0 60px rgba(120, 205, 240, .18); }
+/* the clock keeps time: the colon blinks every second */
+#s-night .nt-colon { display: inline-block; }
+#s-night.st-1 .nt-colon { animation: ntColon 2s linear infinite; }
+@keyframes ntColon { 0%, 44% { opacity: 1; } 52%, 94% { opacity: .12; } 100% { opacity: 1; } }
+
+#s-night .nt-head { position: absolute; left: 820px; bottom: 694px; width: 956px; margin: 0; font: 700 64px/1.04 var(--font); letter-spacing: -.02em; color: var(--white); text-wrap: wrap; }
+
+/* ── loose notes drop onto the desk, then fly together into the new handover ── */
+#s-night .nt-scrap { position: absolute; opacity: 0; transform: rotate(var(--r)) scale(1.25); transition: opacity .15s linear, transform 0s linear .2s; }
+#s-night .nt-scrap-p { width: 100%; height: 100%; border-radius: 4px; background: #F3F1EC; box-shadow: 0 10px 24px rgba(0, 0, 0, .45); transition: opacity 0s linear .25s; }
+#s-night .nt-scrap-p.tint { background: #E4F4F2; }
+#s-night .nt-scrap svg { width: 100%; height: 100%; display: block; fill: none; stroke: rgba(6, 33, 61, .55); stroke-width: 2.2; stroke-linecap: round; }
+#s-night.st-1 .nt-scrap { opacity: 1; transform: translate(var(--tx), var(--ty)) rotate(0deg) scale(.3);
+  transition: opacity .18s linear calc(.36s + var(--i) * .028s), transform .66s cubic-bezier(.55, 0, .25, 1) calc(.6s + var(--i) * .032s); }
+#s-night.st-1 .nt-scrap-p { opacity: 0; transition: opacity .2s linear calc(1.08s + var(--i) * .032s); }
+
+#s-night .nt-card-w { position: absolute; left: 1216px; top: 424px; width: 560px; }
+#s-night .nt-card { position: relative; overflow: hidden; padding: 26px 34px 16px; opacity: 0; transform: scale(.9); transition: opacity .2s var(--ease-soft), transform .3s var(--ease-soft); }
+#s-night.st-1 .nt-card { opacity: 1; transform: none; transition: opacity .4s var(--ease-soft) 1s, transform .7s var(--ease-back) 1s; }
+#s-night .nt-card-h { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; border-bottom: 2px solid rgba(6, 33, 61, .12); font: 700 22px/1 var(--font); letter-spacing: .16em; color: var(--navy); }
+#s-night .nt-row { display: flex; align-items: center; gap: 18px; padding: 9px 0; border-bottom: 1px solid rgba(6, 33, 61, .08); font: 500 28px/1.2 var(--font); color: var(--navy); }
+#s-night .nt-row:last-child { border-bottom: 0; }
+#s-night .nt-box { width: 32px; height: 32px; flex: none; border-radius: 28%; border: 2px solid rgba(6, 33, 61, .25); display: grid; place-items: center; transition: background .3s var(--ease-soft), border-color .3s var(--ease-soft); }
+#s-night .nt-box svg { width: 24px; height: 24px; fill: none; stroke: #fff; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .3s var(--ease-out); }
+#s-night.st-1 .nt-box { background: var(--teal); border-color: var(--teal); transition-delay: calc(1.3s + var(--k) * .1s); }
+#s-night.st-1 .nt-box svg { stroke-dashoffset: 0; transition-delay: calc(1.36s + var(--k) * .1s); }
+/* a soft scan passes down the card while it is parked */
+#s-night .nt-card::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 110px; pointer-events: none; opacity: 0; transform: translateY(-120px);
+  background: linear-gradient(180deg, rgba(37, 199, 188, 0), rgba(37, 199, 188, .1) 70%, rgba(37, 199, 188, .42) 97%, rgba(37, 199, 188, 0)); }
+#s-night.st-1 .nt-card::after { animation: ntCardScan 5.4s cubic-bezier(.45, 0, .55, 1) 2.2s infinite; }
+@keyframes ntCardScan { 0% { transform: translateY(-120px); opacity: 0; } 8% { opacity: 1; } 64% { transform: translateY(410px); opacity: 1; } 72%, 100% { transform: translateY(410px); opacity: 0; } }
+
+/* the change, as a subtitle beneath the frame */
+#s-night .nt-ba { position: absolute; left: 144px; top: 866px; margin: 0; font: 400 30px/1.3 var(--font); color: var(--ink-3); white-space: nowrap; }
+#s-night .nt-before { color: var(--purple-lt); font-weight: 500; }
+#s-night .nt-after { color: var(--teal); font-weight: 700; }
+#s-night .nt-ba .arr { width: 1.3em; margin: 0 .22em; color: var(--ink-2); }
+#s-night .nt-ba .arr path { stroke-dasharray: 34; stroke-dashoffset: 34; transition: stroke-dashoffset .3s var(--ease-soft); }
+#s-night .nt-ba.is-in .arr path { stroke-dashoffset: 0; transition: stroke-dashoffset .6s var(--ease-out) 1.45s; }
+#s-night .nt-ba .nt-after { display: inline-block; opacity: 0; transform: translateX(-18px); transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft); }
+#s-night .nt-ba.is-in .nt-after { opacity: 1; transform: none; transition: opacity .6s var(--ease-out) 1.6s, transform .8s var(--ease-out) 1.6s; }
+
+/* ── stop 2: two lit squares in a vast field (the exact v1 03.3 image) ── */
+/* the soft light between them (positioned at their midpoint) … */
+#s-night .nt-pair { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
+#s-night.st-2 .nt-pair { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
+#s-night .nt-pair .nt-halo { position: absolute; left: -150px; top: -150px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .17), rgba(37, 199, 188, .08) 55%, transparent); animation: ntHalo 3.6s ease-in-out infinite; }
+/* the pair breathes: the halo between them swells and settles */
+@keyframes ntHalo { 0%, 100% { transform: scale(.84); opacity: .6; } 50% { transform: scale(1.24); opacity: 1; } }
+/* … and one light on each colleague (the wrapper is placed per frame; the light breathes) */
+#s-night .nt-p { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
+#s-night.st-2 .nt-p { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
+#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; animation: ambBreathe 3.4s ease-in-out infinite; }
+#s-night .nt-p + .nt-p .light { animation-delay: -1.7s; }
+
+#s-night .nt-know { position: absolute; width: 760px; text-align: center; }
+#s-night .nt-know-h { margin: 0; font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }
+#s-night .nt-know-s { margin: 18px 0 0; font: 400 32px/1.35 var(--font); color: var(--ink-2); }

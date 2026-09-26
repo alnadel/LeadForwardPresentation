@@ -1,1 +1,60 @@
-/* Close (v2) */
+/* 11 · Close (v2) */
+
+/* ── stop 0 · the callback: the same image as 02.2 (keep in step with 02-night.css) ── */
+#s-close .cl-pair { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-close .cl-mid, #s-close .cl-p { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-close .cl-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: ambBreathe 3.4s ease-in-out infinite; }
+#s-close .cl-p .light { position: absolute; left: -11px; top: -11px; animation: ambBreathe 3.4s ease-in-out infinite; }
+#s-close .cl-p + .cl-p .light { animation-delay: -1.7s; }
+
+#s-close .cl-knew { position: absolute; width: 760px; text-align: center; }
+#s-close .cl-knew .h1 { font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }
+#s-close .cl-knew.is-out { transform: translateY(-16px); filter: blur(6px); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft), filter .6s var(--ease-soft); }
+
+/* ── stop 1 · the dusk skyline rises under the lit field; its sky fades out so the
+   colleague field reads above the city like its lights ── */
+#s-close .cl-sky { position: absolute; left: 0; right: 0; bottom: 0; height: 640px; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .55) 34%, #000 62%);
+          mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .55) 34%, #000 62%); }
+/* amb-ken-strong, anchored low so the push-in never opens a gap at the bottom edge */
+#s-close .cl-cam { position: absolute; inset: 0; transform-origin: 64% 90%; }
+#s-close .cl-photo { background-position: 60% 100%; background-size: cover; opacity: .84; }
+#s-close .cl-shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(3, 8, 16, .62) 0%, rgba(3, 8, 16, .3) 38%, transparent 66%); }
+/* traffic: short packets of light run along the roads */
+#s-close .cl-trails { position: absolute; left: 0; top: 0; width: 1920px; height: 640px; overflow: visible; mix-blend-mode: screen; }
+#s-close .cl-car { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 34 966; stroke-dashoffset: 1000; opacity: 0; }
+#s-close .cl-car.w { stroke: rgba(255, 240, 220, .95); filter: drop-shadow(0 0 5px rgba(255, 226, 190, .9)); }
+#s-close .cl-car.r { stroke: rgba(255, 150, 130, .9); filter: drop-shadow(0 0 5px rgba(255, 120, 100, .8)); }
+#s-close.st-1 .cl-car { animation: clCar var(--t) cubic-bezier(.4, 0, .9, .6) var(--dl) infinite; }
+@keyframes clCar { 0% { stroke-dashoffset: 1000; opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+#s-close .cl-leak { opacity: .9; }
+#stage.lite #s-close .cl-trails { display: none; }
+
+/* stories travel across the city, in the band between the lines and the ask */
+#s-close .cl-stories { position: absolute; inset: 0; pointer-events: none; }
+#s-close .cl-story { position: absolute; left: 0; top: 0; width: 0; height: 0; offset-rotate: auto; offset-distance: 0%; opacity: 0; }
+#s-close .cl-story .light { position: absolute; left: -7px; top: -7px; }
+#s-close .cl-story b { position: absolute; right: 4px; top: -1.5px; width: 150px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .35) 60%, rgba(3, 255, 203, .85)); }
+#s-close.st-1 .cl-story { animation: clStory var(--t) linear var(--dl) infinite; }
+@keyframes clStory { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 94% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+
+/* the brand frame */
+#s-close .cl-logo { position: absolute; left: 50%; top: 44px; width: 116px; margin-left: -58px; color: #fff; }
+#s-close .cl-logo svg { width: 100%; display: block; }
+#s-close .cl-main { position: absolute; left: 0; right: 0; top: 186px; text-align: center; }
+#s-close .cl-title { font-size: 136px; }
+#s-close .cl-ar { margin-top: 22px; font: 700 64px/1.2 var(--font); color: var(--teal); letter-spacing: 0; }
+#s-close .cl-make { margin: 34px auto 0; font: 700 46px/1.2 var(--font); letter-spacing: -.015em; color: var(--white); }
+#s-close .cl-way { margin: 22px 0 0; display: inline-flex; align-items: center; gap: 18px; font: 400 36px/1.1 var(--font); color: var(--sea); }
+#s-close .cl-way .light { animation: ambBreathe 3s ease-in-out infinite; }
+/* a gentle light passes through "Light the way." now and then */
+#s-close .cl-way .amb-shimmer { animation-duration: 7s; padding: 0 .08em; }
+#s-close .cl-thanks { margin-top: 36px; font: 700 26px/1 var(--font); letter-spacing: .42em; text-transform: uppercase; color: var(--ink-1); padding-left: .42em; }
+
+/* the ask, kept on screen for Q&A */
+#s-close .cl-ask { position: absolute; left: 144px; top: 800px; width: 1632px; display: flex; align-items: center; justify-content: space-between; gap: 40px;
+  padding: 28px 44px; border-radius: 14px; background: rgba(4, 12, 24, .74); border: 1px solid rgba(37, 199, 188, .45); box-shadow: 0 0 60px rgba(37, 199, 188, .14), 0 24px 60px rgba(0, 0, 0, .4); }
+#s-close .cl-ask-h { margin-top: 14px; font: 700 44px/1.05 var(--font); letter-spacing: -.02em; color: var(--white); white-space: nowrap; }
+#s-close .cl-ask-r { display: flex; gap: 14px; }
+#s-close .cl-step { display: inline-flex; align-items: center; gap: 12px; height: 58px; padding: 0 20px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .05); font: 700 23px/1 var(--font); color: var(--ink-1); white-space: nowrap; }
+#s-close .cl-step b { font-size: 22px; color: var(--teal); letter-spacing: .1em; }
