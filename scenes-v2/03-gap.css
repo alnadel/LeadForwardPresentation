@@ -97,15 +97,15 @@
    rise (layer by layer) and turn purple; at stop 2 they sink back. --wc / --ws are
    each layer's resting colour and glow (the hit flash animates away from them). */
 #s-gap .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); position: absolute; inset: 0; border-radius: 92px; border: 2px solid var(--wc); box-shadow: var(--ws); pointer-events: none;
-  transform: translateZ(calc(var(--k) * .4px)); transition: transform .6s var(--ease-soft), border-color .6s var(--ease-soft), box-shadow .6s var(--ease-soft); }
-#s-gap.st-0 .gp-w { transform: translateZ(calc(var(--k) * 1.3px)); transition: transform 1s var(--ease-out) calc(var(--enter, 0s) + .6s), border-color 1s var(--ease-soft) calc(var(--enter, 0s) + .5s + var(--di) * .12s); }
+  transform: translateZ(calc(var(--k) * .8px)); transition: transform .6s var(--ease-soft), border-color .6s var(--ease-soft), box-shadow .6s var(--ease-soft); }
+#s-gap.st-0 .gp-w { transform: translateZ(calc(var(--k) * 2.6px)); transition: transform 1s var(--ease-out) calc(var(--enter, 0s) + .6s), border-color 1s var(--ease-soft) calc(var(--enter, 0s) + .5s + var(--di) * .12s); }
 #s-gap.st-0 .gp-w.base { --wc: rgba(255, 255, 255, .3); }
 #s-gap.st-0 .gp-w.rim { --wc: rgba(255, 255, 255, .22); }
-#s-gap.st-1 .gp-w { --wc: rgba(201, 166, 211, calc(.1 + var(--k) * .012)); transform: translateZ(calc(var(--k) * 8px));
-  transition: transform 1.2s var(--ease-out) calc(.2s + var(--di) * .16s + var(--k) * .035s), border-color .9s var(--ease-soft) calc(.2s + var(--di) * .16s + var(--k) * .035s), box-shadow .9s var(--ease-soft) calc(.5s + var(--di) * .16s); }
+#s-gap.st-1 .gp-w { --wc: rgba(201, 166, 211, calc(.1 + var(--k) * .024)); transform: translateZ(calc(var(--k) * 16px));
+  transition: transform 1.2s var(--ease-out) calc(.2s + var(--di) * .16s + var(--k) * .07s), border-color .9s var(--ease-soft) calc(.2s + var(--di) * .16s + var(--k) * .07s), box-shadow .9s var(--ease-soft) calc(.5s + var(--di) * .16s); }
 #s-gap.st-1 .gp-w.base { --wc: rgba(201, 166, 211, .62); }
 #s-gap.st-1 .gp-w.rim { --wc: rgba(232, 208, 238, .92); --ws: 0 0 22px rgba(157, 103, 170, .75), inset 0 0 18px rgba(157, 103, 170, .35); }
-#s-gap.st-2 .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); transform: translateZ(calc(var(--k) * 1.3px)); transition: transform 1.3s var(--ease-io), border-color 1s var(--ease-soft), box-shadow 1s var(--ease-soft); }
+#s-gap.st-2 .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); transform: translateZ(calc(var(--k) * 2.6px)); transition: transform 1.3s var(--ease-io), border-color 1s var(--ease-soft), box-shadow 1s var(--ease-soft); }
 #s-gap.st-2 .gp-w.base { --wc: rgba(37, 199, 188, .42); }
 #s-gap.st-2 .gp-w.rim { --wc: rgba(37, 199, 188, .3); }
 
@@ -149,13 +149,14 @@
    flash colour and glow over the layer's own outline) that fades in and out: opacity only. The
    first hit is on ::before and the repeating one on ::after (one opacity animation per box, so
    the compositor runs both) */
-#s-gap .gp-w::before, #s-gap .gp-w::after { content: ''; position: absolute; inset: -2px; border-radius: inherit; border: 2px solid rgba(248, 232, 252, 1); pointer-events: none; opacity: 0;
+#s-gap .gp-w.gp-hit { border-color: transparent !important; box-shadow: none !important; }
+#s-gap .gp-hit::before, #s-gap .gp-hit::after { content: ''; position: absolute; inset: -2px; border-radius: inherit; border: 2px solid rgba(248, 232, 252, 1); pointer-events: none; opacity: 0;
   box-shadow: 0 0 26px rgba(201, 166, 211, .9), inset 0 0 20px rgba(157, 103, 170, .6); }
 @keyframes gpWallHit { 0% { opacity: 0; } 18% { opacity: 1; } 100% { opacity: 0; } }
 @keyframes gpWallHitLoop { 0%, 12.6% { opacity: 0; } 15.4% { opacity: 1; } 26%, 100% { opacity: 0; } }
-#s-gap.st-1 .gp-w::before { animation: gpWallHit 1.1s var(--ease-soft) calc(1.36s + var(--di) * .2s + var(--k) * .035s) 1; }
-#s-gap.st-1 .gp-w::after { animation: gpWallHitLoop 10.2s linear calc(3.4s + var(--di) * 3.4s + var(--k) * .035s) infinite; }
-#s-gap.st-2 .gp-w::before, #s-gap.st-2 .gp-w::after { animation: none; }
+#s-gap.st-1 .gp-hit::before { animation: gpWallHit 1.1s var(--ease-soft) calc(1.36s + var(--di) * .2s) 1; }
+#s-gap.st-1 .gp-hit::after { animation: gpWallHitLoop 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
+#s-gap.st-2 .gp-hit::before, #s-gap.st-2 .gp-hit::after { animation: none; }
 
 /* the lights rise out of the floor as they ignite, then hover, breathe and ping;
    each faces the camera and stands on a thin stem of light */

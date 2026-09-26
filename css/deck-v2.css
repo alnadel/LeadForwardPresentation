@@ -80,8 +80,9 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 #stage[data-bg="navy"]  { --bg-a: #0C2C4E; --bg-b: #3A1631; --bg-c: #041628; }
 #stage[data-bg="deep"]  { --bg-a: #1B0B19; --bg-b: #041628; --bg-c: #02070F; }
 #stage[data-bg="teal"]  { --bg-a: #0B3A44; --bg-b: #3A1631; --bg-c: #041628; }
-/* each colourway is its own pre-painted layer (#bgl, built by the engine); a scene change
-   crossfades their opacity instead of repainting a full-screen gradient every frame */
+/* two pre-painted background layers (#bgl, built by the engine): a scene change paints the new
+   colourway on the back layer and crossfades opacity, instead of repainting a full-screen
+   gradient every frame */
 #bgl { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 #bgl i { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s var(--ease-soft); will-change: opacity;
   background:
@@ -93,8 +94,7 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
 #bgl i[data-bg="navy"]  { --bg-a: #0C2C4E; --bg-b: #3A1631; --bg-c: #041628; }
 #bgl i[data-bg="deep"]  { --bg-a: #1B0B19; --bg-b: #041628; --bg-c: #02070F; }
 #bgl i[data-bg="teal"]  { --bg-a: #0B3A44; --bg-b: #3A1631; --bg-c: #041628; }
-#stage[data-bg="plum"] #bgl i[data-bg="plum"], #stage[data-bg="night"] #bgl i[data-bg="night"], #stage[data-bg="navy"] #bgl i[data-bg="navy"],
-#stage[data-bg="deep"] #bgl i[data-bg="deep"], #stage[data-bg="teal"] #bgl i[data-bg="teal"] { opacity: 1; }
+#bgl i.on { opacity: 1; }
 
 #field { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 1; pointer-events: none; }
 /* before the deck is ready (fonts and photos loading) the room is black: no field, no glow,
@@ -235,13 +235,13 @@ em.hl { font-style: normal; color: var(--teal); }
 /* the live edge light: a masked ring (.gl-edge, injected by the engine into every .glass) whose
    inner conic gradient ROTATES on the GPU; animating the gradient angle instead would repaint
    the whole card every frame */
-.gl-edge { position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity .8s var(--ease-soft);
+.gl-edge { position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none; overflow: hidden; display: none;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-.glass.live > .gl-edge { opacity: 1; }
+.glass.live > .gl-edge { display: block; animation: glEdgeIn .8s var(--ease-soft) both; }
+@keyframes glEdgeIn { from { opacity: 0; } to { opacity: 1; } }
 .gl-edge > i { position: absolute; left: 50%; top: 50%; width: var(--gs, 480px); height: var(--gs, 480px); margin: calc(var(--gs, 480px) / -2) 0 0 calc(var(--gs, 480px) / -2);
   background: conic-gradient(rgba(255, 255, 255, .08), rgba(3, 255, 203, .95) 7%, rgba(255, 255, 255, .08) 16%, rgba(255, 255, 255, .06) 50%, rgba(201, 166, 211, .7) 57%, rgba(255, 255, 255, .06) 66%);
   animation: v2GlassEdge 8s linear infinite; }
-.glass:not(.live) > .gl-edge > i { animation-play-state: paused; }
 @keyframes v2GlassEdge { to { transform: rotate(360deg); } }
 #stage.lite .gl-edge > i { animation: none; }
 .paper { background: #FFFFFF; color: var(--navy); border-radius: 18px; box-shadow: 0 40px 90px rgba(0, 0, 0, .45), 0 2px 0 rgba(255, 255, 255, .6) inset; }
@@ -426,11 +426,11 @@ em.hl { font-style: normal; color: var(--teal); }
 
 /* ── living backdrop: aurora beams behind the field ────────────────────── */
 #beams { position: absolute; inset: -30%; z-index: 0; pointer-events: none; }
-#beams i { position: absolute; left: 50%; top: 50%; width: 140%; height: 38%; margin: -19% 0 0 -70%; border-radius: 50%; opacity: .5; will-change: transform; }
+#beams i { position: absolute; left: 50%; top: 50%; width: 35%; height: 9.5%; margin: -4.75% 0 0 -17.5%; border-radius: 50%; opacity: .5; will-change: transform; }
 #beams i:nth-child(1) { background: radial-gradient(closest-side, rgba(70, 120, 140, .2), rgba(96, 38, 80, .12) 50%, transparent); animation: v2Beam1 34s ease-in-out infinite alternate; }
 #beams i:nth-child(2) { background: radial-gradient(closest-side, rgba(110, 80, 130, .22), rgba(6, 33, 61, .16) 50%, transparent); animation: v2Beam2 42s ease-in-out infinite alternate; }
-@keyframes v2Beam1 { from { transform: rotate(-18deg) translateY(-12%); } to { transform: rotate(10deg) translateY(10%); } }
-@keyframes v2Beam2 { from { transform: rotate(24deg) translateY(14%); } to { transform: rotate(-8deg) translateY(-8%); } }
+@keyframes v2Beam1 { from { transform: rotate(-18deg) translateY(-48%) scale(4); } to { transform: rotate(10deg) translateY(40%) scale(4); } }
+@keyframes v2Beam2 { from { transform: rotate(24deg) translateY(56%) scale(4); } to { transform: rotate(-8deg) translateY(-32%) scale(4); } }
 #glow i:nth-child(1) { animation-duration: 22s !important; }
 #glow i:nth-child(2) { animation-duration: 28s !important; }
 #glow i:nth-child(3) { animation-duration: 18s !important; opacity: .8; }

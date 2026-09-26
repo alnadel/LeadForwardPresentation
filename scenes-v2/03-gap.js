@@ -61,10 +61,13 @@
     return out;
   }
 
-  const WALL_LAYERS = 10;
+  const WALL_LAYERS = 5;   // five layers, twice as far apart: the same wall height with half the GPU layers
   const district = (d, di) => {
     const [sx, sy] = d.lights[0];
-    const walls = Array.from({ length: WALL_LAYERS }, (_, k) => `<i class="gp-w${k === 0 ? ' base' : k === WALL_LAYERS - 1 ? ' rim' : ''}" style="--k:${k}"></i>`).join('');
+    const walls = Array.from({ length: WALL_LAYERS }, (_, k) => `<i class="gp-w${k === 0 ? ' base' : k === WALL_LAYERS - 1 ? ' rim' : ''}" style="--k:${k}"></i>`).join('')
+      // one flash layer per district, riding at the rim (not one per wall layer: 30 layers
+      // starting a flash in the same frame blanked the screen on laptop GPUs)
+      + `<i class="gp-w gp-hit" style="--k:${WALL_LAYERS - 1}"></i>`;
     return `
       <div class="gp-d" style="left:${d.x}px;top:${d.y}px;width:${d.w}px;height:${d.h}px;--di:${di};--sx:${sx}px;--sy:${sy}px">
         <div class="gp-floor">

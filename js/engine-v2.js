@@ -365,10 +365,21 @@
     const sw = $('#tx-sweep'); if (sw) sw.classList.remove('run');
     S.forEach((x) => x.el.classList.remove('ch-hold', 'ch-open', 'tx-from', 'iris-from', 'iris-run'));
   }
+  function setBg(name) {
+    stage.dataset.bg = name;
+    const ls = $$('#bgl i'); if (ls.length < 2) return;
+    const front = ls.find((l) => l.classList.contains('on'));
+    if (front && front.dataset.bg === name) return;
+    const back = front === ls[0] ? ls[1] : ls[0];
+    back.dataset.bg = name;
+    back.classList.add('on');
+    if (front) front.classList.remove('on');
+  }
   function buildTxLayer() {
     // pre-painted background colourways, crossfaded on scene changes (see #bgl in deck-v2.css)
+    // two layers only (front and back): the new colourway fades in over the old one
     const bgl = document.createElement('div'); bgl.id = 'bgl';
-    bgl.innerHTML = ['plum', 'night', 'navy', 'deep', 'teal'].map((b) => '<i data-bg="' + b + '"></i>').join('');
+    bgl.innerHTML = '<i></i><i></i>';
     stage.insertBefore(bgl, stage.firstChild);
     // chapter card: a line of light, two opening edges and the act's number + name
     const ch = document.createElement('div'); ch.id = 'tx-chapter';
@@ -425,7 +436,7 @@
       rec.el.classList.remove('no-anim');
       rec.el.classList.add('active');
       rec.t0 = performance.now();
-      stage.dataset.bg = rec.def.bg || 'night';
+      setBg(rec.def.bg || 'night');
       try { rec.def.enter && rec.def.enter(rec.ctx); } catch (e) { console.error('enter ' + rec.def.id, e); }
       rec.el.style.setProperty('--enter', landSettled ? '0s' : (TX_ENTER[kind] || .3) + 's');
       const build = () => {
@@ -861,7 +872,7 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     // the glass edge light: one masked ring per .glass card, sized to the card's diagonal so its
     // rotating gradient always covers the ring (measured after fonts load)
     // (a ResizeObserver keeps each ring sized even for cards hidden or resized after load)
-    const sizeEdge = (g) => { const e = g.querySelector(':scope > .gl-edge'); if (e && g.offsetWidth) e.style.setProperty('--gs', Math.ceil(Math.hypot(g.offsetWidth, g.offsetHeight) + 12) + 'px'); };
+    const sizeEdge = (g) => { const e = g.querySelector(':scope > .gl-edge'); if (e && g.offsetWidth) e.style.setProperty('--gs', Math.min(2400, Math.ceil(Math.hypot(g.offsetWidth, g.offsetHeight) + 12)) + 'px'); };
     const ro = window.ResizeObserver ? new ResizeObserver((es) => es.forEach((x) => sizeEdge(x.target))) : null;
     const edges = () => $$('.glass', scenesEl).forEach((g) => {
       if (/^(IMG|INPUT|svg)$/i.test(g.tagName)) return;
