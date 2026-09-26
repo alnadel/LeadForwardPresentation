@@ -50,11 +50,13 @@
 #s-close .cl-car.w { background: rgba(255, 240, 220, .95); box-shadow: 0 0 10px rgba(255, 226, 190, .86); }
 #s-close .cl-car.r { background: rgba(255, 150, 130, .9); box-shadow: 0 0 10px rgba(255, 120, 100, .72); }
 @keyframes clCarO { 0% { opacity: 0; } 8% { opacity: 1; } 88% { opacity: 1; } 100% { opacity: 0; } }
-#s-close .cl-leak { opacity: .9; mix-blend-mode: normal; }
+/* the light leak: drawn at half size and scaled up (its drift is the shared v2Leak's, in px) */
+#s-close .cl-leak { inset: auto; left: 480px; top: 160px; width: 960px; height: 320px; opacity: .9; mix-blend-mode: normal; animation-name: clLeak; }
+@keyframes clLeak { from { opacity: .45; transform: translate3d(-76.8px, 0, 0) scale(2); } to { opacity: 1; transform: translate3d(96px, -19.2px, 0) scale(2); } }
 #stage.lite #s-close .cl-trails { display: none; }
 
 /* stories travel across the city, in the band between the lines and the ask */
-#s-close .cl-stories { position: absolute; inset: 0; pointer-events: none; }
+#s-close .cl-stories { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }   /* zero-size: a layer the size of what it holds */
 #s-close .cl-story { position: absolute; left: 0; top: 0; width: 0; height: 0; offset-rotate: auto; offset-distance: 0%; opacity: 0; }
 #s-close .cl-story .light { position: absolute; left: -7px; top: -7px; }
 #s-close .cl-story b { position: absolute; right: 4px; top: -1.5px; width: 150px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .35) 60%, rgba(3, 255, 203, .85)); }
@@ -77,7 +79,9 @@
 #s-close .cl-thanks { margin-top: 30px; font: 700 22px/1 var(--font); letter-spacing: .42em; text-transform: uppercase; color: rgba(255, 255, 255, .8); padding-left: .42em; }
 
 /* a soft dark pool behind the brand block: the lit field and the city lights stay at the edges */
-#s-close .cl-hush { position: absolute; left: 60px; top: 30px; width: 1800px; height: 720px; border-radius: 50%; pointer-events: none;
+/* (drawn at half size and scaled up: a soft gradient scales cleanly, at a quarter of the layer) */
+#s-close .cl-hush, #s-close .cl-hush[data-in]:not(.is-in) { transform: scale(2); }
+#s-close .cl-hush { position: absolute; left: 510px; top: 210px; width: 900px; height: 360px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 8, 16, .8), rgba(3, 8, 16, .66) 45%, rgba(3, 8, 16, .3) 75%, transparent); }
 
 /* the team: a quiet credit line above the ask (support weight, readable) */
@@ -112,3 +116,9 @@
    a-unfold hidden clip reaches 80px up and would show the card's glow as a faint line during stop 0) */
 #s-close .cl-ask[data-in].is-in { clip-path: inset(-160px round 26px); }
 #s-close .cl-ask[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }
+
+/* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
+   and scaled up (a conic gradient scales cleanly), a quarter of the layer */
+#s-close .gl-edge > i { width: calc(var(--gs, 480px) / 2); height: calc(var(--gs, 480px) / 2); margin: calc(var(--gs, 480px) / -4) 0 0 calc(var(--gs, 480px) / -4); transform: scale(2); }
+#stage:not(.lite) #s-close .gl-edge > i { animation-name: clEdge; }
+@keyframes clEdge { from { transform: rotate(0deg) scale(2); } to { transform: rotate(360deg) scale(2); } }

@@ -8,10 +8,13 @@
 /* the contrast the audience takes away: the award "stops" (purple, the award lane), the story "keeps going" (teal, the loop) */
 #s-cycle .cy-stop { font-style: normal; color: var(--purple-lt); }
 #s-cycle .cy-keep { text-shadow: 0 0 44px rgba(37, 199, 188, .38); }
-#s-cycle .cy-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+/* every drawing sits in an svg cut to its own box (see BOX in the scene script) */
+#s-cycle .cy-svg { position: absolute; overflow: visible; pointer-events: none; }
 
 /* ── stop 0 · two lanes ─────────────────────────────────────────────── */
-#s-cycle .cy-lanes, #s-cycle .cy-grp, #s-cycle .cy-lanelights { position: absolute; inset: 0; }
+/* groups of absolutely placed objects are zero-size boxes at the stage origin: a group that fades or
+   moves is then a layer the size of what it holds, not a full-stage one */
+#s-cycle .cy-lanes, #s-cycle .cy-grp, #s-cycle .cy-lanelights { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 /* at stop 1 the award lane falls away and the story loop contracts into the ring */
 #s-cycle .cy-lanes { transition: opacity .8s var(--ease-soft) .1s; }
 #s-cycle .cy-lanes.is-out { opacity: 0; transform: none; filter: none; transition: opacity .9s var(--ease-soft) .15s; }
@@ -25,13 +28,14 @@
 #s-cycle .cy-haze { position: absolute; width: 1120px; height: 300px; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(closest-side, rgba(157, 103, 170, .2), rgba(157, 103, 170, .07) 55%, transparent); transition: opacity 1.2s var(--ease-soft); }
 #s-cycle.st-0 .cy-haze { opacity: 1; transition-delay: calc(var(--enter, 0s) + .3s); }
-#s-cycle .cy-pool { position: absolute; width: 1800px; height: 520px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-soft); }
-#s-cycle .cy-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: .64;
+/* (the pool is drawn at half size and scaled up: a soft gradient scales cleanly, at a quarter of the layer) */
+#s-cycle .cy-pool { position: absolute; width: 900px; height: 260px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-soft); }
+#s-cycle .cy-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: .64; transform: scale(2);
   background: radial-gradient(closest-side, rgba(37, 199, 188, .25), rgba(37, 199, 188, .1) 50%, transparent); }
 #s-cycle.st-0 .cy-pool { opacity: 1; transition-delay: calc(var(--enter, 0s) + .5s); }
 /* it breathes from brightness .8 to 1.25: the same light as opacity .64 → 1 of a layer 1.25× as bright */
 #s-cycle.st-0 .cy-pool::before { animation: cyPool 7s ease-in-out infinite; }
-@keyframes cyPool { 0%, 100% { transform: scale(.94, .86); opacity: .64; } 50% { transform: scale(1.04, 1.08); opacity: 1; } }
+@keyframes cyPool { 0%, 100% { transform: scale(1.88, 1.72); opacity: .64; } 50% { transform: scale(2.08, 2.16); opacity: 1; } }
 #s-cycle .cy-dust i { background: rgba(190, 255, 240, .75); }
 
 /* roads (a wide soft underlay) and tracks (drawn behind a leading light) */
@@ -161,10 +165,11 @@
 @keyframes cyShardO { 0% { opacity: 0; animation-timing-function: ease-in-out; } 21% { opacity: 1; } 100% { opacity: 0; } }
 
 /* ── stop 1 · the ring ──────────────────────────────────────────────── */
-#s-cycle .cy-ring { position: absolute; inset: 0; pointer-events: none; }
-#s-cycle .cy-glow { position: absolute; width: 760px; height: 760px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .22), rgba(37, 199, 188, .08) 55%, transparent); }
+#s-cycle .cy-ring { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
+/* (drawn at half size and scaled up) */
+#s-cycle .cy-glow { position: absolute; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .22), rgba(37, 199, 188, .08) 55%, transparent); transform: scale(2); }
 #s-cycle.st-1 .cy-glow { animation: cyGlow 5s ease-in-out infinite; }
-@keyframes cyGlow { 0%, 100% { opacity: .5; transform: scale(.9); } 50% { opacity: 1; transform: scale(1.08); } }
+@keyframes cyGlow { 0%, 100% { opacity: .5; transform: scale(1.8); } 50% { opacity: 1; transform: scale(2.16); } }
 /* a faint outer ring turns slowly */
 #s-cycle .cy-outer { position: absolute; animation: cyTurn 90s linear infinite; }
 #s-cycle .cy-outer svg, #s-cycle .cy-inner svg { display: block; width: 100%; height: 100%; overflow: visible; }
@@ -215,7 +220,7 @@
   mask: radial-gradient(circle closest-side, transparent calc(100% - 38px), rgba(0, 0, 0, .3) calc(100% - 30px), #000 calc(100% - 25.5px), #000 calc(100% - 18.5px), rgba(0, 0, 0, .3) calc(100% - 14px), transparent calc(100% - 6px)); }
 
 /* chevrons flow round the ring */
-#s-cycle .cy-chevs { position: absolute; inset: 0; }
+#s-cycle .cy-chevs { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 /* each sits on the ring's centre and turns about it (rotate · out to the ring · face along it) */
 #s-cycle .cy-cv { position: absolute; width: 24px; height: 32px; animation: cyCv 16s linear infinite; }
 #s-cycle .cy-cv svg { display: block; width: 100%; height: 100%; overflow: visible; }
@@ -235,7 +240,7 @@
 @keyframes cyLap { 0% { transform: scale(1); } 100% { transform: scale(1.34); } }
 @keyframes cyLapO { 0% { opacity: 0; animation-timing-function: ease-in-out; } 12% { opacity: .8; } 100% { opacity: 0; } }
 
-#s-cycle .cy-orbit { position: absolute; inset: 0; pointer-events: none; }
+#s-cycle .cy-orbit { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 #s-cycle .cy-olight { position: absolute; left: 0; top: 0; width: 30px; height: 30px; margin: -15px 0 0 -15px; opacity: 0; will-change: transform; transform: translate(1145px, 455px); }
 /* the second story that joins the orbit as the cycle repeats (fades in; the loop sets its position and .on) */
 #s-cycle .cy-olight.c2, #s-cycle .cy-comet.c2 { opacity: 0 !important; transition: opacity .8s var(--ease-soft); }

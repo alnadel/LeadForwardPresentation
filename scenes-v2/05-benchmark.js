@@ -118,7 +118,9 @@
         <p class="bm-src"><b>Sources:</b> Tahakom internal survey (158 responses); Gallup &amp; Workhuman 2024, Achievers Workforce Institute, Globoforce/Workhuman. Benchmarks are directional and are not Saudi norms.</p>
       </div>
     `,
+    leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
       // one-shot lights (the divider's leading light, the ring and bloom on +48, the bloom
       // behind the takeaway) play only on a live click; their resting state is invisible, so a stop
       // reached by a jump or by going back shows the same settled frame

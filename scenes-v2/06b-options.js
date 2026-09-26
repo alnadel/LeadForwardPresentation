@@ -123,7 +123,9 @@
 
       <i class="op-spk" data-spark="0" data-spark-xy="${colX(2) + CW / 2},${T - 36}" data-spark-delay=".62"></i>
     `,
+    leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
       const el = ctx.el;
       // one-shot lights (the columns' opening edges, the ripples as marks land, the run down
       // C's column, the blooms) play only on a live click; their resting state is invisible

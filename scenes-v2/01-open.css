@@ -4,12 +4,16 @@
 #s-open .op-cam { position: absolute; inset: 0; overflow: hidden; transform: scale(1.1); filter: brightness(1.45); transform-origin: 50% 66%; }
 #s-open.st-0 .op-cam { transform: none; filter: none; transition: transform 3s cubic-bezier(.16, .8, .24, 1) var(--enter, 0s), filter 2.2s var(--ease-soft) var(--enter, 0s); }
 /* the light the title opened out of: a glow at the iris origin that dissipates into the room */
-#s-open .op-iris { position: absolute; left: 960px; top: 716px; width: 1300px; height: 1300px; margin: -650px 0 0 -650px; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;
+/* (drawn at half size and scaled up; once it has dissipated it is hidden, out of the compositor) */
+#s-open .op-iris { position: absolute; left: 960px; top: 716px; width: 650px; height: 650px; margin: -325px 0 0 -325px; border-radius: 50%; pointer-events: none; mix-blend-mode: screen; transform: scale(2);
   background: radial-gradient(closest-side, rgba(220, 255, 247, .55), rgba(3, 255, 203, .28) 18%, rgba(37, 199, 188, .1) 46%, transparent 72%); }
-#s-open.st-0 .op-iris { opacity: 0; transform: scale(1.35); transition: opacity 1.9s var(--ease-soft) calc(var(--enter, 0s) + .15s), transform 2.4s var(--ease-out) var(--enter, 0s); }
+#s-open.st-0 .op-iris { opacity: 0; transform: scale(2.7); visibility: hidden;
+  transition: opacity 1.9s var(--ease-soft) calc(var(--enter, 0s) + .15s), transform 2.4s var(--ease-out) var(--enter, 0s), visibility 0s linear calc(var(--enter, 0s) + 2.5s); }
 #s-open .op-plate { position: absolute; inset: 0; transform-origin: 72% 46%; }
 #s-open .op-photo { opacity: .76; background-position: 62% 50%; }
-#s-open .op-leak { opacity: .9; }
+/* the light leak: drawn at half size and scaled up (its drift is the shared v2Leak's, in px) */
+#s-open .op-leak { inset: auto; left: 480px; top: 270px; width: 960px; height: 540px; opacity: .9; animation-name: opLeak; }
+@keyframes opLeak { from { opacity: .45; transform: translate3d(-76.8px, 0, 0) scale(2); } to { opacity: 1; transform: translate3d(96px, -32.4px, 0) scale(2); } }
 /* the video wall keeps working: data blips pulse, a scan line sweeps (the blips fade on and off
    smoothly; every rise and fall takes ≥ 280 ms even on the fastest blip, --t 2.4 s) */
 #s-open .op-wall { position: absolute; left: 1330px; top: 190px; width: 590px; height: 360px; transform: skewY(-6deg); mix-blend-mode: screen; }
@@ -22,12 +26,13 @@
   linear-gradient(0deg, rgba(3, 8, 16, .85) 0%, transparent 38%); }
 /* (the soft edge is baked into the gradient: it matches the old 700×460 ellipse under blur(24px)
    within a level or two, without a filter on an animated layer) */
-#s-open .op-glow { position: absolute; left: 1236px; top: 124px; width: 788px; height: 532px; border-radius: 50%; animation: opGlow 5.5s ease-in-out infinite;
+#s-open .op-glow { position: absolute; left: 1433px; top: 257px; width: 394px; height: 266px; border-radius: 50%; animation: opGlow 5.5s ease-in-out infinite;   /* half size, scaled up */
   background: radial-gradient(closest-side, rgba(37, 199, 188, .255), rgba(37, 199, 188, .14) 45%, rgba(37, 199, 188, .06) 70%, rgba(37, 199, 188, .016) 87%, transparent); }
-@keyframes opGlow { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.12); } }
-#s-open .op-dust { position: absolute; inset: 0; pointer-events: none; }
+@keyframes opGlow { 0%, 100% { opacity: .55; transform: scale(2); } 50% { opacity: 1; transform: scale(2.24); } }
+/* (zero-size groups: each is a layer the size of what it holds) */
+#s-open .op-dust { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 /* the near layer: large soft lights, out of focus, drifting against the plate's push-in */
-#s-open .op-near { position: absolute; inset: 0; pointer-events: none; }
+#s-open .op-near { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 #s-open .op-near i { position: absolute; width: var(--sz); height: var(--sz); margin: calc(var(--sz) / -2) 0 0 calc(var(--sz) / -2); border-radius: 28%; filter: blur(9px); opacity: .9;
   background: radial-gradient(circle at 40% 35%, rgba(3, 255, 203, .2), rgba(37, 199, 188, .07) 55%, transparent 74%); animation: opNear 24s ease-in-out var(--dl) infinite alternate; }
 #s-open .op-near i.b { background: radial-gradient(circle at 40% 35%, rgba(255, 190, 130, .16), rgba(255, 170, 110, .05) 55%, transparent 74%); filter: blur(12px); animation-duration: 30s; }

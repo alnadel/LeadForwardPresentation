@@ -116,6 +116,10 @@
   // the boxes (x, y, w, h) of the two flowing-dash paths
   const LKBOX = [tileX(0) + TILE.w / 2 - 6, HUB[1] - 6, 3 * (TILE.w + TILE.gap) + 12, TILE.y - HUB[1] + 12];
   const TRBOX = [Math.floor(N0[0]) - 6, Math.floor(N0[1]) - 6, Math.ceil(PILL.x - N0[0]) + 12, 32];
+  // the drawn lines sit in svgs cut to their own boxes (a full-stage svg is a full-stage layer)
+  const FBOX = [FLOW.x0 - 24, FLOW.y - 26, FLOW.x1 - FLOW.x0 + 48, 52];                        // stop 1: checklist → post
+  const LBOX = [port(0)[0] - 24, CERT.y + CERT.h - 16, port(3)[0] - port(0)[0] + 48, TILE.y - CERT.y - CERT.h + 32];   // stop 2: stem and branches
+  const SBOX = [Math.floor(N0[0]) - 16, Math.floor(N0[1]) - 16, Math.ceil(NEXT[0] - N0[0]) + 32, 56];   // stop 3: the split
 
   Deck.scene({
     id: 'journey',
@@ -204,10 +208,10 @@
           </div>
         </div>
       </div>
-      <div class="jn-flow a-fade" data-in="1" data-out="2" style="--d:${(PUBLISH - .2).toFixed(2)}s;--dur:.4s">
-        <svg viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-fl" d="${FLOWP}"/></svg>
-        <span class="jn-chevs" style="left:${FLOW.x0}px;top:${FLOW.y}px;width:${FLOW.x1 - FLOW.x0}px">${svgChev}${svgChev}${svgChev}</span>
-        <i class="light sm jn-fdot" style="left:${FLOW.x0 - 7}px;top:${FLOW.y - 7}px"></i>
+      <div class="jn-flow a-fade" data-in="1" data-out="2" style="left:${FBOX[0]}px;top:${FBOX[1]}px;width:${FBOX[2]}px;height:${FBOX[3]}px;--d:${(PUBLISH - .2).toFixed(2)}s;--dur:.4s">
+        <svg viewBox="${FBOX.join(' ')}" aria-hidden="true"><path class="jn-fl" d="${FLOWP}"/></svg>
+        <span class="jn-chevs" style="left:${FLOW.x0 - FBOX[0]}px;top:${FLOW.y - FBOX[1]}px;width:${FLOW.x1 - FLOW.x0}px">${svgChev}${svgChev}${svgChev}</span>
+        <i class="light sm jn-fdot" style="left:${FLOW.x0 - FBOX[0] - 7}px;top:${FLOW.y - FBOX[1] - 7}px"></i>
       </div>
       <div class="jn-post a-swing" data-in="1" data-out="2" style="--d:${PUBLISH}s;--dur:1s">
         <div class="paper jn-post-i amb-float3d jn-sheen">
@@ -239,28 +243,28 @@
           <span class="jn-seal"><svg viewBox="0 0 160 160" aria-hidden="true"><circle cx="80" cy="80" r="74" class="jn-seal-r"/><circle cx="80" cy="80" r="64" class="jn-seal-r2"/></svg><span class="jn-seal-i">${Deck.art('mark')}</span></span>
         </div>
       </div>
-      <svg class="jn-links a-fade" data-in="2" data-out="3" viewBox="0 0 1920 1080" aria-hidden="true">
+      <svg class="jn-links a-fade" data-in="2" data-out="3" viewBox="${LBOX.join(' ')}" style="left:${LBOX[0]}px;top:${LBOX[1]}px;width:${LBOX[2]}px;height:${LBOX[3]}px" aria-hidden="true">
         <path class="jn-lk jn-stem" d="${STEM}" pathLength="1" style="--dl:.4s;--dd:.22s"/>
         ${TEAMS.map((t, i) => `<path class="jn-lk" d="${reachPath(i)}" pathLength="1" style="--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"/>`).join('')}
       </svg>
       <!-- the flowing dashes: one path on its own small layer (its repaint never touches the lit branches) -->
       <svg class="jn-lkfs a-fade" data-in="2" data-out="3" viewBox="${LKBOX.join(' ')}" style="left:${LKBOX[0]}px;top:${LKBOX[1]}px;width:${LKBOX[2]}px;height:${LKBOX[3]}px" aria-hidden="true"><path class="jn-lkf" d="${TEAMS.map((t, i) => reachPath(i)).join(' ')}"/></svg>
-      <div class="jn-leads" data-out="3">${TEAMS.map((t, i) => `<i class="jn-lead" style="offset-path:path('${reachPath(i)}');--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"></i>`).join('')}</div>
+      <div class="jn-leads jn-lot" data-in="2" data-out="3">${TEAMS.map((t, i) => `<i class="jn-lead" style="offset-path:path('${reachPath(i)}');--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"></i>`).join('')}</div>
       <div class="jn-hub a-materialize" data-in="2" data-out="3" style="left:${HUB[0]}px;top:${HUB[1] - 32}px;--d:.48s;--dur:.6s"><span class="jn-hub-i"><i class="light sm"></i>Takeaway shared with</span></div>
       <div class="jn-tiles" data-out="3" data-stagger style="--stagger:.07s">${tiles}</div>
-      <div class="jn-ports" data-out="3">${TEAMS.map((t, i) => { const [x, y] = port(i); return `<i class="jn-port" style="left:${x}px;top:${y}px;--k:${i};--f:${FLIP(i).toFixed(2)}s"></i>`; }).join('')}</div>
-      <div class="jn-reach" data-out="3">
+      <div class="jn-ports jn-lot" data-in="2" data-out="3">${TEAMS.map((t, i) => { const [x, y] = port(i); return `<i class="jn-port" style="left:${x}px;top:${y}px;--k:${i};--f:${FLIP(i).toFixed(2)}s"></i>`; }).join('')}</div>
+      <div class="jn-reach jn-lot" data-in="2" data-out="3">
         ${TEAMS.map((t, i) => `<i class="light sm jn-rt" style="left:${HUB[0] - 7}px;top:${HUB[1] - 7}px;--k:${i};--run:${runs[i]}"></i>`).join('')}
       </div>
 
       <!-- 3 · THE CHAIN: a new light leaves the ring -->
       <i class="jn-glow g3" data-at="3"></i>
-      <svg class="jn-trail" viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-trace" d="${SPLIT}" pathLength="100"/></svg>
-      <svg class="jn-trc" viewBox="${TRBOX.join(' ')}" style="left:${TRBOX[0]}px;top:${TRBOX[1]}px;width:${TRBOX[2]}px;height:${TRBOX[3]}px" aria-hidden="true"><path class="jn-tr" d="${CURVE}"/></svg>
+      <svg class="jn-trail jn-lot" data-in="3" viewBox="${SBOX.join(' ')}" style="left:${SBOX[0]}px;top:${SBOX[1]}px;width:${SBOX[2]}px;height:${SBOX[3]}px" aria-hidden="true"><path class="jn-trace" d="${SPLIT}" pathLength="100"/></svg>
+      <svg class="jn-trc jn-lot" data-in="3" viewBox="${TRBOX.join(' ')}" style="left:${TRBOX[0]}px;top:${TRBOX[1]}px;width:${TRBOX[2]}px;height:${TRBOX[3]}px" aria-hidden="true"><path class="jn-tr" d="${CURVE}"/></svg>
       <i class="jn-trs" style="left:${PILL.x}px;top:${N0[1] - 2}px;width:${NEXT[0] - PILL.x}px"><b></b></i>
-      <div class="jn-newlight">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="left:${N0[0] - 7}px;top:${N0[1] - 7}px;--c:${k}"></i>`).join('')}</div>
+      <div class="jn-newlight jn-lot" data-in="3">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="left:${N0[0] - 7}px;top:${N0[1] - 7}px;--c:${k}"></i>`).join('')}</div>
       <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass live"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
-      <div class="jn-next" style="left:${NEXT[0]}px;top:${NEXT[1].toFixed(1)}px"><b class="jn-pool"></b><i class="jn-sq"></i><b class="jn-flash"></b><span class="jn-rings"><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.07s"></b><b class="amb-ring" style="animation-delay:-2.13s"></b></span></div>
+      <div class="jn-next jn-lot" data-in="3" style="left:${NEXT[0]}px;top:${NEXT[1].toFixed(1)}px"><b class="jn-pool"></b><i class="jn-sq"></i><b class="jn-flash"></b><span class="jn-rings"><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.07s"></b><b class="amb-ring" style="animation-delay:-2.13s"></b></span></div>
       <h2 class="jn-big" data-in="3" data-split style="--d:.55s">Recognition becomes <em class="hl jn-beh" data-t="behaviour.">behaviour.</em></h2>
       <style>${KF.join('\n')}</style>
     `,
@@ -280,7 +284,9 @@
         Field.send(NEXT[0], NEXT[1], NEXT[0] + dx, NEXT[1] + dy, 1.9);
       });
     },
+    leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // each stop's objects leave the compositor once they have gone
       const k = Math.max(0, n);
       if (n === 3 && prev !== 3) ctx.at3 = performance.now() - (ctx.instant ? 3000 : 0);
       const forward = !ctx.instant && prev < n;

@@ -6,15 +6,19 @@
    them travels more slowly (depth), a light sweeps the frame, the field streaks and
    the lit tab glides to the new tab.
    Ambient per board:
-   0 · a light walks down the four questions, a reading band travels with it, each
-       field's node lights and its connector fires; the themes line sits under the table;
+   0 · a light walks down the four questions (each has its icon), a reading band travels
+       with it and each field's icon lights; beside the table a story card (a tilted glass
+       card: cover photo, author, title) ticks the four checks as the light passes, and
+       when all four pass it is stamped Featured story;
    1 · nominations drift into the always-open lane and glide to the form; a playhead
-       sweeps the quarter, lighting each month's card, then drops a story into the
-       annual collection;
+       sweeps the quarter, lighting each month's card (its pseudo-3D step rises month by
+       month: curate, feature, reinforce), then drops a story into the annual collection;
    2 · the three tiers are nested squircles (the hero): the camera pulls out twice
        (certificate → quarterly feature → annual collection); a pulse travels out
        through the frames, lighting each tier (and its row on the left) as it crosses;
        a light orbits the outer frame.
+   GPU: a board off screen is hidden (no layers); the frame lights (flash, orbit) live in a
+   layer at the settled frame size, shown once the pull-out has landed, never at close-up size.
    All state is keyed off .st-n / data-step, so back navigation lands on the same frame. */
 (function () {
   const TABS = [
@@ -22,16 +26,31 @@
     { t: 'Quarterly rhythm', i: 'gear-clock' },
     { t: 'Recognition', i: 'document-certified' },
   ];
+  // line icons on a 24 grid (outline, round caps; 1.1 here ≈ 1.8 px at 40 px)
+  const ico = (d, cls) => `<svg class="rn-svgi${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const IC = {
+    // purpose: an arrow in the centre of a target
+    purpose: '<circle cx="11" cy="13" r="8.2"/><circle cx="11" cy="13" r="4.4"/><circle cx="11" cy="13" r="1.1" fill="currentColor"/><path d="M11 13 20.6 3.4"/><path d="M18 3.2V6h2.8"/><path d="M16.2 5v2.8H19"/>',
+    // value: a cut gem
+    value: '<path d="M6.6 4.2h10.8l4.2 5.2L12 20.6 2.4 9.4z"/><path d="M2.4 9.4h19.2"/><path d="M8.2 9.4 12 4.2l3.8 5.2"/><path d="M8.2 9.4 12 20.6l3.8-11.2"/>',
+    // impact: a line that turns upward
+    impact: '<path d="M3 20.6h18"/><path d="m3.8 16.2 5-5 4 3.2 7.4-7.8"/><path d="M15.4 6.4h4.8v4.8"/>',
+    // repeat: two arrows chasing round
+    repeat: '<path d="M20 11.6a8 8 0 0 0-14.3-4.9"/><path d="M4 12.4a8 8 0 0 0 14.3 4.9"/><path d="M5.2 2.8V7h4.2"/><path d="M18.8 21.2V17h-4.2"/>',
+    check: '<path d="m5.5 12.5 4.2 4.2 8.8-9.4"/>',
+    star: '<path d="m12 3.2 2.6 5.5 6 .8-4.4 4.2 1.1 6-5.3-2.9-5.3 2.9 1.1-6L3.4 9.5l6-.8z"/>',
+    arrow: '<path d="M4 12h15"/><path d="m14 7 5 5-5 5"/>',
+  };
   const FIELDS = [
-    { k: 'Purpose', q: 'What did this contribution enable?', c: 'Each selected story explains why the contribution mattered.' },
-    { k: 'Value', q: 'Which Tahakom value was demonstrated?', c: 'Linked to one primary value and one observable behaviour.' },
-    { k: 'Impact', q: 'What changed because of the behaviour?', c: 'Evidence is reviewed before a story is featured.' },
-    { k: 'Repeat', q: 'What can other employees do?', c: 'Shared across departments with one practical takeaway.' },
+    { k: 'Purpose', i: 'purpose', q: 'What did this contribution enable?', c: 'Each selected story explains why the contribution mattered.' },
+    { k: 'Value', i: 'value', q: 'Which Tahakom value was demonstrated?', c: 'Linked to one primary value and one observable behaviour.' },
+    { k: 'Impact', i: 'impact', q: 'What changed because of the behaviour?', c: 'Evidence is reviewed before a story is featured.' },
+    { k: 'Repeat', i: 'repeat', q: 'What can other employees do?', c: 'Shared across departments with one practical takeaway.' },
   ];
   const MONTHS = [
-    { m: 'Month 1', k: 'Curate', i: 'eye-lightbulb', t: 'Review relevance, evidence, consent and value alignment.' },
-    { m: 'Month 2', k: 'Feature', i: 'content-layout', t: 'Prepare and publish selected stories; encourage team discussion.' },
-    { m: 'Month 3', k: 'Reinforce', i: 'hands-teamwork', t: 'Recognise contributors, capture learning and review trends.' },
+    { m: 'Month 1', k: 'Curate', t: 'Review relevance, evidence, consent and value alignment.' },
+    { m: 'Month 2', k: 'Feature', t: 'Prepare and publish selected stories; encourage team discussion.' },
+    { m: 'Month 3', k: 'Reinforce', t: 'Recognise contributors, capture learning and review trends.' },
   ];
   const TIERS = [
     { t: 'Immediate recognition', s: 'Leader acknowledgement and a personal certificate.' },
@@ -58,14 +77,21 @@
 
   /* ── board 0 · what makes it inspiring: four questions (keep ROW0/ROWH in step with the walk in 09-runs.css) ── */
   const ROW0 = 88, ROWH = 116;
+  // each field: its icon on the spine (a lit copy fades in as the light passes), the field, the
+  // question the room reads, and under it the design decision (support)
   const rows = FIELDS.map((f, i) => `
     <div class="rn-row" data-in="0" style="--k:${i};top:${ROW0 + i * ROWH}px">
-      <span class="rn-chip" data-n="${nn(i)}">${nn(i)}</span>
+      <span class="rn-chip">${ico(IC[f.i])}<span class="rn-chip-on">${ico(IC[f.i])}</span></span>
       <b class="rn-key" data-t="${f.k}">${f.k}</b>
       <p class="rn-q">${f.q}</p>
-      <span class="rn-con" style="--cd:${(1 + i * .1).toFixed(2)}s"><i></i></span>
-      <p class="rn-dec">${f.c}</p>
+      <p class="rn-dec">${ico(IC.arrow, 'rn-dec-a')}${f.c}</p>
     </div>`).join('');
+  // the story card: it ticks the four checks as the light passes each field (keep in step with rnWalk)
+  const checks = FIELDS.map((f, i) => `
+          <div class="rn-ck ck${i}" style="top:${292 + i * 50}px">
+            <span class="rn-ck-b"><span class="rn-ck-on">${ico(IC.check)}</span></span>
+            <span class="rn-ck-i">${ico(IC[f.i])}</span><span class="rn-ck-t">${f.k}</span>
+          </div>`).join('');
 
   /* ── board 1 · quarterly rhythm ── */
   // nominations drifting into the lane (lane-local x), one every 2 s on a 16 s loop
@@ -74,9 +100,43 @@
   const drops = DROPS.map((x, k) => `<span class="rn-drop" style="--x0:${x}px;--xt:${TRAY_X}px;--dl:${-k * 2}s"><span><i class="light"></i></span></span>`).join('');
   const QW = 1300, MW = 412, MG = 32;   // one quarter (stage px), a month card and the gap
   const weeks = Array.from({ length: 12 }, (_, k) => `<i style="left:${((k + 1) / 13 * QW).toFixed(1)}px"></i>`).join('');
+  // each month stands on a pseudo-3D step that rises through the quarter (isometric: x runs
+  // right-down, y left-down, z up), carrying what the month does: curate (a stack of stories
+  // under a lens), feature (a story on a screen, broadcast), reinforce (a certificate and the trend)
+  const CS = Math.cos(Math.PI / 6), K = 1.2;    // K: drawing scale
+  const ISO_O = [111, 92];
+  const ip = (x, y, z) => (ISO_O[0] + (x - y) * CS * K).toFixed(1) + ',' + (ISO_O[1] + ((x + y) * .5 - z) * K).toFixed(1);
+  const at = (x, y, z) => `translate(${ip(x, y, z).split(',').join(' ')}) scale(${K})`;
+  const box = (x, y, z, w, d, h, cls) => `<g class="${cls}">` +
+    `<polygon class="fl" points="${ip(x, y + d, z)} ${ip(x + w, y + d, z)} ${ip(x + w, y + d, z + h)} ${ip(x, y + d, z + h)}"/>` +
+    `<polygon class="fr" points="${ip(x + w, y, z)} ${ip(x + w, y + d, z)} ${ip(x + w, y + d, z + h)} ${ip(x + w, y, z + h)}"/>` +
+    `<polygon class="ft" points="${ip(x, y, z + h)} ${ip(x + w, y, z + h)} ${ip(x + w, y + d, z + h)} ${ip(x, y + d, z + h)}"/></g>`;
+  const line = (pts, cls) => `<polyline class="${cls || 'ln'}" points="${pts.map((q) => ip(q[0], q[1], q[2])).join(' ')}"/>`;
+  const STEP = [8, 25, 42];                     // the step heights: the quarter rises month by month
+  const scenes = [
+    (h) => box(18, 12, h, 46, 32, 3, 'sc') + box(15, 9, h + 5, 46, 32, 3, 'sc') + box(12, 6, h + 10, 46, 32, 3, 'sc hi') +
+      line([[20, 12, h + 13], [48, 12, h + 13]], 'ln') + line([[20, 18, h + 13], [40, 18, h + 13]], 'ln') + line([[20, 24, h + 13], [44, 24, h + 13]], 'ln') +
+      // the lens, held over the stack
+      `<g class="lens" transform="${at(40, 4, h + 44)}"><path class="hd" d="M9 9 19 19"/><circle class="gl" r="13"/><circle class="gl2" r="13"/><path class="gs" d="M-6.5-3.5a7.5 7.5 0 0 1 4-4"/></g>`,
+    (h) => box(26, 30, h, 26, 16, 3, 'sc') + box(36, 36, h + 3, 6, 4, 10, 'sc') + box(14, 34, h + 13, 50, 3, 34, 'sc scr') +
+      // the story on the screen (the screen is the face toward the viewer's left)
+      line([[19, 37, h + 40], [37, 37, h + 40]], 'ln lg') + line([[19, 37, h + 34], [58, 37, h + 34]], 'ln') + line([[19, 37, h + 29], [52, 37, h + 29]], 'ln') +
+      `<polygon class="img" points="${ip(41, 37, h + 43)} ${ip(59, 37, h + 43)} ${ip(59, 37, h + 36.5)} ${ip(41, 37, h + 36.5)}"/>` +
+      // broadcast: the feature reaches the whole organisation
+      `<g class="cast" transform="${at(66, 34, h + 44)}"><path d="M4-6a8 8 0 0 1 0 12"/><path d="M9.5-11a15 15 0 0 1 0 22"/><path d="M15-16a22 22 0 0 1 0 32"/></g>`,
+    (h) => box(8, 36, h, 38, 3, 30, 'sc cert') + line([[13, 39, h + 24], [33, 39, h + 24]], 'ln lg') + line([[13, 39, h + 18], [38, 39, h + 18]], 'ln') + line([[13, 39, h + 13], [30, 39, h + 13]], 'ln') +
+      `<g class="seal" transform="${at(40, 39, h + 8)}"><path class="rb" d="M-4 4-7 13l4-2 2 4 2-9"/><path class="rb" d="M4 4 7 13l-4-2-2 4"/><circle r="6.5"/></g>` +
+      // the trend they review: three rising bars
+      box(56, 8, h, 9, 9, 10, 'bar') + box(56, 20, h, 9, 9, 16, 'bar') + box(56, 32, h, 9, 9, 23, 'bar hi'),
+  ];
+  const art = (k) => `<svg class="rn-art" viewBox="0 0 250 184" aria-hidden="true">
+        <ellipse class="rn-art-sh" cx="${(ISO_O[0] + 13 * CS * K).toFixed(1)}" cy="${(ISO_O[1] + 70 * K).toFixed(1)}" rx="100" ry="18"/>
+        ${box(0, 0, 0, 80, 54, STEP[k], 'st')}
+        ${scenes[k](STEP[k])}
+      </svg>`;
   const months = MONTHS.map((m, k) => `
     <div class="rn-m glass a-unfold" data-in="1" style="--k:${k};left:${k * (MW + MG)}px;--d:${(.62 + k * .14).toFixed(2)}s">
-      <span class="rn-mi">${Deck.icon(m.i)}<span class="rn-mi-on">${Deck.icon(m.i)}</span></span>
+      <i class="rn-m-halo"></i>${art(k)}
       <div class="rn-m-lab">${m.m}</div>
       <div class="rn-m-k" data-t="${m.k}">${m.k}</div>
       <p class="rn-m-t">${m.t}</p>
@@ -160,13 +220,25 @@
       <div class="rn-panel rn-p0" data-in="0" data-out="1">
         <h2 class="h2 rn-h rn-h0" data-in="0" data-split style="--d:.12s">A story is featured when it answers <em class="hl">four questions.</em></h2>
         <div class="rn-card glass a-unfold" data-in="0" style="--d:.34s;--dur:1.1s">
-          <i class="rn-deccol a-fade" data-in="0" style="--d:.8s;--dur:1.2s"></i>
+          <i class="rn-dots"></i>
           <div class="rn-bandw a-fade" data-in="0" style="--d:1.5s"><i class="rn-band"></i></div>
-          <div class="rn-colh a-fade" data-in="0" style="--d:.6s"><span style="left:120px">Field</span><span style="left:318px">The question</span><span style="left:1064px">Design decision</span></div>
+          <div class="rn-colh a-fade" data-in="0" style="--d:.6s"><span style="left:146px">Field</span><span style="left:340px">The question <b>${ico(IC.arrow)} design decision</b></span></div>
           <i class="rn-spine a-wipe-down" data-in="0" style="--d:.5s;--dur:1.2s"></i>
           <i class="rn-port" data-spark="0" data-spark-at="c"></i>
           <div class="rn-rows" data-stagger style="--stagger:.1s;--d:.5s">${rows}</div>
           <div class="rn-walk a-fade" data-in="0" style="--d:1.6s"><i class="light"></i></div>
+        </div>
+        <!-- illustrative: one story card passing the four checks (a single tilted plane) -->
+        <div class="rn-story a-swing" data-in="0" style="--d:.78s;--dur:1.2s" aria-hidden="true">
+          <div class="rn-sc glass">
+            <div class="rn-sc-cov" style="background-image:url('assets/photos/team-ops.jpg')"><span class="rn-sc-tag">Story</span></div>
+            <span class="rn-sc-av">${Deck.icon('employee-female')}</span>
+            <i class="rn-sc-t1"></i><i class="rn-sc-t2"></i>
+            <i class="rn-sc-hr"></i>
+            ${checks}
+            <div class="rn-sc-ft">${ico(IC.star)}<span>Featured story</span>
+              <div class="rn-sc-ft-on">${ico(IC.star)}<span>Featured story</span></div></div>
+          </div>
         </div>
         <!-- support: the brief's themes, each tied to a value (small, under the table) -->
         <p class="rn-themes a-fade" data-in="0" style="--d:1.05s;--dur:.8s"><span class="rn-th-k">Themes we look for:</span> ${['resilience', 'innovation', 'collaboration', 'service'].map((t) => `<b>${t}</b>`).join(' <i>·</i> ')}, each linked to a Tahakom value.</p>
@@ -211,16 +283,20 @@
         <div class="rn-view" style="left:${VIEW.x}px;top:${VIEW.y}px;width:${VIEW.w}px;height:${VIEW.h}px">
           <b class="rn-halo" style="left:${FC.x}px;top:${FC.y}px"></b>
           <div class="rn-s3" style="${sq('a', Z.a)};${sq('z', Z.c)}">
-            <b class="rn-fg"></b>
-            <b class="rn-orb"><i></i></b>
             ${cells('c3', [2, 3, 7])}
             <div class="rn-s2" style="${centre}">
-              <b class="rn-fg"></b>
               ${cells('c2')}
               <div class="rn-s1" style="${centre}" data-spark="2" data-spark-xy="${VIEW.x + FC.x},${VIEW.y + FC.y}" data-spark-delay=".55">
                 <span class="rn-cert">${Deck.icon('document-certified')}</span>
               </div>
             </div>
+          </div>
+          <!-- the frames' lights (a flash as the pulse crosses each frame, a light orbiting the outer one)
+               sit at the settled frame size and show once the pull-out lands: never close-up sized layers -->
+          <div class="rn-ov" style="left:${FC.x - Z.c / 2}px;top:${FC.y - Z.c / 2}px;width:${Z.c}px;height:${Z.c}px">
+            <b class="rn-fg f3"></b>
+            <b class="rn-orb"><i></i></b>
+            <b class="rn-fg f2" style="${centre}"></b>
           </div>
           <!-- the pulse: an SVG squircle that grows (its own geometry, so the ring stays a crisp 2.5px), with a soft gradient fill -->
           <svg class="rn-pulse" viewBox="0 0 ${VIEW.w} ${VIEW.h}" aria-hidden="true">
@@ -238,14 +314,22 @@
       ctx.el.style.setProperty('--rn-zoom', ease);
     },
     step(n, prev, ctx) {
+      // recognition: the frames' lights and every loop in step with the pulse start once the
+      // pull-out has landed (at once when the board is reached settled, e.g. going back)
+      const land = () => ctx.el.classList.add('rn-land');
+      ctx.el.classList.remove('rn-land');
+      if (n === 2) { if (ctx.instant || prev < 0 || prev === 2) land(); else ctx.after(2200, land); }
       // a camera pan between boards (the scene's own entrance is the engine's push)
+      const sw = ctx.$('.rn-sweep');
+      sw.classList.remove('run-f', 'run-b');
       if (ctx.instant || prev < 0 || n < 0 || n === prev) return;
       const fwd = n > prev;
-      const sw = ctx.$('.rn-sweep');
-      sw.classList.remove('run-f', 'run-b'); void sw.offsetWidth; sw.classList.add(fwd ? 'run-f' : 'run-b');
+      void sw.offsetWidth; sw.classList.add(fwd ? 'run-f' : 'run-b');
+      // the sweep exists only while it runs (at rest it would be a full-screen layer)
+      ctx.after(1300, () => sw.classList.remove('run-f', 'run-b'));
       if (window.Field) { Field.warp(fwd ? 'left' : 'right', 1.05, .7); Field.kick(fwd ? -210 : 210, 0, 1.6); }
       // the pull-out ends: a ripple of light leaves the collection
-      if (n === 2 && fwd) ctx.after(2300, () => window.Field && Field.burst(VIEW.x + FC.x, VIEW.y + FC.y, { radius: 1100, dur: 2.2 }));
+      if (n === 2 && fwd) ctx.after(2250, () => window.Field && Field.burst(VIEW.x + FC.x, VIEW.y + FC.y, { radius: 1100, dur: 2.2 }));
     },
   });
 })();

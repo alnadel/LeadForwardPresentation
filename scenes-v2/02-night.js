@@ -61,7 +61,7 @@
 
   const check = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5.5 12.5 10 17 18.5 7.5"/></svg>';
   // dust drifting through the night air (stop 0)
-  const dust = Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 137 + 41) % 100}%;top:${28 + (i * 71) % 70}%;--t:${11 + (i % 6) * 2.3}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 70)}px;--dy:${-150 - (i * 29) % 210}px"></i>`).join('');
+  const dust = Array.from({ length: 30 }, (_, i) => `<i style="left:${((i * 137 + 41) % 100) * 19.2}px;top:${(28 + (i * 71) % 70) * 10.8}px;--t:${11 + (i % 6) * 2.3}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 70)}px;--dy:${-150 - (i * 29) % 210}px"></i>`).join('');
 
   Deck.scene({
     id: 'night',
@@ -94,7 +94,6 @@
             <i class="nt-face"></i>
           </div>
           <div class="fill nt-veil"></div>
-          <div class="fill nt-veil-card"></div>
         </div>
 
         <div class="nt-ui">
@@ -143,11 +142,13 @@
       });
     },
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
       if (!window.Field) return;
       // the pull-back: no colleague is lit but the pair (clears any lit share still easing out of 01)
       if (n === 1) Field.setLit(0);
     },
-    leave() {
+    leave(ctx) {
+      window.LFLeave && LFLeave(ctx);   // once faded out, it leaves the compositor
       // the pair stays lit only here; scene 11 relights it
       if (window.Field) Field.set({ pins: [] });
     },

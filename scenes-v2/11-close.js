@@ -179,6 +179,7 @@
       });
     },
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
       if (n < 0) { chainT0 = null; return; }
       if (n === 0) {
         chainT0 = ctx.instant || prev > 0 ? -1 : performance.now() + CHAIN_DELAY * 1000;
@@ -188,6 +189,6 @@
         if (!ctx.instant) ctx.after(0, () => window.Field && Field.set({}, 1.35));
       }
     },
-    leave() { chainT0 = null; },
+    leave(ctx) { chainT0 = null; window.LFLeave && LFLeave(ctx); },
   });
 })();

@@ -41,9 +41,13 @@
     return Math.hypot(x - cx, y - cy) <= r;
   }
 
-  // a loose crowd of colleagues: a jittered grid, thinner towards the wall
+  // a loose crowd of colleagues: a jittered grid, thinner towards the wall. The squares do not
+  // animate one by one (hundreds of layers): they are two groups scattered through the crowd,
+  // one layer each, the size of the district. The twinkling quarter (on its district's own
+  // clock) arrives with the floor; the steady rest pops in after it
+  const TWINKLE = [4.6, 5.8, 6.8];   // s: each district's twinkle
   function cluster(d, di) {
-    let out = '', s = di * 97 + 5;
+    let steady = '', twinkle = '', s = di * 97 + 5;
     const cell = 31, pad = 24;
     for (let y = pad; y <= d.h - pad; y += cell) {
       for (let x = pad; x <= d.w - pad; x += cell) {
@@ -54,26 +58,30 @@
         if (rnd(s + 7.7) > 1.08 - Math.hypot(ex, ey) * .45) continue;
         if (d.lights.some(([lx, ly]) => Math.hypot(lx - jx, ly - jy) < 30)) continue;
         const sz = 11 + rnd(s + 3.1) * 8, a = .12 + rnd(s + 5.5) * .16, r = rnd(s + 9.9);
-        const tw = r < .32 ? ` tw" style="--tt:${3.4 + r * 12}s;--td:${-r * 37}s;` : '" style="';
-        out += `<i class="gp-sq${tw}left:${jx.toFixed(1)}px;top:${jy.toFixed(1)}px;--s:${sz.toFixed(1)}px;--a:${a.toFixed(3)};--rd:${r.toFixed(3)}"></i>`;
+        const sq = `<i class="gp-sq" style="left:${jx.toFixed(1)}px;top:${jy.toFixed(1)}px;--s:${sz.toFixed(1)}px;--a:${a.toFixed(3)}"></i>`;
+        if (r < .28) twinkle += sq; else steady += sq;
       }
     }
-    return out;
+    // the steady group is painted first, under the pools of light, so once it has landed it is part
+    // of the floor (no layer); the twinkling group, which keeps its layer, comes last
+    return { steady: `<div class="gp-cr">${steady}</div>`, twinkle: `<div class="gp-tw" style="--tt:${TWINKLE[di]}s;--td:${-(di * 1.9).toFixed(1)}s">${twinkle}</div>` };
   }
 
   const WALL_LAYERS = 5;   // five layers, twice as far apart: the same wall height with half the GPU layers
   const district = (d, di) => {
     const [sx, sy] = d.lights[0];
+    const crowd = cluster(d, di);
     const walls = Array.from({ length: WALL_LAYERS }, (_, k) => `<i class="gp-w${k === 0 ? ' base' : k === WALL_LAYERS - 1 ? ' rim' : ''}" style="--k:${k}"></i>`).join('')
       // one flash layer per district, riding at the rim (not one per wall layer: 30 layers
       // starting a flash in the same frame blanked the screen on laptop GPUs)
       + `<i class="gp-w gp-hit" style="--k:${WALL_LAYERS - 1}"></i>`;
     return `
-      <div class="gp-d" style="left:${d.x}px;top:${d.y}px;width:${d.w}px;height:${d.h}px;--di:${di};--sx:${sx}px;--sy:${sy}px">
+      <div class="gp-d" style="left:${d.x}px;top:${d.y}px;--di:${di};--sx:${sx}px;--sy:${sy}px">
         <div class="gp-floor">
           <div class="gp-in">
+            ${crowd.steady}
             ${d.lights.map(([x, y], k) => `<i class="gp-pool" style="left:${x}px;top:${y}px;--k:${k}"></i>`).join('')}
-            ${cluster(d, di)}
+            ${crowd.twinkle}
           </div>
         </div>
         <i class="gp-rip b"></i>
@@ -109,7 +117,7 @@
   ];
 
   // dust drifting up through the light above the map (foreground depth)
-  const dust = Array.from({ length: 22 }, (_, i) => `<i style="left:${(i * 139 + 23) % 100}%;top:${56 + (i * 67) % 40}%;--t:${12 + (i % 5) * 2.6}s;--dl:${-i * 1.7}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 17) % 60)}px;--dy:${-140 - (i * 37) % 180}px"></i>`).join('');
+  const dust = Array.from({ length: 22 }, (_, i) => `<i style="left:${((i * 139 + 23) % 100) * 19.2}px;top:${(56 + (i * 67) % 40) * 10.8}px;--t:${12 + (i % 5) * 2.6}s;--dl:${-i * 1.7}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 17) % 60)}px;--dy:${-140 - (i * 37) % 180}px"></i>`).join('');
 
   Deck.scene({
     id: 'gap',
@@ -146,7 +154,7 @@
       <div class="gp-map">
         <div class="gp-plane">
           <div class="gp-drift">
-            <div class="gp-grid"><i class="gp-sw"><i></i></i></div>
+            <i class="gp-sw"></i>
             ${DISTRICTS.map(district).join('')}
             ${BRIDGES.map(bridge).join('')}
           </div>
@@ -181,5 +189,9 @@
         </div>
       </div>
     `,
+    leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
+    step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
+    },
   });
 })();

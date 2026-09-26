@@ -10,13 +10,15 @@
 
 /* ── the instrument ───────────────────────────────────────────────────── */
 #s-survey .sv-inst { position: absolute; left: var(--m); top: 330px; width: 680px; }
-#s-survey .sv-inst-glow { position: absolute; left: -220px; top: -170px; width: 900px; height: 580px; border-radius: 50%; pointer-events: none;
+/* (the pools are drawn at half size and scaled up (their keyframes carry the ×2): a soft gradient scales
+   cleanly, at a quarter of the layer) */
+#s-survey .sv-inst-glow { position: absolute; left: 5px; top: -25px; width: 450px; height: 290px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, var(--sv-glow), transparent); transition: --sv-glow 1s var(--ease-soft);
   animation: svPool 6.5s ease-in-out infinite; }
 #s-survey[data-tone="gap"] .sv-inst-glow  { --sv-glow: rgba(157, 103, 170, .42); }
 #s-survey[data-tone="hero"] .sv-inst-glow { --sv-glow: rgba(157, 103, 170, .52); }
 #s-survey[data-tone="go"] .sv-inst-glow   { --sv-glow: rgba(37, 199, 188, .36); }
-@keyframes svPool { 0%, 100% { opacity: .62; transform: scale(.92) translateX(0); } 50% { opacity: 1; transform: scale(1.06) translateX(26px); } }
+@keyframes svPool { 0%, 100% { opacity: .62; transform: scale(1.84) translateX(0); } 50% { opacity: 1; transform: scale(2.12) translateX(13px); } }
 
 /* the odometer: three reels + the per cent sign */
 #s-survey .sv-odo { position: relative; display: flex; align-items: flex-start; height: 226px; font: 700 252px/226px var(--font); color: var(--white); transition: color .9s var(--ease-soft); }
@@ -81,7 +83,7 @@
 #s-survey .sv-49t p { margin: 8px 0 0; font: 400 22px/1.36 var(--font); color: rgba(255, 255, 255, .7); }
 
 /* ── the waffle ───────────────────────────────────────────────────────── */
-#s-survey .sv-wpool { position: absolute; top: 619px; width: 900px; height: 820px; margin: -410px 0 0 -450px; border-radius: 50%; pointer-events: none; opacity: 0;
+#s-survey .sv-wpool { position: absolute; top: 619px; width: 450px; height: 410px; margin: -205px 0 0 -225px; border-radius: 50%; pointer-events: none; opacity: 0; transform: scale(1.88);
   left: 1310px; background: radial-gradient(closest-side, var(--sv-glow), transparent);
   transition: left 1.2s cubic-bezier(.5, 0, .2, 1), opacity 1s var(--ease-soft), --sv-glow 1s var(--ease-soft); }
 #s-survey.st-0 .sv-wpool { opacity: 1; animation: svWPool 8s ease-in-out infinite; }
@@ -89,31 +91,16 @@
 #s-survey[data-tone="gap"] .sv-wpool  { left: 1110px; --sv-glow: rgba(157, 103, 170, .34); }
 #s-survey[data-tone="hero"] .sv-wpool { left: 880px; --sv-glow: rgba(3, 255, 203, .26); }
 #s-survey[data-tone="go"] .sv-wpool   { left: 1220px; --sv-glow: rgba(37, 199, 188, .3); }
-@keyframes svWPool { 0%, 100% { transform: scale(.94); } 50% { transform: scale(1.08); } }
+@keyframes svWPool { 0%, 100% { transform: scale(1.88); } 50% { transform: scale(2.16); } }
 
-#s-survey .sv-waffle { position: absolute; left: 844px; top: 330px; width: 932px; height: 578px; display: grid; grid-template-rows: repeat(var(--rows, 10), 1fr); grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; }
-#s-survey .sv-waffle i { position: relative; display: block; border-radius: 26%; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .09); transform: scale(0) rotate(45deg); opacity: 0;
-  transition: transform .8s var(--ease-back) calc(var(--rd) * 1.1s + .15s), opacity .5s var(--ease-soft) calc(var(--rd) * .9s + .1s), background .6s var(--ease-soft) calc(var(--c) * 34ms), box-shadow .6s var(--ease-soft) calc(var(--c) * 34ms), border-color .6s var(--ease-soft) calc(var(--c) * 34ms); }
-#s-survey .sv-waffle.built i { transform: none; opacity: 1; }
-#s-survey[data-tone="go"] .sv-waffle i.lit { background: var(--teal); border-color: #7FEDE4; box-shadow: 0 0 20px rgba(37, 199, 188, .5); animation: svTwinkle 3.6s ease-in-out calc(var(--rd) * -3.6s) infinite; }
-#s-survey[data-tone="gap"] .sv-waffle i.lit { background: var(--purple); border-color: var(--purple-lt); box-shadow: 0 0 20px rgba(157, 103, 170, .5); animation: svTwinkle 3.6s ease-in-out calc(var(--rd) * -3.6s) infinite; }
-/* the hero: thirteen lights; everyone else falls back into the dark */
-#s-survey[data-tone="hero"] .sv-waffle.built i:not(.lit) { opacity: .5; background: rgba(255, 255, 255, .02); border-color: rgba(201, 166, 211, .16); }
-/* each of the thirteen breathes: it scales, and its glow crossfades between two static layers
-   (::before at rest, ::after swollen; opacity only) */
-#s-survey[data-tone="hero"] .sv-waffle i.lit { background: var(--sea); border-color: #B8FFF0; box-shadow: none; animation: svHero 2.8s ease-in-out calc(var(--r) * -.14s) infinite; z-index: 1; }
-#s-survey[data-tone="hero"] .sv-waffle i.lit::before, #s-survey[data-tone="hero"] .sv-waffle i.lit::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; }
-#s-survey[data-tone="hero"] .sv-waffle i.lit::before { box-shadow: 0 0 16px rgba(3, 255, 203, .75); animation: svHeroRest 2.8s ease-in-out calc(var(--r) * -.14s) infinite; }
-#s-survey[data-tone="hero"] .sv-waffle i.lit::after { box-shadow: 0 0 44px rgba(3, 255, 203, 1), 0 0 90px rgba(3, 255, 203, .3); opacity: 0; animation: svHeroSwell 2.8s ease-in-out calc(var(--r) * -.14s) infinite; }
-@keyframes svTwinkle { 0%, 100% { opacity: .8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
-@keyframes svHero { 0%, 100% { transform: scale(1.04); } 50% { transform: scale(1.14); } }
-@keyframes svHeroRest { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-@keyframes svHeroSwell { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-/* ambient: a wave of light drifts across the other respondents */
-#s-survey .sv-waffle.built i:not(.lit)::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; background: rgba(255, 255, 255, .22); opacity: 0;
-  animation: svWave 5.2s ease-in-out infinite; animation-delay: calc(var(--c) * .26s + var(--r) * .05s - 5.2s); }
-#s-survey[data-tone="hero"] .sv-waffle i:not(.lit)::after { background: rgba(201, 166, 211, .16); }
-@keyframes svWave { 0%, 100% { opacity: 0; } 18% { opacity: 1; } 40% { opacity: 0; } }
+/* the squares are drawn on one canvas (04-survey.js): each of them pops in, relights, twinkles,
+   breathes and carries the wave as its CSS did, without a layer of its own */
+#s-survey .sv-waffle { position: absolute; left: 844px; top: 330px; width: 932px; height: 578px; }
+#s-survey .sv-wcan { position: absolute; display: block; pointer-events: none; }
+/* the canvas's clock: a CSS animation (so the drawn loops pause with every other loop). Its period
+   is a whole number of each loop's (3.6 s · 2.8 s · 5.2 s), so it wraps without a jump */
+#s-survey .sv-clock { position: absolute; left: 0; top: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; animation: svClock 327.6s linear infinite; }
+@keyframes svClock { from { opacity: 0; } to { opacity: .001; } }
 /* a roll of light across the grid each time it relights (live clicks only) */
 #s-survey .sv-sweep { position: absolute; top: -40px; bottom: -40px; left: 0; width: 220px; pointer-events: none; opacity: 0; background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .3), transparent); filter: blur(8px); }
 #s-survey .sv-waffle.roll .sv-sweep { animation: svSweep 1.3s cubic-bezier(.5, 0, .3, 1); }

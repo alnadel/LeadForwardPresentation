@@ -131,6 +131,17 @@
     [1400, 880, 19, -3, -36, -220], [1560, 770, 16, -10, 30, -170], [880, 900, 18, -14, 20, -230], [640, 780, 16, -6, -26, -190], [1320, 760, 14, -11, 18, -160]]
     .map(([x, y, t, dl, dx, dy]) => `<i style="left:${x}px;top:${y}px;--t:${t}s;--dl:${dl}s;--dx:${dx}px;--dy:${dy}px"></i>`).join('');
 
+  // each drawing sits in an svg cut to its own box (a full-stage svg is a full-stage layer); the
+  // paths keep stage coordinates through the viewBox
+  const BOX = {
+    p: [262, 484, 690, 60],                           // the award lane: road, track, chevrons
+    road: [170, 717, 1545, 206],                      // the story loop's road (its caps reach TX ± 84)
+    t: [250, 710, 1384, 220],                         // the story lane's track and both rows of chevrons
+    ring: [CX - R - 30, CY - R - 30, 2 * R + 60, 2 * R + 60],   // the ring, its wide band and glow…
+  };
+  BOX.ring[0] = CARD.l + CARD.w - 6; BOX.ring[2] = CARD.r + 6 - BOX.ring[0];   // …and the connectors out to the cards
+  const svgAt = (b) => `viewBox="${b.join(' ')}" style="left:${b[0]}px;top:${b[1]}px;width:${b[2]}px;height:${b[3]}px"`;
+
   const laneNode = (x, y, ic, cls, d) => `<div class="cy-ln ${cls}" style="left:${x}px;top:${y}px"><b class="cy-lrip"></b><div class="cy-lnd a-materialize" data-in="0" style="--d:${d.toFixed(2)}s;--dur:.6s"><div class="cy-lnf">${Deck.icon(ic)}</div><div class="cy-lnf lit" aria-hidden="true">${Deck.icon(ic)}</div></div></div>`;
   const laneLabel = (x, y, w, cls, d) => `<div class="cy-st ${cls}" data-in="0" style="left:${x}px;top:${y - 50}px;--d:${d.toFixed(2)}s;--dur:.6s">${w}</div>`;
 
@@ -163,7 +174,7 @@
         <div class="cy-grp cy-gp">
           <i class="cy-haze" style="left:${PX[0] - 200}px;top:${Y1 - 150}px"></i>
           <i class="cy-wglow" style="left:${WALL}px;top:${Y1}px"></i>
-          <svg class="cy-svg" viewBox="0 0 1920 1080" aria-hidden="true">
+          <svg class="cy-svg" ${svgAt(BOX.p)} aria-hidden="true">
             <path class="cy-road p" d="${PLINE}"/>
             <path class="cy-track p cy-draw" d="${PLINE}" pathLength="1" style="--dl:${PD.dl}s;--dd:${PD.dd}s"/>
             <g class="cy-chevs0 p">${chev((PX[0] + PX[1]) / 2, Y1, 0, 'cy-chev-p')}${chev((PX[1] + PEND) / 2 + 6, Y1, 0, 'cy-chev-p')}</g>
@@ -180,14 +191,14 @@
 
         <!-- the story lane: it loops back and keeps going -->
         <div class="cy-grp cy-gt">
-          <i class="cy-pool" style="left:${(TX[0] + TX[4]) / 2 - 900}px;top:${(Y2 + BOT) / 2 - 260}px"></i>
+          <i class="cy-pool" style="left:${(TX[0] + TX[4]) / 2 - 450}px;top:${(Y2 + BOT) / 2 - 130}px"></i>
           <div class="amb-dust cy-dust a-fade" data-in="0" style="--d:1.4s">${dust}</div>
-          <svg class="cy-svg" viewBox="0 0 1920 1080" aria-hidden="true">
+          <svg class="cy-svg" ${svgAt(BOX.road)} aria-hidden="true">
             <path class="cy-road t" d="${LOOP}"/>
           </svg>
           <!-- the return's dashes, flowing (under the story lane's track and chevrons) -->
           ${retFlow}
-          <svg class="cy-svg" viewBox="0 0 1920 1080" aria-hidden="true">
+          <svg class="cy-svg" ${svgAt(BOX.t)} aria-hidden="true">
             <path class="cy-track t cy-draw" d="${TLINE}" pathLength="1" style="--dl:${TD.dl}s;--dd:${TD.dd}s"/>
             <g class="cy-chevs0 t">
               ${TX.slice(0, 4).map((x, i) => chev((x + TX[i + 1]) / 2, Y2, 0, 'cy-chev-t', `style="--k:${i}"`, 't')).join('')}
@@ -214,7 +225,7 @@
       </div>
 
       <div class="cy-ring a-fade" data-in="1" style="--d:.05s;--dur:.5s">
-        <div class="cy-glow" style="left:${CX - 380}px;top:${CY - 380}px"></div>
+        <div class="cy-glow" style="left:${CX - 190}px;top:${CY - 190}px"></div>
         <div class="cy-outer" style="left:${CX - ROUT - 6}px;top:${CY - ROUT - 6}px;width:${2 * ROUT + 12}px;height:${2 * ROUT + 12}px">
           <svg viewBox="0 0 ${2 * ROUT + 12} ${2 * ROUT + 12}" aria-hidden="true">
             <circle class="cy-o1" cx="${ROUT + 6}" cy="${ROUT + 6}" r="${ROUT}"/>
@@ -227,7 +238,7 @@
             ${[140, 320].map((a) => { const x = RIN + 14 + RIN * Math.cos(rad(a)), y = RIN + 14 + RIN * Math.sin(rad(a)); return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${a + 90})"><path class="cy-i2" d="M-4 -10 L12 0 L-4 10 Z"/></g>`; }).join('')}
           </svg>
         </div>
-        <svg class="cy-svg cy-rsvg" viewBox="0 0 1920 1080" aria-hidden="true">
+        <svg class="cy-svg cy-rsvg" ${svgAt(BOX.ring)} aria-hidden="true">
           <circle class="cy-rtrack" cx="${CX}" cy="${CY}" r="${R}"/>
           <g class="cy-rwide"><circle class="w1" cx="${CX}" cy="${CY}" r="${R}"/><circle class="w2" cx="${CX}" cy="${CY}" r="${R}"/></g>
           <circle class="cy-rdraw" cx="${CX}" cy="${CY}" r="${R}" pathLength="100" transform="rotate(-45 ${CX} ${CY})"/>
@@ -289,7 +300,9 @@
         if (ctx.step >= 1) ring(ctx, performance.now());
       });
     },
+    leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // the lanes leave the compositor once they have fallen away (and the ring until it is drawn)
       const forward = !ctx.instant && prev < n;
       // one-shot flourishes (leading lights, the surge) play only on a forward build
       ctx.el.dataset.play = forward ? String(n) : '';

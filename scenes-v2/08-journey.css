@@ -45,6 +45,12 @@
 #s-journey .jn-li.cur { color: var(--white); font-weight: 700; }
 #s-journey .jn-li.cur b { color: var(--teal); }
 
+/* the groups of absolutely placed objects are zero-size boxes at the stage origin: a group that fades
+   or slides is then a layer the size of what it holds, not a full-stage one */
+/* each stop's lot of lines and lights: data-in / data-out only time when it is parked (LFPark takes
+   it out of the compositor while its stop is away); it has no entrance of its own */
+#s-journey .jn-lot[data-in]:not(.is-in) { opacity: 1; transform: none; filter: none; transition: none; }
+
 /* heroes leave to the left as the next arrives */
 #s-journey .jn-faisal.is-out, #s-journey .jn-form.is-out, #s-journey .jn-cur.is-out, #s-journey .jn-post.is-out, #s-journey .jn-flow.is-out, #s-journey .jn-certw.is-out, #s-journey .jn-tiles.is-out, #s-journey .jn-hub.is-out, #s-journey .jn-links.is-out, #s-journey .jn-lkfs.is-out, #s-journey .jn-ports.is-out, #s-journey .jn-reach.is-out { transform: translateX(-80px) scale(.97); filter: blur(6px); }
 
@@ -107,16 +113,18 @@
 /* the pool breathes on its own layer: transform + opacity (the old brightness range is folded into
    brighter stops and an opacity swing); it runs only on its stop and freezes as the stop leaves */
 #s-journey .jn-glow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; animation: jnGlowPool 8s ease-in-out infinite; animation-play-state: paused; }
+/* (each pool is drawn at half size and scaled up (its keyframes carry the ×2): a soft gradient
+   scales cleanly, and the layer is a quarter of the size) */
 #s-journey .jn-glow.at::before { animation-play-state: running; }
-#s-journey .jn-glow.g1 { left: 620px; top: 60px; width: 1300px; height: 960px; }
+#s-journey .jn-glow.g1 { left: 945px; top: 300px; width: 650px; height: 480px; }
 #s-journey .jn-glow.g1::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .19), rgba(96, 38, 80, .144) 55%, transparent); }
-#s-journey .jn-glow.g2 { left: 560px; top: 60px; width: 1300px; height: 960px; }
+#s-journey .jn-glow.g2 { left: 885px; top: 300px; width: 650px; height: 480px; }
 #s-journey .jn-glow.g2::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .19), rgba(37, 199, 188, .096) 55%, transparent); }
 /* stop 3: a wide pool of light under the chain and the headline, drifting toward the next colleague */
-#s-journey .jn-glow.g3 { left: 420px; top: 120px; width: 1500px; height: 860px; }
+#s-journey .jn-glow.g3 { left: 795px; top: 335px; width: 750px; height: 430px; }
 #s-journey .jn-glow.g3::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .195), rgba(37, 199, 188, .078) 55%, transparent); animation-name: jnGlowDrift; animation-duration: 7s; }
-@keyframes jnGlowDrift { 0%, 100% { transform: translateX(-60px) scale(.92); opacity: .62; } 50% { transform: translateX(80px) scale(1.06); opacity: 1; } }
-@keyframes jnGlowPool { 0%, 100% { transform: scale(.94); opacity: .71; } 50% { transform: scale(1.05); opacity: 1; } }
+@keyframes jnGlowDrift { 0%, 100% { transform: translateX(-60px) scale(1.84); opacity: .62; } 50% { transform: translateX(80px) scale(2.12); opacity: 1; } }
+@keyframes jnGlowPool { 0%, 100% { transform: scale(1.88); opacity: .71; } 50% { transform: scale(2.1); opacity: 1; } }
 
 /* ── 1 · curate → feature ─────────────────────────────────────────── */
 #s-journey .jn-cur { position: absolute; left: 520px; top: 188px; width: 520px; }
@@ -140,8 +148,8 @@
 #s-journey .jn-value { font-style: normal; display: inline-block; margin-left: 6px; padding: 6px 18px 7px; border-radius: 999px; background: var(--plum); color: #fff; font: 700 27px/1.2 var(--font); }
 
 /* the story flows from the checklist into the post: a short lit track, chevrons and a light */
-#s-journey .jn-flow { position: absolute; inset: 0; pointer-events: none; }
-#s-journey .jn-flow svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+#s-journey .jn-flow { position: absolute; pointer-events: none; }
+#s-journey .jn-flow svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
 #s-journey .jn-fl { fill: none; stroke: rgba(37, 199, 188, .35); stroke-width: 3; stroke-linecap: round; }
 #s-journey .jn-chevs { position: absolute; height: 40px; margin-top: -20px; display: flex; justify-content: center; }
 #s-journey .jn-chevs svg { width: 22px; height: 40px; margin: 0 -3px; fill: none; stroke: var(--teal); stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; opacity: .25;
@@ -196,7 +204,7 @@
 #s-journey .jn-seal-i svg { width: 58px; display: block; }
 
 /* the takeaway: a stem, a hub pill and four branches that draw behind a leading light */
-#s-journey .jn-links { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+#s-journey .jn-links { position: absolute; overflow: visible; pointer-events: none; }
 #s-journey .jn-lk { fill: none; stroke: rgba(37, 199, 188, .55); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 2; stroke-dashoffset: 1.02; filter: drop-shadow(0 0 5px rgba(37, 199, 188, .45)); }
 #s-journey.st-2 .jn-lk { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dd) cubic-bezier(.37, 0, .63, 1) calc(var(--enter, 0s) + var(--dl)); }
 /* the flowing dashes: the four branches are one path (one short stroke animation) in its own small
@@ -206,7 +214,7 @@
 #s-journey.st-2 .jn-lkf { opacity: 1; transition: opacity .8s var(--ease-soft) 1.5s; }
 #s-journey[data-step="2"] .jn-lkf { animation-play-state: running; }
 @keyframes jnLk { to { stroke-dashoffset: -40; } }
-#s-journey .jn-leads { position: absolute; inset: 0; pointer-events: none; }
+#s-journey .jn-leads { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 #s-journey .jn-lead { position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 28%; opacity: 0; offset-distance: 0%; offset-rotate: 0deg;
   background: radial-gradient(circle at 35% 30%, #fff 0 16%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 14px var(--sea), 0 0 40px rgba(3, 255, 203, .7); }
 #s-journey[data-play="2"] .jn-lead { animation: jnLeadGo var(--dd) cubic-bezier(.37, 0, .63, 1) calc(var(--enter, 0s) + var(--dl)) both, jnLeadFade var(--dd) linear calc(var(--enter, 0s) + var(--dl)) both; }
@@ -222,7 +230,7 @@
 #s-journey:not([data-step="2"]) .jn-hub-i::after { animation-play-state: paused; }
 @keyframes jnHubGlow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
-#s-journey .jn-tiles { position: absolute; inset: 0; pointer-events: none; }
+#s-journey .jn-tiles { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 #s-journey .jn-tile { position: absolute; width: 286px; height: 214px; perspective: 1100px; }
 #s-journey .jn-face { position: absolute; inset: 0; border-radius: 18px; padding: 30px 28px 26px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; transition: transform .7s var(--ease-out) var(--f); }
 #s-journey .jn-face b { max-width: 210px; font: 700 32px/1.18 var(--font); letter-spacing: -.01em; }
@@ -240,7 +248,7 @@
 #s-journey.st-2 .jn-face.front { transform: rotateY(-180deg); }
 #s-journey.st-2 .jn-face.back { transform: rotateY(0deg); }
 /* the port where the takeaway arrives at each team: it flares each time a light lands */
-#s-journey .jn-ports { position: absolute; inset: 0; pointer-events: none; }
+#s-journey .jn-ports { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 #s-journey .jn-port { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 28%; background: var(--teal); box-shadow: 0 0 0 5px rgba(4, 22, 40, .8), 0 0 12px rgba(3, 255, 203, .7); opacity: 0; transform: scale(.3); transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft); }
 #s-journey .jn-port::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; background: #D8FFF7;
   box-shadow: 0 0 0 5px rgba(4, 22, 40, .8), 0 0 28px rgba(3, 255, 203, 1), 0 0 70px rgba(37, 199, 188, .6); }
@@ -250,14 +258,14 @@
 @keyframes jnLand { 0%, 70% { transform: scale(1); animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 78% { transform: scale(1.6); } 100% { transform: scale(1); } }
 @keyframes jnLandF { 0%, 70% { opacity: 0; animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 78% { opacity: 1; } 100% { opacity: 0; } }
 /* the takeaway keeps travelling: a light runs down each branch and lands on its team */
-#s-journey .jn-reach { position: absolute; inset: 0; pointer-events: none; }
+#s-journey .jn-reach { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 #s-journey .jn-rt { position: absolute; opacity: 0; }
 #s-journey.st-2 .jn-rt { animation: jnRunO 2.8s ease-in-out infinite, var(--run) 2.8s linear infinite; animation-delay: calc(1.6s + var(--k) * .7s); }
 #s-journey:not([data-step="2"]) .jn-rt { animation-play-state: paused; }
 @keyframes jnRunO { 0% { opacity: 0; } 8% { opacity: 1; } 78% { opacity: 1; } 86%, 100% { opacity: 0; } }
 
 /* ── 3 · the chain ─────────────────────────────────────────────────── */
-#s-journey .jn-trail { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
+#s-journey .jn-trail { position: absolute; overflow: visible; pointer-events: none; }
 /* the trace draws behind the new light (same path, same timing), then the chain keeps flowing */
 #s-journey .jn-trace { fill: none; stroke: rgba(3, 255, 203, .5); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .7)); transition: stroke-dashoffset .3s var(--ease-soft), opacity .3s var(--ease-soft); }
 #s-journey.st-3 .jn-trace { stroke-dashoffset: 0; opacity: .45; transition: stroke-dashoffset 1.2s var(--ease-io) .72s, opacity 1s var(--ease-soft) 2s; }
@@ -271,7 +279,7 @@
 #s-journey .jn-trs b { position: absolute; left: -36px; right: 0; top: 0; height: 4px; animation: jnTrs 1.35s linear infinite; animation-play-state: paused;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='4'%3E%3Cpath d='M1.5 2h5' stroke='%2325C7BC' stroke-opacity='.8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") 0 0 / 18px 4px repeat-x; }
 @keyframes jnTrs { to { transform: translateX(36px); } }
-#s-journey .jn-newlight { position: absolute; inset: 0; pointer-events: none; }
+#s-journey .jn-newlight { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
 #s-journey .jn-new, #s-journey .jn-gh { position: absolute; left: 0; top: 0; opacity: 0; offset-distance: 0%; offset-rotate: 0deg; transition: offset-distance .3s var(--ease-soft), opacity .25s var(--ease-soft); }
 #s-journey .jn-gh { width: calc(18px - var(--g) * 2px); height: calc(18px - var(--g) * 2px); border-radius: 28%; background: var(--sea); box-shadow: 0 0 16px rgba(3, 255, 203, .9); }
 #s-journey.st-3 .jn-new { opacity: 1; offset-distance: 100%; transition: opacity .2s linear .72s, offset-distance 1.2s var(--ease-io) .72s; }
@@ -314,12 +322,12 @@
 @keyframes jnFlash { 0% { opacity: 0; transform: scale(.2); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 16% { opacity: 1; transform: scale(.32); animation-timing-function: cubic-bezier(.16, 1, .3, 1); } 100% { opacity: 0; transform: scale(1.4); } }
 #s-journey .jn-rings { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 /* a pool of light breathes around the next colleague */
-#s-journey .jn-pool { position: absolute; left: -380px; top: -380px; width: 760px; height: 760px; opacity: 0; transition: opacity .4s var(--ease-soft); pointer-events: none; }
+#s-journey .jn-pool { position: absolute; left: -190px; top: -190px; width: 380px; height: 380px; opacity: 0; transition: opacity .4s var(--ease-soft); pointer-events: none; }
 #s-journey .jn-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .3), rgba(37, 199, 188, .11) 45%, transparent);
   animation: jnPool 3.6s ease-in-out 2.1s infinite both; animation-play-state: paused; }
 #s-journey.st-3 .jn-pool { opacity: 1; transition: opacity .8s var(--ease-soft) 1.95s; }
 #s-journey[data-step="3"] .jn-pool::before { animation-play-state: running; }
-@keyframes jnPool { 0%, 100% { transform: scale(.82); opacity: .55; } 50% { transform: scale(1.16); opacity: 1; } }
+@keyframes jnPool { 0%, 100% { transform: scale(1.64); opacity: .55; } 50% { transform: scale(2.32); opacity: 1; } }   /* drawn at half size */
 #s-journey .jn-rings .amb-ring { width: 48px; height: 48px; left: -24px; top: -24px; animation-name: jnRing; }
 @keyframes jnRing { 0% { transform: scale(.6); opacity: 0; animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 9% { transform: scale(1.3); opacity: .6; } 100% { transform: scale(2.6); opacity: 0; } }
 #s-journey.st-3 .jn-rings { opacity: 1; transition: opacity .6s var(--ease-soft) 2.05s; }
@@ -332,3 +340,9 @@
 #s-journey.st-3 .jn-beh::before { animation: jnBeh 4.4s ease-in-out 2.4s infinite; }
 @keyframes jnBeh { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 #s-journey .jn-big { position: absolute; left: 560px; top: 520px; width: 1200px; margin: 0; font: 700 104px/1 var(--font); letter-spacing: -.035em; color: var(--white); }
+
+/* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
+   and scaled up (a conic gradient scales cleanly), a quarter of the layer */
+#s-journey .gl-edge > i { width: calc(var(--gs, 480px) / 2); height: calc(var(--gs, 480px) / 2); margin: calc(var(--gs, 480px) / -4) 0 0 calc(var(--gs, 480px) / -4); transform: scale(2); }
+#stage:not(.lite) #s-journey .gl-edge > i { animation-name: jnEdge; }
+@keyframes jnEdge { from { transform: rotate(0deg) scale(2); } to { transform: rotate(360deg) scale(2); } }

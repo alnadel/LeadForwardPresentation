@@ -9,6 +9,48 @@
    horizon gathers into the light, the question lifts away, the light flares.
    All state is keyed off .st-0 (a settled landing shows the parked frame); the
    field wave plays only on a live build. */
+/* LFPark(ctx): park what a stop has hidden (shared by scenes 00–11 of this set; call it from a
+   scene's step()). An element the stop has taken away ([data-in] not yet in, [data-out] out) is
+   invisible but not free: its hidden state carries a blur, and under a filter every animated
+   child keeps a compositor layer that is still drawn. Once its fade-out has run, the element is
+   taken out with visibility: hidden (no layers at all); it is given back in the very frame it
+   is shown again, so nothing it shows is cut short. A settled landing parks at once. */
+window.LFPark = function (ctx) {
+  if (window.LFBack) LFBack(ctx);
+  const out = (x) => (x.hasAttribute('data-in') && !x.classList.contains('is-in')) || x.classList.contains('is-out');
+  const hide = [];
+  let wait = 1.2;
+  ctx.$$('[data-in], [data-out]').forEach((x) => {
+    if (!out(x)) { if (x.style.visibility) x.style.visibility = ''; return; }
+    if (x.style.visibility === 'hidden') return;
+    hide.push(x);
+    if (ctx.instant) return;
+    const cs = getComputedStyle(x), d = cs.transitionDuration.split(','), l = cs.transitionDelay.split(',');
+    d.forEach((v, i) => { wait = Math.max(wait, parseFloat(v) + parseFloat(l[i % l.length]) + .15); });
+  });
+  const park = () => hide.forEach((x) => { if (out(x)) x.style.visibility = 'hidden'; });
+  if (ctx.instant) park(); else if (hide.length) ctx.after(wait * 1000, park);
+};
+
+/* LFLeave(ctx) / LFBack(ctx): a scene that is leaving stays in the compositor (1.3 s) after its
+   fade has already taken it off screen. Call LFLeave from leave(): once the section's own opacity
+   transition has run to its end (transparent), .lf-gone hides it (00-hook.css), so the next scene
+   builds without the old one's layers. LFBack (LFPark calls it) gives it back on re-entry. */
+window.LFLeave = function (ctx) {
+  const el = ctx.el;
+  if (ctx.lfDone) el.removeEventListener('transitionend', ctx.lfDone);
+  ctx.lfDone = (e) => {
+    if (e.target !== el || e.propertyName !== 'opacity') return;
+    el.removeEventListener('transitionend', ctx.lfDone); ctx.lfDone = null;
+    if (!el.classList.contains('active') && parseFloat(getComputedStyle(el).opacity) < .01) el.classList.add('lf-gone');
+  };
+  el.addEventListener('transitionend', ctx.lfDone);
+};
+window.LFBack = function (ctx) {
+  ctx.el.classList.remove('lf-gone');
+  if (ctx.lfDone) { ctx.el.removeEventListener('transitionend', ctx.lfDone); ctx.lfDone = null; }
+};
+
 (function () {
   const LIGHT = [960, 716];   // where the story light rests (the horizon's centre)
   const LAND = 1.7;           // s after --enter: the light lands (the spark's data-spark-delay)
@@ -17,7 +59,7 @@
   const BOKEH = [[120, 170, 96, 18, -4], [1690, 130, 130, 22, -9], [300, 820, 150, 24, -13], [1540, 790, 110, 20, -2], [40, 520, 70, 16, -7], [1820, 470, 84, 19, -11], [880, 70, 60, 17, -5]];
   const bokeh = BOKEH.map(([x, y, sz, t, dl], i) => `<i style="left:${x}px;top:${y}px;--sz:${sz}px;--t:${t}s;--dl:${dl}s;--bx:${(i % 2 ? -1 : 1) * (40 + i * 9)}px;--by:${(i % 3 - 1) * 36}px"></i>`).join('');
   // dust drifting through the night air
-  const dust = Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 137 + 41) % 100}%;top:${28 + (i * 71) % 70}%;--t:${11 + (i % 6) * 2.3}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 70)}px;--dy:${-150 - (i * 29) % 210}px"></i>`).join('');
+  const dust = Array.from({ length: 30 }, (_, i) => `<i style="left:${((i * 137 + 41) % 100) * 19.2}px;top:${(28 + (i * 71) % 70) * 10.8}px;--t:${11 + (i % 6) * 2.3}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 70)}px;--dy:${-150 - (i * 29) % 210}px"></i>`).join('');
 
   Deck.scene({
     id: 'hook',
@@ -55,6 +97,7 @@
       </div>
     `,
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);
       // The live cold open (one-shot): .hk-wake holds the room dark; the arrival is driven by
       // the same clock as the engine's spark (timers, not CSS delays), so the glints meet, the
       // horizon draws and the field wakes exactly as the light lands, even if the first
@@ -71,5 +114,6 @@
         if (window.Field) Field.burst(LIGHT[0], LIGHT[1], { radius: 2100, dur: 3.2 });
       });
     },
+    leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
   });
 })();

@@ -23,24 +23,27 @@
 #s-gap[data-step="1"] .gp-pt.p1 { opacity: .42; }
 
 /* ── the ground: a soft pool of light the map stands in ─────────────── */
-#s-gap .gp-ground { position: absolute; left: -8%; right: -8%; top: 470px; height: 640px; pointer-events: none; opacity: 0;
+/* (drawn at half size and scaled up: a soft gradient scales cleanly, at a quarter of the layer) */
+#s-gap .gp-ground { position: absolute; left: 403px; top: 630px; width: 1114px; height: 320px; pointer-events: none; opacity: 0; transform: scale(2);
   background: radial-gradient(48% 56% at 50% 58%, rgba(37, 199, 188, .13), rgba(59, 128, 170, .07) 45%, rgba(96, 38, 80, .08) 65%, transparent 82%);
   transition: opacity .5s var(--ease-soft); }
 #s-gap.st-0 .gp-ground { opacity: 1; transition: opacity 1.6s var(--ease-soft) calc(var(--enter, 0s) + .3s); animation: gpGround 9s ease-in-out infinite; }
 #s-gap.st-2 .gp-ground { opacity: .7; }
-@keyframes gpGround { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06) translateY(-10px); } }
+@keyframes gpGround { 0%, 100% { transform: scale(2); } 50% { transform: translateY(-10.6px) scale(2.12); } }
 
 /* ── the map: a floor tilted in perspective; it swings up out of the chapter
    line at stop 0 and tilts back and recedes at stop 2 ─────────────────── */
-#s-gap .gp-map { position: absolute; inset: 0; pointer-events: none; perspective: 1800px; perspective-origin: 960px 540px; opacity: 0; transition: opacity .4s var(--ease-soft); }
+/* (the map's containers are zero-size boxes at the stage origin, their origins in stage px: a
+   container that fades or turns is then a layer the size of what it holds) */
+#s-gap .gp-map { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; perspective: 1800px; perspective-origin: 960px 540px; opacity: 0; transition: opacity .4s var(--ease-soft); }
 #s-gap.st-0 .gp-map { opacity: 1; transition: opacity 1s var(--ease-soft) var(--enter, 0s); }
 #s-gap.st-2 .gp-map { opacity: .6; transition: opacity 1.3s var(--ease-soft); }
-#s-gap .gp-plane { position: absolute; inset: 0; transform-origin: 960px 940px; transform-style: preserve-3d;
+#s-gap .gp-plane { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 960px 940px; transform-style: preserve-3d;
   transform: translateY(40px) rotateX(74deg) scale(1); transition: transform .5s var(--ease-soft); }
 #s-gap.st-0 .gp-plane { transform: translateY(0) rotateX(44deg) scale(1); transition: transform 2.2s cubic-bezier(.16, .84, .24, 1) var(--enter, 0s); }
 #s-gap.st-2 .gp-plane { transform: translateY(-6px) rotateX(70deg) scale(.9); transition: transform 1.6s var(--ease-io); }
 /* the whole map drifts a little, all the time */
-#s-gap .gp-drift { position: absolute; inset: 0; transform-style: preserve-3d; animation: gpDrift 19s ease-in-out infinite; }
+#s-gap .gp-drift { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 960px 540px; transform-style: preserve-3d; animation: gpDrift 19s ease-in-out infinite; }
 @keyframes gpDrift {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
   25% { transform: translate3d(12px, -8px, 0) rotate(.22deg); }
@@ -48,28 +51,22 @@
   75% { transform: translate3d(-12px, -4px, 0) rotate(-.22deg); }
 }
 
-/* the floor grid, with a slow sweep of light running over it towards us */
-#s-gap .gp-grid { position: absolute; left: -160px; right: -160px; top: 330px; height: 700px; opacity: 0; transition: opacity 1.2s var(--ease-soft);
-  background-image: linear-gradient(rgba(143, 194, 220, .1) 2px, transparent 2px), linear-gradient(90deg, rgba(143, 194, 220, .1) 2px, transparent 2px);
-  background-size: 56px 56px; background-position: 12px 26px;
-  -webkit-mask-image: radial-gradient(56% 62% at 50% 72%, #000 25%, transparent 78%); mask-image: radial-gradient(56% 62% at 50% 72%, #000 25%, transparent 78%); }
-#s-gap.st-0 .gp-grid { opacity: 1; transition-delay: calc(var(--enter, 0s) + .2s); }
-/* the sweep: a 252px band (a soft-edged window, .gp-sw) slides down the grid from above its top
-   edge to below its bottom edge while the bright lines inside it slide up by the same amount, so
-   the lines stay put and only the light moves (transform only, both on one timing) */
-#s-gap .gp-sw { position: absolute; left: 0; right: 0; top: 0; height: 252px; overflow: hidden; opacity: 0; transform: translateY(-196px);
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 50%, transparent); mask-image: linear-gradient(180deg, transparent, #000 50%, transparent); }
-#s-gap .gp-sw > i { position: absolute; left: 0; right: 0; top: 0; height: 700px; transform: translateY(196px);
-  background-image: linear-gradient(rgba(3, 255, 203, .5) 2px, transparent 2px), linear-gradient(90deg, rgba(3, 255, 203, .5) 2px, transparent 2px);
-  background-size: 56px 56px; background-position: 12px 26px; }
+/* the floor grid, with a slow sweep of light running over it towards us. The grid is painted on the
+   drifting floor itself (its radial fade is drawn into the image, so it needs no mask layer of its
+   own, and the image is cut to where the fade leaves any grid); the sweep is one band of light that lights the grid's lines along the floor as it slides
+   towards us (only transform and opacity move) */
+#s-gap .gp-drift::before { content: ''; position: absolute; left: -18px; top: 490px; width: 1956px; height: 540px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1956' height='540'%3E%3Cdefs%3E%3Cpattern id='p' width='56' height='56' x='-130' y='-134' patternUnits='userSpaceOnUse'%3E%3Crect width='56' height='2' fill='%238FC2DC' fill-opacity='.1'/%3E%3Crect width='2' height='56' fill='%238FC2DC' fill-opacity='.1'/%3E%3C/pattern%3E%3CradialGradient id='g' gradientUnits='userSpaceOnUse' cx='978' cy='344' r='1254.4' gradientTransform='translate(0 224.98) scale(1 .346)'%3E%3Cstop offset='.25' stop-color='%23fff'/%3E%3Cstop offset='.78' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cmask id='m'%3E%3Crect width='1956' height='540' fill='url(%23g)'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='1956' height='540' fill='url(%23p)' mask='url(%23m)'/%3E%3C/svg%3E") 0 0 / 1956px 540px no-repeat; }
+#s-gap .gp-sw { position: absolute; left: -18px; top: 330px; width: 1956px; height: 252px; opacity: 0; transform: translateY(-196px); pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1956' height='252'%3E%3Cdefs%3E%3Cpattern id='p' width='56' height='252' x='-130' patternUnits='userSpaceOnUse'%3E%3Crect width='2' height='252' fill='%2303FFCB' fill-opacity='.5'/%3E%3C/pattern%3E%3ClinearGradient id='v' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='h'%3E%3Cstop offset='0' stop-color='%23fff' stop-opacity='0'/%3E%3Cstop offset='.339' stop-color='%23fff'/%3E%3Cstop offset='.66' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3CradialGradient id='w' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='0' stop-color='%2303FFCB' stop-opacity='.07'/%3E%3Cstop offset='1' stop-color='%2303FFCB' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cmask id='mv'%3E%3Crect width='1956' height='252' fill='url(%23v)'/%3E%3C/mask%3E%3Cmask id='mh'%3E%3Crect width='1956' height='252' fill='url(%23h)'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='1956' height='252' fill='url(%23w)'/%3E%3Cg mask='url(%23mh)'%3E%3Crect width='1956' height='252' fill='url(%23p)' mask='url(%23mv)'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 1956px 252px no-repeat; }
 #s-gap.st-0 .gp-sw { animation: gpSweep 7.5s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 1.6s) infinite; }
-#s-gap.st-0 .gp-sw > i { animation: gpSweepIn 7.5s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 1.6s) infinite; }
-@keyframes gpSweep { 0% { transform: translateY(-196px); opacity: 0; } 10% { opacity: 1; } 62% { opacity: 1; } 72%, 100% { transform: translateY(644px); opacity: 0; } }
-@keyframes gpSweepIn { 0% { transform: translateY(196px); } 72%, 100% { transform: translateY(-644px); } }
+@keyframes gpSweep { 0% { transform: translateY(-196px); opacity: 0; } 10%, 62% { opacity: 1; } 72%, 100% { transform: translateY(644px); opacity: 0; } }
 
 /* ── districts ─────────────────────────────────────────────────────── */
-#s-gap .gp-d { position: absolute; transform-style: preserve-3d; }
-#s-gap .gp-floor { position: absolute; inset: 0; border-radius: 92px; opacity: 0; transform: scale(.86);
+/* (a district is a zero-size 3D group; its planes carry the district's size themselves) */
+#s-gap .gp-d { position: absolute; width: 0; height: 0; transform-style: preserve-3d; }
+#s-gap .gp-floor, #s-gap .gp-rip, #s-gap .gp-w { width: 504px; height: 480px; }
+#s-gap .gp-floor { position: absolute; left: 0; top: 0; border-radius: 92px; opacity: 0; transform: scale(.86);
   background: radial-gradient(110% 92% at 50% 42%, rgba(24, 46, 74, .82), rgba(9, 19, 36, .9) 72%);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, .05), 0 0 80px rgba(37, 199, 188, .08), inset 0 0 70px rgba(37, 199, 188, .08);
   transition: opacity .35s var(--ease-soft), transform .4s var(--ease-soft); }
@@ -86,17 +83,22 @@
 @keyframes gpPool { 0%, 100% { transform: scale(.8); } 50% { transform: scale(1.14); } }
 #s-gap.st-1 .gp-pool { opacity: .8; }
 
-/* colleagues: pop in at stop 0; some twinkle */
-#s-gap .gp-sq { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 28%; background: rgba(226, 234, 245, var(--a));
-  transform: scale(0); transition: transform .8s var(--ease-back) calc(var(--enter, 0s) + .45s + var(--di) * .12s + var(--rd) * .6s); }
-#s-gap.st-0 .gp-sq { transform: scale(1); }
-#s-gap .gp-sq.tw { animation: gpTw var(--tt) ease-in-out var(--td) infinite; }
+/* colleagues: two groups scattered through the crowd (a group is one layer; no square animates on its
+   own). The twinkling quarter arrives with the floor; the steady rest pops in after it */
+/* (a group is the district's size: an animated box that holds scattered squares is then one layer; a
+   zero-size one would leave its squares so sparse that each became a layer of its own) */
+#s-gap .gp-cr, #s-gap .gp-tw { position: absolute; left: 0; top: 0; width: 504px; height: 480px; }
+#s-gap .gp-cr { opacity: 0; transform: scale(.9); transform-origin: 252px 240px; transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft); }
+#s-gap.st-0 .gp-cr { --pd: calc(var(--enter, 0s) + .55s + var(--di) * .14s); opacity: 1; transform: none;
+  transition: opacity .5s var(--ease-soft) var(--pd), transform .8s var(--ease-back) var(--pd); }
+#s-gap .gp-sq { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 28%; background: rgba(226, 234, 245, var(--a)); }
+#s-gap.st-0 .gp-tw { animation: gpTw var(--tt) ease-in-out var(--td) infinite; }
 @keyframes gpTw { 0%, 100% { opacity: 1; } 50% { opacity: .18; } }
 
 /* the walls: ten stacked outlines. At stop 0 they are a low kerb; at stop 1 they
    rise (layer by layer) and turn purple; at stop 2 they sink back. --wc / --ws are
    each layer's resting colour and glow (the hit flash animates away from them). */
-#s-gap .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); position: absolute; inset: 0; border-radius: 92px; border: 2px solid var(--wc); box-shadow: var(--ws); pointer-events: none;
+#s-gap .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); position: absolute; left: 0; top: 0; border-radius: 92px; border: 2px solid var(--wc); box-shadow: var(--ws); pointer-events: none;
   transform: translateZ(calc(var(--k) * .8px)); transition: transform .6s var(--ease-soft), border-color .6s var(--ease-soft), box-shadow .6s var(--ease-soft); }
 #s-gap.st-0 .gp-w { transform: translateZ(calc(var(--k) * 2.6px)); transition: transform 1s var(--ease-out) calc(var(--enter, 0s) + .6s), border-color 1s var(--ease-soft) calc(var(--enter, 0s) + .5s + var(--di) * .12s); }
 #s-gap.st-0 .gp-w.base { --wc: rgba(255, 255, 255, .3); }
@@ -112,7 +114,7 @@
 /* stop 1: a ripple leaves the first light in the district's own shape, runs
    across the floor, hits the wall and stops there; the wall flashes purple from
    the ground up. First all three together (b), then one district every 3.4 s (a). */
-#s-gap .gp-rip { position: absolute; inset: 0; border-radius: 92px; border: 4px solid var(--teal); box-shadow: inset 0 0 40px rgba(37, 199, 188, .3), 0 0 18px rgba(37, 199, 188, .4);
+#s-gap .gp-rip { position: absolute; left: 0; top: 0; border-radius: 92px; border: 4px solid var(--teal); box-shadow: inset 0 0 40px rgba(37, 199, 188, .3), 0 0 18px rgba(37, 199, 188, .4);
   transform-origin: var(--sx) var(--sy); transform: translateZ(2px) scale(.04); opacity: 0; pointer-events: none; }
 /* (its outline turns teal → sea → purple as it runs and hits: the teal outline is its own; a sea
    outline (::before) and a purple one (::after) fade in over it on the same clock, which blends
@@ -139,9 +141,11 @@
 }
 @keyframes gpRipLoopSea { 0% { opacity: 0; animation-timing-function: cubic-bezier(.42, .12, .78, .88); } 13%, 100% { opacity: 1; } }
 @keyframes gpRipLoopHit { 0%, 13% { opacity: 0; animation-timing-function: var(--ease-soft); } 15.2%, 100% { opacity: 1; } }
-#s-gap.st-1 .gp-rip.b { animation: gpRip 1.8s linear calc(.35s + var(--di) * .2s) both; }
-#s-gap.st-1 .gp-rip.b::before { animation: gpRipSea 1.8s linear calc(.35s + var(--di) * .2s) both; }
-#s-gap.st-1 .gp-rip.b::after { animation: gpRipHit 1.8s linear calc(.35s + var(--di) * .2s) both; }
+/* (the one-shots fill backwards only: each ends invisible, where its resting style is, and a finished
+   animation holds no layer) */
+#s-gap.st-1 .gp-rip.b { animation: gpRip 1.8s linear calc(.35s + var(--di) * .2s) backwards; }
+#s-gap.st-1 .gp-rip.b::before { animation: gpRipSea 1.8s linear calc(.35s + var(--di) * .2s) backwards; }
+#s-gap.st-1 .gp-rip.b::after { animation: gpRipHit 1.8s linear calc(.35s + var(--di) * .2s) backwards; }
 #s-gap.st-1 .gp-rip.a { animation: gpRipLoop 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
 #s-gap.st-1 .gp-rip.a::before { animation: gpRipLoopSea 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
 #s-gap.st-1 .gp-rip.a::after { animation: gpRipLoopHit 10.2s linear calc(3.4s + var(--di) * 3.4s) infinite; }
@@ -182,7 +186,7 @@
    ring each, so neither waits on the other's frames and the compositor runs both */
 #s-gap .gp-L::before, #s-gap .gp-L::after { content: ''; position: absolute; left: 86px; top: 86px; width: 28px; height: 28px; border-radius: 28%; border: 2px solid var(--sea); opacity: 0; }
 #s-gap .gp-L::before { z-index: 1; }   /* over the light, as the ping is */
-#s-gap.st-0 .gp-L::before { animation: gpIgnite 1.3s var(--ease-out) var(--ig) both; }
+#s-gap.st-0 .gp-L::before { animation: gpIgnite 1.3s var(--ease-out) var(--ig) backwards; }
 #s-gap.st-0 .gp-L::after { animation: gpPing 6.6s var(--ease-out) calc(var(--ig) + 1.5s + var(--pd)) infinite; }
 @keyframes gpIgnite { 0% { opacity: 0; transform: scale(.8); } 12% { opacity: .95; } 100% { opacity: 0; transform: scale(3.6); } }
 @keyframes gpPing { 0% { opacity: 0; transform: scale(.8); } 5% { opacity: .75; } 36% { opacity: 0; transform: scale(3.2); } 100% { opacity: 0; transform: scale(3.2); } }
@@ -191,9 +195,10 @@
 #s-gap.st-0 .gp-stem { transform: rotateX(-90deg) scaleY(1); transition: transform 1.3s var(--ease-out) calc(var(--enter, 0s) + 1s + var(--di) * .14s + var(--k) * .12s); }
 
 /* ── bridges: they stand up out of the floor and arc over both walls ── */
-#s-gap .gp-br { position: absolute; transform-origin: 50% 100%; transform: rotateX(-90deg); pointer-events: none; transition: transform .8s var(--ease-soft); }
+#s-gap .gp-br { position: absolute; transform-origin: 50% 100%; transform: rotateX(-90deg); pointer-events: none; visibility: hidden; transition: transform .8s var(--ease-soft), visibility 0s linear .5s; }
+#s-gap.st-1 .gp-br { visibility: visible; transition: transform .8s var(--ease-soft), visibility 0s; }   /* (nothing on it shows before stop 1) */
 /* stop 2: each bridge lowers across the gap like a drawbridge — the gap closed */
-#s-gap.st-2 .gp-br { transform: rotateX(-6deg); transition: transform 1.5s cubic-bezier(.5, 0, .2, 1) .5s; }
+#s-gap.st-2 .gp-br { transform: rotateX(-6deg); transition: transform 1.5s cubic-bezier(.5, 0, .2, 1) .5s, visibility 0s; }
 #s-gap .gp-br svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
 #s-gap .gp-br path { fill: none; stroke-linecap: round; }
 #s-gap .gp-br-glow { stroke: rgba(37, 199, 188, .2); stroke-width: 10; stroke-dasharray: 48 200; opacity: 0; transition: opacity .4s var(--ease-soft); }
@@ -245,7 +250,7 @@
 
 /* foreground dust */
 #s-gap .gp-dust i { width: 4px; height: 4px; }
-#s-gap .gp-dust { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 1s var(--ease-soft); }
+#s-gap .gp-dust { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; opacity: 0; transition: opacity 1s var(--ease-soft); }   /* zero-size: a layer the size of its motes */
 #s-gap.st-0 .gp-dust { opacity: .8; transition-delay: calc(var(--enter, 0s) + 1s); }
 
 /* ── stop 2: the conclusion and the ask ─────────────────────────────── */
@@ -275,3 +280,16 @@
 #s-gap.st-2 .gp-br.p1 .gp-bl:not(.ok), #s-gap.st-2 .gp-br.p2 .gp-bl:not(.ok),
 #s-gap.st-2 .gp-br.p1 .gp-x, #s-gap.st-2 .gp-br.p2 .gp-x,
 #s-gap.st-2 .gp-br.p1 .gp-frag, #s-gap.st-2 .gp-br.p2 .gp-frag { animation: none; opacity: 0; }
+
+/* what a stop does not show is hidden, not only transparent: in the 3D map every transformed plane
+   is a compositor layer even at opacity 0. The ripples, the hits and the failing stories run on
+   stop 1 only, the crossing stories on stop 2 (leaving their stop they stop at once, invisible) */
+#s-gap:not([data-step="1"]) .gp-rip, #s-gap:not([data-step="1"]) .gp-hit,
+#s-gap:not([data-step="1"]) .gp-x, #s-gap:not([data-step="1"]) .gp-frag, #s-gap:not([data-step="1"]) .gp-bl:not(.ok),
+#s-gap:not([data-step="2"]) .gp-bl.ok { visibility: hidden; }
+
+/* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
+   and scaled up (a conic gradient scales cleanly), a quarter of the layer */
+#s-gap .gl-edge > i { width: calc(var(--gs, 480px) / 2); height: calc(var(--gs, 480px) / 2); margin: calc(var(--gs, 480px) / -4) 0 0 calc(var(--gs, 480px) / -4); transform: scale(2); }
+#stage:not(.lite) #s-gap .gl-edge > i { animation-name: gpEdge; }
+@keyframes gpEdge { from { transform: rotate(0deg) scale(2); } to { transform: rotate(360deg) scale(2); } }

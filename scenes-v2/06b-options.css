@@ -5,19 +5,21 @@
 #s-options .op-pool { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0;
   transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + .3s), transform 1.4s var(--ease-out); }
 #s-options.st-0 .op-pool { opacity: 1; }
-#s-options .op-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transition: opacity 1.2s var(--ease-soft); }
-#s-options .op-pool.ab { left: 250px; top: 300px; width: 1240px; height: 760px; }
+/* (the pools and the hero's glow are drawn at half size and scaled up (their keyframes carry the ×2):
+   a soft gradient scales cleanly, at a quarter of the layer) */
+#s-options .op-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2); transition: opacity 1.2s var(--ease-soft); }
+#s-options .op-pool.ab { left: 560px; top: 490px; width: 620px; height: 380px; }
 #s-options .op-pool.ab::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .22), rgba(96, 38, 80, .09) 58%, transparent); animation: opWash 11s ease-in-out infinite alternate; }
-#s-options .op-pool.c { left: 1160px; top: 170px; width: 820px; height: 980px; }
+#s-options .op-pool.c { left: 1365px; top: 415px; width: 410px; height: 490px; }
 #s-options .op-pool.c::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 58%, transparent); animation: opBreath 6.4s ease-in-out infinite; }
-#s-options .op-pool.c::after { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: 0; transition: opacity 1.2s var(--ease-soft);
+#s-options .op-pool.c::after { content: ''; position: absolute; inset: 0; border-radius: 50%; opacity: 0; transform: scale(2); transition: opacity 1.2s var(--ease-soft);
   background: radial-gradient(closest-side, rgba(3, 255, 203, .34), rgba(37, 199, 188, .13) 55%, transparent); animation: opBreath2 5.2s ease-in-out -2s infinite; }
 #s-options.st-1 .op-pool.ab { opacity: .3; transition-delay: 0s; }
 #s-options.st-1 .op-pool.c { transform: scale(1.1); transition-delay: 0s; }
 #s-options.st-1 .op-pool.c::after { opacity: 1; transition-delay: .3s; }
-@keyframes opWash { from { transform: translate(-70px, 24px) scale(.9); opacity: .55; } to { transform: translate(90px, -30px) scale(1.08); opacity: 1; } }
-@keyframes opBreath { 0%, 100% { transform: scale(.88); opacity: .6; } 50% { transform: scale(1.06); opacity: 1; } }
-@keyframes opBreath2 { 0%, 100% { transform: translateY(-70px) scale(.86); } 50% { transform: translateY(80px) scale(1.1); } }
+@keyframes opWash { from { transform: translate(-70px, 24px) scale(1.8); opacity: .55; } to { transform: translate(90px, -30px) scale(2.16); opacity: 1; } }
+@keyframes opBreath { 0%, 100% { transform: scale(1.76); opacity: .6; } 50% { transform: scale(2.12); opacity: 1; } }
+@keyframes opBreath2 { 0%, 100% { transform: translateY(-70px) scale(1.72); } 50% { transform: translateY(80px) scale(2.2); } }
 
 /* ── header: the headline, then the recommendation in its place ─────────── */
 #s-options .op-head { position: absolute; left: 144px; top: 150px; width: 1632px; height: 170px; }
@@ -27,20 +29,22 @@
 #s-options .op-hero em.hl { text-shadow: 0 0 40px rgba(37, 199, 188, .35); }
 #s-options .op-sub { position: absolute; left: 2px; top: 188px; margin: 0; font: 400 26px/1.2 var(--font); color: rgba(255, 255, 255, .66); white-space: nowrap; }
 /* a glow breathes behind the recommendation (the words stay still) */
-#s-options .op-hglow { position: absolute; left: -260px; top: -80px; width: 1900px; height: 340px; pointer-events: none; opacity: 0; transition: opacity 1s var(--ease-soft); }
+#s-options .op-hglow { position: absolute; left: 215px; top: 5px; width: 950px; height: 170px; pointer-events: none; opacity: 0; transition: opacity 1s var(--ease-soft); }
 #s-options.st-1 .op-hglow { opacity: 1; transition-delay: .5s; }
-#s-options .op-hglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
+#s-options .op-hglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; transform: scale(2);
   background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 55%, transparent); animation: opBreath 4.6s ease-in-out infinite; }
 /* the recommendation lands with a bloom (live click only) */
-#s-options .op-hglow::after { content: ''; position: absolute; left: 180px; top: 20px; width: 1300px; height: 300px; border-radius: 50%; opacity: 0;
+#s-options .op-hglow::after { content: ''; position: absolute; left: 30px; top: 10px; width: 650px; height: 150px; border-radius: 50%; opacity: 0;
   background: radial-gradient(closest-side, rgba(200, 255, 244, .22), transparent); }
-#s-options.op-live1 .op-hglow::after { animation: opBloom 1.6s var(--ease-out) .5s both; }
-@keyframes opBloom { 0% { opacity: 0; transform: scale(.5); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(1.25); } }
+/* (one-shots fill backwards only: they end where the resting style is, invisible, and a finished
+   animation holds no layer) */
+#s-options.op-live1 .op-hglow::after { animation: opBloom 1.6s var(--ease-out) .5s backwards; }
+@keyframes opBloom { 0% { opacity: 0; transform: scale(1); } 25% { opacity: 1; } 100% { opacity: 0; transform: scale(2.5); } }
 
 /* ── the columns open from the chapter's centre line (y 540) ────────────── */
 #s-options .op-col, #s-options .op-crit { position: absolute; }
 #s-options .op-col { transform-origin: 50% 0; transition: transform 1s var(--ease-out), opacity .8s var(--ease-soft), filter .8s var(--ease-soft); }
-#s-options .op-table { position: absolute; inset: 0; transition: transform 1.05s var(--ease-io); }
+#s-options .op-table { position: absolute; left: 0; top: 0; width: 0; height: 0; transition: transform 1.05s var(--ease-io); }   /* zero-size: a layer the size of what it holds */
 #s-options.st-1 .op-table { transform: translateY(var(--drop)); }
 #s-options .op-card { position: relative; width: 100%; height: 100%; border-radius: 22px; overflow: hidden; }
 #s-options .op-card[data-in], #s-options .op-crit[data-in] { clip-path: inset(-160px round 22px);
@@ -51,8 +55,8 @@
 /* two edges of light travel with the opening (live build only) */
 #s-options .op-edge { position: absolute; left: -14px; right: -14px; top: calc(var(--seam) - 1px); height: 3px; border-radius: 2px; opacity: 0; pointer-events: none;
   background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .9) 16%, #fff 50%, rgba(3, 255, 203, .9) 84%, transparent); box-shadow: 0 0 14px rgba(3, 255, 203, .8), 0 0 44px rgba(3, 255, 203, .35); }
-#s-options.op-live0 .op-edge.t { animation: opEdgeT .9s var(--op-open) calc(var(--enter, 0s) + var(--d)) both, opEdgeFade .9s linear calc(var(--enter, 0s) + var(--d)) both; }
-#s-options.op-live0 .op-edge.b { animation: opEdgeB .9s var(--op-open) calc(var(--enter, 0s) + var(--d)) both, opEdgeFade .9s linear calc(var(--enter, 0s) + var(--d)) both; }
+#s-options.op-live0 .op-edge.t { animation: opEdgeT .9s var(--op-open) calc(var(--enter, 0s) + var(--d)) backwards, opEdgeFade .9s linear calc(var(--enter, 0s) + var(--d)) backwards; }
+#s-options.op-live0 .op-edge.b { animation: opEdgeB .9s var(--op-open) calc(var(--enter, 0s) + var(--d)) backwards, opEdgeFade .9s linear calc(var(--enter, 0s) + var(--d)) backwards; }
 @keyframes opEdgeT { from { transform: translateY(0); } to { transform: translateY(calc(-1 * var(--seam))); } }
 @keyframes opEdgeB { from { transform: translateY(0); } to { transform: translateY(var(--rest)); } }
 @keyframes opEdgeFade { 0% { opacity: 0; } 17% { opacity: 1; } 70% { opacity: .85; } 100% { opacity: 0; } }
@@ -90,7 +94,7 @@
 #s-options .op-mk[data-in] { transition: opacity .3s var(--ease-soft) var(--delay), transform .6s var(--ease-back) var(--delay), filter .4s var(--ease-soft) var(--delay); }
 #s-options .op-mk[data-in]:not(.is-in) { transform: scale(.3); filter: blur(4px); transition-duration: .3s; transition-delay: 0s; }
 /* a strong mark lands with a ripple (live build only) */
-#s-options.op-live0 .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(var(--delay) + .08s) both; }
+#s-options.op-live0 .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(var(--delay) + .08s) backwards; }
 @keyframes opRip { 0% { opacity: 0; transform: scale(1); } 16% { opacity: .9; } 100% { opacity: 0; transform: scale(2.1); } }
 
 /* ── the criteria: support (small, dim), with the legend on top ─────────── */
@@ -136,9 +140,9 @@
 /* a light runs down C's column at the click, each mark rippling as it passes (live build only) */
 #s-options .op-run { position: absolute; left: calc(50% - 150px); top: 164px; width: 300px; height: 120px; border-radius: 50%; opacity: 0; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .42), rgba(37, 199, 188, .15) 55%, transparent); }
-#s-options.op-live1 .op-run { animation: opRun 1.5s linear .6s both; }
+#s-options.op-live1 .op-run { animation: opRun 1.5s linear .6s backwards; }
 @keyframes opRun { 0% { transform: translateY(0); opacity: 0; } 11% { opacity: 1; } 75% { transform: translateY(240px); opacity: 1; } 100% { transform: translateY(240px); opacity: 0; } }
-#s-options.op-live1 .op-col.c .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(.66s + var(--r) * .28s) both; }
+#s-options.op-live1 .op-col.c .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(.66s + var(--r) * .28s) backwards; }
 /* …then a reading band keeps walking C's five rows (as the table's did at stop 0); each mark flares and ripples as it arrives */
 #s-options .op-cband { position: absolute; left: 14px; right: 14px; top: 164px; height: 60px; border-radius: 12px; opacity: 0; pointer-events: none; mix-blend-mode: screen;
   background: linear-gradient(90deg, rgba(37, 199, 188, .04), rgba(37, 199, 188, .16) 50%, rgba(37, 199, 188, .04));
@@ -151,3 +155,9 @@
 @keyframes opRipCO { 0% { opacity: 0; } 4% { opacity: .85; animation-timing-function: ease-out; } 13%, 100% { opacity: 0; } }
 
 #stage.lite #s-options .op-pool::before, #stage.lite #s-options .op-pool::after { animation: none; }
+
+/* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
+   and scaled up (a conic gradient scales cleanly), a quarter of the layer */
+#s-options .gl-edge > i { width: calc(var(--gs, 480px) / 2); height: calc(var(--gs, 480px) / 2); margin: calc(var(--gs, 480px) / -4) 0 0 calc(var(--gs, 480px) / -4); transform: scale(2); }
+#stage:not(.lite) #s-options .gl-edge > i { animation-name: opEdge2; }
+@keyframes opEdge2 { from { transform: rotate(0deg) scale(2); } to { transform: rotate(360deg) scale(2); } }

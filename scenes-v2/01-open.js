@@ -43,7 +43,7 @@
       <!-- the light the title opened out of (01 enters with 'iris' from the hook's light): it dissipates -->
       <i class="op-iris"></i>
       <!-- mid layer: dust; near layer: soft out-of-focus lights drifting the other way (parallax) -->
-      <div class="amb-dust op-dust">${Array.from({ length: 26 }, (_, i) => `<i style="left:${(i * 137) % 100}%;top:${40 + (i * 71) % 60}%;--t:${10 + (i % 6) * 2.4}s;--dl:${-i * 1.1}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 60)}px;--dy:${-160 - (i * 29) % 200}px"></i>`).join('')}</div>
+      <div class="amb-dust op-dust">${Array.from({ length: 26 }, (_, i) => `<i style="left:${((i * 137) % 100) * 19.2}px;top:${(40 + (i * 71) % 60) * 10.8}px;--t:${10 + (i % 6) * 2.4}s;--dl:${-i * 1.1}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 60)}px;--dy:${-160 - (i * 29) % 200}px"></i>`).join('')}</div>
       <div class="op-near">${[[1180, 120, 120, 'a'], [1760, 300, 170, 'b'], [1500, 760, 210, 'a'], [1860, 860, 120, 'b'], [1180, 980, 150, 'b'], [1320, 420, 70, 'a']].map(([x, y, sz, k], i) => `<i class="${k}" style="left:${x}px;top:${y}px;--sz:${sz}px;--dl:${-i * 3.7}s"></i>`).join('')}</div>
 
       <div class="op-logo a-materialize" data-in="0" style="--d:.2s;--dur:1.6s">${Deck.logo()}</div>
@@ -73,7 +73,9 @@
         w.parentNode.appendChild(sw);
       });
     },
+    leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
+      window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
       // the birth plays once, on a live click (a settled landing shows the light already born)
       ctx.el.classList.toggle('op-born', n === 1 && !ctx.instant);
       if (n === 1 && !ctx.instant) {
