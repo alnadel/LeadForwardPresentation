@@ -280,7 +280,7 @@ em.hl { font-style: normal; color: var(--teal); }
 .amb-ken     { animation: ambKen 44s linear infinite alternate; }
 .amb-ken-2   { animation: ambKen2 50s linear infinite alternate; }
 .amb-twinkle { animation: ambTwinkle 2.8s ease-in-out infinite; }
-.amb-blink   { animation: ambBlink 1s steps(1) infinite; }
+.amb-blink   { animation: ambBlink 1.6s ease-in-out infinite; }
 .amb-flow    { stroke-dasharray: 6 14; animation: ambFlow 1.6s linear infinite; }
 .amb-flow-slow { stroke-dasharray: 4 16; animation: ambFlow 3.2s linear infinite; }
 .amb-glint   { position: relative; overflow: hidden; }
