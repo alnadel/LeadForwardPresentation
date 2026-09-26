@@ -53,7 +53,7 @@
       'Behind a Better Life. Make the contribution visible. Make the learning travel. Light the way. Thank you. Hold here for questions: the ask stays on screen. For detail, type a slide number and press Enter; End returns here.',
     ],
     field: [
-      // travel starts at 0 so the callback frame matches 02.2; the loop raises it once the chain is complete
+      // travel starts at 0 so the callback frame matches 02.1; the loop raises it once the chain is complete
       { dim: .8, travel: 0, offset: Deck.NIGHT_OFFSET, pins: PAIR, litFrom: PAIR[0], chain: true, warm: 0, drift: .35, links: .55, wave: .45, streaks: .1, sparkle: 1,
         calm: [[KNOW.x + 20, KNOW.y, KNOW.x + 740, KNOW.y + 120, .85]] },
       // the lit field frames the brand block: calm (nearly dark) behind the lockup, the title
@@ -74,7 +74,7 @@
       <div class="cl-hush a-fade" data-in="1" style="--d:.1s;--dur:1.6s"></div>
       <div class="cl-stories a-fade" data-in="1" style="--d:1s;--dur:1.2s">${stories}</div>
 
-      <!-- the same image as 02.2: a soft halo between two lights, one on each colleague -->
+      <!-- the same image as 02.1: a soft halo between two lights, one on each colleague -->
       <div class="cl-pair a-fade" data-in="0" data-out="1" style="--dur:1.2s">
         <b class="cl-mid"><i class="cl-halo"></i></b>
         <b class="cl-p"><i class="light"></i></b><b class="cl-p"><i class="light"></i></b>

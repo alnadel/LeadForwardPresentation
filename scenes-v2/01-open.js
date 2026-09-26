@@ -1,15 +1,18 @@
-/* 01 · Open (v2) — the title over the night operations centre; the video wall
-   is alive with data; at stop 1 the story light is born at the tagline. */
+/* 01 · Open (v2) — the title opens out of the question's light (iris) over the
+   night operations centre; the video wall is alive with data; at stop 1 the story
+   light is born at the tagline. */
 Deck.scene({
   id: 'open',
   title: 'Behind a Better Life',
   act: 0,
   bg: 'night',
+  transition: 'iris',       // the title opens out of the light resting under the question
+  irisBurst: 1400,
   chrome: { mark: false, progress: false },
   cues: ['Title', 'Tagline · the light is born'],
   holds: [5, 7],
   notes: [
-    'Let the title sit. Introduce the team and Lead Forward 2026. Say the decision up front: in fifteen minutes we will ask you to approve one quarterly pilot.',
+    'Hold that thought — we will come back to it. Now introduce yourselves: the team, Lead Forward 2026, Behind a Better Life. Say the decision up front: in fifteen minutes we will ask you to approve one quarterly pilot.',
     'Real stories. Visible values. Repeatable impact. One person’s story can light the way for others — that light is the thread through everything that follows.',
   ],
   field: [

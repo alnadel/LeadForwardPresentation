@@ -1,9 +1,8 @@
-/* 02 · One night (v2) — merges v1 02 · Question and 03 · One night.
-   Stop 0: the question alone, a warm light turning behind it.
-   Stop 1: the question falls away and the film frame builds — 03:12, Nouf at her
+/* 02 · One night (v2) — the question now opens the talk on its own (00-hook).
+   Stop 0: the film frame builds as the camera flies in — 03:12, Nouf at her
    desk under flickering monitor light, loose notes fly together into the new
    night handover, and the morning changes.
-   Stop 2: the camera pulls back until the whole night is two lit squares in a
+   Stop 1: the camera pulls back until the whole night is two lit squares in a
    vast field. Two people know. This is the exact v1 03.3 image (the pins at
    Deck.NIGHT_PAIR, the camera at Deck.NIGHT_OFFSET, the words placed by the same
    formula); v2 scene 11 calls back to it. */
@@ -57,10 +56,7 @@
   const KNOW = { x: Math.round(Math.min(Math.max(144, MID[0] - 380), 1776 - 760)), y: Math.round(Math.max(REST[0][1], REST[1][1]) + 84) };
 
   const check = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="5.5 12.5 10 17 18.5 7.5"/></svg>';
-  // near-camera bokeh: large soft squares drifting slowly at the edges of the frame (stop 0 depth)
-  const BOKEH = [[120, 170, 96, 18, -4], [1690, 130, 130, 22, -9], [300, 820, 150, 24, -13], [1540, 790, 110, 20, -2], [40, 520, 70, 16, -7], [1820, 470, 84, 19, -11], [880, 70, 60, 17, -5]];
-  const bokeh = BOKEH.map(([x, y, sz, t, dl], i) => `<i style="left:${x}px;top:${y}px;--sz:${sz}px;--t:${t}s;--dl:${dl}s;--bx:${(i % 2 ? -1 : 1) * (40 + i * 9)}px;--by:${(i % 3 - 1) * 36}px"></i>`).join('');
-  // dust drifting through the night air (stops 0–1)
+  // dust drifting through the night air (stop 0)
   const dust = Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 137 + 41) % 100}%;top:${28 + (i * 71) % 70}%;--t:${11 + (i % 6) * 2.3}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (30 + (i * 13) % 70)}px;--dy:${-150 - (i * 29) % 210}px"></i>`).join('');
 
   Deck.scene({
@@ -69,37 +65,22 @@
     act: 0,
     bg: 'deep',
     tag: 'illustrative',
-    tagFrom: 1,                 // Nouf arrives at stop 1; the question stands alone at stop 0
     transition: 'dolly',
-    cues: ['When was the last time a colleague inspired you?', '03:12 · Nouf rebuilt the night handover', 'Pull back · two people know'],
-    holds: [7, 10, 8],
+    cues: ['03:12 · Nouf rebuilt the night handover', 'Pull back · two people know'],
+    holds: [10, 8],
     notes: [
-      'Ask it, then stay quiet for a few seconds: when was the last time a colleague inspired you? Give the room time to picture one person and one moment.',
-      'Nouf is an illustrative story. At 03:12, in the traffic operations centre, she rebuilt the night handover — unasked, in one afternoon. The morning shift no longer rebuilds the night; it is on live incidents from minute one.',
+      'Here is one of those moments. Nouf is an illustrative story. At 03:12, in the traffic operations centre, she rebuilt the night handover — unasked, in one afternoon. The morning shift no longer rebuilds the night; it is on live incidents from minute one.',
       'Now pull back. Across the whole organisation, who knows this happened? Two people: Nouf, and the colleague who sat next to her. Pause, and let the empty field land.',
     ],
     field: [
-      { dim: .6, lit: 0, travel: 0, offset: OFFSET, pins: [], warm: .3, links: .7, wave: .7, streaks: .14, sparkle: 1.4, drift: 1.2, calm: [[180, 330, 1740, 690, .6]] },
-      { dim: .24, warm: 0, links: .3, wave: .3, streaks: .05, sparkle: .4, calm: [[100, 110, 1820, 420, .6], [1120, 400, 1780, 900, .7], [100, 840, 1420, 950, .6]] },
+      { dim: .24, lit: 0, travel: 0, offset: OFFSET, pins: [], warm: 0, drift: 1.2, links: .3, wave: .3, streaks: .05, sparkle: .4, calm: [[100, 110, 1820, 420, .6], [1120, 400, 1780, 900, .7], [100, 840, 1420, 950, .6]] },
       // the pull-back: the pair is the only light — no flares, no shooting lights, no stories travelling,
       // no constellation lines (one would attach to the pair); the v1 03.3 image
       // (the right edge is quietened a little: it is where the stop-1 spark landed, so no flash can linger there)
       { dim: .8, pins: Deck.NIGHT_PAIR, links: 0, wave: 1, streaks: 0, sparkle: 0, travel: 0, drift: 2, calm: [[KNOW.x + 20, KNOW.y, KNOW.x + 740, KNOW.y + 180, .55], [1500, 130, 2010, 800, .7]] },
     ],
     html: `
-      <div class="nt-warm"><i></i></div>
-      <div class="nt-deep">
-        <div class="nt-rays"></div>
-        <div class="nt-rings"><i></i><i></i><i></i></div>
-        <div class="nt-horizon"><i></i></div>
-      </div>
       <div class="amb-dust nt-dust">${dust}</div>
-      <div class="nt-bokeh">${bokeh}</div>
-
-      <div class="nt-q" data-spark="0" data-spark-xy="960,716" data-spark-delay="1.05">
-        <h1 class="display" data-in="0" data-split style="--d:.1s">When was the last time</h1>
-        <h1 class="display" data-in="0" data-split style="--d:.38s">a colleague inspired you?</h1>
-      </div>
 
       <div class="nt-film" style="transform-origin:${REST[0][0].toFixed(0)}px ${REST[0][1].toFixed(0)}px">
         <div class="nt-band">
@@ -113,13 +94,13 @@
         </div>
 
         <div class="nt-ui">
-          <div class="kicker nt-kicker a-wipe" data-in="1" style="--d:.45s">Traffic operations centre · night shift</div>
-          <div class="nt-clock num a-blur" data-in="1" style="--d:.2s;--dur:1.2s" aria-label="03:12"><i class="nt-clock-glow"></i><span class="nt-dg">03</span><span class="nt-colon"><b></b><b></b></span><span class="nt-dg">12</span></div>
-          <h2 class="nt-head" data-in="1" data-split style="--d:.4s">Nouf rebuilt the night handover — unasked, in one afternoon.</h2>
+          <div class="kicker nt-kicker a-wipe" data-in="0" style="--d:.45s">Traffic operations centre · night shift</div>
+          <div class="nt-clock num a-blur" data-in="0" style="--d:.2s;--dur:1.2s" aria-label="03:12"><i class="nt-clock-glow"></i><span class="nt-dg">03</span><span class="nt-colon"><b></b><b></b></span><span class="nt-dg">12</span></div>
+          <h2 class="nt-head" data-in="0" data-split style="--d:.4s">Nouf rebuilt the night handover — unasked, in one afternoon.</h2>
 
           <div class="nt-scraps">${SCRAPS.map(scrapHtml).join('')}</div>
 
-          <div class="nt-card-w" data-spark="1" data-spark-xy="${CARD.x + CARD.w - 58},${CARD.y + 52}" data-spark-delay="1.05">
+          <div class="nt-card-w" data-spark="0" data-spark-xy="${CARD.x + CARD.w - 58},${CARD.y + 52}" data-spark-delay="1.05">
             <i class="nt-card-pool"></i>
             <div class="glass live nt-card">
               <div class="nt-card-h">${Deck.icon('document-certified', 'nt-card-ic')}<span class="nt-card-t">NIGHT HANDOVER · v2</span><span class="nt-card-slot"></span></div>
@@ -127,15 +108,15 @@
             </div>
           </div>
 
-          <p class="nt-ba" data-in="1" style="--d:.85s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
+          <p class="nt-ba" data-in="0" style="--d:.85s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
         </div>
       </div>
 
       <div class="nt-pair"><i class="nt-halo"></i></div>
       <b class="nt-p"><i class="light"></i></b><b class="nt-p"><i class="light"></i></b>
       <div class="nt-know" style="left:${KNOW.x}px;top:${KNOW.y}px">
-        <h2 class="nt-know-h" data-in="2" data-split style="--d:.8s">Two people know.</h2>
-        <p class="nt-know-s" data-in="2" style="--d:1s;--dur:.5s">Nouf, and the colleague who sat next to her.</p>
+        <h2 class="nt-know-h" data-in="1" data-split style="--d:.8s">Two people know.</h2>
+        <p class="nt-know-s" data-in="1" style="--d:1s;--dur:.5s">Nouf, and the colleague who sat next to her.</p>
       </div>
     `,
     init(ctx) {
@@ -152,15 +133,13 @@
     },
     enter(ctx) {
       ctx.loop(() => {
-        if (ctx.step === 2) ctx.placePair(true);
+        if (ctx.step === 1) ctx.placePair(true);
       });
     },
     step(n, prev, ctx) {
       if (!window.Field) return;
-      // the question drops: the camera dips with it
-      if (n === 1 && prev === 0 && !ctx.instant) Field.kick(0, 70, 1.5);
       // the pull-back: no colleague is lit but the pair (clears any lit share still easing out of 01)
-      if (n === 2) Field.setLit(0);
+      if (n === 1) Field.setLit(0);
     },
     leave() {
       // the pair stays lit only here; scene 11 relights it

@@ -8,7 +8,7 @@ There are two versions. Both use the same keys and the same speaker view.
 
 | | File | Scenes · stops | Use it for |
 | --- | --- | --- | --- |
-| **v2 · condensed** | `dist/Behind-a-Better-Life-v2.html` | 11 · 32 | **the 15-minute slot**. Cinematic scene changes and a livelier frame while parked. |
+| **v2 · condensed** | `dist/Behind-a-Better-Life-v2.html` | 12 · 32 | **the 15-minute slot**. Cinematic scene changes and a livelier frame while parked. |
 | v1 · full | `dist/Behind-a-Better-Life.html` | 17 · 62 | a longer session, or open it in Q&A for the detail v2 folds into the notes (risk table, story format, rhythm) |
 
 ## Version 2 — condensed (15 minutes)
@@ -16,11 +16,11 @@ Open **`dist/Behind-a-Better-Life-v2.html`**, or double-click `Present v2 (Windo
 
 | Act | Scenes (stops) | Aim to finish by |
 | --- | --- | --- |
-| I · The moment | 01 Open (2) · 02 One night (3) | 2:00 |
-| II · The gap | 03 The gap (3) · 04 What colleagues told us (4) · 05 Reading the numbers (2) | 6:00 |
-| III · Why it matters | 06 Why it matters (3) | 7:45 |
-| IV · The cycle | 07 The cycle (3) · 08 One story, through the cycle (4) · 09 How it runs (3) | 12:15 |
-| V · The pilot | 10 The pilot (3) · 11 Close (2) | 15:00 |
+| I · The moment | 01 The question (1) · 02 Open (2) · 03 One night (2) | 2:00 |
+| II · The gap | 04 The gap (3) · 05 What colleagues told us (4) · 06 Reading the numbers (2) | 6:00 |
+| III · Why it matters | 07 Why it matters (3) | 7:45 |
+| IV · The cycle | 08 The cycle (3) · 09 One story, through the cycle (4) · 10 How it runs (3) | 12:15 |
+| V · The pilot | 11 The pilot (3) · 12 Close (2) | 15:00 |
 
 What is new in v2:
 
@@ -36,7 +36,8 @@ What is new in v2:
   - Numbers count up and land with a punch.
 - **Bigger, bolder layouts.** Every diagram fills the frame, text is at least 26–30px for the room, cards use a glass material with a slow travelling edge light, and the element each stop is about is the largest and brightest.
 - **Livelier parked frames.** Every stop has several slow continuous motions: constellation lines and waves in the field, shooting lights, photo push-ins, flowing connectors, breathing nodes. Nothing inside the text you are reading moves, and numbers never change while parked.
-- Merged content: 02 = the question and one night. 06 = the link and strategic alignment. 09 = format, rhythm and recognition as three tabs. 10 = measure and the ask, with the risk table in the notes.
+- **It opens cold on the question.** The first frame is "When was the last time a colleague inspired you?" with no title or introduction; the next click opens the title out of the light under the question, and then Nouf's night.
+- Merged content: 07 = the link, strategic alignment and the values. 10 = format, rhythm and recognition as three tabs. 11 = measure and the ask, with the risk table in the notes.
 
 Storyboard and rationale: [`docs/STORYBOARD-v2.md`](docs/STORYBOARD-v2.md). Backup: `dist/Behind-a-Better-Life-v2-stops.pdf` has every stop as a static page with its notes.
 
@@ -96,13 +97,13 @@ These changed from, or were added to, the approved deck. Check each one with the
 - **Scene 15, risk owners** (Curation panel, Internal Communications, HR/Legal, HR/People Analytics). These are proposals taken from the team's concept deck.
 - **Scene 16, "What we need"** (an executive sponsor, curation time from HR and Internal Communications, existing channels) and the "scale, adjust or stop" report-back.
 - **Scene 14, baseline.** It says the same eight survey questions will be re-asked at the end of the quarter.
-- **New in v2, scene 09 (Impact tab):** "Evidence is reviewed before a story is featured." It states a design decision, so check the team agrees. In v2 the baseline re-ask, "What we need" and the risk owners appear in scene 10 and its notes.
+- **New in v2, scene 10 How it runs (Impact row):** "Evidence is reviewed before a story is featured." It states a design decision, so check the team agrees. In v2 the baseline re-ask, "What we need" and the risk owners appear in scene 11 (The pilot) and its notes.
 
 ## Tech check at the venue (5 minutes)
 - Use Chrome or Edge, full screen (**F**). Set the display to 1920×1080 if possible.
 - Do a clicker test: next, back and blank.
 - Open the speaker view (**S**) and drag it to the laptop screen, then check that the deck window is on the projector.
-- Look at the 8% stop (the sea-green squares: v2 scene 04 stop 2, v1 scene 05 stop 3) on the real projector. If it looks washed out, press **C**.
+- Look at the 8% stop (the sea-green squares: v2 scene 05 stop 3, v1 scene 05 stop 3) on the real projector. If it looks washed out, press **C**.
 - If animation stutters, press **L**.
 - Turn off notifications and sleep, and close Teams and Outlook.
 - Backup: `dist/Behind-a-Better-Life-v2-stops.pdf` (v2) and `dist/Behind-a-Better-Life-stops.pdf` (v1) have every stop as a static page with its notes. It opens on any computer.

@@ -1,6 +1,6 @@
 /* 11 · Close (v2) */
 
-/* ── stop 0 · the callback: the same image as 02.2 (halo and breathing mirror 02-night.css) ── */
+/* ── stop 0 · the callback: the same image as 02.1 (halo and breathing mirror 02-night.css) ── */
 #s-close .cl-pair { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 #s-close .cl-mid, #s-close .cl-p { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 #s-close .cl-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: clHalo 3s ease-in-out -.75s infinite; }
@@ -13,7 +13,7 @@
 }
 
 #s-close .cl-knew { position: absolute; width: 760px; text-align: center; filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); }
-/* the same slow glow as 02.2's "Two people know." */
+/* the same slow glow as 02.1's "Two people know." */
 #s-close.st-0 .cl-knew { animation: clKnow 3s ease-in-out 2.4s infinite; }
 @keyframes clKnow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .46)); } }
 #s-close .cl-knew .h1 { font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }

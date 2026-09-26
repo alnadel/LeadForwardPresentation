@@ -54,10 +54,13 @@ Speaker notes: about 20–40 words per stop, 1,400 words in total.
 
 ---
 
-### 01 · Open — 2 stops · (first scene)
+### 01 · Open — 2 stops · opens out of the hook's light (`iris`)
 Keep the v1 open (ops-centre photo, lockup, title, Arabic, tagline, one light igniting), but bring it more alive: a stronger photo push-in, a light leak drifting across the video wall, dust motes and data flickers on the wall. At stop 1 the spark is born at the tagline light.
 
-### 02 · One night — 3 stops · transition `dolly` · tag illustrative from stop 1
+### 00 · The hook — 1 stop (first frame; no chrome)
+The question alone, before any title or introduction (moved out of 02, so the talk opens cold on it). The next click opens the title out of its light (`iris`).
+
+### 02 · One night — 2 stops (was 3: the question moved to 00) · transition `dolly` · tag illustrative
 - **0** A centred display-size question: **When was the last time a colleague inspired you?** The field is gently alive around it.
 - **1** The question falls away, and the film frame builds: huge `03:12` (blinking colon), `TRAFFIC OPERATIONS CENTRE · NIGHT SHIFT`, the `nouf.jpg` band, and **Nouf rebuilt the night handover — unasked, in one afternoon.** Note scraps fly together into the `NIGHT HANDOVER · v2` card with six ticked rows. Beneath, a small before → after line: *Morning shift, first hour: rebuilding the night → on live incidents from minute one.* Spark: on the card.
 - **2** The pull-back to two lit squares at `Deck.NIGHT_PAIR` / `Deck.NIGHT_OFFSET` (pins): **Two people know.** *Nouf, and the colleague who sat next to her.* Use the exact 03.3 image from v1 (two lights and a soft halo). Spark: fades out, so the pair is the only light.
