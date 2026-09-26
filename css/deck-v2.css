@@ -335,7 +335,7 @@ em.hl { font-style: normal; color: var(--teal); }
 /* chapter (act boundaries): the old act falls away into depth; the story light
    stretches into a line of light that carries the act's number and name; the line
    splits into two edges that travel apart and open the next act from the centre */
-#stage[data-tx="chapter"] .scene.leaving { opacity: 0; transform: scale(.86); filter: blur(16px) brightness(.45); transition: opacity .62s cubic-bezier(.5, 0, .8, .4), transform 1s cubic-bezier(.55, 0, .75, .25), filter .62s var(--ease-soft); }
+#stage[data-tx="chapter"] .scene.leaving { opacity: 0; transform: scale(.86); filter: blur(16px) brightness(.45); transition: opacity .42s cubic-bezier(.4, 0, .7, .4), transform 1s cubic-bezier(.55, 0, .75, .25), filter .62s var(--ease-soft); }
 .scene.ch-hold { clip-path: inset(50% 0 50% 0); transform: scale(1.07); filter: blur(10px) brightness(1.5); }
 .scene.ch-open { clip-path: inset(0 0 0 0); transform: none; filter: none;
   transition: clip-path .9s cubic-bezier(.75, 0, .2, 1), transform 1.5s var(--ease-out), filter 1s var(--ease-soft) .1s, opacity .01s !important; }
@@ -364,8 +364,8 @@ em.hl { font-style: normal; color: var(--teal); }
 #tx-chapter .ch-label { position: absolute; left: 0; right: 0; top: 0; height: 1080px; text-align: center; color: var(--white); }
 #tx-chapter .ch-n { position: absolute; left: 0; right: 0; top: 452px; font: 700 34px/1 var(--font); letter-spacing: .5em; text-indent: .5em; color: var(--sea); text-shadow: 0 0 24px rgba(3, 255, 203, .6); }
 #tx-chapter .ch-t { position: absolute; left: 0; right: 0; top: 572px; font: 700 84px/1 var(--font); letter-spacing: .22em; text-indent: .22em; text-transform: uppercase; }
-#tx-chapter.run .ch-n { animation: chInN .6s var(--ease-out) .16s both; }
-#tx-chapter.run .ch-t { animation: chInT .66s var(--ease-out) .22s both; }
+#tx-chapter.run .ch-n { animation: chInN .6s var(--ease-out) .28s both; }
+#tx-chapter.run .ch-t { animation: chInT .66s var(--ease-out) .34s both; }
 @keyframes chInN { from { opacity: 0; transform: translateY(30px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes chInT { from { opacity: 0; transform: translateY(-34px); letter-spacing: .5em; text-indent: .5em; filter: blur(12px); } to { opacity: 1; transform: none; letter-spacing: .22em; text-indent: .22em; filter: none; } }
 #tx-chapter.open .ch-label { opacity: 0; transform: scale(1.06); filter: blur(8px); transition: opacity .34s var(--ease-soft), transform .5s var(--ease-out), filter .34s var(--ease-soft); }

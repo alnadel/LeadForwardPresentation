@@ -466,8 +466,8 @@
           build();
         };
         txPending = open;
-        txAfter(860, () => { txPending = null; open(); });
-        txAfter(1900, finishTx);      } else {
+        txAfter(980, () => { txPending = null; open(); });
+        txAfter(2000, finishTx);      } else {
         build();
         if (kind === 'back') txAfter(500, finishTx);
       }

@@ -34,6 +34,7 @@ What is new in v2:
   - Headlines flip in word by word and catch a light sweep.
   - Cards unfold, and icons materialise out of light.
   - Numbers count up and land with a punch.
+- **Bigger, bolder layouts.** Every diagram fills the frame, text is at least 26–30px for the room, cards use a glass material with a slow travelling edge light, and the element each stop is about is the largest and brightest.
 - **Livelier parked frames.** Every stop has several slow continuous motions: constellation lines and waves in the field, shooting lights, photo push-ins, flowing connectors, breathing nodes. Nothing inside the text you are reading moves, and numbers never change while parked.
 - Merged content: 02 = the question and one night. 06 = the link and strategic alignment. 09 = format, rhythm and recognition as three tabs. 10 = measure and the ask, with the risk table in the notes.
 
