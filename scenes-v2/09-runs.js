@@ -222,10 +222,10 @@
               </div>
             </div>
           </div>
-          <!-- the pulse: a squircle that scales (transform); its ring is a non-scaling stroke (2.5px at every size), its soft fill a gradient -->
+          <!-- the pulse: an SVG squircle that grows (its own geometry, so the ring stays a crisp 2.5px), with a soft gradient fill -->
           <svg class="rn-pulse" viewBox="0 0 ${VIEW.w} ${VIEW.h}" aria-hidden="true">
             <defs><radialGradient id="rn-pulse-g" cx=".5" cy=".5" r=".5"><stop offset=".62" stop-color="#03FFCB" stop-opacity="0"/><stop offset="1" stop-color="#03FFCB" stop-opacity=".14"/></radialGradient></defs>
-            <rect class="rn-pulse-r" x="${FC.x - 50}" y="${FC.y - 50}" width="100" height="100" rx="28"/>
+            <g transform="translate(${FC.x} ${FC.y})"><rect class="rn-pulse-r" x="-10" y="-10" width="20" height="20" rx="5.6"/></g>
           </svg>
         </div>
       </div>

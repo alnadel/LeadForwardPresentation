@@ -860,10 +860,13 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     const h = readHash();
     // the glass edge light: one masked ring per .glass card, sized to the card's diagonal so its
     // rotating gradient always covers the ring (measured after fonts load)
+    // (a ResizeObserver keeps each ring sized even for cards hidden or resized after load)
+    const sizeEdge = (g) => { const e = g.querySelector(':scope > .gl-edge'); if (e && g.offsetWidth) e.style.setProperty('--gs', Math.ceil(Math.hypot(g.offsetWidth, g.offsetHeight) + 12) + 'px'); };
+    const ro = window.ResizeObserver ? new ResizeObserver((es) => es.forEach((x) => sizeEdge(x.target))) : null;
     const edges = () => $$('.glass', scenesEl).forEach((g) => {
-      if (/^(IMG|INPUT|svg)$/i.test(g.tagName) || g.querySelector(':scope > .gl-edge')) return;
-      const e = document.createElement('i'); e.className = 'gl-edge'; e.innerHTML = '<i></i>'; g.appendChild(e);
-      e.style.setProperty('--gs', Math.ceil(Math.hypot(g.offsetWidth, g.offsetHeight) + 12) + 'px');
+      if (/^(IMG|INPUT|svg)$/i.test(g.tagName)) return;
+      if (!g.querySelector(':scope > .gl-edge')) { const e = document.createElement('i'); e.className = 'gl-edge'; e.innerHTML = '<i></i>'; g.appendChild(e); }
+      sizeEdge(g); if (ro) ro.observe(g);
     });
     const begin = () => {
       edges();

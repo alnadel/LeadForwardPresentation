@@ -184,7 +184,7 @@ body:not(.ready) #field, body:not(.ready) #glow, body:not(.ready) #beams, body:n
 [data-split].is-in .w > span, [data-split]:not([data-in]) .w > span { transform: none; opacity: 1; filter: none; }
 /* shine: a light passes through a headline once it has landed */
 [data-split].is-in .w > span:not(:has(*)) { background: linear-gradient(100deg, currentColor 42%, #FFFFFF 50%, currentColor 58%) 0% 0 / 300% 100% no-repeat;
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: v2Shine 1.6s var(--ease-soft) forwards; animation-delay: calc(var(--delay, 0s) + .75s + var(--wi) * .05s); }
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: v2Shine 1.2s var(--ease-soft) forwards; animation-delay: calc(var(--delay, 0s) + .75s + var(--wi) * .05s); }
 @keyframes v2Shine { from { background-position: 0% 0; } to { background-position: 100% 0; } }
 [data-split][data-in]:not(.is-in) { transform: none; opacity: 1; }
 [data-split][data-in]:not(.is-in) .w > span { transition-duration: .35s; transition-delay: 0s; }
@@ -295,7 +295,7 @@ em.hl { font-style: normal; color: var(--teal); }
 @keyframes ambBlink   { 50% { opacity: 0; } }
 @keyframes ambFlow    { to { stroke-dashoffset: -40; } }
 @keyframes ambGlint   { 0%, 70% { left: -40%; } 100% { left: 130%; } }
-@keyframes ambRing    { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(2.6); opacity: 0; } }
+@keyframes ambRing    { 0% { transform: scale(.6); opacity: 0; } 9% { transform: scale(.78); opacity: .85; } 100% { transform: scale(2.6); opacity: 0; } }   /* rises over ~290 ms: no snap on each lap */
 
 /* ── v2 ambient library: stronger, still smooth ───────────────────────── */
 .amb-float3d  { animation: v2Float3d 9s ease-in-out infinite; transform-style: preserve-3d; }

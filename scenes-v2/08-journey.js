@@ -259,7 +259,7 @@
       <svg class="jn-trc" viewBox="${TRBOX.join(' ')}" style="left:${TRBOX[0]}px;top:${TRBOX[1]}px;width:${TRBOX[2]}px;height:${TRBOX[3]}px" aria-hidden="true"><path class="jn-tr" d="${CURVE}"/></svg>
       <i class="jn-trs" style="left:${PILL.x}px;top:${N0[1] - 2}px;width:${NEXT[0] - PILL.x}px"><b></b></i>
       <div class="jn-newlight">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="left:${N0[0] - 7}px;top:${N0[1] - 7}px;--c:${k}"></i>`).join('')}</div>
-      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass"><i class="jn-edge"><b></b></i><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
+      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass live"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
       <div class="jn-next" style="left:${NEXT[0]}px;top:${NEXT[1].toFixed(1)}px"><b class="jn-pool"></b><i class="jn-sq"></i><b class="jn-flash"></b><span class="jn-rings"><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.07s"></b><b class="amb-ring" style="animation-delay:-2.13s"></b></span></div>
       <h2 class="jn-big" data-in="3" data-split style="--d:.55s">Recognition becomes <em class="hl jn-beh" data-t="behaviour.">behaviour.</em></h2>
       <style>${KF.join('\n')}</style>
