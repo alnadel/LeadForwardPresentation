@@ -81,7 +81,7 @@
       </div>
 
       <!-- the luminous divider: draws down at stop 0, re-fits the reading at stop 1 -->
-      <div class="bm-divider a-wipe-down" data-in="0" style="--d:.24s;--dur:1s"><i class="bm-div-run"></i></div>
+      <div class="bm-divider" data-in="0" style="--d:.24s;--dur:1s"><i class="bm-div-run"></i></div>
 
       <!-- left: THE MECHANISM (plum) -->
       <section class="bm-col mech">
@@ -119,8 +119,8 @@
       </div>
     `,
     step(n, prev, ctx) {
-      // one-shot lights (the divider's leading light, the ring from +48, the takeaway's
-      // sweep) play only on a live click; their resting state is invisible, so a stop
+      // one-shot lights (the divider's leading light, the ring and bloom on +48, the bloom
+      // behind the takeaway) play only on a live click; their resting state is invisible, so a stop
       // reached by a jump or by going back shows the same settled frame
       const el = ctx.el;
       el.classList.remove('bm-live', 'bm-read-live');

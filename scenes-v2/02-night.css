@@ -1,4 +1,8 @@
-/* 02 · One night (v2) — stop 0: the film frame; stop 1: the pull-back */
+/* 02 · One night (v2) — stop 0: the film frame; stop 1: the pull-back.
+   Stop 0 builds as the camera dollies in: the clock, kicker and headline resolve during
+   the fly-in (data-in delays already include --enter); the band, the notes, the card and
+   the before → after line wait for it to arrive: every delay below is var(--enter) + …
+   (--enter is .42s on the dolly and 0 on an in-scene step). */
 
 /* dust drifting through the night air */
 #s-night .nt-dust { position: absolute; inset: 0; pointer-events: none; transition: opacity .8s var(--ease-soft); }
@@ -14,9 +18,9 @@
 #s-night .nt-band { position: absolute; left: 0; top: 400px; width: 1920px; height: 520px; overflow: hidden; clip-path: inset(50% 0 50% 0);
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 70px, #000 440px, transparent 520px); mask-image: linear-gradient(180deg, transparent 0, #000 70px, #000 440px, transparent 520px);
   transition: clip-path .45s var(--ease-soft); }
-#s-night.st-0 .nt-band { clip-path: inset(0 0 0 0); transition: clip-path 1.2s cubic-bezier(.7, 0, .2, 1) .2s; }
+#s-night.st-0 .nt-band { clip-path: inset(0 0 0 0); transition: clip-path 1.2s cubic-bezier(.7, 0, .2, 1) calc(var(--enter, 0s) + .3s); }
 #s-night .nt-zoom { position: absolute; inset: 0; transform: scale(1.2); transform-origin: 28% 46%; transition: transform .45s var(--ease-soft); }
-#s-night.st-0 .nt-zoom { transform: none; transition: transform 2.2s var(--ease-out) .2s; }
+#s-night.st-0 .nt-zoom { transform: none; transition: transform 2.4s var(--ease-out) calc(var(--enter, 0s) + .3s); }
 /* a stronger camera drift than v1: a slow push-in with a lateral glide */
 #s-night .nt-photo { background-size: 1920px 640px; background-position: 0 -30px; background-repeat: no-repeat; transform-origin: 28% 46%; }
 #s-night.st-0 .nt-photo { animation: ntKen 18s ease-in-out infinite alternate; }
@@ -70,50 +74,54 @@
 #s-night .nt-scrap-p.tint { background: #E4F4F2; }
 #s-night .nt-scrap svg { width: 100%; height: 100%; display: block; fill: none; stroke: rgba(6, 33, 61, .55); stroke-width: 2.2; stroke-linecap: round; }
 #s-night.st-0 .nt-scrap { opacity: 1; transform: translate(var(--tx), var(--ty)) rotate(0deg) scale(.3);
-  transition: opacity .18s linear calc(.28s + var(--i) * .022s), transform .58s cubic-bezier(.55, 0, .25, 1) calc(.46s + var(--i) * .025s); }
-#s-night.st-0 .nt-scrap-p { opacity: 0; transition: opacity .2s linear calc(.86s + var(--i) * .025s); }
+  transition: opacity .18s linear calc(var(--enter, 0s) + .5s + var(--i) * .022s), transform .58s cubic-bezier(.55, 0, .25, 1) calc(var(--enter, 0s) + .66s + var(--i) * .025s); }
+#s-night.st-0 .nt-scrap-p { opacity: 0; transition: opacity .2s linear calc(var(--enter, 0s) + 1.06s + var(--i) * .025s); }
 
-#s-night .nt-card-w { position: absolute; left: 1104px; top: 392px; width: 672px; }
+#s-night .nt-card-w { position: absolute; left: 1176px; top: 420px; width: 600px; }
 /* the hero: a soft pool of light under the new handover */
 #s-night .nt-card-pool { position: absolute; left: -170px; right: -170px; top: -150px; bottom: -170px; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(closest-side, rgba(37, 199, 188, .26), rgba(37, 199, 188, .08) 55%, transparent); transition: opacity .3s var(--ease-soft); }
-#s-night.st-0 .nt-card-pool { opacity: 1; transition: opacity 1.4s var(--ease-soft) .85s; animation: ntCardPool 5.6s ease-in-out 2s infinite; }
+#s-night.st-0 .nt-card-pool { opacity: 1; transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + 1.05s); animation: ntCardPool 5.6s ease-in-out calc(var(--enter, 0s) + 2.4s) infinite; }
 @keyframes ntCardPool { 0%, 100% { transform: scale(.95); opacity: .75; } 50% { transform: scale(1.06); opacity: 1; } }
-#s-night .nt-card { overflow: hidden; padding: 30px 38px 18px; border-radius: 24px; opacity: 0; transform: scale(.9);
+#s-night .nt-card { overflow: hidden; padding: 26px 32px 14px; border-radius: 24px; opacity: 0; transform: scale(.9);
   background: linear-gradient(165deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .035) 50%, rgba(37, 199, 188, .08)), rgba(6, 16, 32, .8);
   box-shadow: 0 40px 100px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .05), inset 0 1px 0 rgba(255, 255, 255, .18);
   transition: opacity .2s var(--ease-soft), transform .3s var(--ease-soft); }
-#s-night.st-0 .nt-card { opacity: 1; transform: none; transition: opacity .35s var(--ease-soft) .8s, transform .75s var(--ease-back) .8s; }
-#s-night .nt-card-h { display: flex; align-items: center; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid rgba(255, 255, 255, .16); font: 700 24px/1 var(--font); letter-spacing: .18em; color: var(--sea); }
-#s-night .nt-card-ic { font-size: 40px; color: var(--teal); }
+#s-night.st-0 .nt-card { opacity: 1; transform: none; transition: opacity .35s var(--ease-soft) calc(var(--enter, 0s) + .95s), transform .75s var(--ease-back) calc(var(--enter, 0s) + .95s); }
+/* the card's name is its headline; the checklist rows are fine print (they show the shape
+   of the new handover, nobody needs to read them) */
+#s-night .nt-card-h { display: flex; align-items: center; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, .16); font: 700 24px/1 var(--font); letter-spacing: .18em; color: var(--sea); }
+#s-night .nt-card-ic { font-size: 34px; color: var(--teal); }
 /* the story light docks here */
-#s-night .nt-card-slot { width: 40px; height: 40px; margin-left: auto; }
-#s-night .nt-row { display: flex; align-items: center; gap: 20px; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, .08); font: 500 30px/1.2 var(--font); color: var(--ink-1);
+#s-night .nt-card-slot { width: 34px; height: 34px; margin-left: auto; }
+#s-night .nt-row { display: flex; align-items: center; gap: 16px; padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, .07); font: 400 22px/1.25 var(--font); color: rgba(255, 255, 255, .66);
   opacity: 0; transform: translateX(-16px); transition: opacity .2s var(--ease-soft), transform .2s var(--ease-soft); }
 #s-night .nt-row:last-child { border-bottom: 0; }
-#s-night.st-0 .nt-row { opacity: 1; transform: none; transition: opacity .5s var(--ease-soft) calc(.92s + var(--k) * .055s), transform .7s var(--ease-out) calc(.92s + var(--k) * .055s); }
-#s-night .nt-box { width: 38px; height: 38px; flex: none; border-radius: 28%; border: 2px solid rgba(255, 255, 255, .28); display: grid; place-items: center; transition: background .3s var(--ease-soft), border-color .3s var(--ease-soft), box-shadow .3s var(--ease-soft); }
-#s-night .nt-box svg { width: 26px; height: 26px; fill: none; stroke: #03202A; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .3s var(--ease-out); }
-#s-night.st-0 .nt-box { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 18px rgba(37, 199, 188, .45); transition-delay: calc(1.1s + var(--k) * .09s); }
-#s-night.st-0 .nt-box svg { stroke-dashoffset: 0; transition-delay: calc(1.16s + var(--k) * .09s); }
+#s-night.st-0 .nt-row { opacity: 1; transform: none; transition: opacity .5s var(--ease-soft) calc(var(--enter, 0s) + 1.08s + var(--k) * .055s), transform .7s var(--ease-out) calc(var(--enter, 0s) + 1.08s + var(--k) * .055s); }
+#s-night .nt-box { width: 30px; height: 30px; flex: none; border-radius: 28%; border: 2px solid rgba(255, 255, 255, .28); display: grid; place-items: center; transition: background .3s var(--ease-soft), border-color .3s var(--ease-soft), box-shadow .3s var(--ease-soft); }
+#s-night .nt-box svg { width: 20px; height: 20px; fill: none; stroke: #03202A; stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .3s var(--ease-out); }
+#s-night.st-0 .nt-box { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 14px rgba(37, 199, 188, .4); transition-delay: calc(var(--enter, 0s) + 1.26s + var(--k) * .09s); }
+#s-night.st-0 .nt-box svg { stroke-dashoffset: 0; transition-delay: calc(var(--enter, 0s) + 1.32s + var(--k) * .09s); }
 /* a soft scan passes down the card while it is parked */
 #s-night .nt-card::after { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 120px; pointer-events: none; opacity: 0; transform: translateY(-130px);
   background: linear-gradient(180deg, rgba(37, 199, 188, 0), rgba(37, 199, 188, .08) 70%, rgba(3, 255, 203, .3) 97%, rgba(37, 199, 188, 0)); }
-#s-night.st-0 .nt-card::after { animation: ntCardScan 5.4s cubic-bezier(.45, 0, .55, 1) 2.4s infinite; }
-@keyframes ntCardScan { 0% { transform: translateY(-130px); opacity: 0; } 8% { opacity: 1; } 64% { transform: translateY(470px); opacity: 1; } 72%, 100% { transform: translateY(470px); opacity: 0; } }
+#s-night.st-0 .nt-card::after { animation: ntCardScan 5.4s cubic-bezier(.45, 0, .55, 1) calc(var(--enter, 0s) + 2.6s) infinite; }
+@keyframes ntCardScan { 0% { transform: translateY(-130px); opacity: 0; } 8% { opacity: 1; } 64% { transform: translateY(380px); opacity: 1; } 72%, 100% { transform: translateY(380px); opacity: 0; } }
 
-/* the change, beneath the frame: the old first hour is struck through, the new one lights up */
-#s-night .nt-ba { position: absolute; left: 144px; top: 868px; margin: 0; font: 400 31px/1.3 var(--font); color: var(--ink-3); white-space: nowrap; }
-#s-night .nt-before { position: relative; display: inline-block; color: rgba(255, 255, 255, .56); font-weight: 500; }
+/* the change, beneath the frame: the old first hour is struck through, the new one lights up.
+   Support: the lead-in is small and quiet; only the new first hour is lit. Its inner delays
+   follow the line's own (--delay includes --enter) */
+#s-night .nt-ba { position: absolute; left: 144px; top: 866px; margin: 0; font: 400 24px/1.3 var(--font); color: rgba(255, 255, 255, .62); white-space: nowrap; }
+#s-night .nt-before { position: relative; display: inline-block; color: rgba(255, 255, 255, .46); }
 #s-night .nt-before i { position: absolute; left: -4px; right: -4px; top: 56%; height: 3px; border-radius: 2px; background: var(--purple-lt); box-shadow: 0 0 10px rgba(157, 103, 170, .8);
   transform: scaleX(0); transform-origin: 0 50%; transition: transform .25s var(--ease-soft); }
-#s-night .nt-ba.is-in .nt-before i { transform: none; transition: transform .5s var(--ease-io) .95s; }
-#s-night .nt-after { color: var(--sea); font-weight: 700; font-size: 35px; text-shadow: 0 0 26px rgba(3, 255, 203, .4); }
+#s-night .nt-ba.is-in .nt-before i { transform: none; transition: transform .5s var(--ease-io) calc(var(--delay, 0s) + .3s); }
+#s-night .nt-after { color: var(--sea); font-weight: 700; font-size: 34px; letter-spacing: -.01em; text-shadow: 0 0 26px rgba(3, 255, 203, .4); }
 #s-night .nt-ba .arr { width: 1.4em; margin: 0 .28em; color: var(--ink-1); }
 #s-night .nt-ba .arr path { stroke-dasharray: 34; stroke-dashoffset: 34; transition: stroke-dashoffset .3s var(--ease-soft); }
-#s-night .nt-ba.is-in .arr path { stroke-dashoffset: 0; transition: stroke-dashoffset .45s var(--ease-out) 1.02s; }
+#s-night .nt-ba.is-in .arr path { stroke-dashoffset: 0; transition: stroke-dashoffset .45s var(--ease-out) calc(var(--delay, 0s) + .45s); }
 #s-night .nt-ba .nt-after { display: inline-block; opacity: 0; transform: translateX(-18px); filter: blur(6px); transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft), filter .3s var(--ease-soft); }
-#s-night .nt-ba.is-in .nt-after { opacity: 1; transform: none; filter: none; transition: opacity .45s var(--ease-out) 1.1s, transform .8s var(--ease-out) 1.1s, filter .5s var(--ease-out) 1.1s; }
+#s-night .nt-ba.is-in .nt-after { opacity: 1; transform: none; filter: none; transition: opacity .45s var(--ease-out) calc(var(--delay, 0s) + .55s), transform .8s var(--ease-out) calc(var(--delay, 0s) + .55s), filter .5s var(--ease-out) calc(var(--delay, 0s) + .55s); }
 
 /* ── stop 2: two lit squares in a vast field (the exact v1 03.3 image) ── */
 /* the soft light between them (positioned at their midpoint) … */
@@ -137,4 +145,5 @@
 #s-night.st-1 .nt-know { animation: ntKnow 3s ease-in-out 2.4s infinite; }
 @keyframes ntKnow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .46)); } }
 #s-night .nt-know-h { margin: 0; font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }
-#s-night .nt-know-s { margin: 18px 0 0; font: 400 32px/1.35 var(--font); color: var(--ink-2); }
+/* support: who the two are (small and quiet; the headline and the pair carry the stop) */
+#s-night .nt-know-s { margin: 20px 0 0; font: 400 24px/1.35 var(--font); letter-spacing: .005em; color: rgba(255, 255, 255, .62); }

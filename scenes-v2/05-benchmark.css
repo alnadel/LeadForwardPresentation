@@ -1,5 +1,8 @@
 /* 05 · Reading the numbers (v2) — two columns, three big numbers, one reading */
 
+/* the engine's count-up eases out-cubic; the dots and gaps travel on the same curve */
+#s-benchmark { --bm-count: cubic-bezier(.33, 1, .68, 1); }
+
 /* ── column colours ─────────────────────────────────────────────────────── */
 #s-benchmark .mech { --c: var(--purple-lt); --c2: var(--purple); --glow: rgba(157, 103, 170, .75); --fl: #E6CCEE; }
 #s-benchmark .will { --c: var(--teal); --c2: var(--teal); --glow: rgba(37, 199, 188, .75); --fl: #A8FFF0; }
@@ -27,7 +30,7 @@
 #s-benchmark .bm-h { margin-top: 26px; font-size: 72px; white-space: nowrap; }
 #s-benchmark .bm-mark { position: absolute; width: 0; height: 0; }
 
-/* ── the luminous divider ───────────────────────────────────────────────── */
+/* ── the luminous divider: draws down from the top (clip), keeps its glow unclipped ── */
 #s-benchmark .bm-divider { position: absolute; left: 959px; top: 346px; width: 2px; height: 446px;
   background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .34) 12%, rgba(170, 255, 238, .5) 50%, rgba(255, 255, 255, .34) 88%, transparent);
   box-shadow: 0 0 18px rgba(3, 255, 203, .22);
@@ -59,8 +62,8 @@
 
 /* the metrics: step back at stop 1 */
 #s-benchmark .bm-body { position: absolute; left: 0; top: 52px; width: 732px; transform-origin: 0 0;
-  transition: transform 1.1s var(--ease-out), opacity .9s var(--ease-soft), filter .9s var(--ease-soft); }
-#s-benchmark.st-1 .bm-body { transform: translateY(-92px) scale(.72); opacity: .45; filter: saturate(.7); transition-delay: .04s; }
+  transition: transform 1.1s var(--ease-out), opacity .9s var(--ease-soft); }
+#s-benchmark.st-1 .bm-body { transform: translateY(-92px) scale(.72); opacity: .45; transition-delay: .04s; }
 
 /* ── a metric: a big delta, its name, and a slim mini-bar ──────────────── */
 #s-benchmark .bm-m { position: relative; }
@@ -125,7 +128,7 @@
 
 /* the gap between benchmark and Tahakom draws with the dot */
 #s-benchmark .bm-seg { position: absolute; top: 12px; height: 4px; margin-top: -2px; border-radius: 2px; left: calc(var(--lo) * 1%); width: calc((var(--hi) - var(--lo)) * 1%);
-  transition: clip-path .72s var(--ease-io) calc(var(--delay) + .2s); }
+  transition: clip-path .72s var(--bm-count) calc(var(--delay) + .2s); }
 #s-benchmark .to-l .bm-seg { clip-path: inset(-10px -10px -10px 100%); background: linear-gradient(to left, rgba(255, 255, 255, .4), var(--c2)); }
 #s-benchmark .to-r .bm-seg { clip-path: inset(-10px 100% -10px -10px); background: linear-gradient(to right, rgba(255, 255, 255, .4), var(--c2)); }
 #s-benchmark .hero .bm-seg { height: 6px; margin-top: -3px; border-radius: 3px; background: linear-gradient(to right, rgba(255, 255, 255, .35), var(--teal) 55%, var(--sea)); box-shadow: 0 0 18px rgba(3, 255, 203, .45); }
@@ -138,7 +141,7 @@
 #s-benchmark .bm-dot { position: absolute; top: 12px; left: calc(var(--t) * 1%); width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 28%;
   background: var(--c2); border: 2px solid var(--c); box-shadow: 0 0 16px var(--glow);
   opacity: 0; transform: translateX(var(--from)) scale(.5);
-  transition: opacity .25s var(--ease-soft) calc(var(--delay) + .14s), transform .72s var(--ease-io) calc(var(--delay) + .2s); }
+  transition: opacity .25s var(--ease-soft) calc(var(--delay) + .14s), transform .72s var(--bm-count) calc(var(--delay) + .2s); }
 #s-benchmark .hero .bm-dot { width: 24px; height: 24px; margin: -12px 0 0 -12px; background: var(--sea); border-color: #C8FFF3; box-shadow: 0 0 20px rgba(3, 255, 203, .9); }
 #s-benchmark .bm-m.is-in .bm-dot { opacity: 1; transform: none; }
 /* a halo breathes behind each dot */
@@ -174,7 +177,7 @@
 
 /* ── stop 1: the takeaway, the hero of the reading ──────────────────────── */
 #s-benchmark .bm-takebox { position: absolute; left: 144px; top: 690px; }
-#s-benchmark .bm-take { margin: 0; font: 700 88px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); white-space: nowrap; }
+#s-benchmark .bm-take { position: relative; margin: 0; font: 700 88px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); white-space: nowrap; }
 #s-benchmark .bm-uline { position: absolute; left: 0; right: 0; bottom: -22px; height: 3px; border-radius: 2px;
   background: linear-gradient(90deg, var(--sea), rgba(37, 199, 188, .55) 55%, rgba(37, 199, 188, 0)); box-shadow: 0 0 14px rgba(3, 255, 203, .35); }
 #s-benchmark .bm-uline[data-in] { clip-path: inset(-30px -30px -30px -30px); }
@@ -191,7 +194,6 @@
 #s-benchmark .bm-tglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(37, 199, 188, .32), rgba(37, 199, 188, .13) 55%, transparent); animation: bmHalo 4s ease-in-out infinite; }
 #s-benchmark .bm-tglow::after { inset: 14% 24%; background: radial-gradient(closest-side, rgba(3, 255, 203, .2), transparent); animation: bmHalo2 6.3s ease-in-out -2s infinite; }
-#s-benchmark .bm-take { position: relative; }
 /* the reading lands with a bloom of light behind it (live click only) */
 #s-benchmark .bm-takebox::before { content: ''; position: absolute; left: -120px; top: -90px; width: 1100px; height: 280px; border-radius: 50%; pointer-events: none; opacity: 0;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .16), transparent); }

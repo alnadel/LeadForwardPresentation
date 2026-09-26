@@ -1,14 +1,18 @@
 /* 02 · One night (v2) — the question now opens the talk on its own (00-hook).
-   Stop 0: the film frame builds as the camera flies in — 03:12, Nouf at her
-   desk under flickering monitor light, loose notes fly together into the new
-   night handover, and the morning changes.
+   Stop 0: the film frame builds as the camera dollies in from the Open's light.
+   While the frame flies in, 03:12 resolves first (the establishing shot), then the
+   kicker and the headline; once it has arrived (var(--enter) + …) the photo band
+   opens, loose notes drop and fly together into the new night handover as the
+   story light lands on it, and the morning changes beneath.
+   Key: the headline, and the handover card (the spark). The checklist rows and the
+   before → after line are support: small and quiet (the rows are fine print).
    Stop 1: the camera pulls back until the whole night is two lit squares in a
    vast field. Two people know. This is the exact v1 03.3 image (the pins at
    Deck.NIGHT_PAIR, the camera at Deck.NIGHT_OFFSET, the words placed by the same
    formula); v2 scene 11 calls back to it. */
 (function () {
   const OFFSET = Deck.NIGHT_OFFSET;   // this scene's camera pan, held on every stop (shared with 11)
-  const CARD = { x: 1104, y: 392, w: 672 };
+  const CARD = { x: 1176, y: 420, w: 600 };   // keep in step with .nt-card-w in 02-night.css
   const ROWS = [
     'Overnight incidents · timestamped',
     'Signal faults still open',
@@ -17,7 +21,7 @@
     'Anything the day shift must call',
     'Signed off by night supervisor',
   ];
-  const CARD_CY = CARD.y + 232;       // the card's centre (it is ~465px tall)
+  const CARD_CY = CARD.y + 192;       // the card's centre (it is 384px tall)
   // the old handover: loose notes dropped around the desk [left, top, w, h, tilt°]
   const SCRAPS = [
     [780, 452, 150, 92, -12], [980, 760, 132, 84, 9], [1220, 420, 168, 98, -6],
@@ -100,7 +104,7 @@
 
           <div class="nt-scraps">${SCRAPS.map(scrapHtml).join('')}</div>
 
-          <div class="nt-card-w" data-spark="0" data-spark-xy="${CARD.x + CARD.w - 58},${CARD.y + 52}" data-spark-delay="1.05">
+          <div class="nt-card-w" data-spark="0" data-spark-xy="${CARD.x + CARD.w - 49},${CARD.y + 43}" data-spark-delay=".6">
             <i class="nt-card-pool"></i>
             <div class="glass live nt-card">
               <div class="nt-card-h">${Deck.icon('document-certified', 'nt-card-ic')}<span class="nt-card-t">NIGHT HANDOVER · v2</span><span class="nt-card-slot"></span></div>
@@ -108,7 +112,7 @@
             </div>
           </div>
 
-          <p class="nt-ba" data-in="0" style="--d:.85s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
+          <p class="nt-ba" data-in="0" style="--d:1.3s"><span class="nt-ba-k">Morning shift, first hour:</span> <span class="nt-before">rebuilding the night<i></i></span> → <span class="nt-after">on live incidents from minute one.</span></p>
         </div>
       </div>
 

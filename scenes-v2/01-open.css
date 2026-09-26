@@ -1,5 +1,12 @@
 /* 01 · Open (v2) */
-#s-open .op-cam { position: absolute; inset: 0; overflow: hidden; }
+/* the plate arrives out of the iris in a bright focus pull and settles (keyed off .st-0,
+   so a settled landing is already still) */
+#s-open .op-cam { position: absolute; inset: 0; overflow: hidden; transform: scale(1.1); filter: brightness(1.45); transform-origin: 50% 66%; }
+#s-open.st-0 .op-cam { transform: none; filter: none; transition: transform 3s cubic-bezier(.16, .8, .24, 1) var(--enter, 0s), filter 2.2s var(--ease-soft) var(--enter, 0s); }
+/* the light the title opened out of: a glow at the iris origin that dissipates into the room */
+#s-open .op-iris { position: absolute; left: 960px; top: 716px; width: 1300px; height: 1300px; margin: -650px 0 0 -650px; border-radius: 50%; pointer-events: none; mix-blend-mode: screen;
+  background: radial-gradient(closest-side, rgba(220, 255, 247, .55), rgba(3, 255, 203, .28) 18%, rgba(37, 199, 188, .1) 46%, transparent 72%); }
+#s-open.st-0 .op-iris { opacity: 0; transform: scale(1.35); transition: opacity 1.9s var(--ease-soft) calc(var(--enter, 0s) + .15s), transform 2.4s var(--ease-out) var(--enter, 0s); }
 #s-open .op-plate { position: absolute; inset: 0; transform-origin: 72% 46%; }
 #s-open .op-photo { opacity: .76; background-position: 62% 50%; }
 #s-open .op-leak { opacity: .9; }
@@ -33,16 +40,19 @@
   animation: v2Shine 1.6s var(--ease-soft) forwards, opSweep 9s ease-in-out infinite;
   animation-delay: calc(var(--delay, 0s) + .75s + var(--wi) * .05s), calc(var(--delay, 0s) + 4.2s + var(--wi) * .16s); }
 @keyframes opSweep { 0% { background-position: 0% 0; } 18%, 100% { background-position: 100% 0; } }
-#s-open .op-ar { position: absolute; left: 144px; top: 668px; font: 700 66px/1.2 var(--font); color: var(--teal); }
+/* the Arabic title supports the English one: a step smaller */
+#s-open .op-ar { position: absolute; left: 144px; top: 664px; font: 700 56px/1.2 var(--font); color: var(--teal); }
 #s-open.st-0 .op-ar.is-in { animation: opArGlow 5s ease-in-out 2.6s infinite; }
 @keyframes opArGlow { 0%, 100% { text-shadow: 0 0 0 rgba(37, 199, 188, 0); } 50% { text-shadow: 0 0 36px rgba(37, 199, 188, .55); } }
 
-#s-open .op-rule { position: absolute; left: 144px; top: 800px; width: 96px; height: 3px; background: var(--teal); box-shadow: 0 0 14px rgba(3, 255, 203, .6); }
-#s-open .op-tag { position: absolute; left: 144px; top: 824px; margin: 0; font: 400 38px/1.3 var(--font); color: var(--ink-1); letter-spacing: -.005em; }
-#s-open .op-line { position: absolute; left: 144px; top: 890px; display: flex; align-items: center; gap: 30px; }
+/* stop 1 · the key is the line with the light; the tagline above it is a quiet support line */
+#s-open .op-rule { position: absolute; left: 144px; top: 786px; width: 96px; height: 3px; background: var(--teal); box-shadow: 0 0 14px rgba(3, 255, 203, .6); }
+#s-open .op-tag { position: absolute; left: 144px; top: 810px; margin: 0; font: 400 24px/1.3 var(--font); color: rgba(255, 255, 255, .64); letter-spacing: .01em; }
+/* the light's centre sits at BIRTH (159, 900) in 01-open.js: top = 900 − line-height / 2 */
+#s-open .op-line { position: absolute; left: 144px; top: 873px; height: 54px; display: flex; align-items: center; gap: 30px; }
 /* the birth of the story light (once, on the click): twelve motes gather to one point,
    then it ignites with a bloom and a long horizontal flare */
-#s-open .op-birth { position: absolute; left: 159px; top: 912px; width: 0; height: 0; pointer-events: none; }
+#s-open .op-birth { position: absolute; width: 0; height: 0; pointer-events: none; }
 #s-open .op-birth b { position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 28%; background: #CFFFF4; box-shadow: 0 0 10px var(--sea), 0 0 22px rgba(3, 255, 203, .6); opacity: 0; }
 #s-open.op-born .op-birth b { animation: opMote .75s cubic-bezier(.55, 0, .75, .35) calc(.12s + var(--k) * .02s) both; }
 @keyframes opMote { 0% { transform: rotate(var(--a)) translateX(var(--r)) scale(.6); opacity: 0; } 25% { opacity: 1; } 92% { opacity: 1; } 100% { transform: rotate(calc(var(--a) + 70deg)) translateX(0) scale(1.4); opacity: 0; } }
@@ -59,4 +69,4 @@
 #s-open .op-light { position: relative; width: 30px; height: 30px; }
 #s-open .op-ring { position: absolute; left: 2px; top: 2px; width: 26px; height: 26px; border-radius: 28%; border: 1.5px solid rgba(37, 199, 188, .85); box-shadow: 0 0 10px rgba(3, 255, 203, .3); animation: opRing 3.2s cubic-bezier(.3, .55, .45, 1) infinite; opacity: 0; }
 @keyframes opRing { 0% { transform: scale(1); opacity: 0; } 14% { opacity: .55; } 100% { transform: scale(3.2); opacity: 0; } }
-#s-open .op-line-t { font: 400 34px/1.3 var(--font); color: var(--ink-1); }
+#s-open .op-line-t { font: 500 44px/1.2 var(--font); letter-spacing: -.012em; color: var(--white); white-space: nowrap; text-shadow: 0 2px 24px rgba(3, 8, 16, .8); }
