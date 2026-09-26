@@ -811,6 +811,8 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
 
   Deck.start = function () {
     viewport = $('#viewport'); stage = $('#stage'); scenesEl = $('#scenes'); chrome = $('#chrome');
+    // keep the chrome invisible until the first scene has set which parts it shows
+    chrome.classList.add('booting');
     if (window.Field) Field.mount($('#field'));
     mount();
     buildTxLayer();
@@ -824,6 +826,7 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
       if (h) go(h.i, h.st, { instant: true });
       else go(0, 0, {});
       document.body.classList.add('ready');
+      setTimeout(() => chrome.classList.remove('booting'), 700);
     };
     // wait for fonts and photographs so nothing pops in late
     const urls = new Set();

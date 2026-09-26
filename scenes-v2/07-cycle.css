@@ -226,3 +226,8 @@
 #s-cycle .cy-rep span { display: inline-block; text-shadow: 0 0 30px rgba(37, 199, 188, .4); }
 #s-cycle.st-2 .cy-rep.is-in span { animation: cyRep 4.5s ease-in-out 1.2s infinite; }
 @keyframes cyRep { 0%, 100% { text-shadow: 0 0 22px rgba(37, 199, 188, .3); } 50% { text-shadow: 0 0 48px rgba(3, 255, 203, .65); } }
+
+/* the clocks of the JS-driven lights (see the scene script) */
+#s-cycle .cy-clock { position: absolute; left: 0; top: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+#s-cycle.st-0 .cy-clock.lane, #s-cycle.st-1 .cy-clock.orbit { animation: cyClock 60s linear infinite; }
+@keyframes cyClock { from { opacity: 0; } to { opacity: .001; } }

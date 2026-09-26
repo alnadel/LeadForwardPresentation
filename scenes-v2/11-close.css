@@ -12,7 +12,10 @@
   50% { transform: scale(1.25); box-shadow: 0 0 22px var(--sea), 0 0 74px 10px rgba(3, 255, 203, .62), 0 0 170px 38px rgba(37, 199, 188, .42); }
 }
 
-#s-close .cl-knew { position: absolute; width: 760px; text-align: center; }
+#s-close .cl-knew { position: absolute; width: 760px; text-align: center; filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); }
+/* the same slow glow as 02.2's "Two people know." */
+#s-close.st-0 .cl-knew { animation: clKnow 3s ease-in-out 2.4s infinite; }
+@keyframes clKnow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .46)); } }
 #s-close .cl-knew .h1 { font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }
 #s-close .cl-knew.is-out { transform: translateY(-16px); filter: blur(6px); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft), filter .6s var(--ease-soft); }
 

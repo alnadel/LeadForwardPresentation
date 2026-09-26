@@ -209,6 +209,10 @@
       ${nodes}
       ${cards}
 
+      <!-- the clocks of the JS-driven lights: CSS animations the loop reads, so those lights
+           keep the same timeline as every CSS loop (and pause with them) -->
+      <i class="cy-clock lane"></i><i class="cy-clock orbit"></i>
+
       <!-- stop 2 · it repeats -->
       <div class="cy-core" style="left:${CX}px;top:${CY}px"></div>
       <div class="cy-rep a-scale" data-in="2" data-spark="2" data-spark-at="t" style="left:${CX - 200}px;top:${CY - 54}px;--d:.12s"><span>The cycle<br>repeats</span></div>
@@ -235,6 +239,8 @@
       ctx.nws = ctx.$$('.cy-nw');
       ctx.cards = ctx.$$('.cy-card');
       ctx.pulses = ctx.$$('.cy-cpulse');
+      ctx.lclock = ctx.$('.cy-clock.lane');
+      ctx.oclock = ctx.$('.cy-clock.orbit');
       ctx.draw0 = 0;
       ctx.len = 0;
       ctx.hitWall = false;
@@ -242,8 +248,8 @@
       ctx.sent = 0;
     },
     enter(ctx) {
-      ctx.loop((t) => {
-        if (ctx.step <= 0) lanes(ctx, t);
+      ctx.loop(() => {
+        if (ctx.step <= 0) lanes(ctx);
         if (ctx.step >= 1) ring(ctx, performance.now());
       });
     },
@@ -255,6 +261,9 @@
       // stop 2 keeps it drawn and the light orbiting where it is
       if (n >= 1 && (prev < 1 || !ctx.draw0)) {
         ctx.draw0 = performance.now() + (ctx.instant ? -DRAW * 1000 : DRAW_AT * 1000);
+        // landing on the ring: it is already drawn, so the orbit clock skips the draw
+        const a = anim(ctx.oclock);
+        if (ctx.instant && a) a.currentTime = (DRAW_AT + DRAW) * 1000;
       }
       if (n < 1) ctx.draw0 = 0;
       ring(ctx, performance.now());
@@ -266,10 +275,15 @@
     },
   });
 
+  // a clock's animation and its time in seconds (null when its stop is not reached)
+  function anim(el) { const a = el.getAnimations ? el.getAnimations()[0] : null; return a || null; }
+  function clock(el) { const a = anim(el); return a && a.currentTime != null ? a.currentTime / 1000 : null; }
   function place(el, x, y) { el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`; }
   function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
 
-  function lanes(ctx, t) {
+  function lanes(ctx) {
+    const t = clock(ctx.lclock);
+    if (t == null) return;
     if (!ctx.len) ctx.len = ctx.geo.getTotalLength();
     const L = ctx.len, v = L / PERIOD;
     // both lights leave their start together, then the award light every half lap
@@ -318,11 +332,14 @@
   }
 
   function ring(ctx, now) {
+    // the draw runs in real time; the orbit after it runs on the orbit clock
     const el = ctx.draw0 ? (now - ctx.draw0) / 1000 : -1;
+    const ct = clock(ctx.oclock);
+    const orbit = ct == null ? 0 : Math.max(0, ct - DRAW_AT - DRAW);
     let p, a, head;
     if (el < 0) { p = 0; a = -45; head = 0; }
     else if (el < DRAW) { p = ease(el / DRAW); a = -45 + 360 * p; head = 1; }
-    else { p = 1; a = -45 + 360 * ((el - DRAW) / LAP); head = Math.max(0, 1 - (el - DRAW) / .7); }
+    else { p = 1; a = -45 + 360 * (orbit / LAP); head = Math.max(0, 1 - (el - DRAW) / .7); }
     ctx.rdraw.style.strokeDashoffset = (100 - 100 * p).toFixed(2);
     const [x, y] = at(a, R);
     place(ctx.ol, x, y); place(ctx.flare, x, y);

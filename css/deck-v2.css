@@ -395,6 +395,7 @@ em.hl { font-style: normal; color: var(--teal); }
 /* ── chrome ───────────────────────────────────────────────────────────── */
 #chrome { position: absolute; inset: 0; z-index: 20; pointer-events: none; transition: opacity .6s var(--ease-soft); }
 #chrome.hidden { opacity: 0; }
+#chrome.booting { opacity: 0; transition: none; }
 #chrome .mark { position: absolute; right: 64px; top: 52px; width: 50px; color: rgba(255, 255, 255, .9); transition: opacity .6s var(--ease-soft); }
 #chrome .mark svg { width: 100%; display: block; }
 #chrome .tag { position: absolute; right: 136px; top: 54px; opacity: 0; transform: translateY(-6px); transition: opacity .6s var(--ease-soft), transform .6s var(--ease-out); }
