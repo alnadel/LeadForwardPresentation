@@ -175,7 +175,7 @@
   const OBJ = [
     // 01 · a personal certificate on an easel: the employee's portrait, a title, a leader's signature and seal
     `<g class="ob cert">
-       <path class="ez" d="M-6-204-70 4M6-204 70 4M0-204V-196"/>
+       <path class="ez" d="M-5-206-70 4M5-206 70 4"/>
        <rect class="dp" x="-89" y="-189" width="190" height="140" rx="8"/>
        <rect class="pp" x="-95" y="-184" width="190" height="140" rx="8"/>
        <rect class="pb" x="-86" y="-175" width="172" height="122" rx="5"/>

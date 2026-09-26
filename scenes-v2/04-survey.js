@@ -3,13 +3,19 @@
    One continuous instrument: the big figure is an odometer whose reels roll from
    the previous figure to the next during each build (never while parked); the
    label and line beneath it cross-fade, the waffle relights column by column and a
-   tinted glow pool slides to the lit share. At stop 3 the headline turns into the
-   punchline. Every piece of state is keyed off the stop, so back lands on the
-   same frame as forward.
+   tinted glow pool slides to the lit share. The figure is lit from above in the
+   finding's colour, and each finding carries its picture (a survey, an unseen eye,
+   a megaphone, two colleagues joined). At stop 3 the headline turns into the
+   punchline, drawn as a contrast: a lit line under the work, and under the channel
+   a broken track that a light sets out along and cannot cross. Every piece of state
+   is keyed off the stop, so back lands on the same frame as forward.
    The waffle is drawn on one canvas (one layer, instead of 158 squares that each
    animated on their own layer): the squares pop in, relight column by column, twinkle,
    breathe and carry the wave exactly as their CSS did; the ambient loops read a CSS
-   clock, so they pause with the scene (and with a frozen deck). */
+   clock, so they pause with the scene (and with a frozen deck). For depth the tiles
+   have a thickness and a lit top, the grid is projected as a panel turned a little
+   away in perspective, and the bottom row is mirrored in a glossy floor under a pool
+   of the figure's colour: all in the same canvas, so depth costs no layer. */
 (function () {
   const ROWS = 10, N = 158; // 16 columns × 10 rows, filled column by column
   const METRICS = [
