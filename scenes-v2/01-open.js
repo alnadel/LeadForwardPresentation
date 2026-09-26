@@ -49,7 +49,7 @@
       <div class="op-logo a-materialize" data-in="0" style="--d:.2s;--dur:1.6s">${Deck.logo()}</div>
       <div class="kicker op-kicker a-wipe" data-in="0" style="--d:.9s">Lead Forward 2026 · Capstone · Inspire Others</div>
       <h1 class="display op-title" data-in="0" data-split style="--d:1.05s">Behind a<br>Better Life</h1>
-      <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" style="--d:1.9s;--dur:1.4s">خلف حياة أفضل</div>
+      <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" data-glow="خلف حياة أفضل" style="--d:1.9s;--dur:1.4s">خلف حياة أفضل</div>
 
       <!-- the birth of the story light: motes gather, then it ignites with a flare -->
       <div class="op-birth" style="left:${BIRTH[0]}px;top:${BIRTH[1]}px"><i class="op-bloom"></i><i class="op-flare"></i>${Array.from({ length: 12 }, (_, i) => `<b style="--a:${i * 30 + 8}deg;--r:${120 + (i * 47) % 90}px;--k:${i}"></b>`).join('')}</div>
@@ -60,6 +60,19 @@
         <span class="op-line-t">One person’s story can light the way for others.</span>
       </div>
     `,
+    init(ctx) {
+      // the title's light sweep (01-open.css .op-sw): one window per word, carrying a copy of the word
+      ctx.$$('.op-title .w > span').forEach((w) => {
+        const sw = document.createElement('i');
+        sw.className = 'op-sw';
+        sw.setAttribute('aria-hidden', 'true');
+        sw.style.setProperty('--wi', w.style.getPropertyValue('--wi'));
+        const copy = document.createElement('i');
+        copy.textContent = w.textContent;
+        sw.appendChild(copy);
+        w.parentNode.appendChild(sw);
+      });
+    },
     step(n, prev, ctx) {
       // the birth plays once, on a live click (a settled landing shows the light already born)
       ctx.el.classList.toggle('op-born', n === 1 && !ctx.instant);

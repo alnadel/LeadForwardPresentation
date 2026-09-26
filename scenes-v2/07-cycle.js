@@ -39,6 +39,35 @@
   const tT = TX.map((x) => tAt((x - TX[0]) / TOP, TD.dl, TD.dd) - .06);
   const PERIOD = 6.4;           // one lap of the story lane, seconds
   const LIGHTS_AT = 1.9;        // loop time (from the click) when the lane lights start
+  const LOOPS = sampler(LOOP);  // arc-length samples of the story loop (the light and its tail ride them)
+  const TAIL = [320, 210, 120, 48], TSTEP = 2;   // the comet tail's stacked lengths (px) and its sample step
+
+  // the return loop's dashes (10 on · 12 off, round caps) flow on the compositor (HTML, transforms):
+  // a dashed strip slides along the bottom straight and dashes ride each cap on a sampled track,
+  // keeping the phase the stroke's dash pattern had, so the flow runs on unbroken across the joins.
+  // Each part sits in its own box, which clips it and reveals it as the return draws (see the CSS).
+  const RV = 44 / 1.3, RG = 22;                   // px/s, dash period
+  const RETS = sampler(RETURN), RCAP = (RETS.L - TOP) / 2;
+  const RKF = [];
+  const RBOX = { r: [TX[4], Y2 - 30, CAPX + 40, BOT - Y2 + 60], b: [TX[0], BOT - 12, TOP, 24], l: [TX[0] - CAPX - 40, Y2 - 30, CAPX + 40, BOT - Y2 + 60] };
+  // when the return's draw (RD, eased in-out) passes each part: the reveal of its box
+  const rT = [0, RCAP, RCAP + TOP, RETS.L].map((d) => tAt(d / RETS.L, RD.dl, RD.dd));
+  const rbox = (k, i, inner) => { const [x, y, w, h] = RBOX[k];
+    return `<div class="cy-rf ${k}" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;--rdl:${rT[i].toFixed(3)}s;--rdd:${(rT[i + 1] - rT[i]).toFixed(3)}s">${inner}</div>`; };
+  const capFlow = (k, s0, s1) => {
+    const id = 'cyRet' + k.toUpperCase(), [bx, by] = RBOX[k];
+    const pad = 9, run = s1 - s0 + 2 * pad, n = Math.ceil(run / RG), f = run / (n * RG), M = Math.ceil(run / 5), P = n * RG / RV;
+    const key = (m) => { const q = RETS.at(s0 - pad + run * m / M); return `transform: translate(${(q.x - bx).toFixed(1)}px, ${(q.y - by).toFixed(1)}px) rotate(${q.a.toFixed(1)}deg);`; };
+    RKF.push(`@keyframes ${id} {${Array.from({ length: M + 1 }, (_, m) => ` ${(f * m / M * 100).toFixed(2)}% { ${key(m)} }`).join('')} 100% { ${key(M)} } }`);
+    // dash j's centre rides at 5 + 22k + v·t along the loop, as the stroke's dashes did
+    return Array.from({ length: n }, (_, j) => { let dl = (s0 - pad - 5 - RG * j) / RV; dl -= P * Math.ceil(dl / P);
+      return `<i style="animation-name:${id};animation-duration:${P.toFixed(3)}s;animation-delay:${dl.toFixed(3)}s"></i>`; }).join('');
+  };
+  // the bottom strip: a dash centre sits at x ≡ 1602 + cap − 5 (mod 22); its tile holds one dash centred at 11
+  const RXS = TX[4] + RCAP - 16 - RG * Math.ceil((TX[4] + RCAP - 16 - (TX[0] - RG)) / RG);
+  const retFlow = rbox('r', 0, capFlow('r', 0, RCAP))
+    + rbox('b', 1, `<i style="left:${(RXS - TX[0]).toFixed(1)}px;width:${(TX[4] + 2 * RG - RXS).toFixed(0)}px"></i>`)
+    + rbox('l', 2, capFlow('l', RCAP + TOP, RETS.L));
 
   /* ── stops 1–2 · the ring ──────────────────────────────────────────── */
   const CX = 960, CY = 640, R = 276, ROUT = 316, RIN = 184;
@@ -58,7 +87,7 @@
   const at = (a, r) => [CX + r * Math.cos(rad(a)), CY + r * Math.sin(rad(a))];
   const ease = (u) => (1 - Math.cos(Math.PI * u)) / 2;            // the ring's draw (ease in-out)
   const drawTime = (f) => Math.acos(1 - 2 * f) / Math.PI * DRAW;  // when the draw reaches fraction f
-  const chev = (x, y, deg, cls, extra) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${deg})"><path class="${cls}" ${extra || ''} d="M-8 -12 L6 0 L-8 12"/></g>`;
+  const chev = (x, y, deg, cls, extra, lit) => `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${deg})"><path class="${cls}" d="M-8 -12 L6 0 L-8 12"/>${lit ? `<path class="cy-chl ${lit}" ${extra || ''} d="M-8 -12 L6 0 L-8 12"/>` : ''}</g>`;
   // each node materialises as the drawing light passes it
   const SWEEP = STAGES.map((s, i) => Math.max(.08, DRAW_AT + drawTime(i / 4) - .08));
   const NH = 50;                // node half-size
@@ -66,7 +95,7 @@
   const nodes = STAGES.map((s, i) => {
     const [x, y] = at(s.a, R);
     return `<div class="cy-nw a-materialize" data-in="1" style="left:${x.toFixed(0)}px;top:${y.toFixed(0)}px;--d:${SWEEP[i].toFixed(2)}s;--dur:.75s">
-        <b class="cy-halo"></b><b class="cy-rip"></b><b class="cy-rip r2"></b><div class="cy-nd">${s.n}</div>
+        <b class="cy-halo"></b><b class="cy-rip"></b><b class="cy-rip r2"></b><div class="cy-nd">${s.n}</div><div class="cy-nd lit" aria-hidden="true">${s.n}</div>
       </div>`;
   }).join('');
 
@@ -75,18 +104,18 @@
     const [x, y] = at(s.a, R);
     const right = i < 2;
     const x0 = right ? x + NH + 10 : x - NH - 10, x1 = right ? CARD.r - 6 : CARD.l + CARD.w + 6;
-    return { d: `M${x0.toFixed(0)} ${y.toFixed(0)} L${x1} ${y.toFixed(0)}`, x1, y, right };
+    return { d: `M${x0.toFixed(0)} ${y.toFixed(0)} L${x1} ${y.toFixed(0)}`, x0: +x0.toFixed(0), x1, y, right };
   });
   const connSvg = conns.map((c, i) => `<path class="cy-cn" d="${c.d}" pathLength="1" style="--dl:${(SWEEP[i] + .1).toFixed(2)}s"/>`).join('');
   const connEnds = conns.map((c, i) => `<i class="cy-cend" style="left:${c.x1}px;top:${c.y.toFixed(0)}px;--dl:${(SWEEP[i] + .38).toFixed(2)}s"></i>
-      <i class="cy-cpulse" style="offset-path:path('${c.d}')"></i>`).join('');
+      <i class="cy-cpulse" style="left:${c.x0}px;top:${c.y.toFixed(0)}px;--run:${c.x1 - c.x0}px"></i>`).join('');
 
   const cards = STAGES.map((s, i) => {
     const right = i < 2, top = i === 0 || i === 3;
     const pos = `${right ? `left:${CARD.r}px` : `left:${CARD.l}px`};${top ? `bottom:${1080 - CARD.topEnd}px` : `top:${CARD.botTop}px`}`;
     return `<div class="cy-cw a-unfold" data-in="1" style="${pos};--d:${(SWEEP[i] + .16).toFixed(2)}s;--dur:.72s">
         <div class="cy-card glass ${top ? 'tp' : 'bt'}" style="--k:${i}">
-          <div class="cy-ch">${Deck.icon(s.ic, 'cy-ic')}<span class="cy-t">${s.t}</span></div>
+          <div class="cy-ch">${Deck.icon(s.ic, 'cy-ic')}<span class="cy-t" data-t="${s.t}">${s.t}</span></div>
           <p class="cy-s">${s.s}</p>
           <div class="cy-pf"><div class="cy-p"><i></i>${s.p}</div></div>
         </div>
@@ -94,7 +123,7 @@
   }).join('');
 
   // chevrons flow round the ring (slower than the light), dipping out as they pass under a node
-  const chevrons = Array.from({ length: 12 }, (_, k) => `<i class="cy-cv" style="offset-path:path('${CIRCLE}');animation-delay:${(-k * 16 / 12).toFixed(2)}s"><svg viewBox="-10 -13 20 26" aria-hidden="true"><path d="M-6 -10 L5 0 L-6 10"/></svg></i>`).join('');
+  const chevrons = Array.from({ length: 12 }, (_, k) => `<i class="cy-cv" style="left:${CX - 12}px;top:${CY - 16}px;animation-delay:${(-k * 16 / 12).toFixed(2)}s"><svg viewBox="-10 -13 20 26" aria-hidden="true"><path d="M-6 -10 L5 0 L-6 10"/></svg></i>`).join('');
 
   // the award light shatters against the wall: shards fly back
   const shards = [[-80, -40], [-110, -10], [-74, 30], [-46, -62], [-126, 34], [-58, 56], [-140, -30], [-30, 70]].map(([dx, dy], i) => `<b style="--dx:${dx}px;--dy:${dy}px;--r:${(i * 67) % 180}deg"></b>`).join('');
@@ -103,7 +132,7 @@
     [1400, 880, 19, -3, -36, -220], [1560, 770, 16, -10, 30, -170], [880, 900, 18, -14, 20, -230], [640, 780, 16, -6, -26, -190], [1320, 760, 14, -11, 18, -160]]
     .map(([x, y, t, dl, dx, dy]) => `<i style="left:${x}px;top:${y}px;--t:${t}s;--dl:${dl}s;--dx:${dx}px;--dy:${dy}px"></i>`).join('');
 
-  const laneNode = (x, y, ic, cls, d) => `<div class="cy-ln ${cls}" style="left:${x}px;top:${y}px"><b class="cy-lrip"></b><div class="cy-lnd a-materialize" data-in="0" style="--d:${d.toFixed(2)}s;--dur:.6s"><div class="cy-lnf">${Deck.icon(ic)}</div></div></div>`;
+  const laneNode = (x, y, ic, cls, d) => `<div class="cy-ln ${cls}" style="left:${x}px;top:${y}px"><b class="cy-lrip"></b><div class="cy-lnd a-materialize" data-in="0" style="--d:${d.toFixed(2)}s;--dur:.6s"><div class="cy-lnf">${Deck.icon(ic)}</div><div class="cy-lnf lit" aria-hidden="true">${Deck.icon(ic)}</div></div></div>`;
   const laneLabel = (x, y, w, cls, d) => `<div class="cy-st ${cls}" data-in="0" style="left:${x}px;top:${y - 50}px;--d:${d.toFixed(2)}s;--dur:.6s">${w}</div>`;
 
   Deck.scene({
@@ -155,20 +184,22 @@
           <i class="cy-pool" style="left:${(TX[0] + TX[4]) / 2 - 900}px;top:${(Y2 + BOT) / 2 - 260}px"></i>
           <div class="amb-dust cy-dust a-fade" data-in="0" style="--d:1.4s">${dust}</div>
           <svg class="cy-svg" viewBox="0 0 1920 1080" aria-hidden="true">
-            <defs><mask id="cyRetMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080"><path class="cy-draw cy-retm" d="${RETURN}" pathLength="1" style="--dl:${RD.dl}s;--dd:${RD.dd}s"/></mask></defs>
             <path class="cy-road t" d="${LOOP}"/>
-            <path class="cy-ret" d="${RETURN}" mask="url(#cyRetMask)"/>
+          </svg>
+          <!-- the return's dashes, flowing (under the story lane's track and chevrons) -->
+          ${retFlow}
+          <svg class="cy-svg" viewBox="0 0 1920 1080" aria-hidden="true">
             <path class="cy-track t cy-draw" d="${TLINE}" pathLength="1" style="--dl:${TD.dl}s;--dd:${TD.dd}s"/>
             <g class="cy-chevs0 t">
-              ${TX.slice(0, 4).map((x, i) => chev((x + TX[i + 1]) / 2, Y2, 0, 'cy-chev-t', `style="--k:${i}"`)).join('')}
-              ${TX.slice(0, 4).map((x, i) => chev((x + TX[i + 1]) / 2, BOT, 180, 'cy-chev-r', `style="--k:${3 - i}"`)).join('')}
+              ${TX.slice(0, 4).map((x, i) => chev((x + TX[i + 1]) / 2, Y2, 0, 'cy-chev-t', `style="--k:${i}"`, 't')).join('')}
+              ${TX.slice(0, 4).map((x, i) => chev((x + TX[i + 1]) / 2, BOT, 180, 'cy-chev-r', `style="--k:${3 - i}"`, 'r')).join('')}
             </g>
           </svg>
           <i class="cy-lead t" style="offset-path:path('${TLINE}');--dl:${TD.dl}s;--dd:${TD.dd}s"></i>
           <i class="cy-lead r" style="offset-path:path('${RETURN}');--dl:${RD.dl}s;--dd:${RD.dd}s"></i>
           <div class="cy-lanelights a-fade" data-in="0" style="--d:${(LIGHTS_AT - .3).toFixed(2)}s;--dur:.4s">
-            <svg class="cy-svg" viewBox="0 0 1920 1080" aria-hidden="true">
-              ${[320, 210, 120, 48].map((len, i) => `<path class="cy-ttr t${i}" d="${LOOP}" data-len="${len}"/>`).join('')}
+            <svg class="cy-tail" viewBox="-360 -360 720 720" aria-hidden="true">
+              ${TAIL.map((len, i) => `<path class="cy-ttr t${i}" d="M0 0"/>`).join('')}
             </svg>
             <i class="cy-tglow"></i>
             <i class="light cy-tlight"></i>
@@ -199,7 +230,7 @@
         </div>
         <svg class="cy-svg cy-rsvg" viewBox="0 0 1920 1080" aria-hidden="true">
           <circle class="cy-rtrack" cx="${CX}" cy="${CY}" r="${R}"/>
-          <circle class="cy-rwide" cx="${CX}" cy="${CY}" r="${R}"/>
+          <g class="cy-rwide"><circle class="w1" cx="${CX}" cy="${CY}" r="${R}"/><circle class="w2" cx="${CX}" cy="${CY}" r="${R}"/></g>
           <circle class="cy-rdraw" cx="${CX}" cy="${CY}" r="${R}" pathLength="100" transform="rotate(-45 ${CX} ${CY})"/>
           ${connSvg}
         </svg>
@@ -221,14 +252,16 @@
       <!-- stop 1, as the draw closes · it repeats -->
       <div class="cy-core" style="left:${CX}px;top:${CY}px"></div>
       <div class="cy-rep a-scale" data-in="1" data-spark="1" data-spark-at="t" data-spark-delay="${(REP - .42).toFixed(2)}" style="left:${CX - 200}px;top:${CY - 54}px;--d:${(REP - .08).toFixed(2)}s;--dur:.8s"><span>The cycle<br>repeats</span></div>
+      <style>${RKF.join('\n')}</style>
     `,
     init(ctx) {
-      ctx.geo = ctx.$('.cy-ttr');
+      ctx.tail = ctx.$('.cy-tail');
+      ctx.tailP = ctx.$$('.cy-ttr');
+      ctx.tailD = [];
       ctx.tl = ctx.$('.cy-tlight');
       ctx.tg = ctx.$('.cy-tglow');
       ctx.pl = ctx.$('.cy-plight');
       ctx.pt = ctx.$('.cy-ptrail');
-      ctx.ttr = ctx.$$('.cy-ttr').map((c) => ({ c, len: +c.dataset.len }));
       ctx.tNodes = ctx.$$('.cy-ln.t');
       ctx.pNodes = ctx.$$('.cy-ln.p');
       ctx.wall = ctx.$('.cy-wallw');
@@ -247,7 +280,6 @@
       ctx.lclock = ctx.$('.cy-clock.lane');
       ctx.oclock = ctx.$('.cy-clock.orbit');
       ctx.draw0 = 0;
-      ctx.len = 0;
       ctx.hitWall = false;
       ctx.lapK = 0;
       ctx.sent = 0;
@@ -281,27 +313,44 @@
     },
   });
 
-  // a clock's animation and its time in seconds (null when its stop is not reached)
+  // a clock's animation and its time in seconds (null when its stop is not reached). The
+  // animation is looked up once (getAnimations() flushes style) and kept while it lives.
   function anim(el) { const a = el.getAnimations ? el.getAnimations()[0] : null; return a || null; }
-  function clock(el) { const a = anim(el); return a && a.currentTime != null ? a.currentTime / 1000 : null; }
+  function clock(ctx, key) {
+    let a = ctx[key + 'A'];
+    if (!a || a.currentTime == null) a = ctx[key + 'A'] = anim(ctx[key]);
+    return a && a.currentTime != null ? a.currentTime / 1000 : null;
+  }
   function place(el, x, y) { el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`; }
-  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function fade(el, v) { if (el._o !== v) { el._o = v; el.style.opacity = v; } }
+  // replay a one-shot class animation without forcing layout: drop the class now, add it back
+  // two frames on (after a style pass has seen it gone)
+  function restart(el, cls) { el.classList.remove(cls); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add(cls))); }
+  // the tail: the last TAIL[0] px of the loop behind the light, drawn in the light's own frame, so
+  // on the straights its shape is constant and nothing is rewritten (or repainted)
+  function drawTail(ctx, s, p) {
+    const pts = [];
+    for (let d = 0; d <= TAIL[0]; d += TSTEP) {
+      const q = LOOPS.at(mod(s - d, LOOPS.L));
+      pts.push(Math.round((q.x - p.x) * 10) / 10 + ' ' + Math.round((q.y - p.y) * 10) / 10);
+    }
+    TAIL.forEach((len, i) => {
+      const d = 'M' + pts.slice(0, len / TSTEP + 1).join('L');
+      if (ctx.tailD[i] !== d) { ctx.tailD[i] = d; ctx.tailP[i].setAttribute('d', d); }
+    });
+  }
 
   function lanes(ctx) {
-    const t = clock(ctx.lclock);
+    const t = clock(ctx, 'lclock');
     if (t == null) return;
-    if (!ctx.len) ctx.len = ctx.geo.getTotalLength();
-    const L = ctx.len, v = L / PERIOD;
+    const L = LOOPS.L, v = L / PERIOD;
     // both lights leave their start together, then the award light every half lap
     const tt = mod(t - LIGHTS_AT, PERIOD);
     const s = tt * v;
-    const p = ctx.geo.getPointAtLength(s);
-    place(ctx.tl, p.x, p.y); place(ctx.tg, p.x, p.y);
-    // the comet tail: stacked segments that end at the light (the dash pattern wraps with the lap)
-    ctx.ttr.forEach(({ c, len }) => {
-      c.style.strokeDasharray = len + ' ' + (L - len).toFixed(1);
-      c.style.strokeDashoffset = (len - s).toFixed(1);
-    });
+    const p = LOOPS.at(s);
+    place(ctx.tl, p.x, p.y); place(ctx.tg, p.x, p.y); place(ctx.tail, p.x, p.y);
+    // the comet tail: stacked segments that end at the light (they wrap with the lap)
+    drawTail(ctx, s, p);
     ctx.tNodes.forEach((d, i) => {
       const at0 = TX[i] - TX[0];
       const hit = (s < TOP + 30 && Math.abs(s - at0) < 46) || (i === 0 && s > L - 34);
@@ -320,9 +369,9 @@
       x = PEND; o = Math.max(0, 1 - k / .35); tail = Math.max(0, 230 - k * 1000);
     }
     ctx.pl.style.transform = `translate(${x.toFixed(1)}px,${Y1}px) scale(${k < 0 ? 1 : Math.max(.3, 1 - k * 2.2).toFixed(3)},${k < 0 ? 1 : (1 + Math.min(k, .3) * 1.4).toFixed(3)})`;
-    ctx.pl.style.opacity = o.toFixed(3);
+    fade(ctx.pl, o.toFixed(3));
     ctx.pt.style.transform = `translate(${(x - tail).toFixed(1)}px,${Y1}px) scaleX(${(tail / 230).toFixed(3)})`;
-    ctx.pt.style.opacity = (k < 0 ? o : o * .8).toFixed(3);
+    fade(ctx.pt, (k < 0 ? o : o * .8).toFixed(3));
     ctx.pNodes.forEach((d, i) => {
       const hit = k < 0 && o > .5 && Math.abs(x - PX[i]) < 46;
       if (hit && !d.classList.contains('hit')) restart(d, 'pass');
@@ -340,20 +389,21 @@
   function ring(ctx, now) {
     // the draw runs in real time; the orbit after it runs on the orbit clock
     const el = ctx.draw0 ? (now - ctx.draw0) / 1000 : -1;
-    const ct = clock(ctx.oclock);
+    const ct = clock(ctx, 'oclock');
     const orbit = ct == null ? 0 : Math.max(0, ct - DRAW_AT - DRAW);
     let p, a, head;
     if (el < 0) { p = 0; a = -45; head = 0; }
     else if (el < DRAW) { p = ease(el / DRAW); a = -45 + 360 * p; head = 1; }
     else { p = 1; a = -45 + 360 * (orbit / LAP); head = Math.max(0, 1 - (el - DRAW) / .7); }
-    ctx.rdraw.style.strokeDashoffset = (100 - 100 * p).toFixed(2);
+    const off = (100 - 100 * p).toFixed(2);
+    if (ctx.rOff !== off) { ctx.rOff = off; ctx.rdraw.style.strokeDashoffset = off; }   // only while the ring draws
     const [x, y] = at(a, R);
     place(ctx.ol, x, y); place(ctx.flare, x, y);
-    ctx.ol.style.opacity = el < 0 ? 0 : 1;
-    ctx.flare.style.opacity = head.toFixed(3);
+    fade(ctx.ol, el < 0 ? '0' : '1');
+    fade(ctx.flare, head.toFixed(3));
     // the comet tail follows the light; while the ring draws it grows with the stroke
     ctx.comet.style.transform = `rotate(${(a + 90).toFixed(2)}deg)`;
-    ctx.comet.style.opacity = el < 0 ? 0 : Math.min(1, (360 * p) / 110).toFixed(3);
+    fade(ctx.comet, el < 0 ? '0' : Math.min(1, (360 * p) / 110).toFixed(3));
     // once the cycle repeats, a second story joins it half a lap behind the first
     const a2 = a - 180, two = ctx.step >= 1 && el >= JOIN;
     const [x2, y2] = at(a2, R);
@@ -379,5 +429,34 @@
       }
       nw.classList.toggle('hit', hit);
     });
+  }
+
+  // arc-length sampler for an absolute M/L/C path: point and heading (deg) at a distance along
+  // it; past either end it carries on along the end's tangent
+  function sampler(d) {
+    const tk = d.match(/[MLC]|-?[\d.]+/g), pts = [];
+    let cmd = 'M', cur = [0, 0];
+    for (let i = 0; i < tk.length;) {
+      if (/[MLC]/.test(tk[i])) { cmd = tk[i++]; continue; }
+      const n = (k) => +tk[i + k];
+      if (cmd === 'M') { cur = [n(0), n(1)]; pts.push(cur); i += 2; }
+      else if (cmd === 'L') { const q = [n(0), n(1)], a = cur; for (let k = 1; k <= 24; k++) pts.push([a[0] + (q[0] - a[0]) * k / 24, a[1] + (q[1] - a[1]) * k / 24]); cur = q; i += 2; }
+      else { const a = cur, b = [n(0), n(1)], c = [n(2), n(3)], e = [n(4), n(5)];
+        for (let k = 1; k <= 120; k++) { const u = k / 120, w = 1 - u; pts.push([0, 1].map((j) => w * w * w * a[j] + 3 * w * w * u * b[j] + 3 * w * u * u * c[j] + u * u * u * e[j])); }
+        cur = e; i += 6; }
+    }
+    const acc = [0];
+    for (let k = 1; k < pts.length; k++) acc.push(acc[k - 1] + Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]));
+    const L = acc[acc.length - 1], last = pts.length - 1;
+    const dir = (k0, k1) => Math.atan2(pts[k1][1] - pts[k0][1], pts[k1][0] - pts[k0][0]);
+    const at = (s) => {
+      if (s <= 0) { const t = dir(0, 1); return { x: pts[0][0] + s * Math.cos(t), y: pts[0][1] + s * Math.sin(t), a: t * 180 / Math.PI }; }
+      if (s >= L) { const t = dir(last - 1, last); return { x: pts[last][0] + (s - L) * Math.cos(t), y: pts[last][1] + (s - L) * Math.sin(t), a: t * 180 / Math.PI }; }
+      let lo = 0, hi = last;
+      while (hi - lo > 1) { const m = (lo + hi) >> 1; if (acc[m] < s) lo = m; else hi = m; }
+      const f = (s - acc[lo]) / (acc[hi] - acc[lo] || 1);
+      return { x: pts[lo][0] + (pts[hi][0] - pts[lo][0]) * f, y: pts[lo][1] + (pts[hi][1] - pts[lo][1]) * f, a: dir(lo, hi) * 180 / Math.PI };
+    };
+    return { L, at };
   }
 })();

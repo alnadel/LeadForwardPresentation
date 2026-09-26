@@ -49,7 +49,7 @@
 #s-benchmark .bm-divider::after { content: ''; position: absolute; left: -9px; top: -10px; width: 20px; height: 20px; border-radius: 28%; opacity: 0;
   background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 16px var(--sea), 0 0 44px rgba(3, 255, 203, .6); }
 #s-benchmark.bm-live .bm-divider::after { animation: bmTip 1s var(--ease-out) var(--delay) both; }
-@keyframes bmTip { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: 1; } 72% { opacity: 1; } 100% { transform: translateY(440px); opacity: 0; } }
+@keyframes bmTip { 0% { transform: translateY(0); opacity: 0; } 16% { opacity: 1; } 72% { opacity: 1; } 100% { transform: translateY(440px); opacity: 0; } }
 
 /* ── columns ────────────────────────────────────────────────────────────── */
 #s-benchmark .bm-col { position: absolute; top: 346px; width: 732px; height: 446px; }
@@ -98,7 +98,7 @@
 #s-benchmark .hero .bm-fig::before { content: ''; position: absolute; left: 190px; top: 90px; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 28%;
   border: 3px solid rgba(3, 255, 203, .9); box-shadow: 0 0 30px rgba(3, 255, 203, .6); opacity: 0; pointer-events: none; }
 #s-benchmark.bm-live .hero .bm-fig::before { animation: bmRing 1.3s var(--ease-out) calc(var(--delay) + .9s) both; }
-@keyframes bmRing { 0% { transform: scale(.4); opacity: 0; } 12% { opacity: 1; } 100% { transform: scale(3.4); opacity: 0; } }
+@keyframes bmRing { 0% { transform: scale(.4); opacity: 0; } 16% { opacity: 1; } 100% { transform: scale(3.4); opacity: 0; } }
 /* a glow breathes behind +48 */
 #s-benchmark .bm-halo { position: absolute; left: -150px; top: -250px; width: 940px; height: 660px; pointer-events: none; opacity: 0;
   transition: opacity 1.2s var(--ease-soft) calc(var(--enter, 0s) + 1.5s); }

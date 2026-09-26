@@ -60,8 +60,8 @@
   const ROW0 = 88, ROWH = 116;
   const rows = FIELDS.map((f, i) => `
     <div class="rn-row" data-in="0" style="--k:${i};top:${ROW0 + i * ROWH}px">
-      <span class="rn-chip">${nn(i)}</span>
-      <b class="rn-key">${f.k}</b>
+      <span class="rn-chip" data-n="${nn(i)}">${nn(i)}</span>
+      <b class="rn-key" data-t="${f.k}">${f.k}</b>
       <p class="rn-q">${f.q}</p>
       <span class="rn-con" style="--cd:${(1 + i * .1).toFixed(2)}s"><i></i></span>
       <p class="rn-dec">${f.c}</p>
@@ -76,9 +76,9 @@
   const weeks = Array.from({ length: 12 }, (_, k) => `<i style="left:${((k + 1) / 13 * QW).toFixed(1)}px"></i>`).join('');
   const months = MONTHS.map((m, k) => `
     <div class="rn-m glass a-unfold" data-in="1" style="--k:${k};left:${k * (MW + MG)}px;--d:${(.62 + k * .14).toFixed(2)}s">
-      <span class="rn-mi">${Deck.icon(m.i)}</span>
+      <span class="rn-mi">${Deck.icon(m.i)}<span class="rn-mi-on">${Deck.icon(m.i)}</span></span>
       <div class="rn-m-lab">${m.m}</div>
-      <div class="rn-m-k">${m.k}</div>
+      <div class="rn-m-k" data-t="${m.k}">${m.k}</div>
       <p class="rn-m-t">${m.t}</p>
     </div>`).join('');
   const marks = MONTHS.map((m, k) => `<i class="rn-tick a-materialize" data-in="1" style="left:${k * (MW + MG) + 36}px;--k:${k};--d:${(.7 + k * .14).toFixed(2)}s"></i>`).join('');
@@ -98,7 +98,7 @@
   const centre = `left:${pos(1)};top:${pos(1)};width:${C.toFixed(3)}%;height:${C.toFixed(3)}%`;
   const tiers = TIERS.map((x, k) => `
     <div class="rn-t" data-in="2" style="--k:${k}">
-      <span class="node rn-tn">${nn(k)}</span>
+      <span class="node rn-tn" data-n="${nn(k)}">${nn(k)}</span>
       <div><h3 class="rn-tt">${x.t}</h3><p class="rn-ts">${x.s}</p></div>
     </div>`).join('');
 
@@ -193,7 +193,7 @@
             <span class="rn-coll a-materialize" data-in="1" style="--d:1.1s;--dur:1.1s"><i></i><i></i><i></i><i></i></span>
             <div class="rn-m-lab rn-an-lab">Annual</div>
             <p class="rn-an-t">Curated story collection</p>
-            <span class="rn-stack a-fade" data-in="1" style="--d:1.3s"><i></i><i></i><i></i></span>
+            <span class="rn-stack a-fade" data-in="1" style="--d:1.3s"><i></i><i></i><i><b></b></i></span>
           </div>
           <div class="rn-play a-fade" data-in="1" style="--d:1.4s"><span class="rn-fill"></span><span class="rn-play-x"><i class="light"></i></span><span class="rn-shot"><i class="light sm"></i></span></div>
         </div>
@@ -211,16 +211,22 @@
         <div class="rn-view" style="left:${VIEW.x}px;top:${VIEW.y}px;width:${VIEW.w}px;height:${VIEW.h}px">
           <b class="rn-halo" style="left:${FC.x}px;top:${FC.y}px"></b>
           <div class="rn-s3" style="${sq('a', Z.a)};${sq('z', Z.c)}">
-            <b class="rn-orb"></b>
+            <b class="rn-fg"></b>
+            <b class="rn-orb"><i></i></b>
             ${cells('c3', [2, 3, 7])}
             <div class="rn-s2" style="${centre}">
+              <b class="rn-fg"></b>
               ${cells('c2')}
               <div class="rn-s1" style="${centre}" data-spark="2" data-spark-xy="${VIEW.x + FC.x},${VIEW.y + FC.y}" data-spark-delay=".55">
                 <span class="rn-cert">${Deck.icon('document-certified')}</span>
               </div>
             </div>
           </div>
-          <b class="rn-pulse" style="left:${FC.x}px;top:${FC.y}px"></b>
+          <!-- the pulse: a squircle that scales (transform); its ring is a non-scaling stroke (2.5px at every size), its soft fill a gradient -->
+          <svg class="rn-pulse" viewBox="0 0 ${VIEW.w} ${VIEW.h}" aria-hidden="true">
+            <defs><radialGradient id="rn-pulse-g" cx=".5" cy=".5" r=".5"><stop offset=".62" stop-color="#03FFCB" stop-opacity="0"/><stop offset="1" stop-color="#03FFCB" stop-opacity=".14"/></radialGradient></defs>
+            <rect class="rn-pulse-r" x="${FC.x - 50}" y="${FC.y - 50}" width="100" height="100" rx="28"/>
+          </svg>
         </div>
       </div>
 

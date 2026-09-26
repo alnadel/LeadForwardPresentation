@@ -119,6 +119,8 @@
       <div class="nt-pair"><i class="nt-halo"></i></div>
       <b class="nt-p"><i class="light"></i></b><b class="nt-p"><i class="light"></i></b>
       <div class="nt-know" style="left:${KNOW.x}px;top:${KNOW.y}px">
+        <!-- the words' slow glow: a static text-shadow copy that breathes in opacity (02-night.css) -->
+        <div class="nt-know-glow" aria-hidden="true"><div class="nt-know-h">Two people know.</div><p class="nt-know-s">Nouf, and the colleague who sat next to her.</p></div>
         <h2 class="nt-know-h" data-in="1" data-split style="--d:.8s">Two people know.</h2>
         <p class="nt-know-s" data-in="1" style="--d:1s;--dur:.5s">Nouf, and the colleague who sat next to her.</p>
       </div>

@@ -10,16 +10,20 @@
 #s-open .op-plate { position: absolute; inset: 0; transform-origin: 72% 46%; }
 #s-open .op-photo { opacity: .76; background-position: 62% 50%; }
 #s-open .op-leak { opacity: .9; }
-/* the video wall keeps working: data blips flicker, a scan line sweeps */
+/* the video wall keeps working: data blips pulse, a scan line sweeps (the blips fade on and off
+   smoothly; every rise and fall takes ≥ 280 ms even on the fastest blip, --t 2.4 s) */
 #s-open .op-wall { position: absolute; left: 1330px; top: 190px; width: 590px; height: 360px; transform: skewY(-6deg); mix-blend-mode: screen; }
-#s-open .op-wall b { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: 4px; border-radius: 2px; background: rgba(37, 199, 188, .9); box-shadow: 0 0 12px rgba(3, 255, 203, .8); opacity: 0; animation: opBlip var(--t) steps(1) var(--dl) infinite; }
-@keyframes opBlip { 0%, 100% { opacity: 0; } 12% { opacity: .9; } 28% { opacity: .2; } 36% { opacity: .75; } 58% { opacity: 0; } }
+#s-open .op-wall b { position: absolute; left: var(--x); top: var(--y); width: var(--w); height: 4px; border-radius: 2px; background: rgba(37, 199, 188, .9); box-shadow: 0 0 12px rgba(3, 255, 203, .8); opacity: 0; animation: opBlip var(--t) ease-in-out var(--dl) infinite; }
+@keyframes opBlip { 0%, 100% { opacity: 0; } 14% { opacity: .9; } 30% { opacity: .3; } 42% { opacity: .75; } 62% { opacity: 0; } }
 #s-open .op-scanline { position: absolute; left: 0; right: 0; top: 0; height: 60px; background: linear-gradient(180deg, transparent, rgba(3, 255, 203, .22), transparent); animation: opScan 4.2s cubic-bezier(.5, 0, .5, 1) infinite; }
 @keyframes opScan { 0% { transform: translateY(-60px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(380px); opacity: 0; } }
 #s-open .op-veil { background:
   linear-gradient(90deg, rgba(30, 12, 26, .97) 0%, rgba(30, 12, 26, .9) 30%, rgba(30, 12, 26, .42) 58%, rgba(6, 16, 30, .18) 100%),
   linear-gradient(0deg, rgba(3, 8, 16, .85) 0%, transparent 38%); }
-#s-open .op-glow { position: absolute; left: 1280px; top: 160px; width: 700px; height: 460px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .28), transparent); filter: blur(24px); animation: opGlow 5.5s ease-in-out infinite; }
+/* (the soft edge is baked into the gradient: it matches the old 700×460 ellipse under blur(24px)
+   within a level or two, without a filter on an animated layer) */
+#s-open .op-glow { position: absolute; left: 1236px; top: 124px; width: 788px; height: 532px; border-radius: 50%; animation: opGlow 5.5s ease-in-out infinite;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .255), rgba(37, 199, 188, .14) 45%, rgba(37, 199, 188, .06) 70%, rgba(37, 199, 188, .016) 87%, transparent); }
 @keyframes opGlow { 0%, 100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.12); } }
 #s-open .op-dust { position: absolute; inset: 0; pointer-events: none; }
 /* the near layer: large soft lights, out of focus, drifting against the plate's push-in */
@@ -33,17 +37,32 @@
 #s-open .op-logo svg { width: 100%; display: block; }
 #s-open .op-kicker { position: absolute; left: 144px; top: 316px; font-size: 22px; }
 #s-open .op-title { position: absolute; left: 140px; top: 366px; width: 1100px; }
-/* after it lands, a light sweeps through the title (word by word, left to right) every 9 s */
+/* the landing shine (once), in the title's own tint */
 #s-open .op-title.is-in .w > span:not(:has(*)) {
   background: linear-gradient(100deg, currentColor 40%, #B8FFF1 47%, #FFFFFF 50%, #B8FFF1 53%, currentColor 60%) 0% 0 / 300% 100% no-repeat;
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  animation: v2Shine 1.6s var(--ease-soft) forwards, opSweep 9s ease-in-out infinite;
-  animation-delay: calc(var(--delay, 0s) + .75s + var(--wi) * .05s), calc(var(--delay, 0s) + 4.2s + var(--wi) * .16s); }
-@keyframes opSweep { 0% { background-position: 0% 0; } 18%, 100% { background-position: 100% 0; } }
+  animation: v2Shine 1.6s var(--ease-soft) forwards; animation-delay: calc(var(--delay, 0s) + .75s + var(--wi) * .05s); }
+/* after it lands, a light sweeps through the title (word by word) every 9 s. Transform only:
+   each word holds a window (.op-sw, added by 01-open.js) carrying a copy of the word in the
+   light's tint; the window slides through the word while the copy slides the other way, so the
+   light moves and the letters stay put. The window's mask is the band of the landing shine
+   (two tinted edges round a white core), and the word's own mask (.w) hides it at rest. */
+#s-open .op-sw { position: absolute; left: 0; top: 0; right: 0; bottom: .1em; overflow: hidden; pointer-events: none; transform: translateX(100%);
+  -webkit-mask-image: linear-gradient(100deg, transparent 21.5%, #000 41.5%, transparent 50%, #000 58.5%, transparent 78.5%);
+  mask-image: linear-gradient(100deg, transparent 21.5%, #000 41.5%, transparent 50%, #000 58.5%, transparent 78.5%); }
+#s-open .op-sw > i { display: block; font-style: normal; white-space: nowrap; color: #B8FFF1; -webkit-text-fill-color: #B8FFF1; transform: translateX(-100%); }
+#s-open .op-title.is-in .op-sw { animation: opSweepW 9s ease-in-out calc(var(--delay, 0s) + 4.2s + var(--wi) * .16s) infinite; }
+#s-open .op-title.is-in .op-sw > i { animation: opSweepT 9s ease-in-out calc(var(--delay, 0s) + 4.2s + var(--wi) * .16s) infinite; }
+@keyframes opSweepW { 0% { transform: translateX(100%); } 18%, 100% { transform: translateX(-100%); } }
+@keyframes opSweepT { 0% { transform: translateX(-100%); } 18%, 100% { transform: translateX(100%); } }
 /* the Arabic title supports the English one: a step smaller */
-#s-open .op-ar { position: absolute; left: 144px; top: 664px; font: 700 56px/1.2 var(--font); color: var(--teal); }
-#s-open.st-0 .op-ar.is-in { animation: opArGlow 5s ease-in-out 2.6s infinite; }
-@keyframes opArGlow { 0%, 100% { text-shadow: 0 0 0 rgba(37, 199, 188, 0); } 50% { text-shadow: 0 0 36px rgba(37, 199, 188, .55); } }
+#s-open .op-ar { position: absolute; left: 144px; top: 664px; font: 700 56px/1.2 var(--font); color: var(--teal); isolation: isolate; }
+/* its glow breathes: a copy of the words (data-glow) that is only a static text-shadow sits
+   behind them and fades in and out (opacity only) */
+#s-open .op-ar::before { content: attr(data-glow); position: absolute; inset: 0; z-index: -1; white-space: nowrap; pointer-events: none;
+  color: transparent; -webkit-text-fill-color: transparent; text-shadow: 0 0 36px rgba(37, 199, 188, .55); opacity: 0; }
+#s-open.st-0 .op-ar.is-in::before { animation: opArGlow 5s ease-in-out 2.6s infinite; }
+@keyframes opArGlow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
 /* stop 1 · the key is the line with the light; the tagline above it is a quiet support line */
 #s-open .op-rule { position: absolute; left: 144px; top: 786px; width: 96px; height: 3px; background: var(--teal); box-shadow: 0 0 14px rgba(3, 255, 203, .6); }
@@ -55,7 +74,7 @@
 #s-open .op-birth { position: absolute; width: 0; height: 0; pointer-events: none; }
 #s-open .op-birth b { position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 28%; background: #CFFFF4; box-shadow: 0 0 10px var(--sea), 0 0 22px rgba(3, 255, 203, .6); opacity: 0; }
 #s-open.op-born .op-birth b { animation: opMote .75s cubic-bezier(.55, 0, .75, .35) calc(.12s + var(--k) * .02s) both; }
-@keyframes opMote { 0% { transform: rotate(var(--a)) translateX(var(--r)) scale(.6); opacity: 0; } 25% { opacity: 1; } 92% { opacity: 1; } 100% { transform: rotate(calc(var(--a) + 70deg)) translateX(0) scale(1.4); opacity: 0; } }
+@keyframes opMote { 0% { transform: rotate(var(--a)) translateX(var(--r)) scale(.6); opacity: 0; } 25% { opacity: 1; } 75% { opacity: 1; animation-timing-function: ease-in-out; } 100% { transform: rotate(calc(var(--a) + 70deg)) translateX(0) scale(1.4); opacity: 0; } }
 #s-open .op-bloom { position: absolute; left: -160px; top: -160px; width: 320px; height: 320px; border-radius: 50%; opacity: 0;
   background: radial-gradient(closest-side, rgba(255, 255, 255, .9), rgba(3, 255, 203, .5) 22%, rgba(37, 199, 188, .14) 55%, transparent); }
 #s-open.op-born .op-bloom { animation: opBloom 1.5s var(--ease-out) .86s both; }

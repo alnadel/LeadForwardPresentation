@@ -31,14 +31,15 @@
 /* the right side darkens behind the handover card */
 #s-night .nt-veil-card { background: linear-gradient(90deg, transparent 34%, rgba(4, 22, 40, .35) 56%, rgba(4, 22, 40, .73) 72%, rgba(4, 22, 40, .75) 100%); }
 
-/* the operations screens flicker, and their light plays on Nouf's face */
+/* the operations screens breathe, and their light plays on Nouf's face (slow, smooth swells of
+   light: every rise and fall takes well over a second) */
 #s-night .nt-screens i { position: absolute; left: calc(var(--x) - var(--w) / 2); top: calc(var(--y) - 80px); width: var(--w); height: 160px; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(120, 205, 240, .58), rgba(37, 199, 188, .18) 60%, transparent); mix-blend-mode: screen; opacity: .5; }
-#s-night.st-0 .nt-screens i { animation: ntFlicker var(--ft, 3.7s) linear var(--dl, 0s) infinite; }
-@keyframes ntFlicker { 0% { opacity: .45; } 5% { opacity: .95; } 8% { opacity: .5; } 12% { opacity: .85; } 38% { opacity: .62; } 42% { opacity: 1; } 45% { opacity: .38; } 50% { opacity: .8; } 74% { opacity: .55; } 78% { opacity: .95; } 82% { opacity: .6; } 100% { opacity: .45; } }
+#s-night.st-0 .nt-screens i { animation: ntFlicker calc(var(--ft, 3.7s) * 1.8) ease-in-out var(--dl, 0s) infinite; }
+@keyframes ntFlicker { 0%, 100% { opacity: .45; } 28% { opacity: .92; } 52% { opacity: .6; } 76% { opacity: .95; } }
 #s-night .nt-face { position: absolute; left: 400px; top: 60px; width: 380px; height: 330px; border-radius: 50%; background: radial-gradient(closest-side, rgba(130, 200, 235, .3), rgba(37, 199, 188, .1) 55%, transparent);
   mix-blend-mode: screen; opacity: .6; }
-#s-night.st-0 .nt-face { animation: ntFlicker 3.3s linear -.9s infinite; }
+#s-night.st-0 .nt-face { animation: ntFlicker 5.9s ease-in-out -1.6s infinite; }
 
 /* ── interface ── */
 #s-night .nt-ui { position: absolute; inset: 0; transition: opacity .6s var(--ease-soft); }
@@ -52,14 +53,16 @@
   background: linear-gradient(180deg, #FFFFFF 22%, #D3DEEA 58%, #93AAC3 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 30px rgba(120, 205, 240, .3)) drop-shadow(0 16px 28px rgba(0, 0, 0, .55)); }
 #s-night .nt-colon { display: flex; flex-direction: column; gap: 60px; margin: 6px 4px 0; }
-#s-night .nt-colon b { display: block; width: 30px; height: 30px; border-radius: 28%; background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--sea) 40%, var(--teal) 82%);
+/* each light keeps only a faint 4 px glow of its own; its full glow is a static layer (::before)
+   that fades out and back with the blink (opacity only; each fade takes 240 ms) */
+#s-night .nt-colon b { position: relative; display: block; width: 30px; height: 30px; border-radius: 28%; background: radial-gradient(circle at 35% 30%, #fff 0 12%, var(--sea) 40%, var(--teal) 82%);
+  box-shadow: 0 0 4px rgba(3, 255, 203, .3); }
+#s-night .nt-colon b::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   box-shadow: 0 0 14px var(--sea), 0 0 44px rgba(3, 255, 203, .6), 0 0 110px rgba(37, 199, 188, .38); }
 #s-night.st-0 .nt-colon b { animation: ntColon 2s ease-in-out infinite; }
-@keyframes ntColon {
-  0%, 40% { opacity: 1; box-shadow: 0 0 14px var(--sea), 0 0 44px rgba(3, 255, 203, .6), 0 0 110px rgba(37, 199, 188, .38); }
-  50%, 90% { opacity: .2; box-shadow: 0 0 4px rgba(3, 255, 203, .3), 0 0 0 rgba(3, 255, 203, 0), 0 0 0 rgba(37, 199, 188, 0); }
-  100% { opacity: 1; box-shadow: 0 0 14px var(--sea), 0 0 44px rgba(3, 255, 203, .6), 0 0 110px rgba(37, 199, 188, .38); }
-}
+#s-night.st-0 .nt-colon b::before { animation: ntColonGlow 2s ease-in-out infinite; }
+@keyframes ntColon { 0%, 38%, 100% { opacity: 1; } 50%, 88% { opacity: .2; } }
+@keyframes ntColonGlow { 0%, 38%, 100% { opacity: 1; } 50%, 88% { opacity: 0; } }
 /* a cool pool of screen light behind the clock, breathing with the colon */
 #s-night .nt-clock-glow { position: absolute; left: -90px; top: -110px; width: 800px; height: 400px; z-index: -1; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(59, 128, 170, .34), rgba(37, 199, 188, .1) 55%, transparent); }
@@ -79,9 +82,13 @@
 
 #s-night .nt-card-w { position: absolute; left: 1176px; top: 420px; width: 600px; }
 /* the hero: a soft pool of light under the new handover */
-#s-night .nt-card-pool { position: absolute; left: -170px; right: -170px; top: -150px; bottom: -170px; border-radius: 50%; pointer-events: none; opacity: 0;
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .26), rgba(37, 199, 188, .08) 55%, transparent); transition: opacity .3s var(--ease-soft); }
-#s-night.st-0 .nt-card-pool { opacity: 1; transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + 1.15s); animation: ntCardPool 5.6s ease-in-out calc(var(--enter, 0s) + 2.5s) infinite; }
+/* (the pool fades in; its light (::before) breathes, resting on its first breath until then, so
+   the breath never snaps the fade-in) */
+#s-night .nt-card-pool { position: absolute; left: -170px; right: -170px; top: -150px; bottom: -170px; pointer-events: none; opacity: 0; transition: opacity .3s var(--ease-soft); }
+#s-night .nt-card-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .26), rgba(37, 199, 188, .08) 55%, transparent); }
+#s-night.st-0 .nt-card-pool { opacity: 1; transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + 1.15s); }
+#s-night.st-0 .nt-card-pool::before { animation: ntCardPool 5.6s ease-in-out calc(var(--enter, 0s) + 2.5s) infinite both; }
 @keyframes ntCardPool { 0%, 100% { transform: scale(.95); opacity: .75; } 50% { transform: scale(1.06); opacity: 1; } }
 #s-night .nt-card { overflow: hidden; padding: 26px 32px 14px; border-radius: 24px; opacity: 0; transform: scale(.9);
   background: linear-gradient(165deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .035) 50%, rgba(37, 199, 188, .08)), rgba(6, 16, 32, .8);
@@ -133,17 +140,28 @@
 /* … and one light on each colleague (the wrapper is placed per frame; the light breathes) */
 #s-night .nt-p { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 #s-night.st-1 .nt-p { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
-#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; animation: ntPair 3s ease-in-out infinite; }
-#s-night .nt-p + .nt-p .light { animation-delay: -1.5s; }
-/* each light breathes deeply: at rest it is the v1 light, at the top of the breath its glow swells */
-@keyframes ntPair {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--sea), 0 0 36px rgba(3, 255, 203, .6), 0 0 90px rgba(37, 199, 188, .35); }
-  50% { transform: scale(1.25); box-shadow: 0 0 22px var(--sea), 0 0 74px 10px rgba(3, 255, 203, .62), 0 0 170px 38px rgba(37, 199, 188, .42); }
-}
+/* each light breathes deeply: at rest it is the v1 light, at the top of the breath its glow swells.
+   The light scales; its glow is two static layers that crossfade (opacity only): ::before is
+   the resting glow (the v1 light's), ::after the swollen one. v2 scene 11 mirrors this. */
+#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; box-shadow: none; animation: ntPair 3s ease-in-out infinite; }
+#s-night .nt-p .light::before, #s-night .nt-p .light::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+#s-night .nt-p .light::before { box-shadow: 0 0 12px var(--sea), 0 0 36px rgba(3, 255, 203, .6), 0 0 90px rgba(37, 199, 188, .35); animation: ntPairRest 3s ease-in-out infinite; }
+#s-night .nt-p .light::after { box-shadow: 0 0 22px var(--sea), 0 0 74px 10px rgba(3, 255, 203, .62), 0 0 170px 38px rgba(37, 199, 188, .42); opacity: 0; animation: ntPairSwell 3s ease-in-out infinite; }
+#s-night .nt-p + .nt-p .light, #s-night .nt-p + .nt-p .light::before, #s-night .nt-p + .nt-p .light::after { animation-delay: -1.5s; }
+@keyframes ntPair { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+@keyframes ntPairRest { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes ntPairSwell { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
-#s-night .nt-know { position: absolute; width: 760px; text-align: center; filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); }
-#s-night.st-1 .nt-know { animation: ntKnow 3s ease-in-out 2.4s infinite; }
-@keyframes ntKnow { 0%, 100% { filter: drop-shadow(0 0 2px rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .46)); } }
+#s-night .nt-know { position: absolute; width: 760px; text-align: center; isolation: isolate; }
+/* its slow glow: a copy of the words behind them that is only a static text-shadow, breathing in
+   opacity (the old filter: drop-shadow(0 0 26px) is text-shadow 52px in Chrome; the support
+   line's glow is weaker in proportion to its text, as the drop-shadow's was). v2 scene 11 mirrors this. */
+#s-night .nt-know-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; }
+#s-night .nt-know-glow > * { color: transparent; -webkit-text-fill-color: transparent; }
+#s-night .nt-know-glow .nt-know-h { text-shadow: 0 0 52px rgba(3, 255, 203, .46); }
+#s-night .nt-know-glow .nt-know-s { text-shadow: 0 0 52px rgba(3, 255, 203, .285); }
+#s-night.st-1 .nt-know-glow { animation: ntKnow 3s ease-in-out 2.4s infinite; }
+@keyframes ntKnow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 #s-night .nt-know-h { margin: 0; font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }
 /* support: who the two are (small and quiet; the headline and the pair carry the stop) */
 #s-night .nt-know-s { margin: 20px 0 0; font: 400 24px/1.35 var(--font); letter-spacing: .005em; color: rgba(255, 255, 255, .62); }

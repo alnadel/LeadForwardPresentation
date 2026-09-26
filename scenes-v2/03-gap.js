@@ -143,7 +143,7 @@
       <div class="gp-map">
         <div class="gp-plane">
           <div class="gp-drift">
-            <div class="gp-grid"></div>
+            <div class="gp-grid"><i class="gp-sw"><i></i></i></div>
             ${DISTRICTS.map(district).join('')}
             ${BRIDGES.map(bridge).join('')}
           </div>

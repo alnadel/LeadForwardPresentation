@@ -46,14 +46,17 @@
 #s-journey .jn-li.cur b { color: var(--teal); }
 
 /* heroes leave to the left as the next arrives */
-#s-journey .jn-faisal.is-out, #s-journey .jn-form.is-out, #s-journey .jn-cur.is-out, #s-journey .jn-post.is-out, #s-journey .jn-flow.is-out, #s-journey .jn-certw.is-out, #s-journey .jn-tiles.is-out, #s-journey .jn-hub.is-out, #s-journey .jn-links.is-out, #s-journey .jn-ports.is-out, #s-journey .jn-reach.is-out { transform: translateX(-80px) scale(.97); filter: blur(6px); }
+#s-journey .jn-faisal.is-out, #s-journey .jn-form.is-out, #s-journey .jn-cur.is-out, #s-journey .jn-post.is-out, #s-journey .jn-flow.is-out, #s-journey .jn-certw.is-out, #s-journey .jn-tiles.is-out, #s-journey .jn-hub.is-out, #s-journey .jn-links.is-out, #s-journey .jn-lkfs.is-out, #s-journey .jn-ports.is-out, #s-journey .jn-reach.is-out { transform: translateX(-80px) scale(.97); filter: blur(6px); }
 
 /* the sheen that crosses every hero object */
 #s-journey .jn-sheen { position: relative; overflow: hidden; }
 #s-journey .jn-sheen::after { content: ''; position: absolute; top: -40%; bottom: -40%; left: -70%; width: 42%; pointer-events: none; transform: skewX(-18deg); z-index: 3;
   background: linear-gradient(100deg, transparent, rgba(37, 199, 188, .07) 30%, rgba(210, 255, 246, .38) 50%, rgba(37, 199, 188, .07) 70%, transparent);
-  animation: jnSheen 7s ease-in-out infinite; animation-delay: var(--sh, 1.4s); }
-@keyframes jnSheen { 0%, 52% { left: -70%; } 100% { left: 140%; } }
+  animation: jnSheen 7s ease-in-out infinite; animation-delay: var(--sh, 1.4s); animation-play-state: paused; }
+/* the band travels with transform (left -70% → 140% of the object = 5 band widths); it runs only
+   while its hero is on screen, and freezes (no jump) as the hero leaves */
+#s-journey[data-step="0"] .jn-form-i::after, #s-journey[data-step="1"] .jn-cur-i::after, #s-journey[data-step="1"] .jn-post-i::after, #s-journey[data-step="2"] .jn-cert::after { animation-play-state: running; }
+@keyframes jnSheen { 0%, 52% { transform: translateX(0) skewX(-18deg); } 100% { transform: translateX(500%) skewX(-18deg); } }
 
 #s-journey .jn-arr { fill: none; stroke: currentColor; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
 #s-journey .jn-tick { fill: none; stroke-linecap: round; stroke-linejoin: round; }
@@ -95,19 +98,25 @@
 #s-journey.st-0 .jn-send .s2 { opacity: 1; transition-delay: calc(var(--enter, 0s) + 1.4s); }
 /* sent: one pulse of light leaves the button */
 #s-journey .jn-send::after { content: ''; position: absolute; inset: -2px; border-radius: 16px; border: 2px solid var(--teal); opacity: 0; pointer-events: none; }
-#s-journey[data-play="0"] .jn-send::after { animation: jnSent 1.1s var(--ease-out) calc(var(--enter, 0s) + 1.35s); }
-@keyframes jnSent { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.35, 1.8); } }
+#s-journey[data-play="0"] .jn-send::after { animation: jnSent 1.28s linear calc(var(--enter, 0s) + 1.17s); }
+@keyframes jnSent { 0% { opacity: 0; transform: scale(1); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 15% { opacity: .9; transform: scale(1.02); animation-timing-function: cubic-bezier(.16, 1, .3, 1); } 100% { opacity: 0; transform: scale(1.35, 1.8); } }
 
 /* soft glow pools behind each stop's hero objects (only on that stop) */
-#s-journey .jn-glow { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .8s var(--ease-soft); }
-#s-journey .jn-glow.at { opacity: 1; transition: opacity 1.4s var(--ease-soft) .3s; animation: jnGlowPool 8s ease-in-out infinite; }
-#s-journey .jn-glow.g1 { left: 620px; top: 60px; width: 1300px; height: 960px; background: radial-gradient(closest-side, rgba(37, 199, 188, .16), rgba(96, 38, 80, .12) 55%, transparent); }
-#s-journey .jn-glow.g2 { left: 560px; top: 60px; width: 1300px; height: 960px; background: radial-gradient(closest-side, rgba(157, 103, 170, .16), rgba(37, 199, 188, .08) 55%, transparent); }
+#s-journey .jn-glow { position: absolute; pointer-events: none; opacity: 0; transition: opacity .8s var(--ease-soft); }
+#s-journey .jn-glow.at { opacity: 1; transition: opacity 1.4s var(--ease-soft) .3s; }
+/* the pool breathes on its own layer: transform + opacity (the old brightness range is folded into
+   brighter stops and an opacity swing); it runs only on its stop and freezes as the stop leaves */
+#s-journey .jn-glow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; animation: jnGlowPool 8s ease-in-out infinite; animation-play-state: paused; }
+#s-journey .jn-glow.at::before { animation-play-state: running; }
+#s-journey .jn-glow.g1 { left: 620px; top: 60px; width: 1300px; height: 960px; }
+#s-journey .jn-glow.g1::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .19), rgba(96, 38, 80, .144) 55%, transparent); }
+#s-journey .jn-glow.g2 { left: 560px; top: 60px; width: 1300px; height: 960px; }
+#s-journey .jn-glow.g2::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .19), rgba(37, 199, 188, .096) 55%, transparent); }
 /* stop 3: a wide pool of light under the chain and the headline, drifting toward the next colleague */
-#s-journey .jn-glow.g3 { left: 420px; top: 120px; width: 1500px; height: 860px; background: radial-gradient(closest-side, rgba(37, 199, 188, .15), rgba(37, 199, 188, .06) 55%, transparent); }
-#s-journey .jn-glow.g3.at { animation: jnGlowDrift 7s ease-in-out infinite; }
-@keyframes jnGlowDrift { 0%, 100% { transform: translateX(-60px) scale(.92); filter: brightness(.8); } 50% { transform: translateX(80px) scale(1.06); filter: brightness(1.3); } }
-@keyframes jnGlowPool { 0%, 100% { transform: scale(.94); filter: brightness(.85); } 50% { transform: scale(1.05); filter: brightness(1.2); } }
+#s-journey .jn-glow.g3 { left: 420px; top: 120px; width: 1500px; height: 860px; }
+#s-journey .jn-glow.g3::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .195), rgba(37, 199, 188, .078) 55%, transparent); animation-name: jnGlowDrift; animation-duration: 7s; }
+@keyframes jnGlowDrift { 0%, 100% { transform: translateX(-60px) scale(.92); opacity: .62; } 50% { transform: translateX(80px) scale(1.06); opacity: 1; } }
+@keyframes jnGlowPool { 0%, 100% { transform: scale(.94); opacity: .71; } 50% { transform: scale(1.05); opacity: 1; } }
 
 /* ── 1 · curate → feature ─────────────────────────────────────────── */
 #s-journey .jn-cur { position: absolute; left: 520px; top: 188px; width: 520px; }
@@ -135,13 +144,16 @@
 #s-journey .jn-flow svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
 #s-journey .jn-fl { fill: none; stroke: rgba(37, 199, 188, .35); stroke-width: 3; stroke-linecap: round; }
 #s-journey .jn-chevs { position: absolute; height: 40px; margin-top: -20px; display: flex; justify-content: center; }
-#s-journey .jn-chevs svg { width: 22px; height: 40px; margin: 0 -3px; fill: none; stroke: var(--teal); stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; animation: jnFlow 1.5s ease-in-out infinite; }
+#s-journey .jn-chevs svg { width: 22px; height: 40px; margin: 0 -3px; fill: none; stroke: var(--teal); stroke-width: 3.6; stroke-linecap: round; stroke-linejoin: round; opacity: .25;
+  filter: drop-shadow(0 0 6px rgba(3, 255, 203, .95)); animation: jnFlow 1.5s ease-in-out infinite both; animation-play-state: paused; }
+#s-journey[data-step="1"] .jn-chevs svg { animation-play-state: running; }
 #s-journey .jn-chevs svg:nth-child(2) { animation-delay: .18s; }
 #s-journey .jn-chevs svg:nth-child(3) { animation-delay: .36s; }
-@keyframes jnFlow { 0%, 100% { opacity: .25; } 35% { opacity: 1; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .95)); } 70% { opacity: .25; } }
-#s-journey .jn-fdot { position: absolute; left: 0; top: 0; opacity: 0; offset-distance: 0%; offset-rotate: 0deg; }
-#s-journey.st-1 .jn-fdot { animation: jnFdot 2.4s ease-in-out 1.8s infinite; }
-@keyframes jnFdot { 0% { offset-distance: 0%; opacity: 0; } 15% { opacity: 1; } 70% { offset-distance: 100%; opacity: 1; } 80%, 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes jnFlow { 0%, 100% { opacity: .25; } 35% { opacity: 1; } 70% { opacity: .25; } }
+/* the light runs the straight connector on a transform */
+#s-journey .jn-fdot { position: absolute; opacity: 0; animation: jnFdot 2.4s ease-in-out 1.8s infinite; animation-play-state: paused; }
+#s-journey[data-step="1"] .jn-fdot { animation-play-state: running; }
+@keyframes jnFdot { 0% { transform: translateX(0); opacity: 0; } 15% { opacity: 1; } 70% { transform: translateX(64px); opacity: 1; } 80%, 100% { transform: translateX(64px); opacity: 0; } }
 
 #s-journey .jn-post { position: absolute; left: 1112px; top: 150px; width: 664px; }
 #s-journey .jn-post-i { padding: 32px 38px 28px; --sh: 3s; }
@@ -187,8 +199,12 @@
 #s-journey .jn-links { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
 #s-journey .jn-lk { fill: none; stroke: rgba(37, 199, 188, .55); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 2; stroke-dashoffset: 1.02; filter: drop-shadow(0 0 5px rgba(37, 199, 188, .45)); }
 #s-journey.st-2 .jn-lk { stroke-dashoffset: 0; transition: stroke-dashoffset var(--dd) cubic-bezier(.37, 0, .63, 1) calc(var(--enter, 0s) + var(--dl)); }
-#s-journey .jn-lkf { fill: none; stroke: rgba(150, 255, 234, .9); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 4 16; opacity: 0; animation: jnLk 1.4s linear infinite; }
-#s-journey.st-2 .jn-lkf { opacity: 1; transition: opacity .8s var(--ease-soft) calc(1.4s + var(--k) * .07s); }
+/* the flowing dashes: the four branches are one path (one short stroke animation) in its own small
+   svg on its own layer, running on stop 2 only */
+#s-journey .jn-lkfs { position: absolute; overflow: hidden; pointer-events: none; will-change: transform; }
+#s-journey .jn-lkf { fill: none; stroke: rgba(150, 255, 234, .9); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 4 16; opacity: 0; animation: jnLk 1.4s linear infinite; animation-play-state: paused; }
+#s-journey.st-2 .jn-lkf { opacity: 1; transition: opacity .8s var(--ease-soft) 1.5s; }
+#s-journey[data-step="2"] .jn-lkf { animation-play-state: running; }
 @keyframes jnLk { to { stroke-dashoffset: -40; } }
 #s-journey .jn-leads { position: absolute; inset: 0; pointer-events: none; }
 #s-journey .jn-lead { position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 28%; opacity: 0; offset-distance: 0%; offset-rotate: 0deg;
@@ -201,8 +217,10 @@
   font: 700 22px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; color: rgba(255, 255, 255, .86);
   background: linear-gradient(165deg, rgba(37, 199, 188, .24), rgba(7, 30, 44, .82)); border: 1.5px solid rgba(37, 199, 188, .75); box-shadow: 0 16px 40px rgba(0, 0, 0, .4), 0 0 34px rgba(37, 199, 188, .3), inset 0 1px 0 rgba(255, 255, 255, .18); }
 #s-journey .jn-hub-i .light { flex: none; }
-#s-journey.st-2 .jn-hub-i { animation: jnHubGlow 3.2s ease-in-out 1.6s infinite; }
-@keyframes jnHubGlow { 0%, 100% { box-shadow: 0 16px 40px rgba(0, 0, 0, .4), 0 0 26px rgba(37, 199, 188, .25), inset 0 1px 0 rgba(255, 255, 255, .18); } 50% { box-shadow: 0 16px 40px rgba(0, 0, 0, .4), 0 0 52px rgba(3, 255, 203, .5), inset 0 1px 0 rgba(255, 255, 255, .18); } }
+#s-journey .jn-hub-i::after { content: ''; position: absolute; inset: -1.5px; border-radius: inherit; pointer-events: none; opacity: 0; box-shadow: 0 0 52px rgba(3, 255, 203, .42); }
+#s-journey.st-2 .jn-hub-i::after { animation: jnHubGlow 3.2s ease-in-out 1.6s infinite; }
+#s-journey:not([data-step="2"]) .jn-hub-i::after { animation-play-state: paused; }
+@keyframes jnHubGlow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 
 #s-journey .jn-tiles { position: absolute; inset: 0; pointer-events: none; }
 #s-journey .jn-tile { position: absolute; width: 286px; height: 214px; perspective: 1100px; }
@@ -214,8 +232,9 @@
 #s-journey .jn-face.back { transform: rotateY(180deg); background: linear-gradient(165deg, rgba(37, 199, 188, .34), rgba(37, 199, 188, .12) 60%, rgba(4, 30, 44, .5)), rgba(6, 26, 40, .7); border: 1.5px solid var(--teal); box-shadow: 0 24px 60px rgba(0, 0, 0, .38), 0 0 40px rgba(37, 199, 188, .24), inset 0 1px 0 rgba(255, 255, 255, .22); }
 #s-journey .jn-face.back b { color: var(--white); }
 /* a slow light passes over the adopted tiles, one after another */
-#s-journey .jn-face.back::after { content: ''; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 40%; transform: skewX(-18deg); background: linear-gradient(100deg, transparent, rgba(3, 255, 203, .18), transparent); animation: jnTileSheen 5.6s ease-in-out infinite; animation-delay: calc(2s + var(--k) * .35s); pointer-events: none; }
-@keyframes jnTileSheen { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+#s-journey .jn-face.back::after { content: ''; position: absolute; top: -20%; bottom: -20%; left: -60%; width: 40%; transform: skewX(-18deg); background: linear-gradient(100deg, transparent, rgba(3, 255, 203, .18), transparent); animation: jnTileSheen 5.6s ease-in-out infinite; animation-delay: calc(2s + var(--k) * .35s); animation-play-state: paused; pointer-events: none; }
+#s-journey[data-step="2"] .jn-face.back::after { animation-play-state: running; }
+@keyframes jnTileSheen { 0%, 60% { transform: translateX(0) skewX(-18deg); } 100% { transform: translateX(475%) skewX(-18deg); } }
 #s-journey .jn-adopt { display: inline-flex; align-items: center; gap: 12px; font: 700 28px/1 var(--font); letter-spacing: .13em; text-transform: uppercase; color: var(--teal); text-shadow: 0 0 18px rgba(3, 255, 203, .35); }
 #s-journey .jn-adopt .jn-tick { width: 32px; height: 32px; stroke: var(--teal); stroke-width: 3.2; }
 #s-journey.st-2 .jn-face.front { transform: rotateY(-180deg); }
@@ -223,21 +242,35 @@
 /* the port where the takeaway arrives at each team: it flares each time a light lands */
 #s-journey .jn-ports { position: absolute; inset: 0; pointer-events: none; }
 #s-journey .jn-port { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 28%; background: var(--teal); box-shadow: 0 0 0 5px rgba(4, 22, 40, .8), 0 0 12px rgba(3, 255, 203, .7); opacity: 0; transform: scale(.3); transition: opacity .3s var(--ease-soft), transform .3s var(--ease-soft); }
+#s-journey .jn-port::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; background: #D8FFF7;
+  box-shadow: 0 0 0 5px rgba(4, 22, 40, .8), 0 0 28px rgba(3, 255, 203, 1), 0 0 70px rgba(37, 199, 188, .6); }
 #s-journey.st-2 .jn-port { opacity: 1; transform: none; transition: opacity .25s var(--ease-soft) calc(var(--enter, 0s) + var(--f)), transform .5s var(--ease-back) calc(var(--enter, 0s) + var(--f)); animation: jnLand 2.8s ease-out infinite; animation-delay: calc(1.6s + var(--k) * .7s); }
-@keyframes jnLand { 0%, 70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(4, 22, 40, .8), 0 0 12px rgba(3, 255, 203, .6); background: var(--teal); } 78% { transform: scale(1.6); box-shadow: 0 0 0 5px rgba(4, 22, 40, .8), 0 0 28px rgba(3, 255, 203, 1), 0 0 70px rgba(37, 199, 188, .6); background: #D8FFF7; } 100% { transform: scale(1); box-shadow: 0 0 0 5px rgba(4, 22, 40, .8), 0 0 12px rgba(3, 255, 203, .6); background: var(--teal); } }
+#s-journey.st-2 .jn-port::after { animation: jnLandF 2.8s ease-out infinite; animation-delay: calc(1.6s + var(--k) * .7s); }
+#s-journey:not([data-step="2"]) .jn-port, #s-journey:not([data-step="2"]) .jn-port::after { animation-play-state: paused; }
+@keyframes jnLand { 0%, 70% { transform: scale(1); animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 78% { transform: scale(1.6); } 100% { transform: scale(1); } }
+@keyframes jnLandF { 0%, 70% { opacity: 0; animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 78% { opacity: 1; } 100% { opacity: 0; } }
 /* the takeaway keeps travelling: a light runs down each branch and lands on its team */
 #s-journey .jn-reach { position: absolute; inset: 0; pointer-events: none; }
-#s-journey .jn-rt { position: absolute; left: 0; top: 0; opacity: 0; offset-distance: 0%; offset-rotate: 0deg; }
-#s-journey.st-2 .jn-rt { animation: jnRun 2.8s ease-in-out infinite; animation-delay: calc(1.6s + var(--k) * .7s); }
-@keyframes jnRun { 0% { offset-distance: 0%; opacity: 0; } 8% { opacity: 1; } 78% { offset-distance: 100%; opacity: 1; } 86%, 100% { offset-distance: 100%; opacity: 0; } }
+#s-journey .jn-rt { position: absolute; opacity: 0; }
+#s-journey.st-2 .jn-rt { animation: jnRunO 2.8s ease-in-out infinite, var(--run) 2.8s linear infinite; animation-delay: calc(1.6s + var(--k) * .7s); }
+#s-journey:not([data-step="2"]) .jn-rt { animation-play-state: paused; }
+@keyframes jnRunO { 0% { opacity: 0; } 8% { opacity: 1; } 78% { opacity: 1; } 86%, 100% { opacity: 0; } }
 
 /* ── 3 · the chain ─────────────────────────────────────────────────── */
 #s-journey .jn-trail { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; pointer-events: none; }
 /* the trace draws behind the new light (same path, same timing), then the chain keeps flowing */
 #s-journey .jn-trace { fill: none; stroke: rgba(3, 255, 203, .5); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 100 100; stroke-dashoffset: 100; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .7)); transition: stroke-dashoffset .3s var(--ease-soft), opacity .3s var(--ease-soft); }
 #s-journey.st-3 .jn-trace { stroke-dashoffset: 0; opacity: .45; transition: stroke-dashoffset 1.2s var(--ease-io) .72s, opacity 1s var(--ease-soft) 2s; }
-#s-journey .jn-tr { fill: none; stroke: rgba(37, 199, 188, .8); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 5 13; opacity: 0; animation: jnLk 1.5s linear infinite; transition: opacity .3s var(--ease-soft); }
+#s-journey .jn-trc { position: absolute; overflow: hidden; pointer-events: none; will-change: transform; }
+#s-journey .jn-tr { fill: none; stroke: rgba(37, 199, 188, .8); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 5 13; opacity: 0; animation: jnTr 1.35s linear infinite; animation-play-state: paused; transition: opacity .3s var(--ease-soft); }
 #s-journey.st-3 .jn-tr { opacity: 1; transition: opacity .8s var(--ease-soft) 1.9s; }
+#s-journey[data-step="3"] .jn-tr, #s-journey[data-step="3"] .jn-trs b { animation-play-state: running; }
+@keyframes jnTr { to { stroke-dashoffset: -36; } }
+#s-journey .jn-trs { position: absolute; height: 4px; overflow: hidden; pointer-events: none; opacity: 0; transition: opacity .3s var(--ease-soft); }
+#s-journey.st-3 .jn-trs { opacity: 1; transition: opacity .8s var(--ease-soft) 1.9s; }
+#s-journey .jn-trs b { position: absolute; left: -36px; right: 0; top: 0; height: 4px; animation: jnTrs 1.35s linear infinite; animation-play-state: paused;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='4'%3E%3Cpath d='M1.5 2h5' stroke='%2325C7BC' stroke-opacity='.8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") 0 0 / 18px 4px repeat-x; }
+@keyframes jnTrs { to { transform: translateX(36px); } }
 #s-journey .jn-newlight { position: absolute; inset: 0; pointer-events: none; }
 #s-journey .jn-new, #s-journey .jn-gh { position: absolute; left: 0; top: 0; opacity: 0; offset-distance: 0%; offset-rotate: 0deg; transition: offset-distance .3s var(--ease-soft), opacity .25s var(--ease-soft); }
 #s-journey .jn-gh { width: calc(18px - var(--g) * 2px); height: calc(18px - var(--g) * 2px); border-radius: 28%; background: var(--sea); box-shadow: 0 0 16px rgba(3, 255, 203, .9); }
@@ -245,12 +278,25 @@
 #s-journey.st-3 .jn-gh { offset-distance: 100%; transition: offset-distance 1.2s var(--ease-io) calc(.72s + var(--g) * .03s); }
 #s-journey[data-play="3"] .jn-gh { animation: jnGhost 1.45s linear calc(.72s + var(--g) * .03s) both; }
 @keyframes jnGhost { 0% { opacity: 0; } 6% { opacity: calc(.62 - var(--g) * .09); } 82% { opacity: calc(.62 - var(--g) * .09); } 100% { opacity: 0; } }
-#s-journey.st-3 .jn-new { animation: jnBreath 3.2s ease-in-out 2.3s infinite; }
+#s-journey .jn-new { width: 22px; height: 22px; }
+#s-journey .jn-new > .light { display: block; }
+#s-journey.st-3 .jn-new > .light { animation: jnBreath 3.2s ease-in-out 2.3s infinite; }
 @keyframes jnBreath { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
 
 #s-journey .jn-pill { position: absolute; }
 #s-journey .jn-pill-i { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 18px; border-radius: 999px; font: 700 36px/1 var(--font); color: var(--white); background: linear-gradient(165deg, rgba(37, 199, 188, .26), rgba(8, 40, 52, .9) 60%), #0B3440; border: 1.5px solid rgba(37, 199, 188, .6); box-shadow: 0 20px 50px rgba(0, 0, 0, .4), 0 0 44px rgba(37, 199, 188, .3), inset 0 1px 0 rgba(255, 255, 255, .2); }
 #s-journey .jn-pill-i .jn-arr { width: 42px; height: 26px; color: var(--teal); }
+/* the lit edge (the look of .glass.live): a conic light that turns on a transform under the ring
+   mask, instead of an animated gradient angle that repaints every frame; it turns on stop 3 only */
+#s-journey .jn-pill-i::before { content: none; }
+#s-journey .jn-edge { position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+#s-journey .jn-edge b { position: absolute; left: 50%; top: 50%; width: 712px; height: 712px; margin: -356px 0 0 -356px; border-radius: 50%;
+  background: conic-gradient(rgba(255, 255, 255, .08), rgba(3, 255, 203, .95) 7%, rgba(255, 255, 255, .08) 16%, rgba(255, 255, 255, .06) 50%, rgba(201, 166, 211, .7) 57%, rgba(255, 255, 255, .06) 66%);
+  animation: jnEdge 8s linear infinite; animation-play-state: paused; }
+#s-journey[data-step="3"] .jn-edge b { animation-play-state: running; }
+#stage.lite #s-journey .jn-edge b { animation: none; }
+@keyframes jnEdge { to { transform: rotate(360deg); } }
 /* the new light passes through the pill: it lights up as the nomination is made */
 #s-journey[data-play="3"] .jn-pill-i { animation: jnPillPass 1s var(--ease-soft) 1.08s; }
 #s-journey .jn-pill-i > span { position: relative; }
@@ -258,30 +304,38 @@
 /* the chain keeps flowing: small lights run the path; each one glows through the pill as it passes under */
 #s-journey .jn-pill-i { overflow: hidden; }
 #s-journey .jn-pglow { position: absolute; left: -90px; top: 50%; width: 180px; height: 180px; margin-top: -90px; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .3), rgba(37, 199, 188, .1) 55%, transparent); opacity: 0; pointer-events: none; }
-#s-journey.st-3 .jn-pglow { animation: jnPGlow 3.6s linear calc(2.6s + var(--c, 0) * 1.2s) infinite; }
-@keyframes jnPGlow { 0%, 18% { transform: translateX(0); opacity: 0; } 22% { opacity: 1; } 66% { opacity: 1; } 70%, 100% { transform: translateX(700px); opacity: 0; } }
-#s-journey .jn-ch { position: absolute; left: 0; top: 0; opacity: 0; offset-distance: 0%; offset-rotate: 0deg; }
-#s-journey.st-3 .jn-ch { animation: jnChain 3.6s linear infinite; animation-delay: calc(2.6s + var(--c) * 1.2s); }
-@keyframes jnChain { 0% { offset-distance: 0%; opacity: 0; } 4% { opacity: .95; } 90% { offset-distance: 100%; opacity: .95; } 96%, 100% { offset-distance: 100%; opacity: 0; } }
+#s-journey.st-3 .jn-pglow { animation: jnPGlowX 3.6s linear infinite, jnPGlowO 3.6s ease-in-out infinite; animation-delay: calc(2.6s + var(--c, 0) * 1.2s); }
+@keyframes jnPGlowX { 0%, 18% { transform: translateX(0); } 70%, 100% { transform: translateX(700px); } }
+@keyframes jnPGlowO { 0%, 16% { opacity: 0; } 23% { opacity: 1; } 63% { opacity: 1; } 70%, 100% { opacity: 0; } }
+/* the chain's lights: a steady sampled track along the split (jnChainP, written by 08-journey.js) */
+#s-journey .jn-ch { position: absolute; opacity: 0; }
+#s-journey.st-3 .jn-ch { animation: jnChainO 3.6s ease-in-out infinite, jnChainP 3.6s linear infinite; animation-delay: calc(2.6s + var(--c) * 1.2s); }
+@keyframes jnChainO { 0% { opacity: 0; } 7% { opacity: .95; } 90% { opacity: .95; } 97%, 100% { opacity: 0; } }
 @keyframes jnPillPass { 0%, 100% { box-shadow: 0 20px 50px rgba(0, 0, 0, .4), 0 0 44px rgba(37, 199, 188, .3), inset 0 1px 0 rgba(255, 255, 255, .2); } 35% { box-shadow: 0 20px 50px rgba(0, 0, 0, .4), 0 0 80px rgba(3, 255, 203, .65), inset 0 0 34px rgba(3, 255, 203, .3); } }
 
 #s-journey .jn-next { position: absolute; width: 0; height: 0; }
 #s-journey .jn-sq { position: absolute; left: -24px; top: -24px; width: 48px; height: 48px; border-radius: 30%; border: 2px solid rgba(255, 255, 255, .35); background: rgba(255, 255, 255, .06); opacity: 0; transition: opacity .35s var(--ease-soft), border-color .4s var(--ease-soft), box-shadow .4s var(--ease-soft); }
 #s-journey.st-3 .jn-sq { opacity: 1; border-color: var(--teal); box-shadow: 0 0 30px rgba(37, 199, 188, .45); transition: opacity .35s var(--ease-soft) .5s, border-color .4s var(--ease-soft) 1.92s, box-shadow .4s var(--ease-soft) 1.92s; }
 #s-journey .jn-flash { position: absolute; left: -90px; top: -90px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(closest-side, rgba(220, 255, 248, .9), rgba(3, 255, 203, .4) 35%, transparent); opacity: 0; pointer-events: none; }
-#s-journey[data-play="3"] .jn-flash { animation: jnFlash 1s var(--ease-out) 1.9s; }
-@keyframes jnFlash { 0% { opacity: 1; transform: scale(.2); } 100% { opacity: 0; transform: scale(1.4); } }
+#s-journey[data-play="3"] .jn-flash { animation: jnFlash 1.16s linear 1.74s; }
+@keyframes jnFlash { 0% { opacity: 0; transform: scale(.2); animation-timing-function: cubic-bezier(.4, 0, .2, 1); } 16% { opacity: 1; transform: scale(.32); animation-timing-function: cubic-bezier(.16, 1, .3, 1); } 100% { opacity: 0; transform: scale(1.4); } }
 #s-journey .jn-rings { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 /* a pool of light breathes around the next colleague */
-#s-journey .jn-pool { position: absolute; left: -380px; top: -380px; width: 760px; height: 760px; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .3), rgba(37, 199, 188, .11) 45%, transparent); opacity: 0; transition: opacity .4s var(--ease-soft); pointer-events: none; }
-#s-journey.st-3 .jn-pool { opacity: 1; animation: jnPool 3.6s ease-in-out 2.1s infinite; transition: opacity .8s var(--ease-soft) 1.95s; }
+#s-journey .jn-pool { position: absolute; left: -380px; top: -380px; width: 760px; height: 760px; opacity: 0; transition: opacity .4s var(--ease-soft); pointer-events: none; }
+#s-journey .jn-pool::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .3), rgba(37, 199, 188, .11) 45%, transparent);
+  animation: jnPool 3.6s ease-in-out 2.1s infinite both; animation-play-state: paused; }
+#s-journey.st-3 .jn-pool { opacity: 1; transition: opacity .8s var(--ease-soft) 1.95s; }
+#s-journey[data-step="3"] .jn-pool::before { animation-play-state: running; }
 @keyframes jnPool { 0%, 100% { transform: scale(.82); opacity: .55; } 50% { transform: scale(1.16); opacity: 1; } }
-#s-journey .jn-rings .amb-ring { width: 48px; height: 48px; left: -24px; top: -24px; }
+#s-journey .jn-rings .amb-ring { width: 48px; height: 48px; left: -24px; top: -24px; animation-name: jnRing; }
+@keyframes jnRing { 0% { transform: scale(.6); opacity: 0; animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 9% { transform: scale(1.3); opacity: .6; } 100% { transform: scale(2.6); opacity: 0; } }
 #s-journey.st-3 .jn-rings { opacity: 1; transition: opacity .6s var(--ease-soft) 2.05s; }
 
 /* the lap is complete: the rail ring breathes, and the new behaviour glows */
-#s-journey.st-3 .jn-rprog { animation: jnLapGlow 4s ease-in-out 2s infinite; }
+#s-journey.st-3 .jn-rsvg { animation: jnLapGlow 4s ease-in-out 2s infinite; }
 @keyframes jnLapGlow { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
-#s-journey.st-3 .jn-beh { animation: jnBeh 4.4s ease-in-out 2.4s infinite; }
-@keyframes jnBeh { 0%, 100% { text-shadow: 0 0 0 rgba(3, 255, 203, 0); } 50% { text-shadow: 0 0 40px rgba(3, 255, 203, .55); } }
+#s-journey .jn-beh { position: relative; isolation: isolate; }
+#s-journey .jn-beh::before { content: attr(data-t); position: absolute; left: 0; top: 0; z-index: -1; white-space: nowrap; line-height: normal; pointer-events: none; color: transparent; text-shadow: 0 0 40px rgba(3, 255, 203, .55); opacity: 0; }
+#s-journey.st-3 .jn-beh::before { animation: jnBeh 4.4s ease-in-out 2.4s infinite; }
+@keyframes jnBeh { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 #s-journey .jn-big { position: absolute; left: 560px; top: 520px; width: 1200px; margin: 0; font: 700 104px/1 var(--font); letter-spacing: -.035em; color: var(--white); }

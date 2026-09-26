@@ -46,8 +46,36 @@
   // …and ride the beams, along the cores and (fainter) between core and edge
   const mid = (a, b) => `M${X0} ${FY + a} C${cx1} ${FY + a} ${cx2} ${b} ${X1} ${b}`;
 
-  const dots = (path, n, dur, cls, off) => Array.from({ length: n }, (_, i) =>
-    `<i class="wy-dot ${cls || ''}" style="offset-path:path('${path}');animation-duration:${dur}s;animation-delay:${(-(i + (off || 0)) * dur / n).toFixed(2)}s"></i>`).join('');
+  // ── the lights ride their paths on transforms (the compositor), not offset-path: each path
+  // becomes a sampled keyframe track, written into the scene's own <style> below ──
+  const KF = [];
+  // stories ride a path on the eased curve the flow uses; opacity keeps its own keyframes (wyDot/wyFeed)
+  const EASE = bezier(.4, .1, .6, .9);
+  const track = (path) => {
+    const name = 'wyM' + KF.length, sp = sampler(path), N = 40;
+    KF.push(`@keyframes ${name} {${Array.from({ length: N + 1 }, (_, k) => {
+      const p = sp.at(EASE(k / N) * sp.L);
+      return ` ${(k / N * 100).toFixed(2)}% { transform: translate(${p.x.toFixed(1)}px, ${p.y.toFixed(1)}px); }`;
+    }).join('')} }`);
+    return name;
+  };
+  const dots = (path, n, dur, cls, off) => {
+    const name = track(path);
+    return Array.from({ length: n }, (_, i) =>
+      `<i class="wy-dot ${cls || ''}" style="animation-name:${name},${cls === 'in' ? 'wyFeed' : 'wyDot'};animation-duration:${dur}s;animation-delay:${(-(i + (off || 0)) * dur / n).toFixed(2)}s"></i>`).join('');
+  };
+  // light flows along a beam core as dashes (GAP px apart at V px/s), clipped at both ends by
+  // the flow's box: each dash rides the path once, then waits past the end for its next lap
+  const flow = (path, dx, dy, gap, v) => {
+    const name = 'wyF' + KF.length, sp = sampler(path), pad = 4, run = sp.L + 2 * pad;
+    const n = Math.ceil(run / gap), f = run / (n * gap), M = Math.ceil(run / 6);
+    const key = (k) => { const p = sp.at(-pad + run * k / M); return `transform: translate(${(p.x - dx).toFixed(1)}px, ${(p.y - dy).toFixed(1)}px) rotate(${p.a.toFixed(1)}deg);`; };
+    KF.push(`@keyframes ${name} {${Array.from({ length: M + 1 }, (_, k) => ` ${(f * k / M * 100).toFixed(2)}% { ${key(k)} }`).join('')} 100% { ${key(M)} } }`);
+    const P = n * gap / v;
+    return Array.from({ length: n }, (_, i) => `<i style="animation-name:${name};animation-duration:${P.toFixed(3)}s;animation-delay:${(-i * gap / v).toFixed(3)}s"></i>`).join('');
+  };
+  // local copies of the beam wedges, for the glint's clip
+  const local = (d) => d.replace(/(-?[\d.]+) (-?[\d.]+)/g, (m, x, y) => `${+x - X0} ${+y - BAND[0]}`);
   const box = (l, t, w, h) => `left:${l}px;top:${t}px;width:${w}px;height:${h}px`;
   const beamBox = `viewBox="${X0} ${BAND[0]} ${X1 - X0} ${BAND[1] - BAND[0]}" style="${box(X0, BAND[0], X1 - X0, BAND[1] - BAND[0])}`;
 
@@ -109,8 +137,8 @@
           <svg class="wy-wire a-wipe" data-in="0" viewBox="${NODE.x + NODE.r} ${FY - 10} ${PRISM.x - PRISM.r - NODE.x - NODE.r} 20" style="--d:.66s;--dur:.35s;${box(NODE.x + NODE.r, FY - 10, PRISM.x - PRISM.r - NODE.x - NODE.r, 20)}" aria-hidden="true">
             <defs><linearGradient id="wyWire" gradientUnits="userSpaceOnUse" x1="${NODE.x + NODE.r}" y1="0" x2="${PRISM.x - PRISM.r}" y2="0"><stop offset="0" stop-color="#25C7BC" stop-opacity=".45"/><stop offset="1" stop-color="#25C7BC"/></linearGradient></defs>
             <path d="M${NODE.x + NODE.r} ${FY} L${PRISM.x - PRISM.r} ${FY}"/>
-            <path class="f" d="M${NODE.x + NODE.r} ${FY} L${PRISM.x - PRISM.r} ${FY}"/>
           </svg>
+          <div class="wy-wflow a-wipe" data-in="0" style="--d:.66s;--dur:.35s;${box(NODE.x + NODE.r, FY - 10, PRISM.x - PRISM.r - NODE.x - NODE.r, 20)}" aria-hidden="true"><i></i></div>
 
           <!-- two broad beams (teal → queen blue: the organisation benefits, never a gap) -->
           <svg class="wy-beams a-wipe" data-in="0" ${beamBox};--d:.86s;--dur:.6s" aria-hidden="true">
@@ -126,14 +154,12 @@
             <path class="e" d="${edgeA}"/><path class="e" d="${innerA}"/>
             <path class="e" d="${edgeB}"/><path class="e" d="${innerB}"/>
             <path class="c" d="${coreA}"/><path class="c" d="${coreB}"/>
-            <path class="f" d="${coreA}"/><path class="f f2" d="${coreB}"/>
           </svg>
+          <!-- living light along the beam cores -->
+          <div class="wy-bflow a-wipe" data-in="0" style="${box(X0, BAND[0], X1 - X0, BAND[1] - BAND[0])};--d:.86s;--dur:.6s" aria-hidden="true">${flow(coreA, X0, BAND[0], 28, 28 / 1.5)}${flow(coreB, X0, BAND[0], 28, 28 / 1.5).replace(/animation-delay:(-?[\d.]+)s/g, (m, d) => `animation-delay:${(+d - .7).toFixed(3)}s`)}</div>
 
           <!-- ambient: light washes out through both beams, stories ride them -->
-          <svg class="wy-glint a-fade" data-in="0" ${beamBox};--d:1.35s;--dur:.5s" aria-hidden="true">
-            <defs><linearGradient id="wyGlint" gradientUnits="userSpaceOnUse" x1="${X0}" y1="0" x2="${X1}" y2="0"><stop offset="0" stop-color="#03FFCB" stop-opacity=".6"/><stop offset="1" stop-color="#25C7BC" stop-opacity=".38"/></linearGradient></defs>
-            <path d="${wedgeA}"/><path d="${wedgeB}"/>
-          </svg>
+          <div class="wy-glint a-fade" data-in="0" style="${box(X0, BAND[0], X1 - X0, BAND[1] - BAND[0])};--d:1.35s;--dur:.5s;clip-path:path('${local(wedgeA)} ${local(wedgeB)}')" aria-hidden="true"><i></i></div>
           <div class="wy-dots a-fade" data-in="0" style="--d:1.3s;--dur:.5s">
             ${dots(feed, 2, 2.2, 'in')}
             ${dots(coreA, 4, 4.4)}
@@ -155,7 +181,7 @@
           </div>
 
           <div class="wy-prism a-materialize" data-in="0" style="--d:.6s;--dur:.9s;${box(PRISM.x - PRISM.r, FY - PRISM.r, PRISM.r * 2, PRISM.r * 2)}">
-            <span class="wy-prism-ring"></span>
+            <span class="wy-prism-ring"><i></i></span>
             <span class="wy-prism-glow"></span>
             <span class="wy-prism-t">Shared<br>story</span>
           </div>
@@ -190,6 +216,9 @@
       <div class="wy-pillars" data-stagger style="--stagger:.1s;--d:1.12s">
         ${PILLARS.map((p, i) => `<div class="wy-p glass plum a-unfold" data-in="1" style="--dur:.8s"><div class="wy-p-h"><span class="num">${String(i + 1).padStart(2, '0')}</span><span class="wy-p-r"><i></i><b></b></span></div><div class="wy-p-t">${p}</div></div>`).join('')}
       </div>
+
+      <!-- the lights' sampled paths (generated above, as the flow's markup was built) -->
+      <style>${KF.join('\n')}</style>
     `,
     step(n, prev, ctx) {
       // the travelling lights are one-shot builds on live clicks: the story's run
@@ -211,4 +240,42 @@
       }
     },
   });
+
+  // arc-length sampler for an absolute M/L/C path: point and heading (deg) at a distance along
+  // it; past either end it carries on along the end's tangent
+  function sampler(d) {
+    const tk = d.match(/[MLC]|-?[\d.]+/g), pts = [];
+    let cmd = 'M', cur = [0, 0];
+    for (let i = 0; i < tk.length;) {
+      if (/[MLC]/.test(tk[i])) { cmd = tk[i++]; continue; }
+      const n = (k) => +tk[i + k];
+      if (cmd === 'M') { cur = [n(0), n(1)]; pts.push(cur); i += 2; }
+      else if (cmd === 'L') { const p = [n(0), n(1)], a = cur; for (let k = 1; k <= 24; k++) pts.push([a[0] + (p[0] - a[0]) * k / 24, a[1] + (p[1] - a[1]) * k / 24]); cur = p; i += 2; }
+      else { const a = cur, b = [n(0), n(1)], c = [n(2), n(3)], e = [n(4), n(5)];
+        for (let k = 1; k <= 120; k++) { const u = k / 120, w = 1 - u; pts.push([0, 1].map((j) => w * w * w * a[j] + 3 * w * w * u * b[j] + 3 * w * u * u * c[j] + u * u * u * e[j])); }
+        cur = e; i += 6; }
+    }
+    const acc = [0];
+    for (let k = 1; k < pts.length; k++) acc.push(acc[k - 1] + Math.hypot(pts[k][0] - pts[k - 1][0], pts[k][1] - pts[k - 1][1]));
+    const L = acc[acc.length - 1], last = pts.length - 1;
+    const dir = (k0, k1) => Math.atan2(pts[k1][1] - pts[k0][1], pts[k1][0] - pts[k0][0]);
+    const at = (s) => {
+      if (s <= 0) { const t = dir(0, 1); return { x: pts[0][0] + s * Math.cos(t), y: pts[0][1] + s * Math.sin(t), a: t * 180 / Math.PI }; }
+      if (s >= L) { const t = dir(last - 1, last); return { x: pts[last][0] + (s - L) * Math.cos(t), y: pts[last][1] + (s - L) * Math.sin(t), a: t * 180 / Math.PI }; }
+      let lo = 0, hi = last;
+      while (hi - lo > 1) { const m = (lo + hi) >> 1; if (acc[m] < s) lo = m; else hi = m; }
+      const f = (s - acc[lo]) / (acc[hi] - acc[lo] || 1);
+      return { x: pts[lo][0] + (pts[hi][0] - pts[lo][0]) * f, y: pts[lo][1] + (pts[hi][1] - pts[lo][1]) * f, a: dir(lo, hi) * 180 / Math.PI };
+    };
+    return { L, at };
+  }
+  // a CSS cubic-bezier() as a function of time
+  function bezier(x1, y1, x2, y2) {
+    const B = (a, b, t) => 3 * a * (1 - t) * (1 - t) * t + 3 * b * (1 - t) * t * t + t * t * t;
+    return (x) => {
+      let lo = 0, hi = 1;
+      for (let k = 0; k < 40; k++) { const m = (lo + hi) / 2; if (B(x1, x2, m) < x) lo = m; else hi = m; }
+      return B(y1, y2, (lo + hi) / 2);
+    };
+  }
 })();

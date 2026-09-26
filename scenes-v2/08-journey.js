@@ -45,6 +45,38 @@
   // where the onward stories go from the next colleague (kept clear of the headline)
   const ONWARD = [[250, -230], [-120, -250], [300, 40], [100, -260], [-280, -170], [330, -120], [60, 330], [-90, -250]];
 
+  // ── the ambient lights ride their curves on transforms (the compositor), not offset-path:
+  // each curve becomes a sampled keyframe track (by arc length), written into the scene's <style> ──
+  const bez = (s, t) => { const u = 1 - t; return [0, 1].map((k) => u * u * u * s[k] + 3 * u * u * t * s[2 + k] + 3 * u * t * t * s[4 + k] + t * t * t * s[6 + k]); };
+  const line = (x0, y0, x1, y1) => [x0, y0, x0 + (x1 - x0) / 3, y0 + (y1 - y0) / 3, x0 + 2 * (x1 - x0) / 3, y0 + 2 * (y1 - y0) / 3, x1, y1];
+  function tracer(segs) {          // segs: cubic segments [x0,y0,x1,y1,x2,y2,x3,y3] → f (share of the length) → [x, y]
+    const P = [bez(segs[0], 0)], L = [0];
+    segs.forEach((s) => { for (let i = 1; i <= 160; i++) { const p = bez(s, i / 160), q = P[P.length - 1]; P.push(p); L.push(L[L.length - 1] + Math.hypot(p[0] - q[0], p[1] - q[1])); } });
+    const tot = L[L.length - 1];
+    return (f) => {
+      const d = Math.min(1, Math.max(0, f)) * tot; let lo = 0, hi = L.length - 1;
+      while (hi - lo > 1) { const m = (lo + hi) >> 1; if (L[m] < d) lo = m; else hi = m; }
+      const r = (d - L[lo]) / ((L[hi] - L[lo]) || 1);
+      return [P[lo][0] + (P[hi][0] - P[lo][0]) * r, P[lo][1] + (P[hi][1] - P[lo][1]) * r];
+    };
+  }
+  const cubic = (x1, y1, x2, y2) => (u) => {   // a CSS cubic-bezier() easing
+    if (u <= 0 || u >= 1) return u <= 0 ? 0 : 1;
+    let lo = 0, hi = 1, t = u;
+    for (let i = 0; i < 40; i++) { t = (lo + hi) / 2; if (3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t < u) lo = t; else hi = t; }
+    return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;
+  };
+  // a track from the path's start: it moves between a% and b% of the cycle (eased), then holds at the end
+  const KF = [];
+  function track(name, segs, a, b, ease, n) {
+    const at = tracer(segs), p0 = at(0);
+    const key = (f) => { const p = at(f); return `{transform:translate(${(p[0] - p0[0]).toFixed(1)}px,${(p[1] - p0[1]).toFixed(1)}px)}`; };
+    let s = a > 0 ? `0%${key(0)}` : '';
+    for (let k = 0; k <= n; k++) s += `${(a + (b - a) * k / n).toFixed(2)}%${key(ease(k / n))}`;
+    KF.push(`@keyframes ${name}{${s}${b < 100 ? `100%${key(1)}` : ''}}`);
+    return name;
+  }
+
   const svgCheck = '<svg class="jn-tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>';
   const svgArrow = '<svg class="jn-arr" viewBox="0 0 32 20" aria-hidden="true"><path d="M2 10h26M20 3l8 7-8 7"/></svg>';
   const svgChev = '<svg viewBox="0 0 14 22" aria-hidden="true"><path d="M3 3l8 8-8 8"/></svg>';
@@ -69,7 +101,21 @@
   }).join('');
 
   // the new light and its trail (lead first)
-  const ghosts = [0, 1, 2, 3, 4, 5].map((k) => `<i class="${k ? 'jn-gh' : 'light jn-new'}" style="offset-path:path('${SPLIT}');--g:${k}"></i>`).join('');
+  // (the lead is a wrapper that travels the path, so the light inside can breathe on the compositor)
+  const ghosts = [0, 1, 2, 3, 4, 5].map((k) => k ? `<i class="jn-gh" style="offset-path:path('${SPLIT}');--g:${k}"></i>` : `<i class="jn-new" style="offset-path:path('${SPLIT}')"><b class="light"></b></i>`).join('');
+
+  // ambient tracks: a light runs down each branch to its team (eased, 0–78% of its cycle) and the
+  // chain's lights run the whole split (steady, 0–90%); the chain's dashes flow on the short curve
+  // out of the ring (stroke) and on a translated strip along the straight run to the next colleague
+  const N0 = [+N[0][0].toFixed(1), +N[0][1].toFixed(1)];
+  const reachSeg = (i) => { const [ex, ey] = port(i); return [HUB[0], HUB[1], HUB[0], HUB[1] + 62, ex, ey - 70, ex, ey]; };
+  const runs = TEAMS.map((t, i) => track('jnRun' + i, [reachSeg(i)], 0, 78, cubic(.42, 0, .58, 1), 32));
+  const splitCurve = [N0[0], N0[1], N0[0] + 70, N0[1] + 40, PILL.x - 120, N0[1], PILL.x, N0[1]];
+  track('jnChainP', [splitCurve, line(PILL.x, N0[1], NEXT[0], N0[1])], 0, 90, (u) => u, 60);
+  const CURVE = `M${N0[0]} ${N0[1]} C${N0[0] + 70} ${N0[1] + 40} ${PILL.x - 120} ${N0[1]} ${PILL.x} ${N0[1]}`;
+  // the boxes (x, y, w, h) of the two flowing-dash paths
+  const LKBOX = [tileX(0) + TILE.w / 2 - 6, HUB[1] - 6, 3 * (TILE.w + TILE.gap) + 12, TILE.y - HUB[1] + 12];
+  const TRBOX = [Math.floor(N0[0]) - 6, Math.floor(N0[1]) - 6, Math.ceil(PILL.x - N0[0]) + 12, 32];
 
   Deck.scene({
     id: 'journey',
@@ -104,6 +150,8 @@
       <div class="jn-ring a-fade" data-in="0" style="left:${RCX - 150}px;top:${RCY - 150}px;--d:.2s">
         <svg viewBox="0 0 300 300" aria-hidden="true">
           <circle class="jn-rtrack" cx="150" cy="150" r="${RR}"/>
+        </svg>
+        <svg class="jn-rsvg" viewBox="0 0 300 300" aria-hidden="true">
           <circle class="jn-rprog" cx="150" cy="150" r="${RR}" pathLength="100" transform="rotate(-45 150 150)"/>
         </svg>
         <div class="jn-orbit"><i class="jn-comet" style="left:${-RR - 18}px;top:${-RR - 18}px;width:${2 * RR + 36}px;height:${2 * RR + 36}px"></i><i class="light sm jn-ol" style="left:${RR - 7}px"></i></div>
@@ -159,7 +207,7 @@
       <div class="jn-flow a-fade" data-in="1" data-out="2" style="--d:${(PUBLISH - .2).toFixed(2)}s;--dur:.4s">
         <svg viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-fl" d="${FLOWP}"/></svg>
         <span class="jn-chevs" style="left:${FLOW.x0}px;top:${FLOW.y}px;width:${FLOW.x1 - FLOW.x0}px">${svgChev}${svgChev}${svgChev}</span>
-        <i class="light sm jn-fdot" style="offset-path:path('${FLOWP}')"></i>
+        <i class="light sm jn-fdot" style="left:${FLOW.x0 - 7}px;top:${FLOW.y - 7}px"></i>
       </div>
       <div class="jn-post a-swing" data-in="1" data-out="2" style="--d:${PUBLISH}s;--dur:1s">
         <div class="paper jn-post-i amb-float3d jn-sheen">
@@ -193,23 +241,28 @@
       </div>
       <svg class="jn-links a-fade" data-in="2" data-out="3" viewBox="0 0 1920 1080" aria-hidden="true">
         <path class="jn-lk jn-stem" d="${STEM}" pathLength="1" style="--dl:.4s;--dd:.22s"/>
-        ${TEAMS.map((t, i) => `<path class="jn-lk" d="${reachPath(i)}" pathLength="1" style="--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"/><path class="jn-lkf" d="${reachPath(i)}" style="--k:${i}"/>`).join('')}
+        ${TEAMS.map((t, i) => `<path class="jn-lk" d="${reachPath(i)}" pathLength="1" style="--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"/>`).join('')}
       </svg>
+      <!-- the flowing dashes: one path on its own small layer (its repaint never touches the lit branches) -->
+      <svg class="jn-lkfs a-fade" data-in="2" data-out="3" viewBox="${LKBOX.join(' ')}" style="left:${LKBOX[0]}px;top:${LKBOX[1]}px;width:${LKBOX[2]}px;height:${LKBOX[3]}px" aria-hidden="true"><path class="jn-lkf" d="${TEAMS.map((t, i) => reachPath(i)).join(' ')}"/></svg>
       <div class="jn-leads" data-out="3">${TEAMS.map((t, i) => `<i class="jn-lead" style="offset-path:path('${reachPath(i)}');--dl:${(LK.dl + i * LK.st).toFixed(2)}s;--dd:${LK.dd}s"></i>`).join('')}</div>
       <div class="jn-hub a-materialize" data-in="2" data-out="3" style="left:${HUB[0]}px;top:${HUB[1] - 32}px;--d:.48s;--dur:.6s"><span class="jn-hub-i"><i class="light sm"></i>Takeaway shared with</span></div>
       <div class="jn-tiles" data-out="3" data-stagger style="--stagger:.07s">${tiles}</div>
       <div class="jn-ports" data-out="3">${TEAMS.map((t, i) => { const [x, y] = port(i); return `<i class="jn-port" style="left:${x}px;top:${y}px;--k:${i};--f:${FLIP(i).toFixed(2)}s"></i>`; }).join('')}</div>
       <div class="jn-reach" data-out="3">
-        ${TEAMS.map((t, i) => `<i class="light sm jn-rt" style="offset-path:path('${reachPath(i)}');--k:${i}"></i>`).join('')}
+        ${TEAMS.map((t, i) => `<i class="light sm jn-rt" style="left:${HUB[0] - 7}px;top:${HUB[1] - 7}px;--k:${i};--run:${runs[i]}"></i>`).join('')}
       </div>
 
       <!-- 3 · THE CHAIN: a new light leaves the ring -->
       <i class="jn-glow g3" data-at="3"></i>
-      <svg class="jn-trail" viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-trace" d="${SPLIT}" pathLength="100"/><path class="jn-tr" d="${SPLIT}"/></svg>
-      <div class="jn-newlight">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="offset-path:path('${SPLIT}');--c:${k}"></i>`).join('')}</div>
-      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass live"><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
+      <svg class="jn-trail" viewBox="0 0 1920 1080" aria-hidden="true"><path class="jn-trace" d="${SPLIT}" pathLength="100"/></svg>
+      <svg class="jn-trc" viewBox="${TRBOX.join(' ')}" style="left:${TRBOX[0]}px;top:${TRBOX[1]}px;width:${TRBOX[2]}px;height:${TRBOX[3]}px" aria-hidden="true"><path class="jn-tr" d="${CURVE}"/></svg>
+      <i class="jn-trs" style="left:${PILL.x}px;top:${N0[1] - 2}px;width:${NEXT[0] - PILL.x}px"><b></b></i>
+      <div class="jn-newlight">${ghosts}${[0, 1, 2].map((k) => `<i class="light sm jn-ch" style="left:${N0[0] - 7}px;top:${N0[1] - 7}px;--c:${k}"></i>`).join('')}</div>
+      <div class="jn-pill a-left" data-in="3" style="left:${PILL.x}px;top:${(N[0][1] - PILL.h / 2).toFixed(1)}px;width:${PILL.w}px;height:${PILL.h}px;--d:.15s"><span class="jn-pill-i glass"><i class="jn-edge"><b></b></i><b class="jn-pglow" style="--c:0"></b><b class="jn-pglow" style="--c:1"></b><b class="jn-pglow" style="--c:2"></b><span>Nouf nominates the next colleague</span>${svgArrow}</span></div>
       <div class="jn-next" style="left:${NEXT[0]}px;top:${NEXT[1].toFixed(1)}px"><b class="jn-pool"></b><i class="jn-sq"></i><b class="jn-flash"></b><span class="jn-rings"><b class="amb-ring"></b><b class="amb-ring" style="animation-delay:-1.07s"></b><b class="amb-ring" style="animation-delay:-2.13s"></b></span></div>
-      <h2 class="jn-big" data-in="3" data-split style="--d:.55s">Recognition becomes <em class="hl jn-beh">behaviour.</em></h2>
+      <h2 class="jn-big" data-in="3" data-split style="--d:.55s">Recognition becomes <em class="hl jn-beh" data-t="behaviour.">behaviour.</em></h2>
+      <style>${KF.join('\n')}</style>
     `,
     init(ctx) {
       ctx.at3 = 0;

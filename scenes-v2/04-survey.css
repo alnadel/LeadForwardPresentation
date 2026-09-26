@@ -57,11 +57,14 @@
 #s-survey .sv-legend { position: absolute; left: var(--m); top: 786px; width: 568px; display: flex; align-items: center; gap: 36px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, .14);
   font: 400 20px/1.1 var(--font); color: rgba(255, 255, 255, .6); }
 #s-survey .sv-key { display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; }
-#s-survey .sv-key i { width: 18px; height: 18px; border-radius: 26%; flex: none; background: rgba(255, 255, 255, .16); transition: background .6s var(--ease-soft), border-color .6s var(--ease-soft), box-shadow .6s var(--ease-soft); border: 1px solid transparent; }
-#s-survey .sv-key i.k-lit { background: var(--purple); border-color: var(--purple-lt); animation: svKey 2.8s ease-in-out infinite; }
+#s-survey .sv-key i { position: relative; width: 18px; height: 18px; border-radius: 26%; flex: none; background: rgba(255, 255, 255, .16); transition: background .6s var(--ease-soft), border-color .6s var(--ease-soft), box-shadow .6s var(--ease-soft); border: 1px solid transparent; }
+#s-survey .sv-key i.k-lit { background: var(--purple); border-color: var(--purple-lt); }
+/* the lit key's glow breathes: a static glow (::before, in the key's own colour) fading in and out */
+#s-survey .sv-key i.k-lit::before { content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; opacity: 0;
+  box-shadow: 0 0 18px 2px currentColor; animation: svKey 2.8s ease-in-out infinite; }
 #s-survey[data-tone="hero"] .sv-key i.k-lit { background: var(--sea); border-color: var(--sea); }
 #s-survey[data-tone="hero"] .sv-key i.k-off { background: transparent; border-color: rgba(201, 166, 211, .5); }
-@keyframes svKey { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } 50% { box-shadow: 0 0 18px 2px currentColor; } }
+@keyframes svKey { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 #s-survey .sv-key i.k-lit { color: rgba(201, 166, 211, .8); }
 #s-survey[data-tone="hero"] .sv-key i.k-lit { color: rgba(3, 255, 203, .8); }
 #s-survey .sv-kt { display: inline-grid; }
@@ -96,9 +99,16 @@
 #s-survey[data-tone="gap"] .sv-waffle i.lit { background: var(--purple); border-color: var(--purple-lt); box-shadow: 0 0 20px rgba(157, 103, 170, .5); animation: svTwinkle 3.6s ease-in-out calc(var(--rd) * -3.6s) infinite; }
 /* the hero: thirteen lights; everyone else falls back into the dark */
 #s-survey[data-tone="hero"] .sv-waffle.built i:not(.lit) { opacity: .5; background: rgba(255, 255, 255, .02); border-color: rgba(201, 166, 211, .16); }
-#s-survey[data-tone="hero"] .sv-waffle i.lit { background: var(--sea); border-color: #B8FFF0; box-shadow: 0 0 26px rgba(3, 255, 203, .8); animation: svHero 2.8s ease-in-out calc(var(--r) * -.14s) infinite; z-index: 1; }
+/* each of the thirteen breathes: it scales, and its glow crossfades between two static layers
+   (::before at rest, ::after swollen; opacity only) */
+#s-survey[data-tone="hero"] .sv-waffle i.lit { background: var(--sea); border-color: #B8FFF0; box-shadow: none; animation: svHero 2.8s ease-in-out calc(var(--r) * -.14s) infinite; z-index: 1; }
+#s-survey[data-tone="hero"] .sv-waffle i.lit::before, #s-survey[data-tone="hero"] .sv-waffle i.lit::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; }
+#s-survey[data-tone="hero"] .sv-waffle i.lit::before { box-shadow: 0 0 16px rgba(3, 255, 203, .75); animation: svHeroRest 2.8s ease-in-out calc(var(--r) * -.14s) infinite; }
+#s-survey[data-tone="hero"] .sv-waffle i.lit::after { box-shadow: 0 0 44px rgba(3, 255, 203, 1), 0 0 90px rgba(3, 255, 203, .3); opacity: 0; animation: svHeroSwell 2.8s ease-in-out calc(var(--r) * -.14s) infinite; }
 @keyframes svTwinkle { 0%, 100% { opacity: .8; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
-@keyframes svHero { 0%, 100% { box-shadow: 0 0 16px rgba(3, 255, 203, .75); transform: scale(1.04); } 50% { box-shadow: 0 0 44px rgba(3, 255, 203, 1), 0 0 90px rgba(3, 255, 203, .3); transform: scale(1.14); } }
+@keyframes svHero { 0%, 100% { transform: scale(1.04); } 50% { transform: scale(1.14); } }
+@keyframes svHeroRest { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes svHeroSwell { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 /* ambient: a wave of light drifts across the other respondents */
 #s-survey .sv-waffle.built i:not(.lit)::after { content: ''; position: absolute; inset: -1px; border-radius: inherit; background: rgba(255, 255, 255, .22); opacity: 0;
   animation: svWave 5.2s ease-in-out infinite; animation-delay: calc(var(--c) * .26s + var(--r) * .05s - 5.2s); }

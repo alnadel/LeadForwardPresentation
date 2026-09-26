@@ -55,7 +55,7 @@
 #s-options.op-live0 .op-edge.b { animation: opEdgeB .9s var(--op-open) calc(var(--enter, 0s) + var(--d)) both, opEdgeFade .9s linear calc(var(--enter, 0s) + var(--d)) both; }
 @keyframes opEdgeT { from { transform: translateY(0); } to { transform: translateY(calc(-1 * var(--seam))); } }
 @keyframes opEdgeB { from { transform: translateY(0); } to { transform: translateY(var(--rest)); } }
-@keyframes opEdgeFade { 0% { opacity: 0; } 8% { opacity: 1; } 70% { opacity: .85; } 100% { opacity: 0; } }
+@keyframes opEdgeFade { 0% { opacity: 0; } 17% { opacity: 1; } 70% { opacity: .85; } 100% { opacity: 0; } }
 
 /* a sheen crosses the cards now and then */
 #s-options .op-card::after { content: ''; position: absolute; top: -30%; bottom: -30%; left: -60%; width: 36%; pointer-events: none; opacity: 0;
@@ -64,7 +64,8 @@
 #s-options[data-step="1"] .op-col.c .op-card::after { animation: opSheen 7s ease-in-out 2.4s infinite; }
 #s-options .op-col.b { --k: 1.1s; }
 #s-options .op-col.c { --k: 2.2s; }
-@keyframes opSheen { 0%, 58% { left: -60%; opacity: 0; } 62% { opacity: 1; } 96% { opacity: 1; } 100% { left: 130%; opacity: 0; } }
+/* the band travels from left -60% to left 130% of the card: 190% of the card = 527.8% of the band (36% wide) */
+@keyframes opSheen { 0%, 58% { transform: translateX(0) skewX(-16deg); opacity: 0; } 62% { opacity: 1; } 96% { opacity: 1; } 100% { transform: translateX(527.78%) skewX(-16deg); opacity: 0; } }
 
 /* ── a column: letter, title (the hero), one line, five ratings, the watch-out ── */
 #s-options .op-hd { position: absolute; left: 30px; right: 26px; top: 30px; display: flex; align-items: center; gap: 16px; }
@@ -90,7 +91,7 @@
 #s-options .op-mk[data-in]:not(.is-in) { transform: scale(.3); filter: blur(4px); transition-duration: .3s; transition-delay: 0s; }
 /* a strong mark lands with a ripple (live build only) */
 #s-options.op-live0 .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(var(--delay) + .08s) both; }
-@keyframes opRip { 0% { opacity: 0; transform: scale(1); } 12% { opacity: .9; } 100% { opacity: 0; transform: scale(2.1); } }
+@keyframes opRip { 0% { opacity: 0; transform: scale(1); } 16% { opacity: .9; } 100% { opacity: 0; transform: scale(2.1); } }
 
 /* ── the criteria: support (small, dim), with the legend on top ─────────── */
 #s-options .op-leg { position: absolute; left: 0; top: 34px; display: flex; flex-direction: column; gap: 12px; }
@@ -120,9 +121,10 @@
   75% { transform: translateY(180px); } 80% { transform: translateY(240px); }
   94% { opacity: 1; } 100% { transform: translateY(240px); opacity: 0; }
 }
-#s-options[data-step="0"] .op-mk.s2[data-in].is-in { animation: opFlare var(--walk) ease-out calc(var(--enter, 0s) + 2.2s + var(--r) * var(--walk) / 5) infinite; }
-@keyframes opFlare { 0%, 100% { box-shadow: 0 0 16px rgba(3, 255, 203, .42), inset 0 0 0 2px rgba(190, 255, 244, .5); }
-  5% { box-shadow: 0 0 34px rgba(3, 255, 203, .9), 0 0 70px rgba(3, 255, 203, .3), inset 0 0 0 2px rgba(220, 255, 250, .9); } 20% { box-shadow: 0 0 16px rgba(3, 255, 203, .42), inset 0 0 0 2px rgba(190, 255, 244, .5); } }
+#s-options .op-mk.s2::after { content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none; opacity: 0;
+  box-shadow: 0 0 34px rgba(3, 255, 203, .8), 0 0 70px rgba(3, 255, 203, .3), inset 0 0 0 2px rgba(220, 255, 250, .9); }
+#s-options[data-step="0"] .op-mk.s2[data-in].is-in::after { animation: opFlare var(--walk) ease-in-out calc(var(--enter, 0s) + 2.2s + var(--r) * var(--walk) / 5) infinite; }
+@keyframes opFlare { 0%, 20%, 100% { opacity: 0; } 5% { opacity: 1; } }
 
 /* ── stop 1: A and B step back, C lifts and goes live ───────────────────── */
 #s-options.st-1 .op-col.a, #s-options.st-1 .op-col.b { opacity: .3; transform: translateY(16px) scale(.96); filter: saturate(.3) brightness(.85); }
@@ -135,15 +137,17 @@
 #s-options .op-run { position: absolute; left: calc(50% - 150px); top: 164px; width: 300px; height: 120px; border-radius: 50%; opacity: 0; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .42), rgba(37, 199, 188, .15) 55%, transparent); }
 #s-options.op-live1 .op-run { animation: opRun 1.5s linear .6s both; }
-@keyframes opRun { 0% { transform: translateY(0); opacity: 0; } 8% { opacity: 1; } 75% { transform: translateY(240px); opacity: 1; } 100% { transform: translateY(240px); opacity: 0; } }
+@keyframes opRun { 0% { transform: translateY(0); opacity: 0; } 11% { opacity: 1; } 75% { transform: translateY(240px); opacity: 1; } 100% { transform: translateY(240px); opacity: 0; } }
 #s-options.op-live1 .op-col.c .op-mk.s2 i { animation: opRip 1s var(--ease-out) calc(.66s + var(--r) * .28s) both; }
 /* …then a reading band keeps walking C's five rows (as the table's did at stop 0); each mark flares and ripples as it arrives */
 #s-options .op-cband { position: absolute; left: 14px; right: 14px; top: 164px; height: 60px; border-radius: 12px; opacity: 0; pointer-events: none; mix-blend-mode: screen;
   background: linear-gradient(90deg, rgba(37, 199, 188, .04), rgba(37, 199, 188, .16) 50%, rgba(37, 199, 188, .04));
   box-shadow: inset 0 1px 0 rgba(3, 255, 203, .26), inset 0 -1px 0 rgba(3, 255, 203, .26); }
 #s-options[data-step="1"] .op-cband { animation: opWalk 6s cubic-bezier(.45, 0, .55, 1) 2.2s infinite; }
-#s-options[data-step="1"] .op-col.c .op-mk.s2 { animation: opFlare 6s ease-out calc(2.2s + var(--r) * 1.2s) infinite; }
-#s-options[data-step="1"] .op-col.c .op-mk.s2 i { animation: opRipC 6s var(--ease-out) calc(2.2s + var(--r) * 1.2s) infinite; }
-@keyframes opRipC { 0% { opacity: 0; transform: scale(1); } 2% { opacity: .85; } 16%, 100% { opacity: 0; transform: scale(2); } }
+#s-options[data-step="1"] .op-col.c .op-mk.s2::after { animation: opFlare 6s ease-in-out calc(2.2s + var(--r) * 1.2s) infinite; }
+/* the ripple grows on its ease-out; its light fades in and out on its own, softer curve */
+#s-options[data-step="1"] .op-col.c .op-mk.s2 i { animation: opRipC 6s var(--ease-out) calc(2.2s + var(--r) * 1.2s) infinite, opRipCO 6s ease-in-out calc(2.2s + var(--r) * 1.2s) infinite; }
+@keyframes opRipC { 0% { transform: scale(1); } 16%, 100% { transform: scale(2); } }
+@keyframes opRipCO { 0% { opacity: 0; } 4% { opacity: .85; animation-timing-function: ease-out; } 13%, 100% { opacity: 0; } }
 
 #stage.lite #s-options .op-pool::before, #stage.lite #s-options .op-pool::after { animation: none; }

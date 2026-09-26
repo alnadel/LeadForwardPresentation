@@ -33,13 +33,48 @@
   ];
 
   /* ── the cascade's links: an S-curve from the foot of a parent to the head of a child ── */
-  const link = (px, py, pr, cx, cy, cr) => {
+  const seg = (px, py, pr, cx, cy, cr) => {
     const y0 = py + pr, y1 = cy - cr, h = y1 - y0;
-    return `M${px} ${y0} C${px} ${r1(y0 + h * .55)} ${cx} ${r1(y1 - h * .55)} ${cx} ${y1}`;
+    return [px, y0, px, r1(y0 + h * .55), cx, r1(y1 - h * .55), cx, y1];
   };
-  const L1 = X2.map((x) => link(TX, Y[0], HALF[0], x, Y[1], HALF[1]));
-  const L2 = X3.map((x, j) => link(X2[j >> 1], Y[1], HALF[1], x, Y[2], HALF[2]));
-  const L3 = X4.map((x, j) => link(X3[Math.floor(j / 3)], Y[2], HALF[2], x, Y[3], HALF[3]));
+  const pathD = (s) => `M${s[0]} ${s[1]} C${s[2]} ${s[3]} ${s[4]} ${s[5]} ${s[6]} ${s[7]}`;
+  const S1 = X2.map((x) => seg(TX, Y[0], HALF[0], x, Y[1], HALF[1]));
+  const S2 = X3.map((x, j) => seg(X2[j >> 1], Y[1], HALF[1], x, Y[2], HALF[2]));
+  const S3 = X4.map((x, j) => seg(X3[Math.floor(j / 3)], Y[2], HALF[2], x, Y[3], HALF[3]));
+  const [L1, L2, L3] = [S1, S2, S3].map((a) => a.map(pathD));
+
+  /* ── the flowing lights ride the links on transforms (the compositor), not offset-path: each
+     link they use becomes a sampled keyframe track (by arc length, on the hop's easing) ── */
+  const bez = (s, t) => { const u = 1 - t; return [0, 1].map((k) => u * u * u * s[k] + 3 * u * u * t * s[2 + k] + 3 * u * t * t * s[4 + k] + t * t * t * s[6 + k]); };
+  function tracer(s) {             // f (share of the length) → [x, y]
+    const P = [bez(s, 0)], L = [0];
+    for (let i = 1; i <= 160; i++) { const p = bez(s, i / 160), q = P[i - 1]; P.push(p); L.push(L[i - 1] + Math.hypot(p[0] - q[0], p[1] - q[1])); }
+    const tot = L[L.length - 1];
+    return (f) => {
+      const d = Math.min(1, Math.max(0, f)) * tot; let lo = 0, hi = L.length - 1;
+      while (hi - lo > 1) { const m = (lo + hi) >> 1; if (L[m] < d) lo = m; else hi = m; }
+      const r = (d - L[lo]) / ((L[hi] - L[lo]) || 1);
+      return [P[lo][0] + (P[hi][0] - P[lo][0]) * r, P[lo][1] + (P[hi][1] - P[lo][1]) * r];
+    };
+  }
+  const cubic = (x1, y1, x2, y2) => (u) => {   // a CSS cubic-bezier() easing
+    if (u <= 0 || u >= 1) return u <= 0 ? 0 : 1;
+    let lo = 0, hi = 1, t = u;
+    for (let i = 0; i < 40; i++) { t = (lo + hi) / 2; if (3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t < u) lo = t; else hi = t; }
+    return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;
+  };
+  const HOPEASE = cubic(.4, 0, .6, 1);
+  const KF = {};
+  // a hop: along the link over the first 10% of the 8 s cycle (.8 s), then it holds at the child
+  const track = (name, s) => {
+    if (KF[name]) return name;
+    const at = tracer(s), p0 = at(0), N = 20;
+    const key = (f) => { const p = at(f); return `{transform:translate(${(p[0] - p0[0]).toFixed(1)}px,${(p[1] - p0[1]).toFixed(1)}px)}`; };
+    let k = '';
+    for (let i = 0; i <= N; i++) k += `${(10 * i / N).toFixed(2)}%${key(HOPEASE(i / N))}`;
+    KF[name] = `@keyframes ${name}{${k}100%${key(1)}}`;
+    return name;
+  };
   // build timing (s after the build starts): the links draw down behind the spark's light
   const T0 = .3, T1 = .38, T2 = .64, T3 = .9;
   const LVL1 = .74;                             // the sponsor's level line draws as the spark lands
@@ -66,9 +101,13 @@
   const dl = (t) => ((t % D) - D).toFixed(2) + 's';
   const flows = ROUTES.map(([a, b, c], r) => {
     const s = r * (D / ROUTES.length);
-    const segs = [L1[a], L2[b], L3[c]].map((d, k) => `<i class="ld-f k${k + 1}" style="offset-path:path('${d}');--dl:${dl(s + k * HOP)}"><b></b></i>`).join('');
+    const segs = [[S1[a], 'ldP1_' + a], [S2[b], 'ldP2_' + b], [S3[c], 'ldP3_' + c]].map(([sg, name], k) => {
+      const hw = k === 2 ? 5 : 6.5;
+      return `<i class="ld-f k${k + 1}" style="left:${sg[0] - hw}px;top:${sg[1] - hw}px;--p:${track(name, sg)};--dl:${dl(s + k * HOP)}"><b></b></i>`;
+    }).join('');
+    // each flare rises over .22 s, peaking as its light arrives
     const hits = [[X2[a], Y[1], 't2'], [X3[b], Y[2], 't3'], [X4[c], Y[3], 'tm']]
-      .map(([x, y, cls], k) => `<i class="ld-hit ${cls}" style="left:${x}px;top:${y}px;--dl:${dl(s + (k + 1) * HOP)}"></i>`).join('');
+      .map(([x, y, cls], k) => `<i class="ld-hit ${cls}" style="left:${x}px;top:${y}px;--dl:${dl(s + (k + 1) * HOP - .22)}"></i>`).join('');
     return segs + hits;
   }).join('');
 
@@ -124,6 +163,7 @@
           <svg class="ld-links" viewBox="0 0 1920 1080">${svgLinks}</svg>
           <div class="ld-leads">${leads}</div>
           <div class="ld-flows">${flows}</div>
+          <style>${Object.values(KF).join('\n')}</style>
           ${nodes3}${nodes2}
           <i class="ld-n t1" style="left:${TX}px;top:${Y[0]}px;--d:${T0}s"><b class="ld-ring"></b><b class="ld-ring r2"></b></i>
         </div>
@@ -170,6 +210,7 @@
         const x1 = first[k] - HALF[k] - 16;
         lv.style.left = x0 + 'px';
         lv.style.width = Math.max(0, x1 - x0) + 'px';
+        lv.style.setProperty('--lw', Math.max(0, x1 - x0) + 'px');   // the running lights travel it on transforms
       });
       // one-shot lights (the links' leading lights, the root's flare) play only on a live
       // click; their resting state is invisible, so a jump or a step back shows the same frame
