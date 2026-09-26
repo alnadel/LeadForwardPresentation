@@ -181,9 +181,8 @@
    screens' light stays on her face. */
 /* the clock is flipped back as one piece (data-flip) and keeps its left-to-right order: 03:12 */
 html[lang="ar"] #s-night .nt-clock { direction: ltr; }
-/* Arabic letters rise and fall further than Latin ones: the word masks and the landing shine
-   (background-clip: text through each word's box) get room for them */
-html[lang="ar"] #s-night [data-split] .w, html[lang="ar"] #s-night [data-split] .w > span { padding: .26em .04em .3em; margin: -.26em -.04em -.3em; }
+/* (Arabic letters rise and fall further than Latin ones: the word masks get room for them in
+   deck-v2.css; the lines here get a little more leading) */
 html[lang="ar"] #s-night .nt-kicker { top: 129px; line-height: 1.7; }
 html[lang="ar"] #s-night [data-in].a-wipe.nt-kicker:not(.is-in) { clip-path: inset(0 0 0 100%); }
 html[lang="ar"] #s-night .nt-head { left: 816px; width: 960px; top: 178px; font-size: 60px; line-height: 1.24; }

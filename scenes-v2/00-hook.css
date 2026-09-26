@@ -121,11 +121,8 @@
 #stage[data-tx="iris"] #s-hook.leaving .nt-rings, #stage[data-tx="iris"] #s-hook.leaving .nt-bokeh { opacity: 0; transition: opacity .4s var(--ease-soft); }
 
 /* ── Arabic (right to left): the question is centred, so the mirror leaves it in place. Arabic
-   letters rise higher (the hamza on أ / آ) and fall lower (ي، ز، ؟) than Latin ones, so each
-   word's mask (.w) gets room above and below, and the lines a little more leading. The block
-   keeps its centre on the English one's (494 px), clear of the horizon. */
+   letters rise higher (the hamza on أ, the madda on آ) and fall lower (ي، ز، ؟) than Latin ones:
+   each word's mask gets room for them in deck-v2.css, and the lines here a little more leading.
+   The block keeps its centre on the English one's (494 px), clear of the horizon. */
 html[lang="ar"] #s-hook .nt-q { top: 312px; }
 html[lang="ar"] #s-hook .nt-q .display { font-size: 158px; line-height: 1.16; }
-/* (the landing shine paints the letters through the word's own box (background-clip: text), so the
-   inner word is padded as well as its mask) */
-html[lang="ar"] #s-hook .nt-q [data-split] .w, html[lang="ar"] #s-hook .nt-q [data-split] .w > span { padding: .26em .04em .3em; margin: -.26em -.04em -.3em; }

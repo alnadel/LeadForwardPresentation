@@ -170,7 +170,7 @@
   /* ── stop 1: a line of light from the recommendation ("C: a story campaign") to C's tally ── */
   // (in Arabic it leaves the recommendation's highlight at its end, the left, as measured with the deck's
   // font, and meets the tally at its right end: the stage is mirrored, so these are mirrored coordinates)
-  const LK = AR ? [[934, 226], [1164, 226], [1320, 280], [1410, 368]] : [[1098, 226], [1240, 226], [1326, 288], [1396, 368]];   // cubic: start, c1, c2, end (stage px)
+  const LK = AR ? [[934, 232], [1164, 232], [1320, 284], [1410, 368]] : [[1098, 226], [1240, 226], [1326, 288], [1396, 368]];   // cubic: start, c1, c2, end (stage px)
   const LBOX = AR ? [926, 214, 496, 166] : [1090, 214, 318, 166];                                // its box: x, y, w, h
   const bz = (t, k) => { const u = 1 - t; return u * u * u * LK[0][k] + 3 * u * u * t * LK[1][k] + 3 * u * t * t * LK[2][k] + t * t * t * LK[3][k]; };
   const linkD = `M${LK[0].join(' ')} C${LK[1].join(' ')} ${LK[2].join(' ')} ${LK[3].join(' ')}`;

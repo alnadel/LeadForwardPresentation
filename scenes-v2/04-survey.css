@@ -161,9 +161,8 @@ html[lang="ar"] #s-survey .sv-h, html[lang="ar"] #s-survey .sv-punch { left: aut
    sets out along the broken track from the right (the track is mirrored about its own centre) */
 html[lang="ar"] #s-survey .sv-pu1 { transform-origin: 100% 50%; }
 html[lang="ar"] #s-survey .sv-pu2 { scale: -1 1; }
-/* Arabic letters rise and fall further than Latin ones: the word masks and the landing shine
-   (background-clip: text through each word's box) get room for them, and the lines more leading */
-html[lang="ar"] #s-survey [data-split] .w, html[lang="ar"] #s-survey [data-split] .w > span { padding: .26em .04em .3em; margin: -.26em -.04em -.3em; }
+/* (Arabic letters rise and fall further than Latin ones: the word masks get room for them in
+   deck-v2.css; the lines here get more leading) */
 html[lang="ar"] #s-survey .sv-head .kicker { line-height: 1.5; }
 html[lang="ar"] #s-survey .sv-swap { margin-top: 18px; }
 html[lang="ar"] #s-survey .sv-h, html[lang="ar"] #s-survey .sv-punch { line-height: 1.25; }

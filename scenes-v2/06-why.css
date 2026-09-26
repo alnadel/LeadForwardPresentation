@@ -325,5 +325,8 @@ html[lang="ar"] #s-why .wy-photo { left: 620px; background-size: 2708px 1523px; 
    word's box) leave room for the marks above and below Arabic letters: hamza, dots, kasra */
 html[lang="ar"] #s-why [data-split] .w, html[lang="ar"] #s-why [data-split] .w > span { padding: .32em 0 .38em; margin: -.32em 0 -.38em; }
 html[lang="ar"] #s-why .wy-st, html[lang="ar"] #s-why .wy-sv-st { line-height: 1.18; }
-/* wipes reveal from where the Arabic starts (the right) */
+/* wipes reveal from where the Arabic starts (the right), and the light passes through the purpose
+   the way it reads, right to left */
 html[lang="ar"] #s-why .rtl-flip[data-in].a-wipe:not(.is-in) { clip-path: inset(0 0 0 100%); }
+html[lang="ar"] #s-why .sv-pp .amb-shimmer { animation-name: wyShimmerR; }
+@keyframes wyShimmerR { 0% { background-position: -120% 0; } 60%, 100% { background-position: 120% 0; } }

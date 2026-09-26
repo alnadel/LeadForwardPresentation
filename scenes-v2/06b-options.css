@@ -278,7 +278,10 @@
    The scene is mirrored: the criteria stand on the right and the options read أ ب ج from right to
    left, so ج, the recommendation, is on the left. Text blocks are flipped back by the engine; these
    rules only undo what a mirror gets wrong inside them. The ratings are untouched. */
-/* the glow sits behind the recommendation's highlight */
+/* the recommendation's two lines need more room in Arabic (dots below one line meet the letters of
+   the next at 1.03), so its subline steps down with it; the glow sits behind its highlight */
+html[lang="ar"] #s-options .op-hero { line-height: 1.22; }
+html[lang="ar"] #s-options .op-sub { top: 208px; }
 html[lang="ar"] #s-options .op-hglow { left: 6px; }
 /* the tally: its marks lead from the right, its words follow */
 html[lang="ar"] #s-options .op-tally > div { padding: 0 13px 0 18px; }

@@ -350,8 +350,13 @@
       <!-- the lights' sampled paths (generated above, as the flow's markup was built) -->
       <style>${KF.join('\n')}</style>
     `,
-    // Arabic: pictograms keep their drawn orientation (the engine flips them back with the text)
-    init(ctx) { if (AR) ctx.$$('.icon').forEach((e) => e.setAttribute('data-flip', '')); },
+    // Arabic: pictograms keep their drawn orientation (the engine flips them back with the text); the
+    // dashes flowing along the wires are a pattern, not a photo, so they stay mirrored and flow leftwards
+    init(ctx) {
+      if (!AR) return;
+      ctx.$$('.icon').forEach((e) => e.setAttribute('data-flip', ''));
+      ctx.$$('.wy-wflow, .sv-beam').forEach((e) => e.setAttribute('data-rtl-keep', ''));
+    },
     step(n, prev, ctx) {
       // the travelling lights are one-shot builds on live clicks: the story's run
       // through the flow as the scene arrives (stop 0), the leading lights on the
