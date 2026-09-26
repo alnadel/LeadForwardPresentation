@@ -63,7 +63,7 @@
           <p class="op-s">${o.s}</p>
           ${rows}
           <div class="op-row op-worow" style="top:${WO}px"><p class="op-w">${o.w}</p></div>
-          ${c === 2 ? '<i class="op-cband"></i><i class="op-run"></i>' : ''}
+          ${c === 2 ? '<i class="op-cband"></i><i class="op-run"></i><i class="op-rim"><i></i></i>' : ''}
         </div>
         <i class="op-edge t"></i><i class="op-edge b"></i>
       </div>`;
@@ -134,8 +134,9 @@
         el.classList.add('op-live1');
         ctx.after(420, () => window.Field && Field.burst(colX(2) + CW / 2, T + DROP + H / 2, { radius: 620, dur: 1.6 }));
       }
-      // stop 1: C is the one card that goes live
-      ctx.$('.op-col.c .op-card').classList.toggle('live', n >= 1);
+      // stop 1: C is the one card that goes live (a light travels its edge: .op-rim, the scene's
+      // compositor-only take on the glass's live edge)
+      ctx.$('.op-col.c .op-card').classList.toggle('lv', n >= 1);
     },
   });
 })();
