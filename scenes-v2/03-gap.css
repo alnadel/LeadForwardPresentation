@@ -68,7 +68,7 @@
 #s-gap .gp-floor, #s-gap .gp-rip, #s-gap .gp-w { width: 504px; height: 480px; }
 #s-gap .gp-floor { position: absolute; left: 0; top: 0; border-radius: 92px; opacity: 0; transform: scale(.86);
   background: radial-gradient(110% 92% at 50% 42%, rgba(24, 46, 74, .82), rgba(9, 19, 36, .9) 72%);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, .05), 0 0 80px rgba(37, 199, 188, .08), inset 0 0 70px rgba(37, 199, 188, .08);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .05), 0 0 48px rgba(37, 199, 188, .1), inset 0 0 70px rgba(37, 199, 188, .08);   /* (a tighter outer glow: the floor's layer is its box plus the glow) */
   transition: opacity .35s var(--ease-soft), transform .4s var(--ease-soft); }
 #s-gap.st-0 .gp-floor { opacity: 1; transform: none;
   transition: opacity 1s var(--ease-soft) calc(var(--enter, 0s) + .2s + var(--di) * .12s), transform 1.5s var(--ease-out) calc(var(--enter, 0s) + .2s + var(--di) * .12s); }
@@ -178,7 +178,7 @@
    (::before) fades in over it on the same clock (opacity only, no filter) */
 #s-gap .gp-L b::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
   background: radial-gradient(circle at 35% 30%, #fff 0 12%, #04FFFF 38%, #32FFFE 80%);
-  box-shadow: 0 0 12px rgba(4, 255, 255, .6), 0 0 34px rgba(4, 255, 255, .3), 0 0 80px rgba(50, 255, 254, .17);
+  box-shadow: 0 0 12px rgba(4, 255, 255, .6), 0 0 34px rgba(4, 255, 255, .3);   /* (its core brightens; the wide halo breathes with the light itself, so the copy stays a small layer) */
   animation: gpBright 3.2s ease-in-out var(--bd) infinite; }
 @keyframes gpBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.26); } }
 @keyframes gpBright { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
@@ -287,6 +287,8 @@
 #s-gap:not([data-step="1"]) .gp-rip, #s-gap:not([data-step="1"]) .gp-hit,
 #s-gap:not([data-step="1"]) .gp-x, #s-gap:not([data-step="1"]) .gp-frag, #s-gap:not([data-step="1"]) .gp-bl:not(.ok),
 #s-gap:not([data-step="2"]) .gp-bl.ok { visibility: hidden; }
+/* the walls' middle layers are transparent except while the walls stand (.gp-walls, 03-gap.js) */
+#s-gap:not(.gp-walls) .gp-w.mid { visibility: hidden; }
 
 /* the live edge light turns a conic square as wide as the card's diagonal: it is drawn at half size
    and scaled up (a conic gradient scales cleanly), a quarter of the layer */

@@ -13,7 +13,9 @@
 #s-night.st-1 .nt-dust { opacity: 0; visibility: hidden; transition: opacity .8s var(--ease-soft), visibility 0s linear .9s; }
 
 /* ── the film: everything that shrinks away at stop 1 ── */
-#s-night .nt-film { position: absolute; inset: 0; transition: transform 1s var(--ease-out), opacity .7s var(--ease-soft), visibility 0s; }
+/* (the film and its interface are zero-size groups at the stage origin: a group is then a layer the
+   size of what it holds, not a full-stage one) */
+#s-night .nt-film { position: absolute; left: 0; top: 0; width: 0; height: 0; transition: transform 1s var(--ease-out), opacity .7s var(--ease-soft), visibility 0s; }
 #s-night.st-1 .nt-film { transform: scale(.04); opacity: 0; visibility: hidden; transition: transform 1.4s cubic-bezier(.62, 0, .28, 1), opacity 1.05s cubic-bezier(.7, 0, .9, .4) .35s, visibility 0s linear 1.5s; }
 
 /* the photo band opens like a film frame, then keeps travelling */
@@ -45,10 +47,10 @@
 #s-night.st-0 .nt-face { animation: ntFlicker 5.9s ease-in-out -1.6s infinite; }
 
 /* ── interface ── */
-#s-night .nt-ui { position: absolute; inset: 0; transition: opacity .6s var(--ease-soft), visibility 0s; }
+#s-night .nt-ui { position: absolute; left: 0; top: 0; width: 0; height: 0; transition: opacity .6s var(--ease-soft), visibility 0s; }
 #s-night.st-1 .nt-ui { opacity: 0; visibility: hidden; transition: opacity .45s var(--ease-soft), visibility 0s linear 1.5s; }
 
-#s-night .nt-kicker { position: absolute; left: 144px; top: 136px; font-size: 22px; }
+#s-night .nt-kicker { position: absolute; left: 144px; top: 136px; font-size: 22px; white-space: nowrap; }
 /* the clock: bold, lit from within; its colon is two lights that blink every second */
 #s-night .nt-clock { position: absolute; left: 130px; top: 180px; display: flex; align-items: center; gap: 20px; isolation: isolate; white-space: nowrap;
   font: 700 232px/.8 var(--font); letter-spacing: -.045em; }

@@ -18,16 +18,18 @@
 window.LFPark = function (ctx) {
   if (window.LFBack) LFBack(ctx);
   const out = (x) => (x.hasAttribute('data-in') && !x.classList.contains('is-in')) || x.classList.contains('is-out');
-  const hide = [];
+  const hide = [], show = [];
   let wait = 1.2;
+  // (all reads first, then the writes: no style recalculation per element)
   ctx.$$('[data-in], [data-out]').forEach((x) => {
-    if (!out(x)) { if (x.style.visibility) x.style.visibility = ''; return; }
+    if (!out(x)) { if (x.style.visibility) show.push(x); return; }
     if (x.style.visibility === 'hidden') return;
     hide.push(x);
     if (ctx.instant) return;
     const cs = getComputedStyle(x), d = cs.transitionDuration.split(','), l = cs.transitionDelay.split(',');
     d.forEach((v, i) => { wait = Math.max(wait, parseFloat(v) + parseFloat(l[i % l.length]) + .15); });
   });
+  show.forEach((x) => { x.style.visibility = ''; });
   const park = () => hide.forEach((x) => { if (out(x)) x.style.visibility = 'hidden'; });
   if (ctx.instant) park(); else if (hide.length) ctx.after(wait * 1000, park);
 };

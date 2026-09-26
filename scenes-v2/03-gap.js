@@ -71,7 +71,7 @@
   const district = (d, di) => {
     const [sx, sy] = d.lights[0];
     const crowd = cluster(d, di);
-    const walls = Array.from({ length: WALL_LAYERS }, (_, k) => `<i class="gp-w${k === 0 ? ' base' : k === WALL_LAYERS - 1 ? ' rim' : ''}" style="--k:${k}"></i>`).join('')
+    const walls = Array.from({ length: WALL_LAYERS }, (_, k) => `<i class="gp-w${k === 0 ? ' base' : k === WALL_LAYERS - 1 ? ' rim' : ' mid'}" style="--k:${k}"></i>`).join('')
       // one flash layer per district, riding at the rim (not one per wall layer: 30 layers
       // starting a flash in the same frame blanked the screen on laptop GPUs)
       + `<i class="gp-w gp-hit" style="--k:${WALL_LAYERS - 1}"></i>`;
@@ -192,6 +192,11 @@
     leave(ctx) { window.LFLeave && LFLeave(ctx); },   // once faded out, it leaves the compositor
     step(n, prev, ctx) {
       window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
+      // the walls' middle layers show only while the walls stand (stop 1); on the other stops they
+      // are transparent, so once they have faded they are hidden (each is a full-district layer)
+      if (n === 1) ctx.el.classList.add('gp-walls');
+      else if (ctx.instant) ctx.el.classList.remove('gp-walls');
+      else ctx.after(1500, () => ctx.el.classList.remove('gp-walls'));
     },
   });
 })();

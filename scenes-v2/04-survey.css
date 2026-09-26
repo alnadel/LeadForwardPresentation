@@ -28,7 +28,7 @@
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 8%, #000 92%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 8%, #000 92%, transparent 100%);
   transition: width .75s cubic-bezier(.5, 0, .2, 1) calc(var(--enter, 0s) + .18s), opacity .45s var(--ease-soft) calc(var(--enter, 0s) + .2s); }
 #s-survey .sv-slot.off { opacity: 0; }
-#s-survey .sv-reel { position: absolute; left: 50%; top: 0; width: 200px; margin-left: -100px; text-align: center;
+#s-survey .sv-reel { position: absolute; left: 50%; top: 0; width: 170px; margin-left: -85px; text-align: center;
   transform: translateY(calc(var(--ix, 0) * -226px));
   transition: transform calc(.8s + var(--k) * .16s) cubic-bezier(.3, .06, .16, 1) calc(var(--enter, 0s) + .12s); }
 #s-survey .sv-reel b { display: block; height: 226px; font-weight: 700; }
@@ -95,7 +95,7 @@
 
 /* the squares are drawn on one canvas (04-survey.js): each of them pops in, relights, twinkles,
    breathes and carries the wave as its CSS did, without a layer of its own */
-#s-survey .sv-waffle { position: absolute; left: 844px; top: 330px; width: 932px; height: 578px; }
+#s-survey .sv-waffle { position: absolute; left: 844px; top: 330px; width: 932px; height: 578px; pointer-events: none; }
 #s-survey .sv-wcan { position: absolute; display: block; pointer-events: none; }
 /* the canvas's clock: a CSS animation (so the drawn loops pause with every other loop). Its period
    is a whole number of each loop's (3.6 s · 2.8 s · 5.2 s), so it wraps without a jump */
@@ -104,4 +104,5 @@
 /* a roll of light across the grid each time it relights (live clicks only) */
 #s-survey .sv-sweep { position: absolute; top: -40px; bottom: -40px; left: 0; width: 220px; pointer-events: none; opacity: 0; background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .3), transparent); filter: blur(8px); }
 #s-survey .sv-waffle.roll .sv-sweep { animation: svSweep 1.3s cubic-bezier(.5, 0, .3, 1); }
+#s-survey .sv-waffle:not(.roll) .sv-sweep { visibility: hidden; }   /* (it only exists for its roll) */
 @keyframes svSweep { 0% { transform: translateX(-240px); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateX(980px); opacity: 0; } }

@@ -25,7 +25,7 @@
   /* ── the waffle, on a canvas ─────────────────────────────────────────── */
   const CS = 47, PITCH = 59;                // square and pitch (px): 16 × 10 on 932 × 578
   const WW = 932, WH = 578;
-  const PAD = { l: 150, t: 150, r: 44, b: 150 };   // room for the glows (the hero's reaches ~140 px)
+  const PAD = { l: 112, t: 112, r: 40, b: 112 };   // room for the glows (the hero's fades out ~100 px from its square)
   const CELLS = Array.from({ length: N }, (_, i) => ({ c: Math.floor(i / ROWS), r: i % ROWS, rd: ((i * 53) % 97) / 97 }));
   // the looks a square can take (background, border; glow: none | purple | teal)
   const LOOK = {
@@ -41,14 +41,14 @@
     for (let k = 0; k < 24; k++) { t = (lo + hi) / 2; const x = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t; if (x < u) lo = t; else hi = t; }
     return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;
   };
-  const E = { soft: bez(.4, 0, .2, 1), back: bez(.34, 1.36, .64, 1), io: bez(.42, 0, .58, 1) };
+  const E = { soft: bez(.4, 0, .2, 1), back: bez(.34, 1.36, .64, 1), io: bez(.42, 0, .58, 1), out: bez(.16, 1, .3, 1) };
   const mixv = (a, b, t) => a.map((v, k) => v + (b[k] - v) * t);
   const rgba = (c) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${c[3].toFixed(3)})`;
   // a keyframed loop (ease-in-out between keys, as the CSS keyframes were): keys [[at, value], …]
   const loopAt = (keys, u) => { for (let k = 1; k < keys.length; k++) if (u <= keys[k][0]) { const [a, va] = keys[k - 1], [b, vb] = keys[k]; return va + (vb - va) * E.io((u - a) / (b - a)); } return keys[keys.length - 1][1]; };
-  const TWO = [[0, .8], [.5, 1], [1, .8]], TWS = [[0, 1], [.5, 1.06], [1, 1]];                 // svTwinkle
-  const HS = [[0, 1.04], [.5, 1.14], [1, 1.04]], HR = [[0, 1], [.5, 0], [1, 1]];               // svHero · its resting glow
-  const WAVE = [[0, 0], [.18, 1], [.4, 0], [1, 0]];                                           // svWave
+  const TWO = [[0, .8], [.5, 1], [1, .8]], TWS = [[0, 1], [.5, 1.06], [1, 1]];                 // the twinkle (was svTwinkle)
+  const HS = [[0, 1.04], [.5, 1.14], [1, 1.04]], HR = [[0, 1], [.5, 0], [1, 1]];               // the hero breath · its resting glow (was svHero)
+  const WAVE = [[0, 0], [.18, 1], [.4, 0], [1, 0]];                                           // the wave (was svWave)
   // a glow as a sprite (the CSS box-shadows, drawn once): blur px, colour, strength
   function glowSprite(blur, col, spread) {
     const pad = Math.ceil(blur * 1.6 + (spread || 0)), sz = CS + 2 * pad;
@@ -124,7 +124,7 @@
 
       <i class="sv-wpool"></i>
       <div class="sv-waffle">
-        <canvas class="sv-wcan" data-in="0" width="${WW + PAD.l + PAD.r}" height="${WH + PAD.t + PAD.b}" style="left:${-PAD.l}px;top:${-PAD.t}px;width:${WW + PAD.l + PAD.r}px;height:${WH + PAD.t + PAD.b}px;--d:.25s"></canvas>
+        <canvas class="sv-wcan" width="${WW + PAD.l + PAD.r}" height="${WH + PAD.t + PAD.b}" style="left:${-PAD.l}px;top:${-PAD.t}px;width:${WW + PAD.l + PAD.r}px;height:${WH + PAD.t + PAD.b}px"></canvas>
         <div class="sv-sweep"></div>
       </div>
       <i class="sv-clock"></i>
@@ -139,6 +139,8 @@
       ctx.clk = ctx.$('.sv-clock');
       // each square's state: pop (transform), op (opacity), look (colours); each is a tween
       // { a: from, b: to, t0: start (ms), d: duration (ms) } that runs as its CSS transition did
+      // the waffle's own entrance (the fade its container had: .9 s, --d .25 s after the scene enters)
+      ctx.fade = { a: 0, b: 0, t0: 0, d: 900 };
       ctx.sq = CELLS.map(() => ({ pop: { a: 0, b: 0, t0: 0, d: 1 }, op: { a: 0, b: 0, t0: 0, d: 1 }, look: { a: LOOK.off, b: LOOK.off, t0: 0, d: 1 }, mode: '' }));
       ctx.spr = { p: glowSprite(20, 'rgba(157, 103, 170, .5)'), t: glowSprite(20, 'rgba(37, 199, 188, .5)'),
         hr: glowSprite(16, 'rgba(3, 255, 203, .75)', 1), h1: glowSprite(44, 'rgba(3, 255, 203, 1)', 1), h2: glowSprite(90, 'rgba(3, 255, 203, .3)', 1) };
@@ -160,6 +162,9 @@
       // the squares: every change starts from where the square is now, on its CSS timing
       const now = performance.now();
       const tw = (tv, to, dl, d) => { if (ctx.instant) { tv.a = tv.b = to; tv.t0 = 0; tv.d = 1; return; } const cur = val(tv, now); if (cur === to && tv.b === to) return; tv.a = cur; tv.b = to; tv.t0 = now + dl; tv.d = d; };
+      const enter = parseFloat(getComputedStyle(el).getPropertyValue('--enter')) || 0;
+      if (n < 0 || ctx.instant) ctx.fade = { a: n < 0 ? 0 : 1, b: n < 0 ? 0 : 1, t0: 0, d: 900 };
+      else if (ctx.fade.b !== 1) ctx.fade = { a: val(ctx.fade, now, E.out), b: 1, t0: now + (enter + .25) * 1000, d: 900 };
       CELLS.forEach((cl, i) => {
         const q = ctx.sq[i], on = i < k, hd = tone === 'hero' && !on;
         tw(q.pop, n >= 0 ? 1 : 0, (cl.rd * 1.1 + .15) * 1000, 800);
@@ -230,6 +235,8 @@
     const g = ctx.g, now = performance.now(), T = clock(ctx), heroTone = ctx.el.dataset.tone === 'hero';
     g.setTransform(1, 0, 0, 1, 0, 0);
     g.clearRect(0, 0, ctx.can.width, ctx.can.height);
+    const fade = val(ctx.fade, now, E.out);
+    if (fade <= .002) return;
     g.setTransform(ctx.k, 0, 0, ctx.k, PAD.l * ctx.k, PAD.t * ctx.k);
     const heroes = [];
     const one = (cl, q) => {
@@ -243,6 +250,7 @@
       g.translate(cl.c * PITCH + CS / 2, cl.r * PITCH + CS / 2);
       if (rot) g.rotate(rot * Math.PI / 180);
       g.scale(sc, sc);
+      op *= fade;
       g.globalAlpha = op;
       const glow = (s, a) => { if (a > .003) { g.globalAlpha = op * a; g.drawImage(s.cv, -CS / 2 - s.pad, -CS / 2 - s.pad); g.globalAlpha = op; } };
       glow(ctx.spr.p, lk.gp); glow(ctx.spr.t, lk.gt);
