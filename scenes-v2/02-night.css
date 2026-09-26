@@ -20,8 +20,8 @@
 #s-night .nt-q { position: absolute; left: 0; right: 0; top: 356px; text-align: center; transform-origin: 50% 100%;
   transition: transform 1s var(--ease-out), opacity .7s var(--ease-soft), filter .7s var(--ease-soft); }
 #s-night .nt-q .display { white-space: nowrap; }
-#s-night.st-1 .nt-q { transform: perspective(1100px) translateY(250px) rotateX(62deg) scale(.9); opacity: 0; filter: blur(18px);
-  transition: transform 1s cubic-bezier(.55, 0, .8, .35), opacity .55s var(--ease-soft) .25s, filter .6s var(--ease-soft) .05s; }
+#s-night.st-1 .nt-q { transform: perspective(1100px) translateY(300px) rotateX(70deg) scale(.88); opacity: 0; filter: blur(16px);
+  transition: transform .95s cubic-bezier(.45, 0, .7, .4), opacity .5s var(--ease-soft) .38s, filter .55s var(--ease-soft) .18s; }
 
 /* ── the film: everything that shrinks away at stop 2 ── */
 #s-night .nt-film { position: absolute; inset: 0; transition: transform 1s var(--ease-out), opacity .7s var(--ease-soft); }
@@ -111,8 +111,13 @@
 /* … and one light on each colleague (the wrapper is placed per frame; the light breathes) */
 #s-night .nt-p { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 #s-night.st-2 .nt-p { opacity: 1; transition: opacity 1.2s var(--ease-soft) .95s; }
-#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; animation: ambBreathe 3.4s ease-in-out infinite; }
-#s-night .nt-p + .nt-p .light { animation-delay: -1.7s; }
+#s-night .nt-p .light { position: absolute; left: -11px; top: -11px; animation: ntPair 3.6s ease-in-out infinite; }
+#s-night .nt-p + .nt-p .light { animation-delay: -1.8s; }
+/* each light breathes deeply: at rest it is the v1 light, at the top of the breath its glow swells */
+@keyframes ntPair {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--sea), 0 0 36px rgba(3, 255, 203, .6), 0 0 90px rgba(37, 199, 188, .35); }
+  50% { transform: scale(1.22); box-shadow: 0 0 20px var(--sea), 0 0 64px rgba(3, 255, 203, .78), 0 0 160px rgba(37, 199, 188, .55); }
+}
 
 #s-night .nt-know { position: absolute; width: 760px; text-align: center; }
 #s-night .nt-know-h { margin: 0; font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }

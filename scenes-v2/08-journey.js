@@ -34,6 +34,9 @@
   const NEXT = [1540, N[0][1]];
   const SPLIT = `M${N[0][0].toFixed(1)} ${N[0][1].toFixed(1)} C${(N[0][0] + 70).toFixed(1)} ${(N[0][1] + 40).toFixed(1)} ${PILL.x - 120} ${N[0][1].toFixed(1)} ${PILL.x} ${N[0][1].toFixed(1)} L${NEXT[0]} ${NEXT[1].toFixed(1)}`;
 
+  // where the onward stories go from the next colleague (kept clear of the headline)
+  const ONWARD = [[250, -230], [-120, -250], [300, 40], [100, -260], [-280, -170], [330, -120], [60, 330], [-90, -250]];
+
   const svgCheck = '<svg class="jn-tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1"/></svg>';
   const svgArrow = '<svg class="jn-arr" viewBox="0 0 32 20" aria-hidden="true"><path d="M2 10h26M20 3l8 7-8 7"/></svg>';
   const svgChev = '<svg viewBox="0 0 14 22" aria-hidden="true"><path d="M3 3l8 8-8 8"/></svg>';
@@ -70,7 +73,7 @@
     cues: ['Capture · Faisal nominates Nouf', 'Curate → Feature · the checks tick, the post publishes', 'Reinforce · certificate and four teams', 'The chain · recognition becomes behaviour'],
     holds: [11, 12, 10, 9],
     notes: [
-      'Now one story through it — illustrative, not a real case. Faisal, a shift supervisor, takes thirty seconds to nominate Nouf: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”',
+      'Now one story through it — illustrative, not a real case. Faisal takes thirty seconds to nominate Nouf: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”',
       'Curate: facts checked with the shift lead, Nouf’s consent, and one value, Excellence. Nothing goes out without consent. Then Feature: a short post on a channel we already have. Reactions, not reach numbers.',
       'Reinforce: her leader acknowledges her with a certificate, and the takeaway travels. In this illustrative story four teams adopt the new handover, and we claim no more than that.',
       'Then Nouf nominates the next colleague, and the cycle starts again: recognition becomes behaviour. Again, the story is illustrative; the mechanism is what we ask you to pilot.',
@@ -79,7 +82,7 @@
       { dim: .24, lit: .02, travel: .12, offset: [-190, -110], litFrom: null, links: .45, wave: .45, streaks: .1, sparkle: .9, calm: [[520, 130, 1800, 940, .85], [110, 130, 470, 940, .45]] },
       {},
       { travel: .2 },
-      { dim: .48, lit: .08, litFrom: NEXT, travel: .6, links: .85, wave: 1, streaks: .26, sparkle: 3.8, calm: [[540, 510, 1480, 730, .72], [110, 130, 470, 940, .4]] },
+      { dim: .52, lit: .08, litFrom: NEXT, travel: .6, links: .85, wave: 1, streaks: .26, sparkle: 3.8, calm: [[540, 510, 1480, 730, .72], [110, 130, 470, 940, .4]] },
     ],
     html: `
       <!-- the rail: the cycle in miniature -->
@@ -185,12 +188,23 @@
       <h2 class="jn-big" data-in="3" data-split style="--d:.55s">Recognition becomes <em class="hl jn-beh">behaviour.</em></h2>
     `,
     init(ctx) {
+      ctx.at3 = 0;
       ctx.nds = ctx.$$('.jn-nd');
       ctx.lis = ctx.$$('.jn-li');
       ctx.prog = ctx.$('.jn-rprog');
     },
+    enter(ctx) {
+      // the chain continues: once the next colleague is lit, stories keep leaving it into the field
+      let k = 0;
+      ctx.every(1400, () => {
+        if (ctx.step !== 3 || !ctx.active || !window.Field || performance.now() - ctx.at3 < 2300) return;
+        const [dx, dy] = ONWARD[k++ % ONWARD.length];
+        Field.send(NEXT[0], NEXT[1], NEXT[0] + dx, NEXT[1] + dy, 1.9);
+      });
+    },
     step(n, prev, ctx) {
       const k = Math.max(0, n);
+      if (n === 3 && prev !== 3) ctx.at3 = performance.now() - (ctx.instant ? 3000 : 0);
       const forward = !ctx.instant && prev < n;
       // one-shot flourishes play only on a forward build
       ctx.el.dataset.play = forward ? String(n) : '';

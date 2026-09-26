@@ -1,11 +1,16 @@
 /* 11 · Close (v2) */
 
-/* ── stop 0 · the callback: the same image as 02.2 (keep in step with 02-night.css) ── */
+/* ── stop 0 · the callback: the same image as 02.2 (halo and breathing mirror 02-night.css) ── */
 #s-close .cl-pair { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 #s-close .cl-mid, #s-close .cl-p { position: absolute; left: 0; top: 0; width: 0; height: 0; }
-#s-close .cl-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: ambBreathe 3.4s ease-in-out infinite; }
-#s-close .cl-p .light { position: absolute; left: -11px; top: -11px; animation: ambBreathe 3.4s ease-in-out infinite; }
-#s-close .cl-p + .cl-p .light { animation-delay: -1.7s; }
+#s-close .cl-halo { position: absolute; left: -150px; top: -150px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .17), rgba(37, 199, 188, .08) 55%, transparent); animation: clHalo 3.6s ease-in-out infinite; }
+@keyframes clHalo { 0%, 100% { transform: scale(.84); opacity: .6; } 50% { transform: scale(1.24); opacity: 1; } }
+#s-close .cl-p .light { position: absolute; left: -11px; top: -11px; animation: clPairB 3.6s ease-in-out infinite; }
+#s-close .cl-p + .cl-p .light { animation-delay: -1.8s; }
+@keyframes clPairB {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 12px var(--sea), 0 0 36px rgba(3, 255, 203, .6), 0 0 90px rgba(37, 199, 188, .35); }
+  50% { transform: scale(1.22); box-shadow: 0 0 20px var(--sea), 0 0 64px rgba(3, 255, 203, .78), 0 0 160px rgba(37, 199, 188, .55); }
+}
 
 #s-close .cl-knew { position: absolute; width: 760px; text-align: center; }
 #s-close .cl-knew .h1 { font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }

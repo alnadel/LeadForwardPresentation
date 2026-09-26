@@ -21,7 +21,7 @@
   const PERIOD = 6;             // one lap of the story lane, seconds (racing)
   const LIGHTS_AT = 1.3;        // the lane lights appear this long after the scene enters
   const DRAW = 1.0, DRAW_AT = .15;   // the ring draws in 1 s, .15 s after the click
-  const LAP = 8;                // one orbit of the ring, seconds
+  const LAP = 7.5;              // one orbit of the ring, seconds
   const CIRCLE = `M${CX + R} ${CY} A${R} ${R} 0 1 1 ${CX - R} ${CY} A${R} ${R} 0 1 1 ${CX + R} ${CY}`;
 
   const STAGES = [
@@ -59,7 +59,7 @@
   }).join('');
 
   // chevrons flow round the ring (slower than the light), dipping out as they pass under a node
-  const chevrons = Array.from({ length: 8 }, (_, k) => `<i class="cy-cv" style="offset-path:path('${CIRCLE}');animation-delay:${(-k * 2).toFixed(1)}s"><svg viewBox="-9 -11 18 22" aria-hidden="true"><path d="M-5 -8 L4 0 L-5 8"/></svg></i>`).join('');
+  const chevrons = Array.from({ length: 12 }, (_, k) => `<i class="cy-cv" style="offset-path:path('${CIRCLE}');animation-delay:${(-k * 16 / 12).toFixed(2)}s"><svg viewBox="-9 -11 18 22" aria-hidden="true"><path d="M-5 -8 L4 0 L-5 8"/></svg></i>`).join('');
 
   // the award light shatters against the wall: a few shards fly back
   const shards = [[-70, -34], [-96, -8], [-64, 26], [-40, -52], [-110, 30], [-50, 48]].map(([dx, dy], i) => `<b style="--dx:${dx}px;--dy:${dy}px;--r:${(i * 67) % 180}deg"></b>`).join('');
@@ -144,8 +144,9 @@
         <div class="cy-chevs a-fade" data-in="1" style="--d:${(DRAW_AT + DRAW - .1).toFixed(2)}s;--dur:.8s">${chevrons}</div>
         <i class="cy-lap" style="left:${CX - R}px;top:${CY - R}px;width:${2 * R}px;height:${2 * R}px"></i>
         <i class="cy-comet" style="left:${CX - R - 20}px;top:${CY - R - 20}px;width:${2 * R + 40}px;height:${2 * R + 40}px"></i>
+        <i class="cy-comet c2" style="left:${CX - R - 20}px;top:${CY - R - 20}px;width:${2 * R + 40}px;height:${2 * R + 40}px"></i>
       </div>
-      <div class="cy-orbit"><i class="cy-flare"></i><i class="light cy-olight"></i></div>
+      <div class="cy-orbit"><i class="cy-flare"></i><i class="light cy-olight"></i><i class="light cy-olight c2"></i></div>
       ${nodes}
       ${blocks}
 
@@ -164,6 +165,8 @@
       ctx.wall = ctx.$('.cy-wall');
       ctx.flash = ctx.$('.cy-flash');
       ctx.ol = ctx.$('.cy-olight');
+      ctx.ol2 = ctx.$('.cy-olight.c2');
+      ctx.comet2 = ctx.$('.cy-comet.c2');
       ctx.flare = ctx.$('.cy-flare');
       ctx.comet = ctx.$('.cy-comet');
       ctx.rdraw = ctx.$('.cy-rdraw');
@@ -256,11 +259,16 @@
     // the comet tail follows the light; while the ring draws it grows with the stroke
     ctx.comet.style.transform = `rotate(${(a + 90).toFixed(2)}deg)`;
     ctx.comet.style.opacity = el < 0 ? 0 : Math.min(1, (360 * p) / 110).toFixed(3);
-    // each node's halo flares as the light passes through it
-    const am = mod(a, 360);
+    // stop 2: a second story joins the cycle, half a lap behind the first
+    const a2 = a + 180, two = ctx.step >= 2 && el >= DRAW;
+    const [x2, y2] = at(a2, R);
+    place(ctx.ol2, x2, y2);
+    ctx.comet2.style.transform = `rotate(${(a2 + 90).toFixed(2)}deg)`;
+    ctx.ol2.classList.toggle('on', two); ctx.comet2.classList.toggle('on', two);
+    // each node's halo flares as a light passes through it
+    const near = (ang, i) => Math.abs(mod(mod(ang, 360) - STAGES[i].a + 180, 360) - 180) < 11;
     ctx.nws.forEach((nw, i) => {
-      const d = Math.abs(mod(am - STAGES[i].a + 180, 360) - 180);
-      const hit = ctx.step >= 1 && el >= DRAW - .05 && d < 11;
+      const hit = ctx.step >= 1 && el >= DRAW - .05 && (near(a, i) || (two && near(a2, i)));
       if (hit && !nw.classList.contains('hit')) restart(nw, 'pass');
       nw.classList.toggle('hit', hit);
     });

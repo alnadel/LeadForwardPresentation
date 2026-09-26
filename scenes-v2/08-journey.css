@@ -217,9 +217,9 @@
 @keyframes jnFlash { 0% { opacity: 1; transform: scale(.2); } 100% { opacity: 0; transform: scale(1.4); } }
 #s-journey .jn-rings { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .3s var(--ease-soft); }
 /* a pool of light breathes around the next colleague */
-#s-journey .jn-pool { position: absolute; left: -220px; top: -220px; width: 440px; height: 440px; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .24), rgba(37, 199, 188, .09) 50%, transparent); opacity: 0; transition: opacity .4s var(--ease-soft); pointer-events: none; }
+#s-journey .jn-pool { position: absolute; left: -300px; top: -300px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .26), rgba(37, 199, 188, .1) 45%, transparent); opacity: 0; transition: opacity .4s var(--ease-soft); pointer-events: none; }
 #s-journey.st-3 .jn-pool { opacity: 1; animation: jnPool 3.6s ease-in-out 2.1s infinite; transition: opacity .8s var(--ease-soft) 1.95s; }
-@keyframes jnPool { 0%, 100% { transform: scale(.8); } 50% { transform: scale(1.18); } }
+@keyframes jnPool { 0%, 100% { transform: scale(.82); opacity: .55; } 50% { transform: scale(1.16); opacity: 1; } }
 #s-journey .jn-rings .amb-ring { width: 38px; height: 38px; left: -19px; top: -19px; }
 #s-journey.st-3 .jn-rings { opacity: 1; transition: opacity .6s var(--ease-soft) 2.05s; }
 

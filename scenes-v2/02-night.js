@@ -78,9 +78,10 @@
     field: [
       { dim: .6, lit: 0, travel: 0, offset: OFFSET, pins: [], warm: .3, links: .7, wave: .7, streaks: .14, sparkle: 1.4, drift: 1.2, calm: [[180, 330, 1740, 690, .6]] },
       { dim: .24, warm: 0, links: .3, wave: .3, streaks: .05, sparkle: .4, calm: [[100, 110, 1820, 420, .6], [1120, 400, 1780, 900, .7], [100, 840, 1420, 950, .6]] },
-      // the pull-back: the pair is the only light — no flares, no shooting lights, no stories travelling
+      // the pull-back: the pair is the only light — no flares, no shooting lights, no stories travelling,
+      // no constellation lines (one would attach to the pair); the v1 03.3 image
       // (the right edge is quietened a little: it is where the stop-1 spark landed, so no flash can linger there)
-      { dim: .8, pins: Deck.NIGHT_PAIR, links: .35, wave: 1, streaks: 0, sparkle: 0, travel: 0, drift: 2, calm: [[KNOW.x + 20, KNOW.y, KNOW.x + 740, KNOW.y + 180, .55], [1500, 130, 2010, 800, .7]] },
+      { dim: .8, pins: Deck.NIGHT_PAIR, links: 0, wave: 1, streaks: 0, sparkle: 0, travel: 0, drift: 2, calm: [[KNOW.x + 20, KNOW.y, KNOW.x + 740, KNOW.y + 180, .55], [1500, 130, 2010, 800, .7]] },
     ],
     html: `
       <div class="nt-warm"><i></i></div>

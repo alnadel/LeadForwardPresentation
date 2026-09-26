@@ -82,9 +82,9 @@
 
 /* chevrons flow round the ring */
 #s-cycle .cy-chevs { position: absolute; inset: 0; }
-#s-cycle .cy-cv { position: absolute; left: 0; top: 0; width: 18px; height: 22px; offset-rotate: auto; offset-distance: 0%; animation: cyCv 16s linear infinite; }
+#s-cycle .cy-cv { position: absolute; left: 0; top: 0; width: 20px; height: 26px; offset-rotate: auto; offset-distance: 0%; animation: cyCv 16s linear infinite; }
 #s-cycle .cy-cv svg { display: block; width: 100%; height: 100%; overflow: visible; }
-#s-cycle .cy-cv path { fill: none; stroke: var(--teal); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 4px rgba(37, 199, 188, .6)); }
+#s-cycle .cy-cv path { fill: none; stroke: var(--teal); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 4px rgba(37, 199, 188, .6)); }
 @keyframes cyCv {
   0% { offset-distance: 0%; opacity: .95; }
   8% { opacity: .95; } 12.5% { opacity: 0; } 17% { opacity: .95; }
@@ -101,6 +101,9 @@
 
 #s-cycle .cy-orbit { position: absolute; inset: 0; pointer-events: none; }
 #s-cycle .cy-olight { position: absolute; left: 0; top: 0; margin: -11px 0 0 -11px; opacity: 0; will-change: transform; transform: translate(1116px, 454px); }
+/* the second story that joins the orbit at stop 2 (fades in; the loop sets its position) */
+#s-cycle .cy-olight.c2, #s-cycle .cy-comet.c2 { opacity: 0 !important; transition: opacity .8s var(--ease-soft); }
+#s-cycle .cy-olight.c2.on, #s-cycle .cy-comet.c2.on { opacity: 1 !important; transition: opacity 1.2s var(--ease-soft) .5s; }
 /* the leading light's flare while the ring draws */
 #s-cycle .cy-flare { position: absolute; left: 0; top: 0; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; opacity: 0; background: radial-gradient(closest-side, rgba(220, 255, 248, .75), rgba(3, 255, 203, .35) 30%, rgba(37, 199, 188, .08) 65%, transparent); will-change: transform, opacity; }
 
