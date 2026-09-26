@@ -1,1 +1,181 @@
 /* 09d-roadmap · From one quarter to a habit (v3) */
+
+/* ── the room: a horizon glow rises behind the pilot; sparks drift up off the line ── */
+#s-roadmap .rm-sun { position: absolute; left: 190px; top: 540px; width: 1640px; height: 820px; margin: -410px 0 0 -820px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .3), rgba(37, 199, 188, .11) 40%, rgba(37, 199, 188, .035) 64%, transparent);
+  transition: opacity .6s var(--ease-soft), transform .9s var(--ease-io); }
+#s-roadmap.st-0 .rm-sun { opacity: 1; transition: opacity 1.8s var(--ease-soft) .5s, transform .9s var(--ease-io); animation: rmSun 7s ease-in-out 2.2s infinite; }
+#s-roadmap.st-1 .rm-sun { opacity: .4; transform: translateY(-222px); transition: opacity .8s var(--ease-soft), transform 1.05s var(--ease-io) .08s; }
+@keyframes rmSun { 0%, 100% { scale: 1; opacity: .75; } 50% { scale: 1.16; opacity: 1; } }
+/* a band of light hugs the timeline, strongest at the pilot */
+#s-roadmap .rm-band { position: absolute; left: -260px; top: -90px; width: 1500px; height: 180px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .15), rgba(37, 199, 188, .05) 55%, transparent); }
+#s-roadmap .rm-dust { position: absolute; inset: 0; pointer-events: none; }
+#s-roadmap .rm-dust i { width: 5px; height: 5px; background: rgba(160, 255, 236, .85); box-shadow: 0 0 8px rgba(3, 255, 203, .8); }
+#stage.lite #s-roadmap .rm-sun, #stage.lite #s-roadmap .rm-dust { display: none; }
+
+/* ── headlines: one per stop, swapped in place ── */
+#s-roadmap .rm-kick { position: absolute; left: 144px; top: 150px; }
+#s-roadmap .rm-h { position: absolute; left: 144px; top: 196px; font-size: 72px; white-space: nowrap; }
+#s-roadmap .rm-h.is-out { filter: blur(6px); }
+
+/* ── the timeline (a 0-height rail at stage y 540: the chapter card's line) ── */
+#s-roadmap .rm-rail { position: absolute; left: 0; width: 1920px; height: 0; transition: transform .9s var(--ease-io); }
+#s-roadmap.st-1 .rm-rail { transform: translateY(var(--up)); transition: transform 1.05s var(--ease-io) .08s; }
+#s-roadmap .rm-line { position: absolute; left: 96px; top: -1.5px; width: 1728px; height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .1) 8%, rgba(255, 255, 255, .1) 84%, transparent); }
+/* it lands as the chapter line (bright) and cools into the road ahead */
+#s-roadmap .rm-line[data-in]:not(.is-in) { transform: none; filter: brightness(3.2); opacity: 0; }
+#s-roadmap .rm-line[data-in].is-in { transition: opacity .25s var(--ease-soft) var(--delay), filter 1.4s var(--ease-soft) var(--delay); }
+/* travelled: bright at the pilot, quieter towards 2028 */
+#s-roadmap .rm-lit { position: absolute; left: 0; top: 0; width: var(--p2); height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(3, 255, 203, 0) 0, rgba(3, 255, 203, .95) var(--p0), rgba(37, 199, 188, .9) calc(var(--p0) + 170px), rgba(37, 199, 188, .62) var(--p1), rgba(37, 199, 188, .42) 100%);
+  filter: drop-shadow(0 0 6px rgba(3, 255, 203, .55)); }
+/* the far horizon, 2028 → 2030: dashed, flowing forward, fading out */
+#s-roadmap .rm-dash { position: absolute; left: var(--p2); top: .5px; width: 780px; height: 2px;
+  background: repeating-linear-gradient(90deg, rgba(37, 199, 188, .62) 0 14px, transparent 14px 26px);
+  -webkit-mask-image: linear-gradient(90deg, #000, #000 50%, rgba(0, 0, 0, .5) 70%, transparent); mask-image: linear-gradient(90deg, #000, #000 50%, rgba(0, 0, 0, .5) 70%, transparent);
+  animation: rmDash 2.6s linear infinite; }
+@keyframes rmDash { from { background-position: 0 0; } to { background-position: 26px 0; } }
+
+/* milestone nodes: the pilot's is the lit dock the spark rests in; the later ones get quieter */
+#s-roadmap .rm-node { position: absolute; top: 0; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 30%;
+  background: #06121F; border: 2.5px solid rgba(37, 199, 188, var(--na, .8)); box-shadow: 0 0 16px rgba(37, 199, 188, calc(var(--na, .8) * .4)); }
+#s-roadmap .rm-node b { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 30%;
+  --cb: var(--teal); --cs: 0 0 0 rgba(3, 255, 203, 0); --co: calc(var(--na, .8) * .9); background: var(--cb); box-shadow: var(--cs); opacity: var(--co); }
+/* the later milestones breathe while parked */
+#s-roadmap.st-0 .rm-node.is-in:not(.n0) { animation: rmBreathe 3.6s ease-in-out calc(var(--pt) * -1) infinite; }
+@keyframes rmBreathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(37, 199, 188, 0), 0 0 14px rgba(37, 199, 188, calc(var(--na) * .35)); }
+  50% { box-shadow: 0 0 0 9px rgba(37, 199, 188, calc(var(--na) * .12)), 0 0 46px rgba(3, 255, 203, calc(var(--na) * .6)); } }
+#s-roadmap .rm-node.n1 { --na: .88; }
+#s-roadmap .rm-node.n2 { --na: .72; }
+#s-roadmap .rm-node.n3 { --na: .58; border-style: dashed; }
+#s-roadmap .rm-node.n0 { width: 44px; height: 44px; margin: -22px 0 0 -22px; border: 3px solid var(--sea); background: #041A26;
+  box-shadow: 0 0 0 7px rgba(3, 255, 203, .07), 0 0 38px rgba(3, 255, 203, .55), inset 0 0 12px rgba(3, 255, 203, .25); }
+#s-roadmap .rm-node.n0 b { width: 14px; height: 14px; margin: -7px 0 0 -7px; --cb: var(--sea); --cs: 0 0 12px var(--sea); --co: 1; }
+/* a ping as the story reaches each milestone (in step with the light's lap) */
+#s-roadmap .rm-node::after { content: ''; position: absolute; inset: -4px; border-radius: 30%; border: 2px solid var(--sea); opacity: 0; pointer-events: none; }
+#s-roadmap.st-0 .rm-node::after { animation: rmPing 9s var(--ease-out) var(--pt) infinite; }
+#s-roadmap.st-0 .rm-node b { animation: rmCore 9s ease-out var(--pt) infinite; }
+@keyframes rmPing { 0%, 50% { transform: scale(1); opacity: .95; } 15%, 49.8%, 65%, 100% { transform: scale(2.8); opacity: 0; } }
+@keyframes rmCore { 0%, 50% { background: #fff; box-shadow: 0 0 16px var(--sea), 0 0 30px rgba(3, 255, 203, .7); opacity: 1; }
+  18%, 49%, 68%, 100% { background: var(--cb); box-shadow: var(--cs); opacity: var(--co); } }
+
+/* the story light's lap: it leaves the pilot, rests at 2027 and 2028, reaches 2030 and
+   dissolves beyond it (the 9 s / 1.5 s here are LAP / FIRST in 09d-roadmap.js) */
+#s-roadmap .rm-run { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; pointer-events: none; }
+#s-roadmap .rm-run .light { position: absolute; left: -11px; top: -11px; }
+#s-roadmap .rm-run::before { content: ''; position: absolute; left: -150px; top: -60px; width: 300px; height: 120px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .4), rgba(37, 199, 188, .12) 55%, transparent); }
+#s-roadmap .rm-tail { position: absolute; right: 6px; top: -2px; width: 240px; height: 4px; border-radius: 2px; opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .3) 55%, rgba(3, 255, 203, .85)); }
+#s-roadmap.st-0 .rm-run { animation: rmRun 9s linear 1.5s infinite; }
+#s-roadmap.st-0 .rm-tail { animation: rmTail 9s linear 1.5s infinite; }
+/* the second story, half a lap behind: it fades in once the build has settled */
+#s-roadmap .rm-run2w { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-roadmap.st-0 .rm-run2w { opacity: 1; transition: opacity 1s var(--ease-soft) 2s; }
+#s-roadmap .rm-run.r2 .light { left: -7px; top: -7px; }
+#s-roadmap .rm-run.r2::before { left: -110px; top: -44px; width: 220px; height: 88px; }
+#s-roadmap .rm-run.r2 .rm-tail { width: 170px; }
+#s-roadmap.st-0 .rm-run.r2, #s-roadmap.st-0 .rm-run.r2 .rm-tail { animation-delay: -3s; }
+/* @keyframes rmRun is built in 09d-roadmap.js from the node positions */
+@keyframes rmTail {
+  0%, 6% { opacity: 0; } 13% { opacity: 1; } 21%, 25% { opacity: 0; } 32% { opacity: 1; } 41%, 45% { opacity: 0; } 54% { opacity: 1; } 63%, 67% { opacity: 0; } 72% { opacity: .8; } 77%, 100% { opacity: 0; }
+}
+
+/* stop 1: the rail's quiet labels */
+#s-roadmap .rm-tag { position: absolute; top: -18px; height: 36px; padding: 0 16px 0 18px; border-radius: 18px; display: flex; align-items: center;
+  font: 700 19px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: rgba(255, 255, 255, .64); white-space: nowrap;
+  background: rgba(5, 17, 32, .94); border: 1px solid rgba(37, 199, 188, .28); }
+#s-roadmap .rm-tag em { font-style: normal; color: var(--teal); margin: 0 .5em; }
+#s-roadmap .rm-tag.t0 { color: var(--sea); border-color: rgba(3, 255, 203, .6); box-shadow: 0 0 22px rgba(3, 255, 203, .2); }
+
+/* ── stop 0 · years above the line, cards below ── */
+#s-roadmap .rm-s0 { position: absolute; inset: 0; }
+#s-roadmap .rm-s0.is-out { opacity: 0; transform: translateY(-36px) scale(.97); filter: blur(8px); transition: opacity .45s var(--ease-soft), transform .7s var(--ease-io), filter .45s var(--ease-soft); }
+#stage.lite #s-roadmap .rm-s0.is-out { filter: none; }
+#s-roadmap .rm-year { position: absolute; top: 440px; font: 700 60px/1 var(--font); letter-spacing: -.02em; white-space: nowrap; color: rgba(255, 255, 255, .82); }
+#s-roadmap .rm-year.y0 { top: 428px; font-size: 72px; color: var(--sea); text-shadow: 0 0 40px rgba(3, 255, 203, .45); }
+#s-roadmap .rm-year.y2 { color: rgba(255, 255, 255, .72); }
+#s-roadmap .rm-year.y3 { color: rgba(255, 255, 255, .64); }
+#s-roadmap .rm-stem { position: absolute; width: 2px; background: linear-gradient(180deg, rgba(37, 199, 188, .75), rgba(37, 199, 188, .18)); }
+#s-roadmap .rm-stem.s0 { background: linear-gradient(180deg, rgba(3, 255, 203, .95), rgba(37, 199, 188, .3)); box-shadow: 0 0 10px rgba(3, 255, 203, .45); }
+#s-roadmap .rm-stem.s3 { opacity: .7; }
+
+#s-roadmap .rm-card { position: absolute; padding: 30px 30px 0; border-radius: 22px; }
+#s-roadmap .rm-stage { margin: 0; font: 700 50px/1.04 var(--font); letter-spacing: -.02em; color: rgba(255, 255, 255, .92); }
+#s-roadmap .rm-what { margin: 14px 0 0; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .62); text-wrap: pretty; }
+/* the pilot: the hero (live glass, larger, brighter) */
+#s-roadmap .rm-card.c0 { box-shadow: 0 34px 90px rgba(0, 0, 0, .42), 0 0 70px rgba(37, 199, 188, .16), inset 0 1px 0 rgba(255, 255, 255, .16);
+  background: linear-gradient(165deg, rgba(37, 199, 188, .16), rgba(255, 255, 255, .04) 50%, rgba(37, 199, 188, .08)), rgba(6, 20, 36, .7); }
+#s-roadmap .rm-card.c0 .rm-stage { font-size: 60px; color: var(--white); }
+#s-roadmap .rm-card.c0 .rm-what { margin-top: 16px; font-size: 24px; color: rgba(255, 255, 255, .8); }
+#s-roadmap .rm-card.c0 .rm-what b { display: block; margin-top: 6px; font-weight: 700; color: var(--teal); }
+/* later stages: quieter step by step */
+#s-roadmap .rm-card.c2 .rm-stage { color: rgba(255, 255, 255, .84); }
+#s-roadmap .rm-card.c3 .rm-stage { color: rgba(255, 255, 255, .78); }
+#s-roadmap .rm-card.c2::before { opacity: .75; }
+#s-roadmap .rm-card.c3::before { opacity: .55; }
+#s-roadmap .rm-card.c3 { background: linear-gradient(165deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02) 55%), rgba(7, 16, 32, .5); }
+/* each card's top edge lights as the story reaches its milestone */
+#s-roadmap .rm-cap { position: absolute; left: 22px; right: 22px; top: -1px; height: 2px; border-radius: 2px; opacity: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .95) 30%, rgba(3, 255, 203, .95) 70%, transparent); box-shadow: 0 0 18px rgba(3, 255, 203, .7); }
+#s-roadmap .rm-wash { position: absolute; inset: 0; border-radius: inherit; opacity: 0; pointer-events: none;
+  background: radial-gradient(90% 60% at 30% 0%, rgba(3, 255, 203, .2), rgba(37, 199, 188, .06) 55%, transparent 80%); }
+#s-roadmap.st-0 .rm-cap, #s-roadmap.st-0 .rm-wash { animation: rmCap 9s ease-out var(--pt) infinite; }
+@keyframes rmCap { 0% { opacity: 0; } 4% { opacity: 1; } 24%, 50% { opacity: 0; } 54% { opacity: 1; } 74%, 100% { opacity: 0; } }
+
+/* ── stop 1 · owners and budget ── */
+#s-roadmap .rm-panel { position: absolute; top: 366px; height: 530px; border-radius: 24px; }
+#s-roadmap .rm-owners { left: 144px; width: 760px; }
+#s-roadmap .rm-budget { left: 940px; width: 836px; }
+#s-roadmap .rm-pl { position: absolute; left: 32px; top: 32px; font-size: 20px; color: var(--teal); }
+#s-roadmap .rm-budget .rm-pl { left: 88px; }
+
+/* owners: five roles on a spine; a light walks down it and each role's icon lights as it passes */
+#s-roadmap .rm-spine { position: absolute; left: 55px; top: 102px; width: 2px; height: 356px; background: linear-gradient(180deg, rgba(37, 199, 188, .6), rgba(37, 199, 188, .18)); }
+#s-roadmap .rm-walk { position: absolute; left: 1px; top: 0; width: 0; height: 0; opacity: 0; }
+#s-roadmap .rm-walk .light { position: absolute; left: -7px; top: -7px; }
+#s-roadmap .rm-walk::before { content: ''; position: absolute; left: -40px; top: -40px; width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .4), transparent); }
+#s-roadmap.st-1 .rm-walk { animation: rmWalk 7.5s linear 1.4s infinite; }
+@keyframes rmWalk {
+  0%   { transform: translateY(0) scale(.4); opacity: 0; }
+  2%   { transform: translateY(0) scale(1); opacity: 1; }
+  6%   { transform: translateY(0); animation-timing-function: cubic-bezier(.5, 0, .4, 1); }
+  20%  { transform: translateY(82px); }
+  24%  { transform: translateY(82px); animation-timing-function: cubic-bezier(.5, 0, .4, 1); }
+  38%  { transform: translateY(192px); }
+  42%  { transform: translateY(192px); animation-timing-function: cubic-bezier(.5, 0, .4, 1); }
+  56%  { transform: translateY(274px); }
+  60%  { transform: translateY(274px); animation-timing-function: cubic-bezier(.5, 0, .4, 1); }
+  74%  { transform: translateY(356px) scale(1); opacity: 1; }
+  82%  { transform: translateY(356px) scale(2.2); opacity: 0; }
+  100% { transform: translateY(356px) scale(.4); opacity: 0; }
+}
+#s-roadmap .rm-owns { position: absolute; left: 32px; right: 32px; top: 78px; }
+#s-roadmap .rm-own { position: absolute; left: 0; right: 0; }
+#s-roadmap .rm-oi { position: absolute; left: 0; top: 0; width: 48px; height: 48px; border-radius: 30%; display: grid; place-items: center; font-size: 28px; color: var(--teal);
+  border: 1.5px solid rgba(37, 199, 188, .45); background: #0A2440; box-shadow: 0 0 0 rgba(3, 255, 203, 0); }
+#s-roadmap.st-1 .rm-oi { animation: rmOi 7.5s ease-out var(--ot) infinite; }
+@keyframes rmOi { 0% { color: var(--sea); border-color: var(--sea); box-shadow: 0 0 28px rgba(3, 255, 203, .6); } 24%, 100% { color: var(--teal); border-color: rgba(37, 199, 188, .45); box-shadow: 0 0 0 rgba(3, 255, 203, 0); } }
+#s-roadmap .rm-role { position: absolute; left: 70px; top: 5px; font: 700 29px/1.15 var(--font); letter-spacing: -.01em; color: var(--white); white-space: nowrap; }
+#s-roadmap .rm-duty { position: absolute; left: 70px; top: 44px; right: 0; margin: 0; font: 400 21px/1.36 var(--font); color: rgba(255, 255, 255, .62); text-wrap: balance; }
+/* a soft band lights the row the walking light has reached */
+#s-roadmap .rm-oband { position: absolute; left: -18px; right: -14px; top: -10px; height: 70px; border-radius: 16px; opacity: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .07) 45%, transparent 85%); }
+#s-roadmap.st-1 .rm-oband { animation: rmBand 7.5s ease-out var(--ot) infinite; }
+@keyframes rmBand { 0% { opacity: 1; } 26%, 100% { opacity: 0; } }
+
+/* budget: the hero line takes the spark (it rests in the dock, in the panel's margin) */
+#s-roadmap .rm-dock { position: absolute; left: 30px; top: 89px; width: 28px; height: 28px; border-radius: 30%; border: 1.5px dashed rgba(37, 199, 188, .65); background: rgba(6, 26, 48, .9); }
+#s-roadmap .rm-hero { position: absolute; left: 88px; top: 74px; right: 36px; margin: 0; font: 700 52px/1.12 var(--font); letter-spacing: -.022em; color: var(--white); white-space: nowrap; }
+#s-roadmap .rm-hair { position: absolute; left: 88px; right: 40px; top: 226px; height: 1px; background: linear-gradient(90deg, rgba(37, 199, 188, .55), rgba(255, 255, 255, .08)); }
+#s-roadmap .rm-bl { position: absolute; left: 88px; right: 36px; display: flex; align-items: center; gap: 20px; }
+#s-roadmap .rm-bi { flex: none; width: 46px; height: 46px; border-radius: 30%; display: grid; place-items: center; font-size: 26px; color: var(--teal);
+  border: 1.5px solid rgba(37, 199, 188, .35); background: rgba(10, 36, 64, .8); }
+#s-roadmap.st-1 .rm-bi { animation: rmBi 7.5s ease-in-out var(--bt) infinite; }
+@keyframes rmBi { 0%, 100% { color: var(--teal); border-color: rgba(37, 199, 188, .35); box-shadow: 0 0 0 rgba(3, 255, 203, 0); }
+  10% { color: var(--sea); border-color: rgba(3, 255, 203, .85); box-shadow: 0 0 26px rgba(3, 255, 203, .45); } 30% { color: var(--teal); border-color: rgba(37, 199, 188, .35); box-shadow: 0 0 0 rgba(3, 255, 203, 0); } }
+#s-roadmap .rm-bl p { margin: 0; font: 400 23px/1.36 var(--font); color: rgba(255, 255, 255, .64); }
+#s-roadmap .rm-bl p b { font-weight: 700; color: rgba(255, 255, 255, .92); }
+/* settled: keep the deep shadow unclipped */
+#s-roadmap .rm-panel[data-in].is-in { clip-path: inset(-160px round 24px); }

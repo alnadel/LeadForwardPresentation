@@ -1,1 +1,152 @@
-/* 09c-comms · Where the stories travel (v3) */
+/* 09c · Where the stories travel (v3) */
+
+/* ── ambient washes ─────────────────────────────────────────────────────── */
+#s-comms .cm-wash { position: absolute; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.4s var(--ease-soft) calc(var(--enter, 0s) + .2s); }
+#s-comms.st-0 .cm-wash { opacity: 1; }
+#s-comms .cm-wash::before { content: ''; position: absolute; inset: 0; border-radius: 50%; }
+#s-comms .cm-wash.w1 { left: -200px; top: 220px; width: 1300px; height: 820px; }
+#s-comms .cm-wash.w1::before { background: radial-gradient(closest-side, rgba(37, 199, 188, .15), rgba(37, 199, 188, .05) 58%, transparent); animation: cmWash 9s ease-in-out infinite alternate; }
+#s-comms .cm-wash.w2 { left: 900px; top: 300px; width: 1200px; height: 760px; }
+#s-comms .cm-wash.w2::before { background: radial-gradient(closest-side, rgba(157, 103, 170, .18), rgba(96, 38, 80, .07) 58%, transparent); animation: cmWash 11s ease-in-out -5s infinite alternate-reverse; }
+@keyframes cmWash { from { transform: translate(-70px, 24px) scale(.9); opacity: .5; } to { transform: translate(80px, -30px) scale(1.08); opacity: 1; } }
+
+/* ── header ─────────────────────────────────────────────────────────────── */
+#s-comms .cm-hbox { position: relative; height: 84px; margin-top: 26px; }
+#s-comms .cm-h { position: absolute; left: 0; top: 0; font-size: 76px; white-space: nowrap; }
+#s-comms .cm-h1 em.hl { color: var(--teal); }
+
+/* ── stop 0 · the cadence map ───────────────────────────────────────────── */
+#s-comms .cm-map { position: absolute; inset: 0; transform-origin: 960px 560px; }
+#s-comms .cm-map.is-out { opacity: 0; transform: translateY(-36px) scale(.96); filter: blur(10px); transition: opacity .6s var(--ease-soft), transform .9s var(--ease-io), filter .6s var(--ease-soft); }
+
+/* the cadence line: four stretches; the marks thin out as the rhythm slows */
+#s-comms .cm-rail { position: absolute; left: 0; width: 1920px; height: 0; }
+#s-comms .cm-col { position: absolute; top: 0; height: 0; }
+#s-comms .cm-lab { position: absolute; left: 0; top: -58px; font: 700 24px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--teal); white-space: nowrap; }
+#s-comms .cm-seg { position: absolute; left: 0; right: 0; top: -1px; height: 2px; border-radius: 1px; background: rgba(37, 199, 188, .38);
+  clip-path: inset(-20px 100% -20px -20px); transition: clip-path .35s var(--ease-soft); }
+#s-comms.st-0 .cm-seg { clip-path: inset(-20px -20px -20px -20px); transition: clip-path .7s var(--ease-out) calc(var(--enter, 0s) + var(--d)); }
+/* ALWAYS: one continuous, glowing stretch with a light that never stops running */
+#s-comms .cm-seg.always { top: -2px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, rgba(3, 255, 203, .55), var(--teal) 50%, rgba(3, 255, 203, .55)); box-shadow: 0 0 16px rgba(3, 255, 203, .45); }
+#s-comms .cm-run { position: absolute; left: 0; top: -3px; width: 90px; height: 10px; border-radius: 5px; opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(220, 255, 248, .95) 70%, #fff); box-shadow: 0 0 18px rgba(3, 255, 203, .8);
+  animation: cmAlways 2.6s cubic-bezier(.45, 0, .55, 1) infinite; }
+@keyframes cmAlways { 0% { transform: translateX(-40px); opacity: 0; } 14% { opacity: 1; } 80% { opacity: 1; } 100% { transform: translateX(256px); opacity: 0; } }
+/* the marks: twelve a year, four, one */
+#s-comms .cm-mk { position: absolute; top: 0; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); border-radius: 28%;
+  background: #0A2440; border: 2px solid rgba(37, 199, 188, .75); opacity: 0; transform: scale(.3); transition: opacity .25s var(--ease-soft), transform .25s var(--ease-soft); }
+#s-comms .cm-mk.m12 { --s: 12px; }
+#s-comms .cm-mk.m4 { --s: 16px; }
+#s-comms .cm-mk.m1 { --s: 24px; border-width: 2.5px; }
+#s-comms.st-0 .cm-mk { opacity: 1; transform: none; transition: opacity .4s var(--ease-soft) calc(var(--enter, 0s) + var(--md)), transform .6s var(--ease-back) calc(var(--enter, 0s) + var(--md)); }
+/* …each mark flares as the story light passes */
+#s-comms .cm-mk::after { content: ''; position: absolute; inset: -2px; border-radius: 28%; opacity: 0;
+  background: radial-gradient(circle at 35% 30%, #fff 0 16%, var(--sea) 46%, var(--teal)); box-shadow: 0 0 14px var(--sea), 0 0 30px rgba(3, 255, 203, .5);
+  animation: cmFlare 9s linear var(--dl) infinite; }
+@keyframes cmFlare { 0% { opacity: 1; transform: scale(1.35); } 3% { transform: scale(1); } 14% { opacity: .15; } 22%, 100% { opacity: 0; transform: scale(1); } }
+
+/* the flares and the cards' catch-lights wait for the story light to arrive (live build) */
+#s-comms .cm-mk::after, #s-comms .cm-catch { visibility: hidden; transition: visibility 0s linear 0s; }
+#s-comms.st-0 .cm-mk::after, #s-comms.st-0 .cm-catch { visibility: visible; transition: visibility 0s linear calc(var(--enter, 0s) + 1.5s); }
+
+/* the story light travelling the cadence line (x 144 → 1774 in 7 s, then it rests 2 s) */
+#s-comms .cm-runner { position: absolute; left: 144px; top: 0; width: 0; height: 0; }
+#s-comms .cm-story { position: absolute; left: 0; top: 0; width: 0; height: 0; animation: cmStory 9s linear infinite; }
+#s-comms .cm-story .light { position: absolute; left: -11px; top: -11px; }
+#s-comms .cm-story::before { content: ''; position: absolute; left: -150px; top: -3px; width: 150px; height: 6px; border-radius: 3px;
+  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .6)); }
+@keyframes cmStory { 0% { transform: translateX(0); opacity: 0; } 3% { opacity: 1; } 74% { opacity: 1; } 77.78% { transform: translateX(1630px); opacity: 0; } 100% { transform: translateX(1630px); opacity: 0; } }
+
+/* ── the channel cards ── */
+#s-comms .cm-card { position: absolute; padding: 26px 26px 24px; border-radius: 22px; }
+#s-comms .cm-card[data-in].is-in { clip-path: inset(-160px round 22px); }
+#s-comms .cm-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 28%; font-size: 30px; color: var(--teal);
+  border: 1.5px solid rgba(37, 199, 188, .45); background: rgba(37, 199, 188, .08); }
+#s-comms .cm-t { display: flex; flex-direction: column; justify-content: flex-end; height: 78px; margin: 18px 0 0; font: 700 35px/1.08 var(--font); letter-spacing: -.016em; color: var(--white); }
+#s-comms .cm-l { margin: 12px 0 0; font: 400 22px/1.4 var(--font); color: rgba(255, 255, 255, .64); text-wrap: pretty; }
+/* the hero: the story email */
+#s-comms .cm-card.hero .cm-ic { color: #062036; border-color: var(--sea); background: linear-gradient(160deg, #6FF5E6, var(--teal)); box-shadow: 0 0 26px rgba(3, 255, 203, .35); }
+#s-comms .cm-card.hero .cm-l { color: rgba(255, 255, 255, .78); }
+/* each card's top edge catches the story light as it passes above */
+#s-comms .cm-catch { position: absolute; left: 22px; right: 22px; top: -1px; height: 3px; border-radius: 2px; opacity: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .9), #fff, rgba(3, 255, 203, .9), transparent); box-shadow: 0 0 18px rgba(3, 255, 203, .7);
+  animation: cmCatch 9s linear var(--dl) infinite; }
+#s-comms .cm-catch::after { content: ''; position: absolute; left: 10%; right: 10%; top: 0; height: 120px; border-radius: 0 0 50% 50%;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(3, 255, 203, .16), transparent); }
+@keyframes cmCatch { 0% { opacity: 0; } 2% { opacity: 1; } 16% { opacity: 0; } 100% { opacity: 0; } }
+/* a glow breathes behind the email card */
+#s-comms .cm-eglow { position: absolute; width: 720px; height: 620px; margin: -310px 0 0 -360px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity 1.2s var(--ease-soft); }
+#s-comms.st-0 .cm-eglow { opacity: 1; transition-delay: calc(var(--enter, 0s) + 1s); }
+#s-comms .cm-eglow::before, #s-comms .cm-eglow::after { content: ''; position: absolute; inset: 0; border-radius: 50%; }
+#s-comms .cm-eglow::before { background: radial-gradient(closest-side, rgba(3, 255, 203, .22), rgba(37, 199, 188, .08) 55%, transparent); animation: cmHalo 4.4s ease-in-out infinite; }
+#s-comms .cm-eglow::after { inset: 16% 20%; background: radial-gradient(closest-side, rgba(3, 255, 203, .16), transparent); animation: cmHalo2 6.6s ease-in-out -2s infinite; }
+@keyframes cmHalo { 0%, 100% { opacity: .35; transform: scale(.84); } 50% { opacity: 1; transform: scale(1.1); } }
+@keyframes cmHalo2 { 0%, 100% { opacity: .2; transform: translateX(-50px) scale(.9); } 50% { opacity: 1; transform: translateX(56px) scale(1.14); } }
+
+/* the chip: preferred by 123 of 158 */
+#s-comms .cm-chip { position: absolute; width: 306px; height: 88px; padding: 14px 22px 0 24px; border-radius: 18px;
+  background: linear-gradient(160deg, rgba(37, 199, 188, .28), rgba(37, 199, 188, .1)); border: 1.5px solid rgba(3, 255, 203, .6);
+  box-shadow: 0 0 34px rgba(37, 199, 188, .3), inset 0 1px 0 rgba(255, 255, 255, .25); }
+#s-comms .cm-stem { position: absolute; left: 50%; top: -27px; width: 2px; height: 26px; margin-left: -1px; background: linear-gradient(180deg, rgba(3, 255, 203, .2), rgba(3, 255, 203, .8)); }
+#s-comms .cm-chip-l { display: block; font: 700 17px/1 var(--font); letter-spacing: .2em; text-transform: uppercase; color: rgba(160, 255, 236, .85); }
+#s-comms .cm-chip-n { display: block; margin-top: 8px; font: 700 40px/1 var(--font); letter-spacing: -.01em; color: var(--white); text-shadow: 0 0 24px rgba(3, 255, 203, .45); }
+/* the chip lands with a ring of light (live build only) */
+#s-comms .cm-chip::after { content: ''; position: absolute; inset: -2px; border-radius: 18px; border: 2px solid rgba(3, 255, 203, .9); opacity: 0; pointer-events: none; }
+#s-comms.cm-live .cm-chip::after { animation: cmChipRing 1.2s var(--ease-out) calc(var(--enter, 0s) + var(--d) + .3s) both; }
+@keyframes cmChipRing { 0% { opacity: 0; transform: scale(1); } 15% { opacity: 1; } 100% { opacity: 0; transform: scale(1.25, 1.6); } }
+
+/* the support strip */
+#s-comms .cm-strip { position: absolute; left: 144px; top: 850px; width: 1632px; height: 64px; display: flex; align-items: center; gap: 22px; padding: 0 26px; border-radius: 16px;
+  background: rgba(255, 255, 255, .035); border: 1px solid rgba(255, 255, 255, .1); }
+#s-comms .cm-strip p { margin: 0; font: 400 25px/1 var(--font); color: rgba(255, 255, 255, .76); white-space: nowrap; }
+#s-comms .cm-dot { font-style: normal; font-weight: 700; margin: 0 .35em; color: var(--teal); }
+#s-comms .cm-lang { flex: none; display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; border-radius: 10px; border: 1.5px solid rgba(37, 199, 188, .5); color: var(--teal); }
+#s-comms .cm-lang b { font: 700 20px/1 var(--font); }
+#s-comms .cm-lang b.ar { font-size: 24px; line-height: 1; transform: translateY(-4px); }
+#s-comms .cm-lang i { width: 1.5px; height: 16px; background: rgba(37, 199, 188, .5); }
+
+/* ── stop 1 · finding → decision ────────────────────────────────────────── */
+#s-comms .cm-pairs { position: absolute; inset: 0; }
+#s-comms .cm-cap { position: absolute; left: 0; top: 318px; width: 1920px; font: 700 19px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: rgba(255, 255, 255, .5); }
+#s-comms .cm-cap span { position: absolute; top: 0; white-space: nowrap; }
+#s-comms .cm-cap .c1 { left: 144px; }
+#s-comms .cm-cap .c2 { left: 1140px; color: rgba(37, 199, 188, .8); }
+#s-comms .cm-panel { position: absolute; left: 1110px; top: 346px; width: 666px; height: 506px; border-radius: 24px; }
+#s-comms .cm-panel[data-in].is-in { clip-path: inset(-160px round 24px); }
+#s-comms .cm-row { position: absolute; left: 0; width: 1920px; height: 0; }
+#s-comms .cm-row + .cm-row::before { content: ''; position: absolute; left: 144px; width: 930px; top: -64px; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .04));
+  opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-comms.st-1 .cm-row + .cm-row::before { opacity: 1; transition: opacity .8s var(--ease-soft) .6s; }
+#s-comms .cm-row + .cm-row::after { content: ''; position: absolute; left: 1140px; width: 606px; top: -64px; height: 1px; background: rgba(255, 255, 255, .08);
+  opacity: 0; transition: opacity .4s var(--ease-soft); }
+#s-comms.st-1 .cm-row + .cm-row::after { opacity: 1; transition: opacity .8s var(--ease-soft) .7s; }
+/* the numbers are the heroes */
+#s-comms .cm-num { position: absolute; top: -50px; display: flex; align-items: baseline; gap: 10px; font: 700 100px/1 var(--font); letter-spacing: -.035em; color: var(--sea); white-space: nowrap;
+  text-shadow: 0 0 34px rgba(3, 255, 203, .32); transform-origin: 100% 60%; }
+#s-comms .cm-num .cm-pc { font-size: 60px; letter-spacing: 0; margin-left: -12px; }
+#s-comms .cm-num .cm-of { font-size: 54px; letter-spacing: -.01em; color: rgba(160, 255, 236, .8); }
+#s-comms .cm-nglow { position: absolute; top: -110px; width: 440px; height: 220px; border-radius: 50%; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease-soft); }
+#s-comms.st-1 .cm-nglow { opacity: 1; transition: opacity 1.2s var(--ease-soft) calc(.6s + var(--k) * .14s); }
+#s-comms .cm-nglow::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(3, 255, 203, .34), rgba(37, 199, 188, .1) 55%, transparent);
+  animation: cmHalo 4.8s ease-in-out infinite; animation-delay: calc(var(--k) * -1.2s); }
+#s-comms .cm-find { position: absolute; top: -17px; margin: 0; font: 400 30px/1.1 var(--font); color: rgba(255, 255, 255, .74); white-space: nowrap; }
+#s-comms .cm-dec { position: absolute; left: 1140px; top: -21px; width: 610px; margin: 0; font: 500 32px/1.25 var(--font); letter-spacing: -.008em; color: var(--white); text-wrap: balance; }
+#s-comms .cm-row.r3 .cm-dec { top: -40px; }
+/* the leader line: finding → decision; it draws with a leading light, then a light runs it in turn */
+#s-comms .cm-lead { position: absolute; top: -1px; height: 2px; pointer-events: none;
+  background: repeating-linear-gradient(90deg, rgba(37, 199, 188, .55) 0 4px, transparent 4px 11px);
+  clip-path: inset(-12px 100% -12px -12px); transition: clip-path .3s var(--ease-soft); }
+#s-comms.st-1 .cm-lead { clip-path: inset(-12px -12px -12px -12px); transition: clip-path .6s var(--ease-out) var(--d); }
+#s-comms .cm-lead::after { content: ''; position: absolute; right: -4px; top: -5px; width: 12px; height: 12px; border-top: 2px solid var(--teal); border-right: 2px solid var(--teal); transform: rotate(45deg); }
+#s-comms .cm-lead b { position: absolute; left: 0; top: -3px; width: 80px; height: 8px; border-radius: 4px; opacity: 0;
+  background: linear-gradient(90deg, transparent, rgba(3, 255, 203, .9) 70%, #fff); box-shadow: 0 0 14px rgba(3, 255, 203, .6);
+  animation: cmLead 5.6s cubic-bezier(.45, 0, .55, 1) infinite; animation-delay: calc(var(--k) * 1.4s); }
+@keyframes cmLead { 0% { left: -30px; opacity: 0; } 4% { opacity: 1; } 22% { opacity: 1; } 27%, 100% { left: calc(100% - 70px); opacity: 0; } }
+/* …and where it arrives, the decision's edge flares */
+#s-comms .cm-arrive { position: absolute; left: 1040px; top: -70px; width: 160px; height: 140px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .38), rgba(37, 199, 188, .1) 55%, transparent);
+  animation: cmArrive 5.6s ease-out infinite; animation-delay: calc(var(--k) * 1.4s + 1.32s); }
+#s-comms.st-1 .cm-arrive { visibility: visible; }
+#s-comms .cm-arrive { visibility: hidden; }
+@keyframes cmArrive { 0% { opacity: 0; transform: scale(.6); } 5% { opacity: 1; transform: scale(1); } 30%, 100% { opacity: 0; transform: scale(1.3); } }
+#s-comms .cm-src { position: absolute; left: 144px; top: 886px; margin: 0; font: 400 18px/1 var(--font); color: rgba(255, 255, 255, .5); white-space: nowrap; }
