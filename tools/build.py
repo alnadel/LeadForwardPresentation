@@ -1,6 +1,7 @@
-"""Build one self-contained, offline HTML file from index.html.
+"""Build one self-contained, offline HTML file from a deck page.
 
-    python3 tools/build.py            -> dist/Behind-a-Better-Life.html
+    python3 tools/build.py                                   -> dist/Behind-a-Better-Life.html (v1)
+    python3 tools/build.py index-v2.html dist/Behind-a-Better-Life-v2.html
 
 Everything is inlined: stylesheets, scripts, the Somar fonts and the photographs.
 Each photograph is embedded once as a CSS custom property (--ph-<name>) and every
@@ -12,7 +13,8 @@ import re
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, 'dist', 'Behind-a-Better-Life.html')
+SRC = sys.argv[1] if len(sys.argv) > 1 else 'index.html'
+OUT = os.path.join(ROOT, sys.argv[2] if len(sys.argv) > 2 else os.path.join('dist', 'Behind-a-Better-Life.html'))
 MIME = {'.otf': 'font/otf', '.ttf': 'font/ttf', '.woff2': 'font/woff2', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml'}
 
 
@@ -58,10 +60,10 @@ def rewrite_assets(text, base_dir):
 
 
 def main():
-    html = read('index.html')
+    html = read(SRC)
     photos_dir = os.path.join(ROOT, 'assets', 'photos')
-    used = set(re.findall(r'assets/photos/([\w.-]+\.(?:jpg|jpeg|png))', ''.join(
-        read(os.path.join('scenes', f)) for f in os.listdir(os.path.join(ROOT, 'scenes')))))
+    linked = re.findall(r'(?:href|src)="((?:scenes[^/]*)/[^"]+)"', html)
+    used = set(re.findall(r'assets/photos/([\w.-]+\.(?:jpg|jpeg|png))', ''.join(read(f) for f in linked)))
     root_vars = ':root{%s}' % ''.join(
         '%s:url(%s);' % (photo_key(n), data_uri(os.path.join(photos_dir, n))) for n in sorted(used))
 
