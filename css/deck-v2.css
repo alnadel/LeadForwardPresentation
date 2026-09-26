@@ -9,9 +9,9 @@
 @font-face { font-family: 'Somar'; src: url('../assets/fonts/Somar-Bold.otf') format('opentype'); font-weight: 700; font-display: block; }
 @font-face { font-family: 'Somar'; src: url('../assets/fonts/Somar-Black.otf') format('opentype'); font-weight: 900; font-display: block; }
 
-@property --bg-a { syntax: '<color>'; inherits: true; initial-value: #3A1631; }
-@property --bg-b { syntax: '<color>'; inherits: true; initial-value: #06213D; }
-@property --bg-c { syntax: '<color>'; inherits: true; initial-value: #0A1B33; }
+@property --bg-a { syntax: '<color>'; inherits: false; initial-value: #3A1631; }
+@property --bg-b { syntax: '<color>'; inherits: false; initial-value: #06213D; }
+@property --bg-c { syntax: '<color>'; inherits: false; initial-value: #0A1B33; }
 
 :root {
   --plum: #602650;
@@ -74,21 +74,35 @@ body { font-family: var(--font); color: var(--ink-1); -webkit-font-smoothing: an
     radial-gradient(1200px 900px at 12% 18%, color-mix(in srgb, var(--bg-a) 85%, transparent), transparent 70%),
     radial-gradient(1300px 1000px at 92% 88%, color-mix(in srgb, var(--bg-b) 90%, transparent), transparent 70%),
     linear-gradient(135deg, var(--bg-c), #050A14 70%);
-  transition: --bg-a 1.6s var(--ease-soft), --bg-b 1.6s var(--ease-soft), --bg-c 1.6s var(--ease-soft);
 }
 #stage[data-bg="plum"]  { --bg-a: #5A2049; --bg-b: #2A0F24; --bg-c: #1E0C1A; }
 #stage[data-bg="night"] { --bg-a: #2A1030; --bg-b: #06213D; --bg-c: #06101E; }
 #stage[data-bg="navy"]  { --bg-a: #0C2C4E; --bg-b: #3A1631; --bg-c: #041628; }
 #stage[data-bg="deep"]  { --bg-a: #1B0B19; --bg-b: #041628; --bg-c: #02070F; }
 #stage[data-bg="teal"]  { --bg-a: #0B3A44; --bg-b: #3A1631; --bg-c: #041628; }
+/* each colourway is its own pre-painted layer (#bgl, built by the engine); a scene change
+   crossfades their opacity instead of repainting a full-screen gradient every frame */
+#bgl { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+#bgl i { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s var(--ease-soft); will-change: opacity;
+  background:
+    radial-gradient(1200px 900px at 12% 18%, color-mix(in srgb, var(--bg-a) 85%, transparent), transparent 70%),
+    radial-gradient(1300px 1000px at 92% 88%, color-mix(in srgb, var(--bg-b) 90%, transparent), transparent 70%),
+    linear-gradient(135deg, var(--bg-c), #050A14 70%); }
+#bgl i[data-bg="plum"]  { --bg-a: #5A2049; --bg-b: #2A0F24; --bg-c: #1E0C1A; }
+#bgl i[data-bg="night"] { --bg-a: #2A1030; --bg-b: #06213D; --bg-c: #06101E; }
+#bgl i[data-bg="navy"]  { --bg-a: #0C2C4E; --bg-b: #3A1631; --bg-c: #041628; }
+#bgl i[data-bg="deep"]  { --bg-a: #1B0B19; --bg-b: #041628; --bg-c: #02070F; }
+#bgl i[data-bg="teal"]  { --bg-a: #0B3A44; --bg-b: #3A1631; --bg-c: #041628; }
+#stage[data-bg="plum"] #bgl i[data-bg="plum"], #stage[data-bg="night"] #bgl i[data-bg="night"], #stage[data-bg="navy"] #bgl i[data-bg="navy"],
+#stage[data-bg="deep"] #bgl i[data-bg="deep"], #stage[data-bg="teal"] #bgl i[data-bg="teal"] { opacity: 1; }
 
 #field { position: absolute; inset: 0; width: 1920px; height: 1080px; z-index: 1; pointer-events: none; }
 /* before the deck is ready (fonts and photos loading) the room is black: no field, no glow,
    so the cold open starts from true black instead of flashing the backdrop first */
 #stage::before { content: ''; position: absolute; inset: 0; z-index: 0; background: #02060C; opacity: 0; pointer-events: none; transition: opacity .9s var(--ease-soft) .6s; }   /* held until the first scene (fading in over .8s) covers it */
 body:not(.ready) #stage::before { opacity: 1; transition: none; }
-#field, #glow, #beams { transition: opacity .9s var(--ease-soft) .6s; }
-body:not(.ready) #field, body:not(.ready) #glow, body:not(.ready) #beams { opacity: 0; transition: none; }
+#field, #glow, #beams, #bgl { transition: opacity .9s var(--ease-soft) .6s; }
+body:not(.ready) #field, body:not(.ready) #glow, body:not(.ready) #beams, body:not(.ready) #bgl { opacity: 0; transition: none; }
 #glow { position: absolute; inset: -20%; z-index: 0; pointer-events: none; }
 /* soft by their gradients alone: no live blur, no blend mode (both are costly on a laptop GPU) */
 #glow i { position: absolute; border-radius: 50%; opacity: .5; will-change: transform; }
@@ -330,7 +344,9 @@ em.hl { font-style: normal; color: var(--teal); }
 #spark .rip.r2 { animation-delay: -1.7s; }
 #spark.fly .rip { animation: none; opacity: 0; }
 #spark.land .core { animation: v2SparkLand .9s var(--ease-out), v2SparkBreathe 2.6s ease-in-out .9s infinite; }
-@keyframes v2SparkBreathe { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.18); filter: brightness(1.25); } }
+@keyframes v2SparkBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+#spark .core::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle at 40% 35%, rgba(255, 255, 255, .7), rgba(255, 255, 255, 0) 70%); opacity: 0; animation: v2SparkGlow 2.6s ease-in-out infinite; }
+@keyframes v2SparkGlow { 0%, 100% { opacity: 0; } 50% { opacity: .55; } }
 @keyframes v2SparkRing { 0% { transform: scale(.7); opacity: .85; } 100% { transform: scale(3.6); opacity: 0; } }
 @keyframes v2SparkLand { 0% { transform: scale(2.2) rotate(45deg); filter: brightness(2.5); } 100% { transform: scale(1) rotate(0deg); filter: brightness(1); } }
 .spark-trail { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 14; pointer-events: none; opacity: 0; }

@@ -366,6 +366,10 @@
     S.forEach((x) => x.el.classList.remove('ch-hold', 'ch-open', 'tx-from', 'iris-from', 'iris-run'));
   }
   function buildTxLayer() {
+    // pre-painted background colourways, crossfaded on scene changes (see #bgl in deck-v2.css)
+    const bgl = document.createElement('div'); bgl.id = 'bgl';
+    bgl.innerHTML = ['plum', 'night', 'navy', 'deep', 'teal'].map((b) => '<i data-bg="' + b + '"></i>').join('');
+    stage.insertBefore(bgl, stage.firstChild);
     // chapter card: a line of light, two opening edges and the act's number + name
     const ch = document.createElement('div'); ch.id = 'tx-chapter';
     ch.innerHTML = '<div class="ch-dim"></div><div class="ch-line"></div><div class="ch-edge t"></div><div class="ch-edge b"></div>' +
