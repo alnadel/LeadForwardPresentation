@@ -174,7 +174,7 @@
 
           <!-- 01 · the individual -->
           <div class="glass wy-card wy-emp a-unfold amb-sheen" data-in="0" style="--d:.3s;--dur:.9s;${box(EMP.x, EMP.top, EMP.w, EMP.h)};--sh:-.4s">
-            <i class="wy-emp-ph" style="background-image:url('assets/photos/team-ops.jpg')"></i>
+            <i class="wy-emp-ph" style="background-image:url('assets/photos/ops-centre-night.jpg')"></i>
             <div class="wy-card-h"><span class="wy-num">01</span></div>
             <h3 class="wy-card-t">Employee level</h3>
             <ul class="wy-list" data-stagger style="--stagger:.06s;--d:.46s">${EMPL.map((x) => li(x, ' data-in="0"')).join('')}</ul>

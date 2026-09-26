@@ -93,7 +93,7 @@
 #s-why .wy-li-ic { position: absolute; left: 0; top: .08em; font-size: 27px; color: rgba(37, 199, 188, .9); }
 /* the team heads the individual's card: a photo band that fades into the glass (no text over it) */
 #s-why .wy-emp-ph { position: absolute; left: 0; top: 0; right: 0; height: 132px; border-radius: 22px 22px 0 0; pointer-events: none;
-  background-size: 620px auto; background-position: 50% 64%; opacity: .72;
+  background-size: 860px auto; background-position: 96% 66%; opacity: .78;
   -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent);
           mask-image: linear-gradient(180deg, #000 40%, transparent); }
 #s-why .wy-emp-ph::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(10, 36, 52, .1), rgba(12, 44, 58, .45)); }

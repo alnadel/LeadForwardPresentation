@@ -12,6 +12,8 @@
    pings, and its step's and its card's top edges light), then
    dissolves past the last step; sparks rise off the line; a horizon glow breathes behind
    the pilot; the live edge circles the pilot card.
+   Under the cards, a span from the pilot's start to the end of 2027 reads "15 months, pilot to
+   habit" and ends on a flag: done by the end of 2027.
    Stop 1: "Who runs it, and what it costs." The years and cards fold away and the
    timeline rises into a slim rail under the headline (the story keeps travelling
    it), with two glass panels below: Owners (each role has an avatar; a light walks
@@ -216,6 +218,11 @@
         ${years}
         ${stems}
         ${cards}
+        <!-- the whole plan fits in fifteen months: a span under the cards, from the pilot's start to the end of 2027 -->
+        <div class="rm-span a-wipe" data-in="0" style="left:${MS[0].x}px;top:${CARD_Y + CARD_H + 30 - S0Y}px;width:${MS[3].x + MS[3].w - MS[0].x}px;--d:1.25s;--dur:1.1s">
+          <i class="rm-sp-l"></i><span class="rm-sp-t"><b>15 months</b>pilot to habit</span><i class="rm-sp-l"></i>
+          <span class="rm-sp-end">${ico('<path d="M6.5 20.5V4"/><path d="M6.5 4.5h11l-2.4 3.9 2.4 3.9h-11"/>')}Done<em>·</em>end of 2027</span>
+        </div>
       </div>
 
       <!-- the timeline: the chapter line, then a rail under the headline at stop 1 -->

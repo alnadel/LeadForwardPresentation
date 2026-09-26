@@ -231,7 +231,7 @@
         <!-- illustrative: one story card passing the four checks (a single tilted plane) -->
         <div class="rn-story a-swing" data-in="0" style="--d:.78s;--dur:1.2s" aria-hidden="true">
           <div class="rn-sc glass">
-            <div class="rn-sc-cov" style="background-image:url('assets/photos/team-ops.jpg')"><span class="rn-sc-tag">Story</span></div>
+            <div class="rn-sc-cov" style="background-image:url('assets/photos/nouf-question.jpg')"><span class="rn-sc-tag">Story</span></div>
             <span class="rn-sc-av">${Deck.icon('employee-female')}</span>
             <i class="rn-sc-t1"></i><i class="rn-sc-t2"></i>
             <i class="rn-sc-hr"></i>
