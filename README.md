@@ -1,16 +1,48 @@
 # Behind a Better Life — Lead Forward 2026
 
-A presenter-driven animated deck. Each click plays the next build and then **stops**. While it is stopped, the scene keeps breathing (the colleague field twinkles, lights travel, photographs drift slowly) so you can talk as long as you need. Click again to move on.
+A presenter-driven animated deck. Each click plays the next build and then **stops**. While it is stopped, the scene keeps moving (the colleague field twinkles and drifts, lights travel, photographs push in slowly), so you can talk for as long as you need. Click again to move on.
 
-It merges the two earlier cuts:
+It merges two earlier cuts: the **Story Cycle** film (Nouf and Faisal) and the **Executive Cut** (the final PowerPoint content). It runs fully offline in Chrome or Edge.
 
-- the **Story Cycle** film (Nouf and Faisal)
-- the **Executive Cut** (the final PowerPoint content)
+There are two versions. Both use the same keys and the same speaker view.
 
-The result is one 17-scene, 62-stop talk. The speaker notes run about 14 minutes at a steady pace, so the talk lands at about 15 minutes. It runs fully offline in Chrome or Edge.
+| | File | Scenes · stops | Use it for |
+| --- | --- | --- | --- |
+| **v2 · condensed** | `dist/Behind-a-Better-Life-v2.html` | 11 · 32 | **the 15-minute slot**. Cinematic scene changes and a livelier frame while parked. |
+| v1 · full | `dist/Behind-a-Better-Life.html` | 17 · 62 | a longer session, or open it in Q&A for the detail v2 folds into the notes (risk table, story format, rhythm) |
+
+## Version 2 — condensed (15 minutes)
+Open **`dist/Behind-a-Better-Life-v2.html`**, or double-click `Present v2 (Windows).bat` or `Present v2 (Mac).command`. Then press **F**, then **S**.
+
+| Act | Scenes (stops) | Aim to finish by |
+| --- | --- | --- |
+| I · The moment | 01 Open (2) · 02 One night (3) | 2:00 |
+| II · The gap | 03 The gap (3) · 04 What colleagues told us (4) · 05 Reading the numbers (2) | 6:00 |
+| III · Why it matters | 06 Why it matters (3) | 7:45 |
+| IV · The cycle | 07 The cycle (3) · 08 One story, through the cycle (4) · 09 How it runs (3) | 12:15 |
+| V · The pilot | 10 The pilot (3) · 11 Close (2) | 15:00 |
+
+What is new in v2:
+
+- **Scene changes are camera moves.**
+  - A sideways *push* within an act.
+  - At each act boundary, the frame breaks into the brand's squares and re-forms (*mosaic*).
+  - The field streaks and warps with every move.
+  - Going back is always a quick, quiet fade.
+- **One story light (the spark) flies to what you are talking about on each stop.** It lands on the number, the node or the new line with a ripple, then stays there and breathes.
+- **Richer builds.**
+  - Headlines flip in word by word and catch a light sweep.
+  - Cards unfold, and icons materialise out of light.
+  - Numbers count up and land with a punch.
+- **Livelier parked frames.** Every stop has several slow continuous motions: constellation lines and waves in the field, shooting lights, photo push-ins, flowing connectors, breathing nodes. Nothing inside the text you are reading moves, and numbers never change while parked.
+- Merged content: 02 = the question and one night. 06 = the link and strategic alignment. 09 = format, rhythm and recognition as three tabs. 10 = measure and the ask, with the risk table in the notes.
+
+Storyboard and rationale: [`docs/STORYBOARD-v2.md`](docs/STORYBOARD-v2.md). Backup: `dist/Behind-a-Better-Life-v2-stops.pdf` has every stop as a static page with its notes.
+
+The rest of this README describes both versions; the talk table and scene numbers below refer to v1.
 
 ## Present it
-1. Open **`dist/Behind-a-Better-Life.html`** in Chrome or Edge. It is a single self-contained file (fonts and photos are embedded), so it can go on a USB stick. You can also double-click `Present (Windows).bat` or `Present (Mac).command`.
+1. Open **`dist/Behind-a-Better-Life-v2.html`** (or `dist/Behind-a-Better-Life.html` for v1) in Chrome or Edge. Each is a single self-contained file (fonts and photos are embedded), so it can go on a USB stick. You can also double-click the matching `Present … .bat` or `.command` file.
 2. Press **F** for full screen, then **S** to open the speaker view on your laptop screen.
 3. Advance with a clicker, **→**, **Space** or **PageDown**. A mouse click also advances.
 
@@ -33,7 +65,7 @@ The result is one 17-scene, 62-stop talk. The speaker notes run about 14 minutes
 
 The deck keeps your position in the address bar (`#survey.2`), so a reload comes back to the same stop. Typing `#survey` or `#5` there jumps straight to a scene.
 
-## The talk
+## The talk (v1)
 
 | Act | Scenes (stops) | Aim to finish by |
 | --- | --- | --- |
@@ -63,18 +95,20 @@ These changed from, or were added to, the approved deck. Check each one with the
 - **Scene 15, risk owners** (Curation panel, Internal Communications, HR/Legal, HR/People Analytics). These are proposals taken from the team's concept deck.
 - **Scene 16, "What we need"** (an executive sponsor, curation time from HR and Internal Communications, existing channels) and the "scale, adjust or stop" report-back.
 - **Scene 14, baseline.** It says the same eight survey questions will be re-asked at the end of the quarter.
+- **New in v2, scene 09 (Impact tab):** "Evidence is reviewed before a story is featured." It states a design decision, so check the team agrees. In v2 the baseline re-ask, "What we need" and the risk owners appear in scene 10 and its notes.
 
 ## Tech check at the venue (5 minutes)
 - Use Chrome or Edge, full screen (**F**). Set the display to 1920×1080 if possible.
 - Do a clicker test: next, back and blank.
 - Open the speaker view (**S**) and drag it to the laptop screen, then check that the deck window is on the projector.
-- Look at scene 05 at stop 3 (the 8% sea-green squares) on the real projector. If it looks washed out, press **C**.
+- Look at the 8% stop (the sea-green squares: v2 scene 04 stop 2, v1 scene 05 stop 3) on the real projector. If it looks washed out, press **C**.
 - If animation stutters, press **L**.
 - Turn off notifications and sleep, and close Teams and Outlook.
-- Backup: `dist/Behind-a-Better-Life-stops.pdf` has every stop as a static page with its notes. It opens on any computer.
+- Backup: `dist/Behind-a-Better-Life-v2-stops.pdf` (v2) and `dist/Behind-a-Better-Life-stops.pdf` (v1) have every stop as a static page with its notes. It opens on any computer.
 
 ## Editing
-- The source deck is `index.html`. Each scene is `scenes/NN-id.js` + `.css`. The engine is in `js/`, and the design system is `css/deck.css`.
+- The v1 source is `index.html`, with each scene in `scenes/NN-id.js` + `.css`, the engine in `js/engine.js` + `js/field.js`, and the design system in `css/deck.css`.
+- The v2 source is `index-v2.html`, with `scenes-v2/`, `js/engine-v2.js` + `js/field-v2.js`, and `css/deck-v2.css`. The v2 authoring contract (transitions, spark, ambient library) is [`docs/SCENE_GUIDE-v2.md`](docs/SCENE_GUIDE-v2.md). The tools take `--file index-v2.html`, and `python3 tools/build.py index-v2.html dist/Behind-a-Better-Life-v2.html` rebuilds the single file.
 - Scene authoring rules are in [`docs/SCENE_GUIDE.md`](docs/SCENE_GUIDE.md).
 - Rebuild the single file with `python3 tools/build.py`.
 - Screenshot every stop with `node tools/shoot.js --motion` (Playwright). Then check that ambient motion is running with `python3 tools/motion.py shots`, and that back navigation matches forward navigation with `node tools/backcheck.js` followed by `python3 tools/backdiff.py`.
