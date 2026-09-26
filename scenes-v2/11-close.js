@@ -1,9 +1,9 @@
 /* 11 · Close (v2) — the payoff. The two colleagues who knew in 02 come back at
    exactly the same place; the story passes colleague to colleague (a branching
    nomination chain) until the whole field is lit. Then the brand frame rises
-   over the dusk skyline with the ask strip beneath it, and holds for Q&A while
+   over the dusk skyline with the business-case strip beneath it, and holds for Q&A while
    stories keep travelling above the city and its traffic keeps moving.
-   v3: stop 1 credits the team (Group 1) in a small line just above the ask.
+   v3: stop 1 credits the team (Group 1) in a small line just above the business case.
    Port of v1 17: the pinned pair, the chain drive loop, the KNOW placement
    formula, Deck.NIGHT_PAIR / Deck.NIGHT_OFFSET. v1 stops 1 and 2 are merged. */
 (function () {
@@ -86,18 +86,18 @@
     spark: false,
     irisBurst: 520, // a small flash only: the field must still read dark before the chain
     chrome: { mark: false, progress: false },
-    cues: ['Two people knew — the chain', 'Behind a Better Life · thank you · the ask stays on screen for Q&A'],
+    cues: ['Two people knew — the chain', 'Behind a Better Life · thank you · the business case stays on screen for Q&A'],
     holds: [9, 30],
     notes: [
       'Remember the night shift: two people knew. Now the story is told, and the colleague it featured nominates the next — and the next. Let the chain run; say nothing for a moment.',
-      'Behind a Better Life. Make the contribution visible. Make the learning travel. Light the way. Thank you. Hold here for questions: the ask stays on screen. For detail, type a slide number and press Enter; End returns here.',
+      'Behind a Better Life. Make the contribution visible. Make the learning travel. Light the way. Thank you. Hold here for questions: the business case stays on screen. For detail, type a slide number and press Enter; End returns here.',
     ],
     field: [
       // travel starts at 0 so the callback frame matches 02.1; the loop raises it once the chain is complete
       { dim: .8, travel: 0, offset: Deck.NIGHT_OFFSET, pins: PAIR, litFrom: PAIR[0], chain: true, warm: 0, drift: .35, links: .55, wave: .45, streaks: .1, sparkle: 1,
         calm: [[KNOW.x + 20, KNOW.y, KNOW.x + 740, KNOW.y + 120, .85]] },
       // the lit field frames the brand block: calm (nearly dark) behind the lockup, the title
-      // block and the ask card, alive at the sides and in the band where the stories travel
+      // block and the business-case card, alive at the sides and in the band where the stories travel
       { dim: .9, lit: 1, travel: 2.2, warm: .15, drift: .6, pins: [], links: .42, wave: .5, streaks: .16, sparkle: 1.4,
         calm: [[720, 10, 1200, 196, 1], [200, 150, 1720, 470, 1], [280, 440, 1640, 596, .95], [360, 668, 1560, 728, .9], [100, 720, 1820, 980, .9]] },
     ],
@@ -134,20 +134,20 @@
         <div class="cl-thanks a-fade" data-in="1" style="--d:.84s">Thank you</div>
       </div>
 
-      <!-- the team (support): a small credit line just above the ask -->
+      <!-- the team (support): a small credit line just above the business case -->
       <p class="cl-team a-fade" data-in="1" style="--d:1.05s;--dur:.9s"><span class="cl-team-k">Group 1</span> <i>·</i> ${TEAM.join(' <i>·</i> ')}</p>
 
       <div class="cl-ask glass live a-unfold" data-in="1" style="--d:.8s">
         <div class="cl-ask-l">
-          <div class="kicker">The ask</div>
-          <div class="cl-ask-h">Approve a one-quarter pilot.</div>
+          <div class="kicker">The business case</div>
+          <div class="cl-ask-h">Inspiration, made visible.</div>
         </div>
         <i class="cl-ask-div"></i>
         <div class="cl-ask-r" data-stagger style="--stagger:.1s">
           <i class="cl-rail"><b></b></i>
-          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>01</b>Open nominations</span>
-          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>02</b>Run one full cycle</span>
-          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>03</b>Report what changed</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>01</b>A clear need</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>02</b>A simple design</span>
+          <span class="cl-step a-left" data-in="1" style="--d:1s"><b>03</b>Measurable impact</span>
         </div>
       </div>
     `,

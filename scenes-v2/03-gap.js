@@ -7,7 +7,7 @@
    over the bridges between teams and failing halfway (they break and fall).
    Stop 2: the map tilts back and recedes behind the conclusion; the walls sink and
    the bridges complete as bright story arcs — the gap closed — each district's rim
-   lights teal as they land, and two stories keep crossing each bridge; today’s ask
+   lights teal as they land, and two stories keep crossing each bridge; the initiative
    takes the stage as a glass chip whose raised socket the spark docks into.
    Every state is a pure function of the stop (.st-n classes in the CSS); the
    ambient loops are CSS animations, so there are no timers to keep in step. */
@@ -127,12 +127,12 @@
     act: 1,
     bg: 'night',
     transition: 'chapter',
-    cues: ['Inspiration is not always visible · good work happens', 'Visibility stays local · learning does not travel', 'We close the gap · today’s ask'],
+    cues: ['Inspiration is not always visible · good work happens', 'Visibility stays local · learning does not travel', 'We close the gap · the initiative'],
     holds: [8, 10, 9],
     notes: [
       'Inspiration is happening at Tahakom every day, but it is not always visible. Each shape is one team, and each light is good work: colleagues who help, solve problems and go the extra mile.',
       'But visibility stays local: the team or manager notices, and it stops at the wall. And learning does not travel: useful behaviours are not shared across departments, so the story fades halfway.',
-      'The contributions exist; the gap is making them visible, recognised and shared. Behind a Better Life closes that gap through real employee stories. So, from the start, today’s ask: approve a one-quarter pilot.',
+      'The contributions exist; the gap is making them visible, recognised and shared. Behind a Better Life closes that gap through real employee stories: a story-to-impact campaign, which the rest of this case sets out.',
     ],
     field: [
       { dim: .34, lit: 0, travel: .12, warm: 0, offset: [150, -80], links: .45, wave: .45, streaks: .1, sparkle: .9, calm: [[100, 120, 1820, 290, .7], [100, 300, 1820, 560, .6], [100, 560, 1820, 960, .35]] },
@@ -177,16 +177,16 @@
         </div>`).join('')}
 
       <!-- stop 2: the dimmed headline and its small follow-on line are context;
-           the payoff and today's ask are what the room takes away -->
+           the payoff and the initiative are what the room takes away -->
       <div class="gp-close">
         <p class="gp-c1" data-in="2" style="--d:.3s">Meaningful contributions exist — the gap is making them visible, recognised and shared across Tahakom.</p>
         <p class="gp-c2" data-in="2" data-split style="--d:.5s">Behind a Better Life closes that gap through <em class="hl">real employee stories.</em></p>
         <div class="gp-ask-w a-unfold" data-in="2" style="--d:.7s;--dur:.9s">
           <div class="glass live gp-ask amb-sheen">
             <span class="gp-ask-lt" data-spark="2" data-spark-at="c" data-spark-delay="1.05"><b></b></span>
-            <span class="gp-ask-k">Today’s ask</span>
+            <span class="gp-ask-k">The initiative</span>
             <span class="gp-ask-sep"></span>
-            <span class="gp-ask-t">Approve a <em>one-quarter pilot</em></span>
+            <span class="gp-ask-t">A <em>story-to-impact</em> campaign</span>
           </div>
         </div>
       </div>

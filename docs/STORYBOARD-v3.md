@@ -82,10 +82,12 @@ These kickers make the capstone lifecycle visible.
 - Add one small line under the table: **"Themes we look for: resilience · innovation · collaboration · service, each linked to a Tahakom value."**
 - Notes, stop 0: "What makes a story inspiring? Clear criteria, published to everyone. A story is featured when it answers four questions: what it enabled, which value it showed, what changed, and what others can repeat. Resilience, innovation, collaboration and service are the themes we look for."
 
-### 10 The pilot (id `pilot`): `act: 4`; `transition: 'rise'`
-- Stops 0 and 1 are unchanged.
+### 10 Proof before scale (id `pilot`): `act: 4`; `transition: 'rise'`
+- The deck is a capstone business case, not a request to the panel: it never says "the ask" or "approve" (26 Sep 2026).
+- Stop 0: kicker **Impact measurement**, display headline **"Proof before scale."**
+- Stop 1: "Start with one quarterly cycle and measure what changes." (unchanged).
 - **Stop 2** becomes the KPI panel. Keep the measurement-lane idea compact, or replace it with the panel.
-  - Headline stays "How we'll judge it".
+  - Kicker **"How we'll measure impact"**.
   - Five KPI tiles; the proposed targets are the key numbers:
 
 | KPI | Measure | Baseline → proposed target |
@@ -96,13 +98,13 @@ These kickers make the capstone lifecycle visible.
 | Recognition reach | Re-survey (same question) | **8%** → **25%** |
 | Visibility gap | Re-survey (same question) | **56%** → **below 40%** |
 
-  - A small caption: **"Targets proposed for the sponsor to confirm at launch."**
-  - The What-we-need card stays as support: an executive sponsor · curation time from HR and Internal Communications · our existing channels.
-  - The hero line stays: **"After one quarter we come back with one recommendation: scale, adjust or stop."**
-- Notes, stop 2: "How we'll judge it: participation from every department, colleagues reading the stories, a short sentiment pulse, and the same survey questions re-asked at quarter end. Reach from 8% to 25%, the visibility gap from 56% to below 40%. These targets are for the sponsor to confirm at launch. Then one recommendation: scale, adjust or stop."
+  - A small caption: **"Proposed targets, confirmed at launch."**
+  - A **What it takes** card as support: an executive sponsor · curation time from HR and Internal Communications · our existing channels.
+  - The hero line: **"After one quarter, the data decides: scale, adjust or stop."**
+- Notes, stop 2: "We measure impact through participation from every department, colleagues reading, a sentiment pulse, and a quarter-end re-survey: reach from 8% to 25%, the visibility gap from 56% to below 40%, as proposed targets. After one quarter, the data decides: scale, adjust or stop."
 
 ### 11 Close (id `close`)
-- Stop 1 adds a small line above or below the ask strip: **"Group 1 · Buthainah Alhejazi · Abdulaziz Almalaq · Hassan Alzahrani · Fadi Alkhayrat"**. Team names are taken from the kick-off pack's Group 1 (Inspiring Others).
+- Stop 1 ends on **The business case** strip, "Inspiration, made visible." with 01 A clear need · 02 A simple design · 03 Measurable impact. Above it, a small line: **"Group 1 · Buthainah Alhejazi · Abdulaziz Almalaq · Hassan Alzahrani · Fadi Alkhayrat"**. Team names are taken from the kick-off pack's Group 1 (Inspiring Others).
 
 ---
 

@@ -68,7 +68,7 @@ Source: *Training Material – Tahakom – Capstone Kick-off* (Lead Forward Prog
 | 08 The cycle | A differentiating idea. | Cut from 3 stops to 2. |
 | 09 One story | Makes the concept tangible. | Keep it (illustrative). |
 | 10 How it runs | Operational detail. | Tab 01 becomes **What makes a story inspiring** (explicit criteria, with the themes from the brief mapped to Tahakom values). |
-| 11 The pilot | A clear ask. | Stop 2 becomes a **KPI panel** with baselines and proposed targets. |
+| 11 The pilot | A clear ending. | Now "Proof before scale" (impact measurement). Stop 2 is a **KPI panel** with baselines and proposed targets. The deck is framed as a capstone business case: it never asks the panel to approve anything. |
 | 12 Close | Brand moment. | Add Group 1's names (collaboration). |
 
 ## 4. v3 structure (15 minutes, 17 scenes, 39 stops)
@@ -87,7 +87,7 @@ The full copy is in [`STORYBOARD-v3.md`](STORYBOARD-v3.md).
 
 ## 5. New content, confirmed by the team
 
-These were written from the brief. The team confirmed all of them on 26 Sep 2026. On screen, the KPI targets are still framed as proposals for the sponsor to confirm at launch, because that is a governance step, not an open question.
+These were written from the brief. The team confirmed all of them on 26 Sep 2026. On screen, the KPI targets are framed as "Proposed targets, confirmed at launch". Since 26 Sep 2026 the deck is a capstone business case, not a request: no "ask" and no "approve" anywhere.
 
 - **Options comparison.** The three options and their five-criteria assessment are the team's judgement, not measured data.
 - **Leadership actions.**

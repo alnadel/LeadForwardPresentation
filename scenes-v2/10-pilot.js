@@ -1,7 +1,7 @@
 /* 10 · The pilot (v3) — enters with a rise from the risks: the room comes up under the
-   camera and the ask lands in giant type, set in the dark ceiling band of the
+   camera and the headline ("Proof before scale.") lands in giant type, set in the dark ceiling band of the
    operations room while the video wall keeps working.
-   Stop 1: the ask steps back to a heading and the plan becomes one tangible quarter:
+   Stop 1: the headline steps back to a heading and the plan becomes one tangible quarter:
    three month blocks (M1, M2, M3) side by side on a glass plate, seen in perspective,
    from START to QUARTER END, spanned by "One quarter". The commitments stand in glass
    where they happen: opening nominations over the start, reporting over quarter end,
@@ -24,7 +24,7 @@
    with the two shades that fade in over it) and the video wall; the stop-1 and stop-2
    groups are visibility: hidden while they are off stage, so they hold no layers.
    All state is keyed off .st-n, so back navigation lands on the same frame.
-   Audience first — stop 0: the ask. Stop 1: "one quarterly cycle" (lit in the line
+   Audience first — stop 0: the headline. Stop 1: "one quarterly cycle" (lit in the line
    and on the quarter's span) and the three commitment titles; their descriptions are
    fine print. Stop 2: the decision, "scale, adjust or stop." (largest, brightest,
    the spark), then the five targets; measures, baselines, caption and needs are
@@ -173,16 +173,16 @@
 
   Deck.scene({
     id: 'pilot',
-    title: 'The pilot',
+    title: 'Proof before scale',
     act: 4,
     bg: 'night',
     transition: 'rise',
-    cues: ['Approve the pilot.', 'One quarterly cycle · three commitments', 'How we’ll judge it · five KPIs, baseline → proposed target · scale, adjust or stop'],
+    cues: ['Proof before scale.', 'One quarterly cycle · three commitments', 'How we’ll measure impact · five KPIs, baseline → proposed target · scale, adjust or stop'],
     holds: [6, 12, 14],
     notes: [
-      'So here is the ask, in three words: approve the pilot. Pause, and let it sit. Everything that follows is what that approval buys, and how we will know whether it worked.',
+      'Impact measurement. We do not start by scaling; we start with proof. Pause, and let it sit. What follows is how one quarter proves the idea, and how we will know whether it worked.',
       'We start with one quarterly cycle and measure what changes. This is one quarter, month one to month three: open nominations to peers and leaders at the start, run one full cycle — capture, curate, feature, reinforce — within the quarter, and report what changed on a quarterly dashboard at quarter end.',
-      'We’ll judge it by participation from every department, colleagues reading, a sentiment pulse, and a quarter-end re-survey: reach from 8% to 25%, the visibility gap from 56% to below 40%, for the sponsor to confirm. Then: scale, adjust or stop.',
+      'We measure impact through participation from every department, colleagues reading, a sentiment pulse, and a quarter-end re-survey: reach from 8% to 25%, the visibility gap from 56% to below 40%, as proposed targets. After one quarter, the data decides: scale, adjust or stop.',
     ],
     field: [
       { dim: .3, lit: .03, travel: .25, offset: [-60, -200], litFrom: [960, 300], links: .4, wave: .4, streaks: .14, sparkle: 1, calm: [[100, 110, 1500, 380, .85]] },
@@ -203,9 +203,9 @@
       <div class="pl-cove"></div>
       <div class="amb-dust pl-dust">${dust}</div>
 
-      <!-- stop 0 · the ask -->
-      <div class="kicker pl-kicker a-wipe" data-in="0" style="--d:.2s">The ask</div>
-      <h1 class="display pl-title" data-in="0" data-split data-spark="0" data-spark-delay="1.05" style="--d:.35s;--wstep:.09s">Approve the pilot.</h1>
+      <!-- stop 0 · the headline -->
+      <div class="kicker pl-kicker a-wipe" data-in="0" style="--d:.2s">Impact measurement</div>
+      <h1 class="display pl-title" data-in="0" data-split data-spark="0" data-spark-delay="1.05" style="--d:.35s;--wstep:.09s">Proof before scale.</h1>
 
       <!-- stop 1 · one quarter, three commitments (the group is hidden while off stage) -->
       <div class="pl-g1">
@@ -262,17 +262,17 @@
 
       <!-- stop 2 · how we'll judge it: the KPI panel (the group is hidden while off stage) -->
       <div class="pl-g2">
-      <div class="kicker pl-judge a-wipe" data-in="2" style="--d:.15s">How we’ll judge it</div>
+      <div class="kicker pl-judge a-wipe" data-in="2" style="--d:.15s">How we’ll measure impact</div>
       <div class="pl-rail a-wipe" data-in="2" style="top:${RAIL_Y}px;--d:.2s;--dur:1s"></div>
       <div class="pl-car" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light lg"></i></div>
       <div class="pl-car c2" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light"></i></div>
       <div class="pl-kpis" data-stagger style="left:${KX}px;top:${RAIL_Y}px;--stagger:.07s;--d:.28s">${KPIS.map(kpi).join('')}</div>
-      <p class="pl-cap a-fade" data-in="2" style="--d:1s;--dur:.8s">Targets proposed for the sponsor to confirm at launch.</p>
+      <p class="pl-cap a-fade" data-in="2" style="--d:1s;--dur:.8s">Proposed targets, confirmed at launch.</p>
       <div class="pl-need glass a-unfold" data-in="2" style="--d:.78s">
-        <span class="label pl-need-l">What we need</span>
+        <span class="label pl-need-l">What it takes</span>
         <p class="pl-need-t">An executive sponsor <i>·</i> curation time from HR and Internal Communications <i>·</i> our existing channels</p>
       </div>
-      <h2 class="pl-final" data-in="2" data-split style="--d:.62s;--wstep:.03s">After one quarter we come back with one recommendation:</h2>
+      <h2 class="pl-final" data-in="2" data-split style="--d:.62s;--wstep:.03s">After one quarter, the data decides:</h2>
       <div class="pl-herow" data-spark="2" data-spark-delay=".8" style="top:${HERO_Y}px">
         <p class="pl-hglow" data-split aria-hidden="true">scale, adjust or stop.</p>
         <p class="pl-hero" data-in="2" data-split style="--d:.86s;--wstep:.07s">scale, adjust or stop.</p>

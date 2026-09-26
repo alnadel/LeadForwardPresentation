@@ -19,7 +19,7 @@
     cues: ['Title', 'Tagline · the light is born'],
     holds: [5, 7],
     notes: [
-      'Hold that thought — we will come back to it. Now introduce yourselves: the team, Lead Forward 2026, Behind a Better Life. Say the decision up front: in fifteen minutes we will ask you to approve one quarterly pilot.',
+      'Hold that thought — we will come back to it. Now introduce yourselves: the team, Lead Forward 2026, Behind a Better Life. Say the purpose up front: in fifteen minutes, the need, the design, and how we would measure the impact.',
       'Real stories. Visible values. Repeatable impact. One person’s story can light the way for others — that light is the thread through everything that follows.',
     ],
     field: [

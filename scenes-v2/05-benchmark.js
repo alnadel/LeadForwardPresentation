@@ -231,7 +231,7 @@
     holds: [12, 8],
     notes: [
       'Against benchmarks, the mechanism is behind: org-wide recognition 8% against 22%; choice 49% against 64%. The willingness is ahead: peer recognition 89% against 41%, plus 48. Connection is aligned, 80% against 77%. Directional only, not Saudi norms.',
-      'So: behind on the mechanism, ahead on the willingness. People are ready; the channel is missing. Build the channel, then test it — that is the pilot we are asking you to approve.',
+      'So: behind on the mechanism, ahead on the willingness. People are ready; the channel is missing. Build the channel, then test it — that is what this business case sets out.',
     ],
     field: [
       { dim: .3, lit: 0, travel: .25, warm: .15, offset: [-190, 110], links: .45, wave: .6, streaks: .1, sparkle: 1.1, drift: 1,

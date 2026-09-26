@@ -134,7 +134,7 @@
       'Now follow Nouf’s story through the cycle — illustrative, not a real case. Faisal takes thirty seconds to nominate Nouf: “Nobody asked her to fix it. She just did it — and then she taught the rest of us how.”',
       'Curate: facts checked with the shift lead, Nouf’s consent, and one value, Excellence. Nothing goes out without consent. Then Feature: a short post on a channel we already have. Reactions, not reach numbers.',
       'Reinforce: her leader acknowledges her with a certificate, and the takeaway travels. In this illustrative story four teams adopt the new handover, and we claim no more than that.',
-      'Then Nouf nominates the next colleague, and the cycle starts again: recognition becomes behaviour. Again, the story is illustrative; the mechanism is what we ask you to pilot.',
+      'Then Nouf nominates the next colleague, and the cycle starts again: recognition becomes behaviour. Again, the story is illustrative; the mechanism is what this case proposes.',
     ],
     field: [
       { dim: .24, lit: .02, travel: .12, offset: [-190, -110], litFrom: null, links: .45, wave: .45, streaks: .1, sparkle: .9, calm: [[520, 130, 1800, 940, .85], [110, 130, 470, 940, .45]] },
