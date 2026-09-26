@@ -27,7 +27,7 @@
   background: radial-gradient(closest-side, rgba(3, 255, 203, .32), rgba(37, 199, 188, .1) 55%, transparent); }
 /* the risk's cell warms from the lock outwards as the hold wraps it, then cools */
 #s-risks .rk-cell { position: absolute; left: 0; top: 0; height: 112px; border-radius: 20px 0 0 20px; pointer-events: none; opacity: 0;
-  background: linear-gradient(90deg, rgba(37, 199, 188, .05), rgba(37, 199, 188, .11) 55%, rgba(3, 255, 203, .2)); }
+  background: linear-gradient(90deg, rgba(37, 199, 188, .07), rgba(37, 199, 188, .14) 55%, rgba(3, 255, 203, .24)); }
 #s-risks.st-0 .rk-cell { animation: rkCell 8s ease-in-out calc(var(--ck) + .9s) infinite; }
 @keyframes rkCell { 0% { opacity: 0; } 10% { opacity: 1; } 32%, 100% { opacity: 0; } }
 #s-risks.st-0 .rk-glow { animation: rkGlow 8s ease-in-out var(--ck) infinite; }

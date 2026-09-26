@@ -108,9 +108,9 @@
       'Who runs it: the sponsor decides, a curation panel from HR, Internal Communications and one rotating employee selects each month, Communications runs the channels, and HR runs the dashboard. The cost is mostly people time, about two hours a week for the panel, plus a small recognition budget. No new software. [Team: confirm the estimate and the budget.]',
     ],
     field: [
-      { dim: .34, lit: .04, travel: .3, offset: [-200, 60], litFrom: [NX[0], Y], warm: .1, links: .5, wave: .55, streaks: .14, sparkle: 1.2, drift: 1,
+      { dim: .34, lit: .04, travel: .35, offset: [-200, 60], litFrom: [NX[0], Y], warm: .1, links: .5, wave: .65, streaks: .2, sparkle: 1.6, drift: 1,
         calm: [[100, 120, 1500, 290, .8], [110, 420, 1820, 520, .6], [110, 590, 1820, 880, .88]] },
-      { dim: .3, travel: .2, links: .4, wave: .45, sparkle: 1,
+      { dim: .3, travel: .25, links: .4, wave: .5, streaks: .16, sparkle: 1.3,
         calm: [[100, 120, 1500, 330, .8], [110, 340, 1820, 900, .9]] },
     ],
     html: `
@@ -147,7 +147,7 @@
       </div>
       <div class="rm-panel rm-budget glass live a-unfold" data-in="1" style="--d:.48s;--dur:1s">
         <div class="label rm-pl">Budget</div>
-        <i class="rm-dock a-fade" data-in="1" data-spark="1" data-spark-at="c" data-spark-delay=".7" style="--d:.6s"></i>
+        <i class="rm-dock a-fade" data-in="1" data-spark="1" data-spark-at="c" data-spark-delay=".28" style="--d:.6s"></i>
         <p class="rm-hero" data-in="1" data-split style="--d:.62s;--wstep:.04s">Low cost by design:<br><em class="hl amb-shimmer">people time, not new software.</em></p>
         <i class="rm-hair a-wipe" data-in="1" style="--d:.86s;--dur:.7s"></i>
         ${budget}
