@@ -29,7 +29,8 @@
   const ico = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
   const IC = {
     // an anonymous survey: a clipboard of ticked questions
-    survey: '<rect x="4.8" y="4.4" width="14.4" height="17" rx="2.4"/><path d="M9.2 4.4V2.9h5.6v1.5"/><path d="m8 10.2 1.5 1.5 2.7-2.7"/><path d="M14.4 10.6h2.2"/><path d="m8 15.6 1.5 1.5 2.7-2.7"/><path d="M14.4 16h2.2"/>',
+    // (Arabic: the scene is mirrored, so the ticks are drawn mirrored here and read as ticks, on the right)
+    survey: '<rect x="4.8" y="4.4" width="14.4" height="17" rx="2.4"/><path d="M9.2 4.4V2.9h5.6v1.5"/>' + t('<path d="m8 10.2 1.5 1.5 2.7-2.7"/><path d="M14.4 10.6h2.2"/><path d="m8 15.6 1.5 1.5 2.7-2.7"/><path d="M14.4 16h2.2"/>', '<path d="M12.2 10.2l-1.5 1.5-2.7-2.7"/><path d="M14.4 10.6h2.2"/><path d="M12.2 15.6l-1.5 1.5-2.7-2.7"/><path d="M14.4 16h2.2"/>'),
     // unseen: an eye, struck through
     unseen: '<path d="M2.6 12s3.5-6.2 9.4-6.2S21.4 12 21.4 12s-3.5 6.2-9.4 6.2S2.6 12 2.6 12z"/><circle cx="12" cy="12" r="2.9"/><path d="M4.2 19.8 19.8 4.2"/>',
     // reach: praise from a megaphone, carrying outward
