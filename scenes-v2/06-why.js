@@ -1,18 +1,21 @@
-/* 06 · Why it matters (v2) — one scene, three stops. Enters through the act III
-   chapter card: the line of light splits open from the centre, so stop 0 builds
-   from the middle outwards — the shared story first, then the individual and the
-   organisation, the headline as the opening reaches the top.
-   0  The prism flow at full scale: the employee's glass card and node, the story
-      light travels into the glowing "shared story" squircle and leaves as two teal
-      beams that reach the organisation's two glass cards (02A, 02B).
-   1  The link statement and the retention caveat; the story passes through again
-      and the shared story brightens while the cards step back.
-   2  An in-scene camera rise: the flow drifts up and away, Riyadh from above rises
-      in behind a plum veil, with the STRATEGIC VALUE statement, the six values as
-      glass tiles lighting in turn and the three outcomes as glass cards.
+/* 06 · Why it matters (v3) — one scene, two stops. Enters with a push (the camera
+   travels right), so stop 0 builds left to right, in the direction the story flows:
+   the header, the individual, the shared story, the beams, the organisation.
+   0  "…when the story is shared." with the retention caveat, over the prism flow:
+      the employee's glass card and node, the story light travels into the glowing
+      "shared story" squircle (the hero: the spark lands on it as the story passes
+      through) and leaves as two teal beams that reach the organisation's two glass
+      cards (02A, 02B). The cards are support, a step quieter than the statement.
+   1  An in-scene camera rise: the flow drifts up and away, Riyadh from above rises
+      in behind a plum veil, with the STRATEGIC VALUE statement, the purpose line
+      (Urban Intelligence for a Better Life: key, one step below the headline, where
+      the spark lands), the six values as glass tiles lighting in turn and the three
+      outcomes as glass cards.
    Ambient: light washes and flows along the beams, stories ride them, ripples
    leave the employee node, the shared story breathes in its glow pool and a light
-   runs round its rim; at stop 2 the city drifts and shimmers under a light leak. */
+   runs round its rim; at stop 1 the city drifts and shimmers under a light leak,
+   the values light in turn and a light passes through the purpose.
+   All state is keyed off .st-n; the travelling lights are one-shot on live clicks. */
 (function () {
   // Geometry in stage px. The flow runs along y = FY.
   const FY = 668;
@@ -50,8 +53,8 @@
 
   const EMPL = ['Feel seen and valued', 'Stay motivated to contribute', 'Participate, nominate and share', 'Learn from colleagues'];
   const ORG = [
-    { k: '02A', cls: 'wy-a', y: CARD_A, icon: 'users-connected', label: 'Org: Culture &amp; values', items: ['Stronger recognition culture', 'Tahakom’s values shown in action'], d: .72, sh: '-1.6s' },
-    { k: '02B', cls: 'wy-b', y: CARD_B, icon: 'handshake', label: 'Org: Engagement &amp; experience', items: ['Higher engagement and collaboration', 'Stronger employee experience'], d: .82, sh: '-3.3s' },
+    { k: '02A', cls: 'wy-a', y: CARD_A, icon: 'users-connected', label: 'Org: Culture &amp; values', items: ['Stronger recognition culture', 'Tahakom’s values shown in action'], d: .9, sh: '-1.6s' },
+    { k: '02B', cls: 'wy-b', y: CARD_B, icon: 'handshake', label: 'Org: Engagement &amp; experience', items: ['Higher engagement and collaboration', 'Stronger employee experience'], d: .98, sh: '-3.3s' },
   ];
 
   const VALUES = ['Commitment', 'Collaboration', 'Innovation', 'Impact', 'Learning', 'Excellence'];
@@ -66,58 +69,51 @@
     act: 1,
     bg: 'night',
     transition: 'push',
-    cues: ['Recognition creates value at two connected levels · the prism flow', 'Becomes organisational value when the story is shared · retention caveat', 'Strategic value · over Riyadh · the values Tahakom already has'],
-    holds: [10, 8, 10],
+    cues: ['Becomes organisational value when the story is shared · the flow · retention caveat', 'Aligned by design · our purpose · the six values · three outcomes, over Riyadh'],
+    holds: [11, 11],
     notes: [
-      'Why does this matter to Tahakom, not only to the person recognised? Recognition creates value at two connected levels: the employee feels seen and motivated; once the story is shared, the organisation gains culture and engagement.',
-      'So employee recognition becomes organisational value when the story is shared. One honest caveat: retention may follow in the long term, but it is not a direct outcome of the pilot, and we will not claim it.',
-      'The key point: we are not inventing new values. The initiative helps employees recognise and apply the values Tahakom already has, so the culture behind the strategy is easier to see in everyday work.',
+      'Why does this matter to Tahakom? Recognition happens to one person. Value happens when the story is shared: people feel seen, the behaviour spreads, and the culture gets stronger. Retention may follow over time, but it is not a promise of the pilot.',
+      'And it is aligned by design. We are not inventing new values. Every story shows how daily work serves our purpose, Urban Intelligence for a Better Life, and makes one of our six values visible in action.',
     ],
     field: [
-      { dim: .28, lit: 0, travel: .3, offset: [170, -80], warm: .1, links: .5, wave: .5, streaks: .12, sparkle: 1.1,
-        calm: [[100, 120, 1800, 300, .8], [110, 480, 640, 860, .75], [1190, 420, 1810, 920, .75]] },
-      { dim: .3, calm: [[100, 120, 1800, 410, .85], [110, 480, 640, 860, .75], [1190, 420, 1810, 920, .75]] },
+      { dim: .3, lit: 0, travel: .3, offset: [170, -80], warm: .1, links: .5, wave: .5, streaks: .12, sparkle: 1.1,
+        calm: [[100, 120, 1800, 410, .85], [110, 480, 640, 860, .75], [1190, 420, 1810, 920, .75]] },
       { dim: .16, warm: .35, travel: .2, links: .3, wave: .35, streaks: .1, sparkle: .8, offset: [110, -260],
-        calm: [[100, 120, 1300, 680, .9], [100, 740, 1820, 920, .85]] },
+        calm: [[100, 120, 1300, 700, .9], [100, 740, 1820, 920, .85]] },
     ],
     html: `
-      <!-- stop 2: Riyadh from above rises in behind a plum veil -->
-      <div class="wy-city" data-in="2" style="--d:.18s">
+      <!-- stop 1: Riyadh from above rises in behind a plum veil -->
+      <div class="wy-city" data-in="1" style="--d:.18s">
         <div class="wy-plate amb-ken-strong">
           <div class="photo wy-photo" style="background-image:url('assets/photos/riyadh-aerial.jpg')"></div>
           <div class="wy-glints">${GLINTS.map(([x, y, s], i) => `<i style="left:${x}px;top:${y}px;--s:${s};animation-delay:${(-i * 1.37).toFixed(2)}s;animation-duration:${(3.6 + (i % 4) * .9).toFixed(1)}s"></i>`).join('')}</div>
         </div>
         <div class="amb-leak wy-leak"></div>
       </div>
-      <div class="fill wy-veil a-fade" data-in="2" style="--dur:.8s"></div>
+      <div class="fill wy-veil a-fade" data-in="1" style="--dur:.8s"></div>
 
-      <!-- stops 0–1: the header and the flow; at stop 2 they drift up and away -->
+      <!-- stop 0: the header and the flow; at stop 1 they drift up and away -->
       <div class="wy-rise">
         <div class="pad wy-head">
-          <div class="kicker a-wipe" data-in="0" style="--d:.28s">Why it matters</div>
-          <div class="wy-swap">
-            <h2 class="h2 wy-h" data-in="0" data-out="1" data-split style="--d:.32s">Recognition creates value at two connected levels.</h2>
-            <div class="wy-final">
-              <h2 class="h2 wy-st" data-in="1" data-split style="--d:.2s">Employee recognition becomes organisational value <em class="hl">when the story is shared.</em></h2>
-              <p class="wy-cav" data-in="1" style="--d:.75s">Retention remains a possible long-term effect — not a direct outcome of the pilot.</p>
-            </div>
-          </div>
+          <div class="kicker a-wipe" data-in="0" style="--d:.1s">Why it matters</div>
+          <h2 class="h2 wy-st" data-in="0" data-split style="--d:.12s;--wstep:.045s">Employee recognition becomes organisational value <em class="hl">when the story is shared.</em></h2>
+          <p class="wy-cav" data-in="0" style="--d:.62s">Retention remains a possible long-term effect — not a direct outcome of the pilot.</p>
         </div>
 
         <div class="wy-flow">
           <!-- the shared story's glow pool, and the individual's halo -->
-          <i class="wy-pool a-fade" data-in="0" style="--d:.05s;--dur:1s;left:${PRISM.x - 420}px;top:${FY - 380}px"></i>
-          <div class="wy-halo a-fade" data-in="0" style="--d:.35s;--dur:1.2s;left:${LIGHT_X - 230}px;top:${FY - 230}px"><i></i><b></b></div>
+          <i class="wy-pool a-fade" data-in="0" style="--d:.5s;--dur:1.2s;left:${PRISM.x - 420}px;top:${FY - 380}px"></i>
+          <div class="wy-halo a-fade" data-in="0" style="--d:.45s;--dur:1.2s;left:${LIGHT_X - 230}px;top:${FY - 230}px"><i></i><b></b></div>
 
           <!-- node → prism: the connector draws behind the story light -->
-          <svg class="wy-wire a-wipe" data-in="0" viewBox="${NODE.x + NODE.r} ${FY - 10} ${PRISM.x - PRISM.r - NODE.x - NODE.r} 20" style="--d:.55s;--dur:.35s;${box(NODE.x + NODE.r, FY - 10, PRISM.x - PRISM.r - NODE.x - NODE.r, 20)}" aria-hidden="true">
+          <svg class="wy-wire a-wipe" data-in="0" viewBox="${NODE.x + NODE.r} ${FY - 10} ${PRISM.x - PRISM.r - NODE.x - NODE.r} 20" style="--d:.66s;--dur:.35s;${box(NODE.x + NODE.r, FY - 10, PRISM.x - PRISM.r - NODE.x - NODE.r, 20)}" aria-hidden="true">
             <defs><linearGradient id="wyWire" gradientUnits="userSpaceOnUse" x1="${NODE.x + NODE.r}" y1="0" x2="${PRISM.x - PRISM.r}" y2="0"><stop offset="0" stop-color="#25C7BC" stop-opacity=".45"/><stop offset="1" stop-color="#25C7BC"/></linearGradient></defs>
             <path d="M${NODE.x + NODE.r} ${FY} L${PRISM.x - PRISM.r} ${FY}"/>
             <path class="f" d="M${NODE.x + NODE.r} ${FY} L${PRISM.x - PRISM.r} ${FY}"/>
           </svg>
 
           <!-- two broad beams (teal → queen blue: the organisation benefits, never a gap) -->
-          <svg class="wy-beams a-wipe" data-in="0" ${beamBox};--d:.72s;--dur:.6s" aria-hidden="true">
+          <svg class="wy-beams a-wipe" data-in="0" ${beamBox};--d:.86s;--dur:.6s" aria-hidden="true">
             <defs>
               <linearGradient id="wyBeamFill" gradientUnits="userSpaceOnUse" x1="${X0}" y1="0" x2="${X1}" y2="0">
                 <stop offset="0" stop-color="#25C7BC" stop-opacity=".66"/><stop offset=".5" stop-color="#25C7BC" stop-opacity=".28"/><stop offset="1" stop-color="#8FC2DC" stop-opacity=".16"/>
@@ -134,11 +130,11 @@
           </svg>
 
           <!-- ambient: light washes out through both beams, stories ride them -->
-          <svg class="wy-glint a-fade" data-in="0" ${beamBox};--d:1.05s;--dur:.5s" aria-hidden="true">
+          <svg class="wy-glint a-fade" data-in="0" ${beamBox};--d:1.35s;--dur:.5s" aria-hidden="true">
             <defs><linearGradient id="wyGlint" gradientUnits="userSpaceOnUse" x1="${X0}" y1="0" x2="${X1}" y2="0"><stop offset="0" stop-color="#03FFCB" stop-opacity=".6"/><stop offset="1" stop-color="#25C7BC" stop-opacity=".38"/></linearGradient></defs>
             <path d="${wedgeA}"/><path d="${wedgeB}"/>
           </svg>
-          <div class="wy-dots a-fade" data-in="0" style="--d:1s;--dur:.5s">
+          <div class="wy-dots a-fade" data-in="0" style="--d:1.3s;--dur:.5s">
             ${dots(feed, 2, 2.2, 'in')}
             ${dots(coreA, 4, 4.4)}
             ${dots(coreB, 4, 4.4, '', .5)}
@@ -147,24 +143,24 @@
           </div>
 
           <!-- 01 · the individual -->
-          <div class="glass wy-card wy-emp a-unfold amb-sheen" data-in="0" style="--d:.2s;--dur:.9s;${box(EMP.x, EMP.top, EMP.w, EMP.h)};--sh:-.4s">
+          <div class="glass wy-card wy-emp a-unfold amb-sheen" data-in="0" style="--d:.3s;--dur:.9s;${box(EMP.x, EMP.top, EMP.w, EMP.h)};--sh:-.4s">
             <div class="wy-card-h"><span class="wy-num">01</span></div>
             <h3 class="wy-card-t">Employee level</h3>
-            <ul class="wy-list" data-stagger style="--stagger:.07s;--d:.36s">${EMPL.map((t) => `<li data-in="0">${t}</li>`).join('')}</ul>
+            <ul class="wy-list" data-stagger style="--stagger:.06s;--d:.46s">${EMPL.map((t) => `<li data-in="0">${t}</li>`).join('')}</ul>
           </div>
 
-          <div class="wy-node a-materialize" data-in="0" style="--d:.3s;--dur:.9s;${box(NODE.x - NODE.r, FY - NODE.r, NODE.r * 2, NODE.r * 2)}">
+          <div class="wy-node a-materialize" data-in="0" style="--d:.42s;--dur:.9s;${box(NODE.x - NODE.r, FY - NODE.r, NODE.r * 2, NODE.r * 2)}">
             <span class="wy-rips"><b></b><b></b></span>
             <span class="wy-node-sq">${Deck.icon('employee-male', 'wy-node-ic')}</span>
           </div>
-          <i class="wy-home" data-spark="0" data-spark-xy="${LIGHT_X},${FY}" data-spark-delay=".4"></i>
 
-          <div class="wy-prism a-materialize" data-in="0" style="--d:.08s;--dur:.9s;${box(PRISM.x - PRISM.r, FY - PRISM.r, PRISM.r * 2, PRISM.r * 2)}">
+          <div class="wy-prism a-materialize" data-in="0" style="--d:.6s;--dur:.9s;${box(PRISM.x - PRISM.r, FY - PRISM.r, PRISM.r * 2, PRISM.r * 2)}">
             <span class="wy-prism-ring"></span>
             <span class="wy-prism-glow"></span>
             <span class="wy-prism-t">Shared<br>story</span>
           </div>
-          <i class="wy-prism-mark" data-spark="1" data-spark-xy="${PRISM.x},${FY - PRISM.r - 38}"></i>
+          <!-- the spark lands above the shared story as the story light passes through it -->
+          <i class="wy-prism-mark" data-spark="0" data-spark-xy="${PRISM.x},${FY - PRISM.r - 40}" data-spark-delay=".82"></i>
 
           <!-- the build light: one light in, two lights out (live clicks only) -->
           <i class="light wy-run" style="offset-path:path('${run(midA, -6)}')"></i>
@@ -181,33 +177,35 @@
         </div>
       </div>
 
-      <!-- stop 2: strategic value. Key: the statement and the three outcomes (the
-           spark lands on the outcomes); the six values are supporting context -->
+      <!-- stop 1: strategic value. Key: the statement; then the purpose line (the spark
+           lands after it); the six values and the three outcomes are supporting context -->
       <div class="pad wy-sv">
-        <div class="kicker a-wipe" data-in="2" style="--d:.5s">Strategic value</div>
-        <h2 class="h2 wy-sv-st" data-in="2" data-split style="--d:.55s;--wstep:.04s">The initiative does not create new <span class="wy-nw">values —</span> it helps employees recognise and apply <em class="hl">the values Tahakom already has.</em></h2>
+        <div class="kicker a-wipe" data-in="1" style="--d:.45s">Strategic value</div>
+        <h2 class="h2 wy-sv-st" data-in="1" data-split style="--d:.45s;--wstep:.035s">The initiative does not create new <span class="wy-nw">values —</span> it helps employees recognise and apply <em class="hl">the values Tahakom already has.</em></h2>
+        <p class="wy-purp" data-in="1" style="--d:.85s">Every story shows how daily work serves Tahakom’s purpose: <em class="wy-pp" data-spark="1" data-spark-at="r" data-spark-delay="1.25"><span class="amb-shimmer">Urban Intelligence for a Better Life.</span></em></p>
       </div>
-      <div class="wy-chips" data-stagger style="--stagger:.07s;--d:.8s">
-        ${VALUES.map((v, i) => `<span class="wy-chip glass a-flip" data-in="2" style="--k:${i}"><i></i>${v}</span>`).join('')}
+      <div class="wy-chips" data-stagger style="--stagger:.06s;--d:1s">
+        ${VALUES.map((v, i) => `<span class="wy-chip glass a-flip" data-in="1" style="--k:${i}"><i></i>${v}</span>`).join('')}
       </div>
-      <div class="wy-pillars" data-stagger style="--stagger:.1s;--d:1.02s">
-        ${PILLARS.map((p, i) => `<div class="wy-p glass plum a-unfold" data-in="2" style="--dur:.8s"><div class="wy-p-h"><span class="num"${i === 0 ? ' data-spark="2" data-spark-at="r" data-spark-delay="1.05"' : ''}>${String(i + 1).padStart(2, '0')}</span><span class="wy-p-r"><i></i><b></b></span></div><div class="wy-p-t">${p}</div></div>`).join('')}
+      <div class="wy-pillars" data-stagger style="--stagger:.1s;--d:1.12s">
+        ${PILLARS.map((p, i) => `<div class="wy-p glass plum a-unfold" data-in="1" style="--dur:.8s"><div class="wy-p-h"><span class="num">${String(i + 1).padStart(2, '0')}</span><span class="wy-p-r"><i></i><b></b></span></div><div class="wy-p-t">${p}</div></div>`).join('')}
       </div>
     `,
     step(n, prev, ctx) {
-      // the travelling lights are one-shot builds on live clicks: into stop 0 (the
-      // whole flow builds) and into stop 1 (the story passes through again). Their
-      // resting state is invisible, so any stop reached another way looks the same.
+      // the travelling lights are one-shot builds on live clicks: the story's run
+      // through the flow as the scene arrives (stop 0), the leading lights on the
+      // outcome rules (stop 1). Their resting state is invisible, so any stop reached
+      // another way (a jump, or back) looks the same.
       const el = ctx.el, live = !ctx.instant;
-      el.classList.remove('wy-run-in', 'wy-pulse', 'wy-sv-live');
+      el.classList.remove('wy-run-in', 'wy-sv-live');
       void el.offsetWidth;
       if (live && n === 0 && prev === -1) {
         el.classList.add('wy-run-in');
-        ctx.after(520, () => window.Field && Field.burst(PRISM.x, FY, { radius: 760, dur: 1.8 }));
+        // a ripple leaves the shared story as the light passes through it
+        ctx.after(1560, () => window.Field && Field.burst(PRISM.x, FY, { radius: 760, dur: 1.8 }));
       }
-      if (live && n === 1 && prev === 0) el.classList.add('wy-pulse');
-      // stop 2 is a camera rise: the world streaks up past the lens
-      if (live && n === 2 && prev === 1) {
+      // stop 1 is a camera rise: the world streaks up past the lens
+      if (live && n === 1 && prev === 0) {
         el.classList.add('wy-sv-live');   // the outcome rules draw behind a leading light
         if (window.Field) { Field.warp('up', 1.3, .9); Field.kick(0, -200, 1.9); }
       }

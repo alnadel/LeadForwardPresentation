@@ -61,7 +61,7 @@
     cues: ['Willingness is strong; the mechanism is weak · the numbers build', 'Reading · build the channel, then test it'],
     holds: [12, 8],
     notes: [
-      'Against outside benchmarks, the mechanism is behind: org-wide recognition 8% against 22%, minus 14; choice in recognition 49% against 64%, minus 15. The willingness is ahead: peer recognition 89% against 41% — plus 48, our standout. Connection is broadly aligned, 80% against 77%. Directional only: different measures, not Saudi norms. [Team: confirm the source of “Choice in recognition”.]',
+      'Against benchmarks, the mechanism is behind: org-wide recognition 8% against 22%; choice 49% against 64%. The willingness is ahead: peer recognition 89% against 41%, plus 48. Connection is aligned, 80% against 77%. Directional only, not Saudi norms. [Team: confirm the source of “Choice in recognition”.]',
       'So: behind on the mechanism, ahead on the willingness. People are ready; the channel is missing. Build the channel, then test it — that is the pilot we are asking you to approve.',
     ],
     field: [
@@ -74,7 +74,7 @@
 
       <div class="pad bm-head">
         <div class="bm-kick">
-          <div class="kicker a-wipe" data-in="0" data-out="1">Reading the numbers</div>
+          <div class="kicker a-wipe" data-in="0" data-out="1">Benchmark · secondary data</div>
           <div class="kicker a-wipe" data-in="1" style="--d:.1s">Reading</div>
         </div>
         <h2 class="h2 bm-h" data-in="0" data-out="1" data-split style="--d:.1s">Willingness is strong; the mechanism is weak.</h2>

@@ -1,4 +1,4 @@
-/* 09 · How it runs (v2) */
+/* 09 · How it runs (v3): 0 what makes it inspiring · 1 quarterly rhythm · 2 recognition */
 @property --rn-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 
 /* a soft mood light per board, cross-fading as the camera pans */
@@ -27,7 +27,8 @@
 /* ── tab bar: a glass bar; a lit slider glides to the active tab ─────── */
 #s-runs .rn-tabs { position: absolute; left: var(--m); top: 100px; width: 1632px; height: 84px; z-index: 3; }
 #s-runs .rn-bar { position: absolute; inset: 0; border-radius: 24px; }
-#s-runs .rn-tab { position: absolute; top: 0; left: calc(var(--k) * 544px); width: 544px; height: 84px; padding-left: 22px; display: flex; align-items: center; gap: 16px; z-index: 2;
+/* tab lefts and widths are set inline (09-runs.js TL / TW: 650 · 520 · 462) */
+#s-runs .rn-tab { position: absolute; top: 0; height: 84px; padding-left: 22px; display: flex; align-items: center; gap: 16px; z-index: 2;
   font: 700 24px/1 var(--font); letter-spacing: .16em; text-transform: uppercase; }
 #s-runs .rn-ti { flex: none; width: 52px; height: 52px; border-radius: 28%; display: grid; place-items: center; font-size: 30px; color: rgba(255, 255, 255, .5);
   border: 1.5px solid rgba(255, 255, 255, .2); background: rgba(255, 255, 255, .04);
@@ -41,18 +42,18 @@
 #s-runs .rn-tab.at .rn-tl { color: var(--white); text-shadow: 0 0 24px rgba(3, 255, 203, .4); }
 #s-runs .rn-tab.at .rn-ti { color: #062036; border-color: var(--sea); background: linear-gradient(160deg, #6FF5E6, var(--teal)); animation: v2Pulse 2.8s ease-in-out infinite; }
 /* the slider: lit glass that glides to the active tab (a light runs along its lower edge) */
-#s-runs .rn-ind { position: absolute; left: 6px; top: 6px; width: 532px; height: 72px; border-radius: 19px; z-index: 1;
+#s-runs .rn-ind { position: absolute; left: 6px; top: 6px; width: 638px; height: 72px; border-radius: 19px; z-index: 1; --cx: 520px;
   background: linear-gradient(180deg, rgba(37, 199, 188, .34), rgba(37, 199, 188, .1) 62%, rgba(3, 255, 203, .2));
   box-shadow: inset 0 0 0 1.5px rgba(3, 255, 203, .55), inset 0 1px 0 rgba(255, 255, 255, .4), 0 0 44px rgba(37, 199, 188, .34), 0 12px 30px rgba(0, 0, 0, .3);
-  transition: opacity .9s var(--ease-out) var(--delay), transform 1.1s cubic-bezier(.7, 0, .2, 1) .05s; }
-#s-runs.st-1 .rn-ind { transform: translateX(544px); }
-#s-runs.st-2 .rn-ind { transform: translateX(1088px); }
+  transition: opacity .9s var(--ease-out) var(--delay), transform 1.1s cubic-bezier(.7, 0, .2, 1) .05s, width 1.1s cubic-bezier(.7, 0, .2, 1) .05s; }
+#s-runs.st-1 .rn-ind { transform: translateX(650px); width: 508px; --cx: 400px; }
+#s-runs.st-2 .rn-ind { transform: translateX(1170px); width: 450px; --cx: 350px; }
 #s-runs .rn-ind::before { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   background: radial-gradient(60% 120% at 50% 110%, rgba(3, 255, 203, .3), transparent 70%); animation: rnSpot 4.2s ease-in-out infinite; }
 #s-runs .rn-ind b { position: absolute; left: 0; bottom: -4px; width: 140px; height: 9px; border-radius: 5px;
   background: radial-gradient(closest-side, rgba(255, 255, 255, .95), rgba(3, 255, 203, .75) 40%, rgba(3, 255, 203, 0)); animation: rnComet 3.6s cubic-bezier(.45, 0, .55, 1) infinite; }
 @keyframes rnSpot { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
-@keyframes rnComet { 0% { transform: translateX(-40px); opacity: 0; } 12% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(440px); opacity: 0; } }
+@keyframes rnComet { 0% { transform: translateX(-40px); opacity: 0; } 12% { opacity: 1; } 82% { opacity: 1; } 100% { transform: translateX(var(--cx)); opacity: 0; } }
 
 /* ── the boards: a camera pan with depth ─────────────────────────────── */
 #s-runs .rn-panel { position: absolute; inset: 0; transform-origin: 50% 52%; }
@@ -78,9 +79,9 @@
 @keyframes rnSweepF { 0% { transform: translateX(310%) skewX(-16deg); opacity: 0; } 18% { opacity: 1; } 100% { transform: translateX(-130%) skewX(-16deg); opacity: 0; } }
 @keyframes rnSweepB { 0% { transform: translateX(-130%) skewX(-16deg); opacity: 0; } 18% { opacity: 1; } 100% { transform: translateX(310%) skewX(-16deg); opacity: 0; } }
 
-/* ── 0 · story format: the anatomy of a story, four fields ───────────── */
+/* ── 0 · what makes it inspiring: four questions, then the themes ────── */
 #s-runs .rn-h0 { font-size: 66px; }
-#s-runs .rn-card { position: absolute; left: var(--m); top: 326px; width: 1632px; height: 624px; border-radius: 26px; }
+#s-runs .rn-card { position: absolute; left: var(--m); top: 318px; width: 1632px; height: 568px; border-radius: 26px; }
 /* settled: keep the deep shadow unclipped */
 #s-runs .rn-card[data-in].is-in, #s-runs .rn-m[data-in].is-in, #s-runs .rn-annual[data-in].is-in { clip-path: inset(-160px round 26px); }
 #s-runs .rn-card::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: .7;
@@ -93,19 +94,19 @@
 #s-runs .rn-colh span { position: absolute; top: 38px; font: 700 18px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: rgba(255, 255, 255, .5); }
 #s-runs .rn-colh::after { content: ''; position: absolute; left: 120px; right: 38px; top: 74px; height: 1px; background: linear-gradient(90deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .08)); }
 /* the spine: the story enters at the port (where the spark rests) and walks down */
-#s-runs .rn-spine { position: absolute; left: 61px; top: 44px; width: 2px; height: 520px; background: linear-gradient(180deg, rgba(3, 255, 203, .8), rgba(37, 199, 188, .4) 70%, rgba(37, 199, 188, 0)); }
+#s-runs .rn-spine { position: absolute; left: 61px; top: 44px; width: 2px; height: 470px; background: linear-gradient(180deg, rgba(3, 255, 203, .8), rgba(37, 199, 188, .4) 70%, rgba(37, 199, 188, 0)); }
 #s-runs .rn-port { position: absolute; left: 44px; top: 24px; width: 36px; height: 36px; border-radius: 28%; border: 1.5px dashed rgba(37, 199, 188, .65); background: rgba(6, 26, 48, .9); }
-#s-runs .rn-row { position: absolute; left: 0; right: 0; height: 112px; }
-#s-runs .rn-row + .rn-row::before { content: ''; position: absolute; left: 120px; right: 38px; top: -8px; height: 1px; background: rgba(255, 255, 255, .08); }
-#s-runs .rn-chip { position: absolute; left: 32px; top: 26px; width: 60px; height: 60px; border-radius: 28%; display: grid; place-items: center; font: 700 24px/1 var(--font); color: var(--teal);
+#s-runs .rn-row { position: absolute; left: 0; right: 0; height: 104px; }
+#s-runs .rn-row + .rn-row::before { content: ''; position: absolute; left: 120px; right: 38px; top: -6px; height: 1px; background: rgba(255, 255, 255, .08); }
+#s-runs .rn-chip { position: absolute; left: 32px; top: 22px; width: 60px; height: 60px; border-radius: 28%; display: grid; place-items: center; font: 700 24px/1 var(--font); color: var(--teal);
   border: 1.5px solid rgba(37, 199, 188, .6); background: #0A2440; animation: rnChip 11s ease-in-out infinite; animation-delay: calc(var(--k) * 2.42s); }
-#s-runs .rn-key { position: absolute; left: 120px; top: 35px; font: 700 42px/1 var(--font); letter-spacing: -.018em; color: var(--white);
+#s-runs .rn-key { position: absolute; left: 120px; top: 31px; font: 700 42px/1 var(--font); letter-spacing: -.018em; color: var(--white);
   animation: rnKey 11s ease-in-out infinite; animation-delay: calc(var(--k) * 2.42s); }
-#s-runs .rn-q { position: absolute; left: 318px; top: 36px; margin: 0; font: 500 35px/1.2 var(--font); letter-spacing: -.008em; color: rgba(255, 255, 255, .9); white-space: nowrap; }
+#s-runs .rn-q { position: absolute; left: 318px; top: 32px; margin: 0; font: 500 35px/1.2 var(--font); letter-spacing: -.008em; color: rgba(255, 255, 255, .9); white-space: nowrap; }
 /* the design decision: support, in the quiet column */
-#s-runs .rn-dec { position: absolute; left: 1064px; top: 0; width: 520px; height: 112px; margin: 0; display: flex; align-items: center; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .6); text-wrap: pretty; }
+#s-runs .rn-dec { position: absolute; left: 1064px; top: 0; width: 520px; height: 104px; margin: 0; display: flex; align-items: center; font: 400 23px/1.42 var(--font); color: rgba(255, 255, 255, .6); text-wrap: pretty; }
 /* connector: question → decision. It draws with the build (a leading light), then a light fires along it as the walker passes */
-#s-runs .rn-con { position: absolute; left: 972px; top: 50px; width: 66px; height: 12px; }
+#s-runs .rn-con { position: absolute; left: 972px; top: 46px; width: 66px; height: 12px; }
 #s-runs .rn-con::before { content: ''; position: absolute; left: 0; right: 3px; top: 5px; height: 2px; background: linear-gradient(90deg, rgba(37, 199, 188, .15), rgba(37, 199, 188, .85));
   transform-origin: 0 50%; transform: scaleX(0); transition: transform .3s var(--ease-soft); }
 #s-runs .rn-con::after { content: ''; position: absolute; right: 2px; top: 1.5px; width: 9px; height: 9px; border-top: 2px solid var(--teal); border-right: 2px solid var(--teal); transform: rotate(45deg);
@@ -117,7 +118,7 @@
 #s-runs .rn-walk { position: absolute; left: 51px; top: 0; width: 22px; height: 22px; z-index: 3; }
 #s-runs .rn-walk .light { display: block; animation: rnWalk 11s linear infinite; }
 #s-runs .rn-bandw { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: inherit; }
-#s-runs .rn-band { position: absolute; left: 0; right: 0; top: 0; height: 128px; pointer-events: none;
+#s-runs .rn-band { position: absolute; left: 0; right: 0; top: 0; height: 116px; pointer-events: none;
   background: linear-gradient(90deg, rgba(37, 199, 188, .26), rgba(37, 199, 188, .1) 40%, rgba(37, 199, 188, .03));
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
   animation: rnBand 11s linear infinite; }
@@ -126,23 +127,29 @@
 @keyframes rnWalk {
   0%   { transform: translateY(31px) scale(.4); opacity: 0; }
   5%   { transform: translateY(31px) scale(1); opacity: 1; animation-timing-function: cubic-bezier(.4, 0, .6, 1); }
-  12%  { transform: translateY(141px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
-  34%  { transform: translateY(269px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
-  56%  { transform: translateY(397px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
-  78%  { transform: translateY(525px) scale(1); opacity: 1; animation-timing-function: cubic-bezier(.2, .4, .5, 1); }
-  90%  { transform: translateY(556px) scale(1.1); opacity: 1; }
-  96%  { transform: translateY(572px) scale(2); opacity: 0; }
+  12%  { transform: translateY(129px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  34%  { transform: translateY(245px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  56%  { transform: translateY(361px) scale(1); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  78%  { transform: translateY(477px) scale(1); opacity: 1; animation-timing-function: cubic-bezier(.2, .4, .5, 1); }
+  90%  { transform: translateY(506px) scale(1.1); opacity: 1; }
+  96%  { transform: translateY(520px) scale(2); opacity: 0; }
   100% { transform: translateY(31px) scale(.4); opacity: 0; }
 }
 @keyframes rnBand {
   0%, 5% { transform: translateY(-22px); opacity: 0; animation-timing-function: cubic-bezier(.4, 0, .6, 1); }
-  12%  { transform: translateY(88px); opacity: 1; animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
-  34%  { transform: translateY(216px); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
-  56%  { transform: translateY(344px); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
-  78%  { transform: translateY(472px); opacity: 1; animation-timing-function: cubic-bezier(.2, .4, .5, 1); }
-  92%  { transform: translateY(506px); opacity: 0; }
+  12%  { transform: translateY(80px); opacity: 1; animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  34%  { transform: translateY(196px); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  56%  { transform: translateY(312px); animation-timing-function: cubic-bezier(.3, .12, .7, .88); }
+  78%  { transform: translateY(428px); opacity: 1; animation-timing-function: cubic-bezier(.2, .4, .5, 1); }
+  92%  { transform: translateY(458px); opacity: 0; }
   100% { transform: translateY(-22px); opacity: 0; }
 }
+/* the themes we look for: a support line under the table; the four themes read a step brighter */
+#s-runs .rn-themes { position: absolute; left: var(--m); top: 906px; margin: 0; font: 400 22px/1.2 var(--font); color: rgba(255, 255, 255, .62); white-space: nowrap; }
+#s-runs .rn-th-k { font-weight: 700; letter-spacing: .02em; color: var(--teal); }
+#s-runs .rn-themes b { font-weight: 500; color: rgba(255, 255, 255, .9); }
+#s-runs .rn-themes i { font-style: normal; color: var(--teal); }
+
 @keyframes rnChip {
   0%, 7%, 26%, 100% { background: #0A2440; color: var(--teal); border-color: rgba(37, 199, 188, .6); box-shadow: 0 0 0 rgba(37, 199, 188, 0); }
   11%, 20% { background: var(--teal); color: var(--navy); border-color: var(--teal); box-shadow: 0 0 30px rgba(37, 199, 188, .65); }

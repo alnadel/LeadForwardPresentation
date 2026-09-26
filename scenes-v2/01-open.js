@@ -47,7 +47,7 @@
       <div class="op-near">${[[1180, 120, 120, 'a'], [1760, 300, 170, 'b'], [1500, 760, 210, 'a'], [1860, 860, 120, 'b'], [1180, 980, 150, 'b'], [1320, 420, 70, 'a']].map(([x, y, sz, k], i) => `<i class="${k}" style="left:${x}px;top:${y}px;--sz:${sz}px;--dl:${-i * 3.7}s"></i>`).join('')}</div>
 
       <div class="op-logo a-materialize" data-in="0" style="--d:.2s;--dur:1.6s">${Deck.logo()}</div>
-      <div class="kicker op-kicker a-wipe" data-in="0" style="--d:.9s">Team presentation · Lead Forward 2026</div>
+      <div class="kicker op-kicker a-wipe" data-in="0" style="--d:.9s">Lead Forward 2026 · Capstone · Inspire Others</div>
       <h1 class="display op-title" data-in="0" data-split style="--d:1.05s">Behind a<br>Better Life</h1>
       <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" style="--d:1.9s;--dur:1.4s">خلف حياة أفضل</div>
 

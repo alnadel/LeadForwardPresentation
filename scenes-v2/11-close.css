@@ -64,6 +64,12 @@
 #s-close .cl-hush { position: absolute; left: 60px; top: 30px; width: 1800px; height: 720px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 8, 16, .8), rgba(3, 8, 16, .66) 45%, rgba(3, 8, 16, .3) 75%, transparent); }
 
+/* the team: a quiet credit line above the ask (support weight, readable) */
+#s-close .cl-team { position: absolute; left: 0; right: 0; top: 684px; margin: 0; text-align: center; white-space: nowrap;
+  font: 500 23px/1 var(--font); letter-spacing: .005em; color: rgba(255, 255, 255, .8); text-shadow: 0 2px 14px rgba(3, 8, 16, .9); }
+#s-close .cl-team-k { font: 700 19px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--teal); }
+#s-close .cl-team i { font-style: normal; font-weight: 700; margin: 0 .4em; color: var(--teal); }
+
 /* the ask, kept on screen for Q&A: the hero card (glass, with a light travelling round its edge) */
 #s-close .cl-ask { position: absolute; left: 144px; top: 740px; width: 1632px; height: 214px; display: flex; align-items: center; padding: 0 56px; border-radius: 26px;
   background: linear-gradient(165deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .07)), rgba(4, 12, 24, .84);

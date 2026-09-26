@@ -38,7 +38,7 @@
       'We asked before we designed: 158 colleagues answered an anonymous eight-question survey. Each square is one of them.',
       'More than half rarely or never hear about another department’s achievement.',
       'The number to remember: only 8% say praise for a colleague reaches the whole organisation — thirteen people out of 158.',
-      'Yet the appetite is there: 80% say these stories would strengthen their connection to Tahakom, and 49% say a colleague’s story gives them an approach they can use. The work exists. The visibility channel does not. (Also heard: email preferred 123/158; 47% want a monthly rhythm; 32% anonymous nomination; 49% want to approve their story.)',
+      'Yet the appetite is there: 80% say these stories would strengthen their connection to Tahakom, and 49% say a colleague’s story gives them an approach they can use. The work exists. The visibility channel does not. Their channel preferences shape our communication plan.',
     ],
     field: [
       { dim: .3, lit: 0, travel: .4, offset: [-140, 60], links: .5, wave: .7, streaks: .1, sparkle: 1.1,
@@ -49,7 +49,7 @@
     ],
     html: `
       <div class="pad sv-head">
-        <div class="kicker" data-in="0">Employee feedback</div>
+        <div class="kicker" data-in="0">Current state · primary data</div>
         <div class="sv-swap">
           <h2 class="h2 sv-h" data-in="0" data-out="3" data-split style="--d:.1s">Employee feedback validates the opportunity.</h2>
           <h2 class="h2 sv-punch" data-in="3" data-split style="--d:.45s;--wstep:.05s">The work exists. <em class="hl">The visibility channel does not.</em></h2>

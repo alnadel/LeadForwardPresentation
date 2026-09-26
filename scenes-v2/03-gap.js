@@ -152,7 +152,7 @@
       <div class="amb-dust gp-dust">${dust}</div>
 
       <div class="pad gp-head">
-        <div class="kicker" data-in="0">The gap</div>
+        <div class="kicker" data-in="0">Gap assessment</div>
         <h2 class="h2 gp-h" data-in="0" data-dim="2" data-split style="--d:.15s">Inspiration is happening — but it is not always visible.</h2>
       </div>
 

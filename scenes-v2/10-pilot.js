@@ -1,18 +1,22 @@
-/* 10 · The pilot (v2) — act V opens on the ask in giant type, set in the dark
-   ceiling band of the operations room while the video wall keeps working.
+/* 10 · The pilot (v3) — enters with a rise from the risks: the room comes up under the
+   camera and the ask lands in giant type, set in the dark ceiling band of the
+   operations room while the video wall keeps working.
    Stop 1: the ask steps back to a heading and the plan rolls into one quarter: the
    ring draws behind a leading light and the three commitments land on it in glass
    (start, along the arc, where it closes).
-   Stop 2 is how we'll judge it: a compact measurement lane whose four gantries
-   read BASELINE as the story light drives through, the baseline (the figures count
-   up to their exact values) and what we need, and the decision as the hero while
-   everything before it recedes.
-   Merges v1 16 (ask) and 14 (measure); v1 15 (risks) lives in the notes. All
-   state is keyed off .st-n, so back navigation lands on the same frame.
+   Stop 2 is how we'll judge it: the KPI panel. Five glass tiles hang from a compact
+   measurement rail; each shows its measure, its baseline and the proposed target
+   (the key numbers; reach and the visibility gap count from their exact baselines,
+   8% and 56%, to the target). The story light drives along the rail and each tile's
+   target reads as it passes. A caption flags the targets as proposals, "what we
+   need" is a quiet strip, and the decision is the hero while the fork of outcomes
+   draws after it.
+   All state is keyed off .st-n, so back navigation lands on the same frame.
    Audience first — stop 0: the ask. Stop 1: "one quarterly cycle" (lit in the line
    and in the ring's core) and the three commitment titles; their descriptions are
    fine print. Stop 2: the decision, "scale, adjust or stop." (largest, brightest,
-   the spark); the lane labels and the two cards are readable support. */
+   the spark), then the five targets; measures, baselines, caption and needs are
+   readable support. */
 (function () {
   /* ── the quarter ring (stage px) ── */
   const CX = 952, CY = 650, R = 170, V = 200;   // V: half-size of the ring's SVG box
@@ -31,52 +35,53 @@
   }).join('');
   const C2X = 1170;   // the right-hand commitment's left edge
 
-  /* ── the measurement lane (compact port of v1 14) ── */
-  const LANE_Y = 440, LANE_H = 48, CAR_Y = LANE_Y + LANE_H / 2;
-  const GANTRIES = [
-    { x: 348, label: 'Participation' },
-    { x: 756, label: 'Reach' },
-    { x: 1164, label: 'Recognition' },
-    { x: 1572, label: 'Repeatable behaviour' },
+  /* ── the KPI panel: five tiles under a compact measurement rail ── */
+  const RAIL_Y = 320;                            // the rail runs along the tiles' top edges
+  const KX = 144, KW = 312, KG = 18;             // tile left, width and gap (5 × 312 + 4 × 18 = 1632)
+  const KPIS = [
+    { k: 'Participation', m: 'Nominations from every department', b: '—', t: 'every department' },
+    { k: 'Engagement', m: 'Colleagues reading at least one story', b: 'measured from month 1', t: 'most colleagues' },
+    { k: 'Sentiment', m: '“My work is seen”: pulse, 3 questions', b: 'baseline at launch', t: 'up by quarter end' },
+    { k: 'Recognition reach', m: 'Re-survey (same question)', b: 8, t: 25 },
+    { k: 'Visibility gap', m: 'Re-survey (same question)', b: 56, t: 40, pre: 'below' },
   ];
-  // the light's path runs x -60 → 1980: one quick pass with the build, then
+  // the story light's path runs x -60 → 1980: one quick pass with the build, then
   // a slow lap every 10 s while the presenter talks, with a second story half a
-  // lap behind, so each readout blinks twice a cycle (keep in step with .pl-car)
+  // lap behind, so each tile reads twice a cycle (keep in step with .pl-car)
   const X0 = -60, X1 = 1980, FIRST_AT = 0.5, FIRST = 1, SLOW = 10;
   const frac = (x) => (x - X0) / (X1 - X0);
   const r2 = (v) => Math.round(v * 100) / 100;
-  let truss = 'M8 20H252M8 40H252';
-  for (let x = 8; x < 252; x += 16) truss += `M${x} 40L${x + 8} 20L${x + 16} 40`;
-  // the readout cycle blinks at 0% and 50%, once for each light; the far gantries
+  // the readout cycle blinks at 0% and 50%, once for each light; the far tiles
   // start it half a lap early so they also catch the second light's first pass
   const cycleAt = (x) => {
     const tf = FIRST_AT + frac(x) * FIRST, ts = FIRST_AT + FIRST + frac(x) * SLOW;
     return r2(ts - SLOW / 2 >= tf + 1.05 ? ts - SLOW / 2 : ts);
   };
-  const gantry = (g, i) => `
-    <div class="pl-g" style="left:${g.x - 130}px;top:${LANE_Y - 144}px;--on:${r2(0.25 + i * 0.08)}s;--tf:${r2(FIRST_AT + frac(g.x) * FIRST)}s;--ts:${cycleAt(g.x)}s">
-      <svg class="pl-frame" viewBox="0 0 260 144" aria-hidden="true">
-        <rect x="14" y="40" width="7" height="100" rx="2"/><rect x="239" y="40" width="7" height="100" rx="2"/>
-        <rect x="8" y="138" width="19" height="4" rx="1"/><rect x="233" y="138" width="19" height="4" rx="1"/>
-        <path class="pl-truss" d="${truss}"/>
-        <rect class="pl-head" x="117" y="58" width="26" height="14" rx="3"/>
-      </svg>
-      <i class="pl-lens"></i>
-      <div class="pl-vms"><span>Baseline</span></div>
-      <div class="pl-beam"></div>
-      <div class="pl-foot"></div>
+  const kpi = (x, i) => {
+    const cx = KX + i * (KW + KG) + KW / 2, num = typeof x.t === 'number';
+    const base = typeof x.b === 'number' ? `<b class="pl-kb-n">${x.b}%</b>` : `<span class="pl-kb-t">${x.b}</span>`;
+    const target = num
+      ? `<span class="pl-kt-v n">${x.pre ? `<small>${x.pre}</small>` : ''}<span class="num" data-count="${x.t}" data-from="${x.b}" data-delay="${r2(.95 + i * .06)}" data-dur="1">${x.t}</span>%</span>`
+      : `<span class="pl-kt-v">${x.t}</span>`;
+    return `
+    <div class="pl-k glass a-unfold" data-in="2" style="--tf:${r2(FIRST_AT + frac(cx) * FIRST)}s;--ts:${cycleAt(cx)}s">
+      <i class="pl-k-pip"></i><i class="pl-k-beam"></i>
+      <div class="pl-k-h"><b class="pl-k-no">${String(i + 1).padStart(2, '0')}</b><span class="pl-k-name">${x.k}</span></div>
+      <p class="pl-k-m">${x.m}</p>
+      <div class="pl-kb"><span class="pl-k-l">Baseline</span>${base}</div>
+      <div class="pl-kt"><span class="pl-k-l t">Target</span>${target}</div>
     </div>`;
-  const glabel = (g) => `<div class="label pl-glab a-fade" data-in="2" style="left:${g.x - 200}px;top:${LANE_Y + LANE_H + 16}px;--d:${r2(FIRST_AT + frac(g.x) * FIRST - 0.08)}s;--dur:.6s">${g.label}</div>`;
+  };
 
   /* ── the room: the video wall keeps working ── */
   const blips = Array.from({ length: 24 }, (_, i) => `<b style="--x:${(i * 41) % 97}%;--y:${4 + (i * 59) % 32}%;--w:${16 + (i * 7) % 30}px;--t:${2.2 + (i % 5) * .8}s;--dl:${-i * .37}s"></b>`).join('');
   const dust = Array.from({ length: 18 }, (_, i) => `<i style="left:${4 + (i * 137) % 92}%;top:${58 + (i * 71) % 40}%;--t:${11 + (i % 6) * 2.2}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 13) % 50)}px;--dy:${-150 - (i * 29) % 180}px"></i>`).join('');
 
-  const HERO_Y = 786;   // top of the decision's hero line (keep in step with .pl-hero in 10-pilot.css)
+  const HERO_Y = 800;   // top of the decision's hero line (keep in step with .pl-hero in 10-pilot.css)
   // after "stop." the pilot's path forks three ways: one recommendation, three possible outcomes
   // (box: stage FX,FY · FW×140; the stem starts just after the spark; every branch is drawn
   // equal, so none is favoured)
-  const FX = 1116, FY = 780, FW = 650, FN = FW - 30, FB = 210;
+  const FX = 1026, FY = 790, FW = 740, FN = FW - 30, FB = 250;
   const FORK = [`M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 32, ${FN} 32`, `M30 76 H${FN}`, `M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 120, ${FN} 120`];
   const fork = FORK.map((d, i) => `<path class="pl-fb" d="${d}" pathLength="100" style="--i:${i}"/>`).join('');
   const forkLights = FORK.map((d, i) => `<i class="pl-fl" style="offset-path:path('${d}');--i:${i}"><b class="light sm"></b></i>`).join('');
@@ -88,12 +93,12 @@
     act: 4,
     bg: 'night',
     transition: 'rise',
-    cues: ['Approve the pilot.', 'One quarterly cycle · three commitments', 'How we’ll judge it · what we need · scale, adjust or stop'],
-    holds: [6, 12, 12],
+    cues: ['Approve the pilot.', 'One quarterly cycle · three commitments', 'How we’ll judge it · five KPIs, baseline → proposed target · scale, adjust or stop'],
+    holds: [6, 12, 14],
     notes: [
       'So here is the ask, in three words: approve the pilot. Pause, and let it sit. Everything that follows is what that approval buys, and how we will know whether it worked.',
-      'We start with one quarterly cycle and measure what changes. One lap of this ring is one quarter: open nominations to peers and leaders, run one full cycle — capture, curate, feature, reinforce — and report what changed: participation, reach, recognition and repeatable behaviour, on a quarterly dashboard.',
-      'Four gantries judge it: participation, reach, recognition, repeatable behaviour. Baseline: 8% reach, a 56% gap; the same eight questions at quarter end. We need a sponsor, curation time, our existing channels — no new platform. Then one recommendation: scale, adjust or stop. Risks if asked (v1 scene 15): a popularity contest — peers nominate, criteria published (curation panel); nominations dry up — always open, each featured colleague nominates the next (Internal Communications); a sensitive story — facts and consent checked first (HR, Legal on request); clustering — representation tracked from month one (HR / People Analytics); owners and the needs list are our proposal, team to confirm before presenting.',
+      'We start with one quarterly cycle and measure what changes. One lap of this ring is one quarter: open nominations to peers and leaders, run one full cycle — capture, curate, feature, reinforce — and report what changed on a quarterly dashboard.',
+      'We’ll judge it by participation from every department, colleagues reading, a sentiment pulse, and a quarter-end re-survey: reach from 8% to 25%, the visibility gap from 56% to below 40%, for the sponsor to confirm. Then: scale, adjust or stop. [Team: confirm the targets.]',
     ],
     field: [
       { dim: .3, lit: .03, travel: .25, offset: [-60, -200], litFrom: [960, 300], links: .4, wave: .4, streaks: .14, sparkle: 1, calm: [[100, 110, 1500, 380, .85]] },
@@ -154,26 +159,15 @@
         </div>
       </div>
 
-      <!-- stop 2 · how we'll judge it -->
+      <!-- stop 2 · how we'll judge it: the KPI panel -->
       <div class="kicker pl-judge a-wipe" data-in="2" style="--d:.15s">How we’ll judge it</div>
-      <div class="pl-rig a-wipe" data-in="2" style="--d:.1s;--dur:1.1s"><div class="pl-rig-in">
-        <div class="pl-lane" style="top:${LANE_Y}px;height:${LANE_H}px">
-          <i class="pl-edge t"></i><i class="pl-edge b"></i>
-          <svg class="pl-lanedash" viewBox="0 0 1920 4" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="2" x2="1920" y2="2"/></svg>
-        </div>
-        ${GANTRIES.map(gantry).join('')}
-      </div></div>
-      <div class="pl-car" style="top:${CAR_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light lg"></i></div>
-      <div class="pl-car c2" style="top:${CAR_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light"></i></div>
-      ${GANTRIES.map(glabel).join('')}
-
-      <div class="pl-card pl-base glass plum a-unfold" data-in="2" style="--d:.45s">
-        <div class="label pl-card-l">Baseline</div>
-        <p class="pl-base-t">Recognition reach <b class="pl-fig"><span class="num" data-count="8" data-delay=".75" data-dur="1">8</span>%</b> <i>·</i> visibility gap <b class="pl-fig"><span class="num" data-count="56" data-delay=".85" data-dur="1.1">56</span>%</b> today</p>
-        <p class="pl-base-t2">→ the same eight questions at quarter end.</p>
-      </div>
-      <div class="pl-card pl-need glass a-unfold" data-in="2" style="--d:.58s">
-        <div class="label pl-card-l">What we need</div>
+      <div class="pl-rail a-wipe" data-in="2" style="top:${RAIL_Y}px;--d:.2s;--dur:1s"></div>
+      <div class="pl-car" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light lg"></i></div>
+      <div class="pl-car c2" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light"></i></div>
+      <div class="pl-kpis" data-stagger style="left:${KX}px;top:${RAIL_Y}px;--stagger:.07s;--d:.28s">${KPIS.map(kpi).join('')}</div>
+      <p class="pl-cap a-fade" data-in="2" style="--d:1s;--dur:.8s">Targets proposed for the sponsor to confirm at launch.</p>
+      <div class="pl-need glass a-unfold" data-in="2" style="--d:.78s">
+        <span class="label pl-need-l">What we need</span>
         <p class="pl-need-t">An executive sponsor <i>·</i> curation time from HR and Internal Communications <i>·</i> our existing channels</p>
       </div>
       <h2 class="pl-final" data-in="2" data-split style="--d:.62s;--wstep:.03s">After one quarter we come back with one recommendation:</h2>

@@ -3,6 +3,7 @@
    nomination chain) until the whole field is lit. Then the brand frame rises
    over the dusk skyline with the ask strip beneath it, and holds for Q&A while
    stories keep travelling above the city and its traffic keeps moving.
+   v3: stop 1 credits the team (Group 1) in a small line just above the ask.
    Port of v1 17: the pinned pair, the chain drive loop, the KNOW placement
    formula, Deck.NIGHT_PAIR / Deck.NIGHT_OFFSET. v1 stops 1 and 2 are merged. */
 (function () {
@@ -29,12 +30,13 @@
   const trails = ROADS.map((r, i) => Array.from({ length: r.n }, (_, j) =>
     `<path class="cl-car ${r.k}" d="${r.d}" pathLength="1000" style="--t:${r.t}s;--dl:${(-(j / r.n) * r.t - i * .7).toFixed(2)}s"/>`).join('')).join('');
 
-  /* stories travelling across the lit field, in the band between the brand block and the ask */
+  /* stories travelling across the lit field, in the band between the brand block and the team line */
   const STORIES = [
-    { d: 'M-80 672 C 360 636, 700 712, 1000 676 S 1640 650, 2000 694', t: 11, dl: -1.5 },
-    { d: 'M2000 656 C 1600 700, 1260 640, 940 690 S 320 664, -80 700', t: 13, dl: -7.5 },
-    { d: 'M-80 704 C 420 684, 820 660, 1180 698 S 1700 712, 2000 676', t: 15, dl: -11 },
+    { d: 'M-80 626 C 360 598, 700 656, 1000 628 S 1640 608, 2000 642', t: 11, dl: -1.5 },
+    { d: 'M2000 612 C 1600 648, 1260 600, 940 640 S 320 620, -80 648', t: 13, dl: -7.5 },
+    { d: 'M-80 650 C 420 634, 820 614, 1180 644 S 1700 656, 2000 626', t: 15, dl: -11 },
   ];
+  const TEAM = ['Buthainah Alhejazi', 'Abdulaziz Almalaq', 'Hassan Alzahrani', 'Fadi Alkhayrat'];
   const stories = STORIES.map((s) => `<i class="cl-story" style="offset-path:path('${s.d}');--t:${s.t}s;--dl:${s.dl}s"><b></b><i class="light sm"></i></i>`).join('');
 
   Deck.scene({
@@ -59,7 +61,7 @@
       // the lit field frames the brand block: calm (nearly dark) behind the lockup, the title
       // block and the ask card, alive at the sides and in the band where the stories travel
       { dim: .9, lit: 1, travel: 2.2, warm: .15, drift: .6, pins: [], links: .42, wave: .5, streaks: .16, sparkle: 1.4,
-        calm: [[720, 10, 1200, 196, 1], [200, 150, 1720, 470, 1], [280, 440, 1640, 640, .95], [100, 720, 1820, 980, .9]] },
+        calm: [[720, 10, 1200, 196, 1], [200, 150, 1720, 470, 1], [280, 440, 1640, 596, .95], [360, 668, 1560, 728, .9], [100, 720, 1820, 980, .9]] },
     ],
     html: `
       <div class="cl-sky a-fade" data-in="1" style="--dur:2.6s">
@@ -91,6 +93,9 @@
         <p class="cl-way" data-in="1" style="--d:.72s"><i class="light sm"></i><span class="amb-shimmer">Light the way.</span></p>
         <div class="cl-thanks a-fade" data-in="1" style="--d:.84s">Thank you</div>
       </div>
+
+      <!-- the team (support): a small credit line just above the ask -->
+      <p class="cl-team a-fade" data-in="1" style="--d:1.05s;--dur:.9s"><span class="cl-team-k">Group 1</span> <i>·</i> ${TEAM.join(' <i>·</i> ')}</p>
 
       <div class="cl-ask glass live a-unfold" data-in="1" style="--d:.8s">
         <div class="cl-ask-l">

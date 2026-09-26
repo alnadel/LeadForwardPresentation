@@ -117,38 +117,15 @@
 #s-pilot .pl-chain .arr { color: var(--teal); }
 #s-pilot .pl-nb { white-space: nowrap; }
 
-/* ── stop 2 · how we'll judge it ── */
+/* ── stop 2 · how we'll judge it: the KPI panel ── */
 #s-pilot .pl-judge { position: absolute; left: 144px; top: 266px; }
-#s-pilot .pl-rig { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
-#s-pilot .pl-lane { position: absolute; left: 0; right: 0;
-  background: linear-gradient(180deg, rgba(37, 199, 188, .05), rgba(255, 255, 255, .08));
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
-          mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); }
-#s-pilot .pl-edge { position: absolute; left: 0; right: 0; height: 2px; background: rgba(255, 255, 255, .28); }
-#s-pilot .pl-edge.t { top: 0; background: linear-gradient(90deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .55), rgba(37, 199, 188, .2)); box-shadow: 0 0 12px rgba(37, 199, 188, .35); }
-#s-pilot .pl-edge.b { bottom: 0; }
-#s-pilot .pl-lanedash { position: absolute; left: 0; top: 22px; width: 1920px; height: 4px; }
-#s-pilot .pl-lanedash line { stroke: rgba(255, 255, 255, .32); stroke-width: 4; stroke-dasharray: 34 26; }
+/* the measurement rail: the tiles hang from it; the story light drives along it */
+#s-pilot .pl-rail { position: absolute; left: 0; width: 1920px; height: 2px; margin-top: -1px;
+  background: linear-gradient(90deg, rgba(37, 199, 188, 0), rgba(37, 199, 188, .55) 8%, rgba(37, 199, 188, .55) 92%, rgba(37, 199, 188, 0));
+  box-shadow: 0 0 12px rgba(37, 199, 188, .35); }
 
-/* a gantry: two posts, a truss, a variable-message readout and a sensor head (90%) */
-#s-pilot .pl-g { position: absolute; width: 260px; height: 144px; transform: scale(.9); transform-origin: 50% 100%; opacity: .3; transition: opacity .6s var(--ease-soft); }
-#s-pilot.st-2 .pl-g { opacity: 1; transition-delay: var(--on); }
-#s-pilot .pl-frame { position: absolute; inset: 0; width: 260px; height: 144px; overflow: visible; }
-#s-pilot .pl-frame rect { fill: rgba(214, 226, 240, .55); }
-#s-pilot .pl-frame .pl-truss { fill: none; stroke: rgba(214, 226, 240, .5); stroke-width: 1.6; stroke-linejoin: round; }
-#s-pilot .pl-frame .pl-head { fill: rgba(214, 226, 240, .8); }
-#s-pilot .pl-lens { position: absolute; left: 126px; top: 66px; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); opacity: .6; box-shadow: 0 0 8px var(--teal); }
-#s-pilot .pl-vms { position: absolute; left: 26px; top: 0; width: 208px; height: 56px; border-radius: 9px; display: grid; place-items: center;
-  background: radial-gradient(rgba(37, 199, 188, .14) 1px, transparent 1.4px) 0 0 / 5px 5px, linear-gradient(180deg, #06192A, #031019);
-  border: 1.5px solid rgba(37, 199, 188, .42); box-shadow: 0 8px 22px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .08); }
-/* 26px in the box, 23px on stage after the gantry's 90% scale */
-#s-pilot .pl-vms span { font: 700 26px/1 var(--font); letter-spacing: .18em; margin-right: -.18em; text-transform: uppercase; color: var(--teal); opacity: .62; }
-#s-pilot .pl-beam { position: absolute; left: 75px; top: 74px; width: 110px; height: 98px; opacity: .1;
-  background: linear-gradient(180deg, rgba(37, 199, 188, .9), rgba(37, 199, 188, .15)); clip-path: polygon(45% 0, 55% 0, 100% 100%, 0 100%); }
-#s-pilot .pl-foot { position: absolute; left: 65px; top: 162px; width: 130px; height: 20px; border-radius: 50%; opacity: .12; background: radial-gradient(closest-side, rgba(3, 255, 203, .8), transparent); }
-
-/* the story light on the lane */
-#s-pilot .pl-car { position: absolute; left: 0; width: 0; height: 0; opacity: 0; transform: translateX(-60px); transition: opacity .4s var(--ease-soft); }
+/* the story light on the rail */
+#s-pilot .pl-car { position: absolute; left: 0; width: 0; height: 0; z-index: 2; opacity: 0; transform: translateX(-60px); transition: opacity .4s var(--ease-soft); }
 #s-pilot .pl-car .light { position: absolute; left: -17px; top: -17px; }
 #s-pilot .pl-car::before { content: ''; position: absolute; left: -150px; top: -46px; width: 300px; height: 92px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .28), transparent); }
 #s-pilot .pl-tail { position: absolute; right: 8px; top: -2px; width: 260px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, transparent, rgba(37, 199, 188, .25) 55%, rgba(3, 255, 203, .8)); }
@@ -160,65 +137,64 @@
 @keyframes plCarFirst { from { transform: translateX(-60px); } to { transform: translateX(1980px); } }
 @keyframes plCar { from { transform: translateX(-60px); } to { transform: translateX(1980px); } }
 
-/* each readout blinks BASELINE as the light passes beneath its gantry */
-#s-pilot.st-2 .pl-vms span { animation: plTxtOnce 1s linear var(--tf) 1 backwards, plTxt 10s linear var(--ts) infinite; }
-#s-pilot.st-2 .pl-vms { animation: plVmsOnce 1s linear var(--tf) 1, plVms 10s linear var(--ts) infinite; }
-#s-pilot.st-2 .pl-beam, #s-pilot.st-2 .pl-foot { animation: plBeamOnce 1s linear var(--tf) 1, plBeam 10s linear var(--ts) infinite; }
-#s-pilot.st-2 .pl-lens { animation: plLensOnce 1s linear var(--tf) 1, plLens 10s linear var(--ts) infinite; }
-@keyframes plTxt {
-  0%, 2.4%, 50%, 52.4% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
-  2.5%, 3.9%, 52.5%, 53.9% { opacity: .3; text-shadow: none; color: var(--teal); }
-  4%, 9%, 54%, 59% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
-  13%, 49.9%, 63%, 100% { opacity: .62; text-shadow: none; color: var(--teal); } }
-@keyframes plTxtOnce {
-  0% { opacity: 0; text-shadow: none; color: var(--teal); }
-  1%, 18% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
-  19%, 30% { opacity: .3; text-shadow: none; color: var(--teal); }
-  31%, 70% { opacity: 1; text-shadow: 0 0 14px rgba(3, 255, 203, .8); color: var(--sea); }
-  100% { opacity: .62; text-shadow: none; color: var(--teal); } }
-@keyframes plVms {
-  0%, 9%, 50%, 59% { border-color: rgba(3, 255, 203, .9); box-shadow: 0 0 30px rgba(37, 199, 188, .5), 0 8px 22px rgba(0, 0, 0, .5); }
-  13%, 49.9%, 63%, 100% { border-color: rgba(37, 199, 188, .42); box-shadow: 0 8px 22px rgba(0, 0, 0, .5); } }
-@keyframes plVmsOnce {
-  0%, 70% { border-color: rgba(3, 255, 203, .9); box-shadow: 0 0 30px rgba(37, 199, 188, .5), 0 8px 22px rgba(0, 0, 0, .5); }
-  100% { border-color: rgba(37, 199, 188, .42); box-shadow: 0 8px 22px rgba(0, 0, 0, .5); } }
-@keyframes plBeam { 0%, 50% { opacity: .1; } 1.5%, 7%, 51.5%, 57% { opacity: .75; } 12%, 49.9%, 62%, 100% { opacity: .1; } }
-@keyframes plBeamOnce { 0% { opacity: .1; } 12%, 55% { opacity: .75; } 100% { opacity: .1; } }
-@keyframes plLens { 0%, 9%, 50%, 59% { opacity: 1; transform: scale(1.4); } 13%, 49.9%, 63%, 100% { opacity: .6; transform: none; } }
-@keyframes plLensOnce { 0%, 70% { opacity: 1; transform: scale(1.4); } 100% { opacity: .6; transform: none; } }
+/* five KPI tiles in glass. The target is the key (large, lit); the name reads next;
+   the measure and the baseline are support */
+#s-pilot .pl-kpis { position: absolute; width: 1632px; display: grid; grid-template-columns: repeat(5, 1fr); column-gap: 18px; }
+#s-pilot .pl-k { position: relative; height: 300px; padding: 20px 24px 0; border-radius: 0 0 22px 22px; }
+#s-pilot .pl-k[data-in].is-in { clip-path: inset(-160px round 0 0 22px 22px); }
+#s-pilot .pl-k[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }
+#s-pilot .pl-k-h { display: flex; align-items: baseline; gap: 12px; white-space: nowrap; }
+#s-pilot .pl-k-no { font: 700 18px/1 var(--font); letter-spacing: .1em; color: var(--teal); }
+#s-pilot .pl-k-name { font: 700 26px/1.1 var(--font); letter-spacing: -.012em; color: var(--white); }
+#s-pilot .pl-k-m { height: 50px; margin: 8px 0 0; font: 400 20px/1.25 var(--font); color: rgba(255, 255, 255, .6); text-wrap: balance; }
+#s-pilot .pl-kb { margin-top: 12px; padding-top: 13px; border-top: 1px solid rgba(255, 255, 255, .12); height: 72px; }
+#s-pilot .pl-k-l { display: block; font: 700 16px/1 var(--font); letter-spacing: .18em; text-transform: uppercase; color: rgba(255, 255, 255, .5); }
+#s-pilot .pl-k-l.t { color: var(--teal); }
+#s-pilot .pl-kb-t { display: block; margin-top: 9px; font: 400 21px/1.15 var(--font); color: rgba(255, 255, 255, .74); white-space: nowrap; }
+#s-pilot .pl-kb-n { display: block; margin-top: 6px; font: 700 30px/1 var(--font); letter-spacing: -.02em; color: var(--purple-lt); }
+#s-pilot .pl-kt { margin-top: 10px; }
+#s-pilot .pl-kt-v { display: block; margin-top: 8px; font: 700 29px/1.12 var(--font); letter-spacing: -.016em; color: var(--sea); white-space: nowrap;
+  text-shadow: 0 0 24px rgba(3, 255, 203, .22); transition: text-shadow .6s var(--ease-soft); }
+#s-pilot .pl-kt-v.n { margin-top: 4px; font-size: 64px; line-height: 1; letter-spacing: -.03em; }
+#s-pilot .pl-kt-v .num { display: inline-block; }
+#s-pilot .pl-kt-v small { margin-right: .22em; font: 700 28px/1 var(--font); letter-spacing: -.01em; }
+/* "below" joins once the figure has counted down from the baseline to the target */
+#s-pilot .pl-kt-v small { opacity: 0; transition: opacity .3s var(--ease-soft); }
+#s-pilot .pl-k.is-in .pl-kt-v small { opacity: 1; transition: opacity .5s var(--ease-soft) calc(var(--enter, 0s) + 2.05s); }
 
-#s-pilot .pl-glab { position: absolute; width: 400px; text-align: center; font-size: 24px; color: var(--teal); text-shadow: 0 2px 10px rgba(0, 0, 0, .6); }
+/* each tile reads as the story light passes over it: its pip flashes, a soft beam falls
+   into the tile and the target brightens (numbers never change while parked) */
+#s-pilot .pl-k-pip { position: absolute; left: 50%; top: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 28%; z-index: 1;
+  background: #06121F; border: 2px solid rgba(37, 199, 188, .8); box-shadow: 0 0 10px rgba(37, 199, 188, .4); }
+#s-pilot .pl-k-beam { position: absolute; left: 10%; right: 10%; top: 0; height: 190px; pointer-events: none; opacity: 0;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(3, 255, 203, .16), rgba(37, 199, 188, .05) 60%, transparent); }
+#s-pilot.st-2 .pl-k-pip { animation: plPipOnce 1s linear var(--tf) 1, plPip 10s linear var(--ts) infinite; }
+#s-pilot.st-2 .pl-k-beam { animation: plBeamOnce 1s linear var(--tf) 1, plBeam 10s linear var(--ts) infinite; }
+#s-pilot.st-2 .pl-kt-v { animation: plRead 10s linear var(--ts) infinite; }
+@keyframes plPip { 0%, 9%, 50%, 59% { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .8); }
+  13%, 49.9%, 63%, 100% { background: #06121F; border-color: rgba(37, 199, 188, .8); box-shadow: 0 0 10px rgba(37, 199, 188, .4); } }
+@keyframes plPipOnce { 0%, 60% { background: var(--sea); border-color: var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .8); }
+  100% { background: #06121F; border-color: rgba(37, 199, 188, .8); box-shadow: 0 0 10px rgba(37, 199, 188, .4); } }
+@keyframes plBeam { 0%, 50% { opacity: .15; } 2%, 8%, 52%, 58% { opacity: 1; } 14%, 49.9%, 64%, 100% { opacity: 0; } }
+@keyframes plBeamOnce { 0% { opacity: 0; } 15%, 55% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes plRead { 0%, 50% { text-shadow: 0 0 24px rgba(3, 255, 203, .22); } 3%, 9%, 53%, 59% { text-shadow: 0 0 30px rgba(3, 255, 203, .75); }
+  15%, 49.9%, 65%, 100% { text-shadow: 0 0 24px rgba(3, 255, 203, .22); } }
 
-/* the baseline and what we need, side by side, in glass */
-/* support: compact, readable, quieter than the decision */
-#s-pilot .pl-card { position: absolute; top: 556px; width: 800px; height: 150px; padding: 20px 30px 0; border-radius: 22px; }
-#s-pilot .pl-base { left: 144px; }
-#s-pilot .pl-need { left: 976px; }
-#s-pilot .pl-card-l { color: var(--teal); font-size: 20px; }
-#s-pilot .pl-base .pl-card-l { color: var(--purple-lt); }
-#s-pilot .pl-base-t { margin: 6px 0 0; font: 400 24px/1.2 var(--font); color: rgba(255, 255, 255, .74); white-space: nowrap; }
-#s-pilot .pl-fig { font-weight: 700; font-size: 46px; line-height: 1; vertical-align: -5px; color: var(--purple-lt); letter-spacing: -.025em; text-shadow: 0 0 26px rgba(157, 103, 170, .4); }
-#s-pilot .pl-fig .num { display: inline-block; }
-#s-pilot .pl-base-t i, #s-pilot .pl-need-t i { font-style: normal; color: var(--teal); margin: 0 .15em; }
-#s-pilot .pl-base-t2 { margin: 8px 0 0; font: 400 22px/1.3 var(--font); color: rgba(255, 255, 255, .62); white-space: nowrap; }
-#s-pilot .pl-base-t2 .arr { color: var(--teal); }
-#s-pilot .pl-need-t { margin: 14px 0 0; font: 400 24px/1.42 var(--font); color: rgba(255, 255, 255, .78); text-wrap: balance; }
-/* settled: keep the deep shadow unclipped; while hidden, clip nothing above the cards */
-#s-pilot .pl-card[data-in].is-in { clip-path: inset(-160px round 22px); }
-#s-pilot .pl-card[data-in]:not(.is-in) { clip-path: inset(0 -80px 100% -80px round 18px); }
+/* the caption flags the targets as proposals; "what we need" is a quiet strip */
+#s-pilot .pl-cap { position: absolute; left: 144px; top: 634px; margin: 0; font: 400 19px/1.2 var(--font); color: rgba(255, 255, 255, .62); }
+#s-pilot .pl-need { position: absolute; left: 144px; top: 672px; width: 1632px; height: 54px; display: flex; align-items: center; gap: 22px; padding: 0 26px; border-radius: 16px; }
+#s-pilot .pl-need[data-in].is-in { clip-path: inset(-160px round 16px); }
+#s-pilot .pl-need-l { flex: none; font-size: 18px; color: var(--teal); }
+#s-pilot .pl-need-t { margin: 0; font: 400 22px/1 var(--font); color: rgba(255, 255, 255, .74); white-space: nowrap; }
+#s-pilot .pl-need-t i { font-style: normal; color: var(--teal); margin: 0 .2em; }
 
 /* the decision: the hero of the stop */
 /* the decision: the hero of the stop (largest, brightest, the spark lands after "stop.") */
-#s-pilot .pl-final { position: absolute; left: 144px; top: 734px; margin: 0; font: 700 40px/1.1 var(--font); letter-spacing: -.018em; color: var(--ink-1); white-space: nowrap; }
+#s-pilot .pl-final { position: absolute; left: 144px; top: 750px; margin: 0; font: 700 38px/1.1 var(--font); letter-spacing: -.018em; color: var(--ink-1); white-space: nowrap; }
 #s-pilot .pl-herow { position: absolute; left: 140px; }
-#s-pilot .pl-hero { display: inline-block; margin: 0; font: 700 116px/1.06 var(--font); letter-spacing: -.032em; color: var(--sea); white-space: nowrap; }
+#s-pilot .pl-hero { display: inline-block; margin: 0; font: 700 104px/1.06 var(--font); letter-spacing: -.032em; color: var(--sea); white-space: nowrap; }
 #s-pilot.st-2 .pl-hero.is-in { animation: plHero 5s ease-in-out 2.6s infinite; }
 @keyframes plHero { 0%, 100% { filter: drop-shadow(0 0 0 rgba(3, 255, 203, 0)); } 50% { filter: drop-shadow(0 0 26px rgba(3, 255, 203, .5)); } }
-/* once the decision has landed, everything before it steps back (the cards stay readable) */
-#s-pilot .pl-rig-in { position: absolute; inset: 0; transition: opacity .4s var(--ease-soft); }
-#s-pilot.st-2 .pl-rig-in { opacity: .6; transition: opacity 1s var(--ease-soft) 1.9s; }
-#s-pilot .pl-card > * { transition: opacity .4s var(--ease-soft); }
-#s-pilot.st-2 .pl-card > * { opacity: .86; transition: opacity 1s var(--ease-soft) 2s; }
 
 /* the fork: the path splits three ways after "stop." (it draws behind a leading light, then
    a story travels the stem and divides into all three branches, every 5 s) */

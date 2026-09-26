@@ -1,12 +1,13 @@
-/* 09 · How it runs (v2) — v1 scenes 11 (story format), 12 (operating rhythm) and
-   13 (recognition) as one scene: three glass boards under a lit tab bar, one board
-   per stop. Each click is a camera pan: the next board swings in from the right out
-   of depth (scale + blur) while the current one slides away left, a parallax world of
-   light behind them travels more slowly (depth), a light sweeps the frame, the field
-   streaks and the lit tab glides to the new tab.
+/* 09 · How it runs (v3) — what makes a story inspiring (the published criteria: four
+   questions, plus the themes we look for), the operating rhythm and recognition as
+   one scene: three glass boards under a lit tab bar, one board per stop. Each click
+   is a camera pan: the next board swings in from the right out of depth (scale +
+   blur) while the current one slides away left, a parallax world of light behind
+   them travels more slowly (depth), a light sweeps the frame, the field streaks and
+   the lit tab glides to the new tab.
    Ambient per board:
-   0 · a light walks down the four fields, a reading band travels with it, each
-       field's node lights and its connector fires;
+   0 · a light walks down the four questions, a reading band travels with it, each
+       field's node lights and its connector fires; the themes line sits under the table;
    1 · nominations drift into the always-open lane and glide to the form; a playhead
        sweeps the quarter, lighting each month's card, then drops a story into the
        annual collection;
@@ -17,7 +18,7 @@
    All state is keyed off .st-n / data-step, so back navigation lands on the same frame. */
 (function () {
   const TABS = [
-    { t: 'Story format', i: 'content-layout' },
+    { t: 'What makes it inspiring', i: 'eye-lightbulb' },
     { t: 'Quarterly rhythm', i: 'gear-clock' },
     { t: 'Recognition', i: 'document-certified' },
   ];
@@ -38,10 +39,12 @@
     { t: 'Annual recognition', s: 'Selected stories featured at a company event or in an annual collection.' },
   ];
   const nn = (i) => String(i + 1).padStart(2, '0');
+  // the tabs take the width their labels need (the slider fits each tab; keep in step with 09-runs.css)
+  const TW = [650, 520, 462], TL = [0, 650, 1170];
 
   /* ── tab bar ── */
   const tabs = TABS.map((x, k) => `
-    <div class="rn-tab a-flip" data-in="0" data-at="${k}" style="--k:${k};--d:${(.1 + k * .09).toFixed(2)}s">
+    <div class="rn-tab a-flip" data-in="0" data-at="${k}" style="left:${TL[k]}px;width:${TW[k]}px;--d:${(.1 + k * .09).toFixed(2)}s">
       <span class="rn-ti">${Deck.icon(x.i)}</span><em>${nn(k)}</em><span class="rn-tl">${x.t}</span>
     </div>`).join('');
 
@@ -53,8 +56,8 @@
   ];
   const bokeh = BOKEH.map(([x, y, s, a, c], i) => `<b class="rn-bk ${c}" style="left:${x}px;top:${y}px;--s:${s}px;--a:${a};--t:${14 + (i % 4) * 3}s;--dl:${-i * 2.3}s"></b>`).join('');
 
-  /* ── board 0 · story format ── */
-  const ROW0 = 96, ROWH = 128;
+  /* ── board 0 · what makes it inspiring: four questions (keep ROW0/ROWH in step with the walk in 09-runs.css) ── */
+  const ROW0 = 88, ROWH = 116;
   const rows = FIELDS.map((f, i) => `
     <div class="rn-row" data-in="0" style="--k:${i};top:${ROW0 + i * ROWH}px">
       <span class="rn-chip">${nn(i)}</span>
@@ -126,10 +129,10 @@
     act: 2,
     bg: 'night',
     transition: 'push',
-    cues: ['01 Story format · four fields', '02 Quarterly rhythm · always open, month by month', '03 Recognition · three tiers · Featured Story'],
-    holds: [10, 10, 11],
+    cues: ['01 What makes it inspiring · four questions · the themes we look for', '02 Quarterly rhythm · always open, month by month', '03 Recognition · three tiers · Featured Story'],
+    holds: [11, 10, 11],
     notes: [
-      'How does it run? Every featured story answers four questions: purpose, value, impact, and what others can repeat. Each field carries a design decision, so alignment is built in, not added after selection.',
+      'What makes a story inspiring? Clear criteria, published to everyone. A story is featured when it answers four questions: what it enabled, which value it showed, what changed, and what others can repeat. Resilience, innovation, collaboration and service are the themes we look for.',
       'Nominations never close: any peer or leader can nominate through a simple form. Each quarter, one cycle runs: curate in month one, feature in month two, reinforce in month three. Once a year, featured stories become a curated collection.',
       'The story comes first; the reward supports the moment. Three scales: a leader’s acknowledgement and certificate, a quarterly feature across Tahakom, an annual collection. Featured Story, not Best Story: clear criteria, and popularity never decides.',
     ],
@@ -153,9 +156,9 @@
         ${tabs}
       </nav>
 
-      <!-- 0 · story format -->
+      <!-- 0 · what makes it inspiring: the published criteria -->
       <div class="rn-panel rn-p0" data-in="0" data-out="1">
-        <h2 class="h2 rn-h rn-h0" data-in="0" data-split style="--d:.12s">Every story turns strategy into <em class="hl">repeatable behaviour.</em></h2>
+        <h2 class="h2 rn-h rn-h0" data-in="0" data-split style="--d:.12s">A story is featured when it answers <em class="hl">four questions.</em></h2>
         <div class="rn-card glass a-unfold" data-in="0" style="--d:.34s;--dur:1.1s">
           <i class="rn-deccol a-fade" data-in="0" style="--d:.8s;--dur:1.2s"></i>
           <div class="rn-bandw a-fade" data-in="0" style="--d:1.5s"><i class="rn-band"></i></div>
@@ -165,6 +168,8 @@
           <div class="rn-rows" data-stagger style="--stagger:.1s;--d:.5s">${rows}</div>
           <div class="rn-walk a-fade" data-in="0" style="--d:1.6s"><i class="light"></i></div>
         </div>
+        <!-- support: the brief's themes, each tied to a value (small, under the table) -->
+        <p class="rn-themes a-fade" data-in="0" style="--d:1.05s;--dur:.8s"><span class="rn-th-k">Themes we look for:</span> ${['resilience', 'innovation', 'collaboration', 'service'].map((t) => `<b>${t}</b>`).join(' <i>·</i> ')}, each linked to a Tahakom value.</p>
       </div>
 
       <!-- 1 · quarterly rhythm -->
