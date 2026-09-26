@@ -1,113 +1,95 @@
-/* 09e-risks · What could break it (v3) */
+/* 09e-risks · What could break it (v4) */
 
 /* a quiet mood light behind the table: plum on the risks, teal on the guards */
 #s-risks .rk-mood { position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(900px 620px at 24% 64%, rgba(96, 38, 80, .3), transparent 70%), radial-gradient(900px 560px at 70% 60%, rgba(37, 199, 188, .07), transparent 70%); }
+#s-risks .rk-defs { position: absolute; width: 0; height: 0; }
 
 #s-risks .rk-kick { position: absolute; left: 144px; top: 150px; }
 #s-risks .rk-h { position: absolute; left: 144px; top: 196px; font-size: 72px; white-space: nowrap; }
 #s-risks .rk-cols .label { position: absolute; top: 312px; font-size: 18px; letter-spacing: .22em; color: rgba(255, 255, 255, .5); }
 
 /* ── a row: the risk is the hero; the guard and the owner are support ── */
+/* (a tighter shadow than the default glass keeps each sliding row a modest layer) */
 #s-risks .rk-row { position: absolute; left: 144px; width: 1632px; height: 112px; border-radius: 20px;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, .34), 0 0 0 1px rgba(255, 255, 255, .03), inset 0 1px 0 rgba(255, 255, 255, .12); }
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .34), 0 0 0 1px rgba(255, 255, 255, .03), inset 0 1px 0 rgba(255, 255, 255, .12); }
 #s-risks .rk-row[data-in].is-in { transition-duration: .85s, 1s, .8s, 1s; }
-#s-risks .rk-risk { position: absolute; left: 82px; top: 0; width: 640px; height: 112px; margin: 0; display: flex; align-items: center;
+#s-risks .rk-risk { position: absolute; top: 0; height: 112px; margin: 0; display: flex; align-items: center;
   font: 700 38px/1.1 var(--font); letter-spacing: -.016em; color: var(--white); text-wrap: balance; }
-#s-risks .rk-dock { position: absolute; left: 20px; top: 42px; width: 28px; height: 28px; border-radius: 30%; border: 1.5px dashed rgba(157, 103, 170, .6); background: rgba(22, 10, 26, .6); }
-#s-risks .rk-guard { position: absolute; top: 0; width: 460px; height: 112px; margin: 0; display: flex; align-items: center;
+#s-risks .rk-guard { position: absolute; top: 0; height: 112px; margin: 0; display: flex; align-items: center;
   font: 400 23px/1.38 var(--font); color: rgba(255, 255, 255, .74); text-wrap: balance; }
 #s-risks .rk-owner { position: absolute; top: 0; width: 272px; height: 112px; display: flex; align-items: center; gap: 14px;
   font: 400 21px/1.3 var(--font); color: rgba(255, 255, 255, .7); }
 #s-risks .rk-owner::before { content: ''; position: absolute; left: -24px; top: 26px; bottom: 26px; width: 1px; background: rgba(255, 255, 255, .12); }
 #s-risks .rk-oi { flex: none; font-size: 30px; color: rgba(37, 199, 188, .85); }
 
-/* a soft wash at the joint, when the lock is checked (ambient) */
-#s-risks .rk-glow { position: absolute; left: 600px; top: 0; width: 280px; height: 112px; border-radius: 50%; pointer-events: none; opacity: 0;
-  background: radial-gradient(closest-side, rgba(3, 255, 203, .32), rgba(37, 199, 188, .1) 55%, transparent); }
-/* the risk's cell warms from the lock outwards as the hold wraps it, then cools */
+/* the risk's cell warms from the shield outwards as the guard's hold wraps it, then cools (ambient check) */
 #s-risks .rk-cell { position: absolute; left: 0; top: 0; height: 112px; border-radius: 20px 0 0 20px; pointer-events: none; opacity: 0;
-  background: linear-gradient(90deg, rgba(37, 199, 188, .07), rgba(37, 199, 188, .14) 55%, rgba(3, 255, 203, .24)); }
-#s-risks.st-0 .rk-cell { animation: rkCell 8s ease-in-out calc(var(--ck) + .9s) infinite; }
+  background: linear-gradient(90deg, rgba(37, 199, 188, .08), rgba(37, 199, 188, .14) 52%, rgba(3, 255, 203, .26) 88%, rgba(3, 255, 203, 0)); }
+#s-risks.st-0 .rk-cell { animation: rkCell 8s ease-in-out calc(var(--ck) + .3s) infinite; }
 @keyframes rkCell { 0% { opacity: 0; } 10% { opacity: 1; } 32%, 100% { opacity: 0; } }
-#s-risks.st-0 .rk-glow { animation: rkGlow 8s ease-in-out var(--ck) infinite; }
-@keyframes rkGlow { 0% { opacity: 0; } 11% { opacity: 1; } 34%, 100% { opacity: 0; } }
 
-/* ── the lock: the guard's stem runs back to the risk and a bracket closes round its edge ── */
-#s-risks .rk-lk { position: absolute; top: 0; width: 150px; height: 112px; }
-#s-risks .rk-lk svg { position: absolute; left: 0; top: 0; width: 150px; height: 112px; overflow: visible; }
-#s-risks .rk-stem, #s-risks .rk-arm { fill: none; stroke: rgba(37, 199, 188, .9); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+/* ── the risk's key: a raised plum key (its solid side shows below) carrying the risk's picture ── */
+#s-risks .rk-key { position: absolute; width: 80px; height: 80px; border-radius: 24px; display: grid; place-items: center; color: #EBD7F1;
+  background: linear-gradient(160deg, rgba(190, 140, 205, .42), rgba(110, 50, 100, .5) 55%, rgba(60, 22, 56, .7)), #2A1128;
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, .28), inset 0 0 0 1.5px rgba(201, 166, 211, .5), 0 6px 0 #1E0A1E, 0 6px 0 1.5px rgba(201, 166, 211, .18), 0 12px 18px rgba(0, 0, 0, .42); }
+#s-risks .rk-pic { width: 58px; height: 58px; overflow: visible; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+#s-risks .rk-pic .rk-dot { fill: currentColor; }
+/* the key lights teal when the guard's hold reaches it (ambient check) */
+#s-risks .rk-kg { position: absolute; inset: -2px; border-radius: 26px; pointer-events: none; opacity: 0;
+  background: rgba(37, 199, 188, .16); box-shadow: inset 0 0 0 2px var(--sea), inset 0 0 18px rgba(3, 255, 203, .3), 0 0 22px rgba(3, 255, 203, .5); }
+#s-risks.st-0 .rk-kg { animation: rkKey 8s ease-in-out calc(var(--ck) + 1.3s) infinite; }
+@keyframes rkKey { 0% { opacity: 0; } 3.5% { opacity: 1; } 24%, 100% { opacity: 0; } }
+
+/* ── the guard: a raised teal shield whose padlock snaps shut as the row lands ── */
+#s-risks .rk-shw { position: absolute; opacity: 0; transform: scale(.55); transition: transform .3s var(--ease-soft), opacity .3s var(--ease-soft); }
+#s-risks .rk-row.is-in .rk-shw { opacity: 1; transform: none; transition: transform .6s var(--ease-back) calc(var(--delay) + .5s), opacity .3s var(--ease-soft) calc(var(--delay) + .5s); }
+#s-risks .rk-sh { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .45)); }
+#s-risks .rk-sh-side path { fill: #06343A; }
+#s-risks .rk-sh-face { fill: url(#rkShF); stroke: rgba(170, 255, 240, .9); stroke-width: 1.6; stroke-linejoin: round; }
+#s-risks .rk-sh-hi { fill: url(#rkShH); }
+#s-risks .rk-sh-bevel { fill: none; stroke: rgba(255, 255, 255, .24); stroke-width: 1.4; stroke-linejoin: round; }
+#s-risks .rk-shk { fill: none; stroke: #EFFFFC; stroke-width: 3.2; stroke-linecap: round; }
+#s-risks .rk-lock { fill: #05202A; stroke: #EFFFFC; stroke-width: 2.2; }
+#s-risks .rk-kh { fill: rgba(37, 199, 188, .55); transition: fill .3s var(--ease-soft); }
+/* open until the guard arrives; then the shackle drops into the lock and the keyhole lights
+   (the shackle moves by its path, a paint-only change, so it needs no layer of its own) */
+#s-risks .rk-shk { d: path('M28.4 34v-6.2a6.6 6.6 0 0 1 13.2 0V34'); transition: d .3s var(--ease-soft); }
+#s-risks .rk-row.is-in .rk-shk { d: path('M28.4 41v-6.2a6.6 6.6 0 0 1 13.2 0V41'); transition: d .34s var(--ease-back) calc(var(--delay) + .98s); }
+#s-risks .rk-row.is-in .rk-kh { fill: var(--sea); transition: fill .4s var(--ease-soft) calc(var(--delay) + 1.08s); }
+/* the shield glows when its lock is checked (ambient) */
+#s-risks .rk-sg { position: absolute; left: -40px; top: -32px; width: 160px; height: 160px; border-radius: 50%; pointer-events: none; opacity: 0;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .5), rgba(37, 199, 188, .16) 55%, transparent); }
+#s-risks.st-0 .rk-sg { animation: rkSg 8s ease-in-out var(--ck) infinite; }
+@keyframes rkSg { 0% { opacity: 0; } 5% { opacity: 1; } 26%, 100% { opacity: 0; } }
+/* one-shot (live entrance only): the click ring as the padlock shuts */
+#s-risks .rk-click { position: absolute; left: 24px; top: 40px; width: 32px; height: 32px; border-radius: 30%; border: 2px solid var(--sea); opacity: 0; pointer-events: none; }
+#s-risks.rk-live .rk-row.is-in .rk-click { animation: rkClick .9s var(--ease-out) calc(var(--delay) + 1s) both; }
+@keyframes rkClick { 0% { transform: scale(.8); opacity: 0; } 25% { opacity: 1; } 100% { transform: scale(3.2); opacity: 0; } }
+
+/* the stem: the guard reaches back to its shield */
+#s-risks .rk-stem { position: absolute; height: 12px; overflow: visible; }
+#s-risks .rk-stem path { fill: none; stroke: rgba(37, 199, 188, .9); stroke-width: 2.5; stroke-linecap: round;
   stroke-dasharray: 100 100; stroke-dashoffset: 100; transition: stroke-dashoffset .3s var(--ease-soft); }
-#s-risks .rk-arm { stroke: rgba(3, 255, 203, .85); stroke-width: 3; }
-#s-risks .rk-row.is-in .rk-stem { stroke-dashoffset: 0; transition: stroke-dashoffset .32s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .36s); }
-#s-risks .rk-row.is-in .rk-arm { stroke-dashoffset: 0; transition: stroke-dashoffset .28s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .66s); }
-/* the check lights the bracket: a white copy of the two arms with their glow (static), laid over them;
-   only the copy's opacity moves (it eases up over 220 ms, centred on the moment the light arrives) */
-#s-risks .rk-lk svg.rk-armg { opacity: 0; pointer-events: none; }
-#s-risks .rk-armg path { fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(3, 255, 203, .9)); }
-#s-risks.st-0 .rk-armg { animation: rkArm 8s ease-out calc(var(--ck) + .61s) infinite; }
-@keyframes rkArm { 0% { opacity: 0; animation-timing-function: ease-in-out; } 2.75% { opacity: 1; } 20.75%, 100% { opacity: 0; } }
-/* the guard's anchor, and the lock node that clicks shut once the bracket has closed */
-#s-risks .rk-anchor { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 30%; background: rgba(37, 199, 188, .9);
-  opacity: 0; transition: opacity .3s var(--ease-soft); }
-#s-risks .rk-row.is-in .rk-anchor { opacity: 1; transition: opacity .3s var(--ease-soft) calc(var(--delay) + .3s); }
-#s-risks .rk-node { position: absolute; width: 20px; height: 20px; margin: -10px 0 0 -10px; border-radius: 30%; background: #06121F; border: 2.5px solid var(--sea);
-  box-shadow: 0 0 18px rgba(3, 255, 203, .5); transform: scale(.3); opacity: 0; transition: transform .3s var(--ease-soft), opacity .3s var(--ease-soft); }
-#s-risks .rk-row.is-in .rk-node { transform: none; opacity: 1; transition: transform .5s var(--ease-back) calc(var(--delay) + .9s), opacity .2s var(--ease-soft) calc(var(--delay) + .9s); }
-#s-risks .rk-node b { position: absolute; left: 4px; top: 4px; width: 7px; height: 7px; border-radius: 30%; background: var(--sea); }
-#s-risks .rk-node b::after { content: ''; position: absolute; inset: 0; border-radius: inherit; opacity: 0; pointer-events: none;
-  background: #fff; box-shadow: 0 0 14px var(--sea), 0 0 30px rgba(3, 255, 203, .8); }
-#s-risks.st-0 .rk-node b::after { animation: rkCore 8s ease-out calc(var(--ck) + .59s) infinite; }
-/* each lock breathes while parked: the guard is always on (the breath's ring and wide glow fade in and out) */
-#s-risks .rk-node::before { content: ''; position: absolute; inset: -2.5px; border-radius: 30%; opacity: 0; pointer-events: none;
-  box-shadow: 0 0 0 9px rgba(3, 255, 203, .1), 0 0 44px rgba(3, 255, 203, .7); }
-#s-risks.st-0 .rk-row.is-in .rk-node { box-shadow: 0 0 16px rgba(3, 255, 203, .35); }
-#s-risks.st-0 .rk-row.is-in .rk-node::before { animation: rkBreathe 3.4s ease-in-out calc(var(--ck) - 1.2s) infinite; }
-@keyframes rkBreathe { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-@keyframes rkCore { 0% { opacity: 0; animation-timing-function: ease-in-out; } 2.75% { opacity: 1; } 22.75%, 100% { opacity: 0; } }
-#s-risks .rk-node::after { content: ''; position: absolute; inset: -5px; border-radius: 30%; border: 2px solid var(--sea); opacity: 0; pointer-events: none; }
-/* one-shot (live entrance only): the click ring */
-#s-risks.rk-live .rk-row.is-in .rk-node::after { animation: rkClick .9s var(--ease-out) calc(var(--delay) + .92s) both; }
-@keyframes rkClick { 0% { transform: scale(.8); opacity: 0; } 18% { opacity: 1; } 100% { transform: scale(3.4); opacity: 0; } }
+#s-risks .rk-row.is-in .rk-stem path { stroke-dashoffset: 0; transition: stroke-dashoffset .34s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .36s); }
+/* (its colour fades in, a paint-only change: no layer of its own) */
+#s-risks .rk-anchor { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 30%; background: rgba(37, 199, 188, 0);
+  transition: background-color .3s var(--ease-soft); }
+#s-risks .rk-row.is-in .rk-anchor { background: rgba(37, 199, 188, .9); transition: background-color .3s var(--ease-soft) calc(var(--delay) + .3s); }
+/* one-shot (live entrance only): a light leads the stem from the guard to the shield */
+#s-risks .rk-lead { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 28%; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 8px var(--sea), 0 0 18px rgba(3, 255, 203, .6); }
+#s-risks.rk-live .rk-row.is-in .rk-lead { animation: rkLead .62s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .3s) both; }
+@keyframes rkLead { 0% { transform: none; opacity: 0; } 32% { opacity: 1; } 68% { opacity: 1; } 100% { transform: translateX(var(--run)); opacity: 0; } }
 
-/* one-shot (live entrance only): the leading light that runs the stem and closes the bracket */
-#s-risks .rk-lead, #s-risks .rk-chk { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }
-#s-risks .rk-lead { offset-rotate: 0deg; offset-distance: 0%; opacity: 0; }
-#s-risks .rk-lead .light { position: absolute; left: -7px; top: -7px; }
-#s-risks.rk-live .rk-row.is-in .rk-lead { animation: rkLead .62s cubic-bezier(.5, 0, .3, 1) calc(var(--delay) + .34s) both; }
-@keyframes rkLead { 0% { offset-distance: 0%; opacity: 0; } 25% { opacity: 1; } 75% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
-
-/* ambient: every 8 s each lock is checked in turn — a light runs up the stem and round the bracket */
-#s-risks .rk-chk::before { content: ''; position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 30%; background: var(--sea);
-  box-shadow: 0 0 10px var(--sea), 0 0 24px rgba(3, 255, 203, .6); opacity: 0; }
-/* the run is the same stem → bracket path, walked with transforms: its three straight legs are
-   keyframes at the times cubic-bezier(.45, 0, .4, 1) reaches them, each with its piece of that curve */
-#s-risks.st-0 .rk-chk.t { animation: rkChkT 8s linear var(--ck) infinite; }
-#s-risks.st-0 .rk-chk.b { animation: rkChkB 8s linear var(--ck) infinite; }
-#s-risks.st-0 .rk-chk::before { animation: rkChk 8s linear var(--ck) infinite; }
-@keyframes rkChkT { 0% { transform: translate(106px, 56px); animation-timing-function: cubic-bezier(.514, 0, .72, .521); }
-  7.56% { transform: translate(40px, 56px); animation-timing-function: cubic-bezier(.283, .368, .596, .724); }
-  10.52% { transform: translate(40px, 22px); animation-timing-function: cubic-bezier(.251, .601, .568, 1); } 16%, 100% { transform: translate(22px, 22px); } }
-@keyframes rkChkB { 0% { transform: translate(106px, 56px); animation-timing-function: cubic-bezier(.514, 0, .72, .521); }
-  7.56% { transform: translate(40px, 56px); animation-timing-function: cubic-bezier(.283, .368, .596, .724); }
-  10.52% { transform: translate(40px, 90px); animation-timing-function: cubic-bezier(.251, .601, .568, 1); } 16%, 100% { transform: translate(22px, 90px); } }
-@keyframes rkChk { 0% { opacity: 0; animation-timing-function: ease-in-out; } 2.75% { opacity: 1; } 12% { opacity: 1; animation-timing-function: ease-in-out; } 16%, 100% { opacity: 0; } }
-
-/* …then runs on along the row's edges to the dock, which glows: the hold wraps the whole risk */
-#s-risks .rk-cm { position: absolute; left: 0; width: 0; height: 0; opacity: 0; pointer-events: none; }
-#s-risks .rk-cm.t { top: 0; }
-#s-risks .rk-cm.b { top: 112px; }
-#s-risks .rk-cm::before { content: ''; position: absolute; left: 0; top: -2px; width: 190px; height: 4px; border-radius: 2px;
-  background: linear-gradient(90deg, rgba(3, 255, 203, .95), rgba(37, 199, 188, .35) 45%, transparent); box-shadow: 0 0 16px rgba(3, 255, 203, .45); }
-#s-risks.st-0 .rk-cm { animation: rkCm 8s cubic-bezier(.45, 0, .35, 1) calc(var(--ck) + 1.15s) infinite; }
-@keyframes rkCm { 0% { transform: translateX(var(--x0)); opacity: 0; } 3% { opacity: 1; } 14% { opacity: 1; } 17% { transform: translateX(36px); opacity: 0; } 100% { transform: translateX(36px); opacity: 0; } }
-#s-risks .rk-dock::after { content: ''; position: absolute; inset: -12px; border-radius: 34%; opacity: 0; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(3, 255, 203, .55), rgba(37, 199, 188, .15) 60%, transparent); }
-#s-risks .rk-dock::before { content: ''; position: absolute; inset: -1.5px; border-radius: 30%; border: 1.5px dashed rgba(3, 255, 203, .95); opacity: 0; pointer-events: none; }
-#s-risks.st-0 .rk-dock::before { animation: rkDock 8s ease-out calc(var(--ck) + 2.33s) infinite; }
-#s-risks.st-0 .rk-dock::after { animation: rkDockGlow 8s ease-out calc(var(--ck) + 2.33s) infinite; }
-@keyframes rkDock { 0% { opacity: 0; animation-timing-function: ease-in-out; } 3% { opacity: 1; } 27%, 100% { opacity: 0; } }
-@keyframes rkDockGlow { 0% { opacity: 0; transform: scale(1.3); animation-timing-function: ease-in-out; } 3% { opacity: 1; transform: scale(1.3); } 27%, 100% { opacity: 0; transform: scale(.8); } }
+/* ambient: after the shield glows, its hold runs back along the row's top and bottom edges to the risk's key */
+#s-risks .rk-run { position: absolute; left: 0; width: 0; height: 0; opacity: 0; pointer-events: none; }
+#s-risks .rk-run.t { top: 0; }
+#s-risks .rk-run.b { top: 112px; }
+#s-risks .rk-run::before { content: ''; position: absolute; left: 0; top: -2px; width: 180px; height: 4px; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(3, 255, 203, .95), rgba(37, 199, 188, .35) 45%, transparent); box-shadow: 0 0 9px rgba(3, 255, 203, .45); }
+#s-risks.st-0 .rk-run { animation: rkRun 8s cubic-bezier(.45, 0, .35, 1) calc(var(--ck) + .25s) infinite; }
+@keyframes rkRun { 0% { transform: translateX(712px); opacity: 0; } 3% { opacity: 1; } 14% { opacity: 1; } 17% { transform: translateX(98px); opacity: 0; } 100% { transform: translateX(98px); opacity: 0; } }
 
 /* ── the change caption ── */
 #s-risks .rk-cap { position: absolute; left: 144px; top: 876px; margin: 0; display: flex; align-items: center; gap: 16px;
@@ -115,4 +97,4 @@
 #s-risks .rk-cap b { font-weight: 700; color: var(--teal); }
 #s-risks .rk-ci { flex: none; width: 46px; height: 46px; border-radius: 30%; display: grid; place-items: center; font-size: 28px; color: var(--teal);
   border: 1.5px solid rgba(37, 199, 188, .4); background: rgba(10, 36, 64, .7); }
-#stage.lite #s-risks .rk-lead, #stage.lite #s-risks .rk-chk { display: none; }
+#stage.lite #s-risks .rk-lead, #stage.lite #s-risks .rk-run { display: none; }

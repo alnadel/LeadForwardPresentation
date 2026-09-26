@@ -26,7 +26,7 @@
   const CARD_A = [430, 646], CARD_B = [690, 906];
   const LAND_A = [CARD_A[0] + 30, CARD_A[1] - 30], LAND_B = [CARD_B[0] + 30, CARD_B[1] - 30];
   const LIGHT_X = NODE.x + NODE.r + 22;    // where the story light rests (782)
-  const EMP = { x: 144, w: 470, top: FY - 150, h: 300 };
+  const EMP = { x: 144, w: 470, top: FY - 196, h: 392 };   // the individual's card: the team's photo heads it
   const BAND = [410, 926];                 // the beams' vertical band
 
   const cx1 = X0 + 96, cx2 = X1 - 92;
@@ -79,14 +79,16 @@
   const box = (l, t, w, h) => `left:${l}px;top:${t}px;width:${w}px;height:${h}px`;
   const beamBox = `viewBox="${X0} ${BAND[0]} ${X1 - X0} ${BAND[1] - BAND[0]}" style="${box(X0, BAND[0], X1 - X0, BAND[1] - BAND[0])}`;
 
-  const EMPL = ['Feel seen and valued', 'Stay motivated to contribute', 'Participate, nominate and share', 'Learn from colleagues'];
+  // each bullet carries a brand icon in place of its dot
+  const EMPL = [['Feel seen and valued', 'eye-lightbulb'], ['Stay motivated to contribute', 'chart-growth'], ['Participate, nominate and share', 'person-message'], ['Learn from colleagues', 'user-network']];
   const ORG = [
-    { k: '02A', cls: 'wy-a', y: CARD_A, icon: 'users-connected', label: 'Org: Culture &amp; values', items: ['Stronger recognition culture', 'Tahakom’s values shown in action'], d: .9, sh: '-1.6s' },
-    { k: '02B', cls: 'wy-b', y: CARD_B, icon: 'handshake', label: 'Org: Engagement &amp; experience', items: ['Higher engagement and collaboration', 'Stronger employee experience'], d: .98, sh: '-3.3s' },
+    { k: '02A', cls: 'wy-a', y: CARD_A, icon: 'users-connected', label: 'Org: Culture &amp; values', items: [['Stronger recognition culture', 'document-certified'], ['Tahakom’s values shown in action', 'gear-clock']], d: .9, sh: '-1.6s' },
+    { k: '02B', cls: 'wy-b', y: CARD_B, icon: 'handshake', label: 'Org: Engagement &amp; experience', items: [['Higher engagement and collaboration', 'hands-teamwork'], ['Stronger employee experience', 'employee-female']], d: .98, sh: '-3.3s' },
   ];
+  const li = ([t, ic], attr) => `<li${attr || ''}>${Deck.icon(ic, 'wy-li-ic')}${t}</li>`;
 
   const VALUES = ['Commitment', 'Collaboration', 'Innovation', 'Impact', 'Learning', 'Excellence'];
-  const PILLARS = ['Purpose connected to work', 'Values become visible', 'Learning moves across teams'];
+  const PILLARS = [['Purpose connected to work', 'gear-clock'], ['Values become visible', 'eye-lightbulb'], ['Learning moves across teams', 'user-network']];
   // city lights that shimmer over the photo (stage px, on its bright districts)
   const GLINTS = [[1560, 575, 1], [1742, 338, .8], [1640, 282, .7], [1402, 500, .8], [1286, 222, .6], [1208, 655, .7], [1812, 842, .9], [1700, 470, .9], [1480, 350, .6], [1860, 610, .8],
     [1590, 640, 1.4], [1740, 700, 1.5], [1450, 625, 1.2], [1325, 752, 1.1], [1680, 800, 1.3], [1850, 735, 1.2], [1530, 715, 1.1], [1395, 680, 1], [1060, 845, .8], [800, 868, .7], [1150, 560, .6], [1500, 240, .7]];
@@ -110,15 +112,17 @@
         calm: [[100, 120, 1300, 700, .9], [100, 740, 1820, 920, .85]] },
     ],
     html: `
-      <!-- stop 1: Riyadh from above rises in behind a plum veil -->
+      <!-- stop 1: Riyadh from above rises in behind a plum veil (the group is hidden while off stage) -->
+      <div class="wy-g1">
       <div class="wy-city" data-in="1" style="--d:.18s">
         <div class="wy-plate amb-ken-strong">
           <div class="photo wy-photo" style="background-image:url('assets/photos/riyadh-aerial.jpg')"></div>
+          <div class="wy-leak"></div>
           <div class="wy-glints">${GLINTS.map(([x, y, s], i) => `<i style="left:${x}px;top:${y}px;--s:${s};animation-delay:${(-i * 1.37).toFixed(2)}s;animation-duration:${(3.6 + (i % 4) * .9).toFixed(1)}s"></i>`).join('')}</div>
         </div>
-        <div class="amb-leak wy-leak"></div>
       </div>
       <div class="fill wy-veil a-fade" data-in="1" style="--dur:.8s"></div>
+      </div>
 
       <!-- stop 0: the header and the flow; at stop 1 they drift up and away -->
       <div class="wy-rise">
@@ -130,7 +134,7 @@
 
         <div class="wy-flow">
           <!-- the shared story's glow pool, and the individual's halo -->
-          <i class="wy-pool a-fade" data-in="0" style="--d:.5s;--dur:1.2s;left:${PRISM.x - 420}px;top:${FY - 380}px"></i>
+          <i class="wy-pool a-fade" data-in="0" style="--d:.5s;--dur:1.2s;left:${PRISM.x - 210}px;top:${FY - 190}px"></i>
           <div class="wy-halo a-fade" data-in="0" style="--d:.45s;--dur:1.2s;left:${LIGHT_X - 230}px;top:${FY - 230}px"><i></i><b></b></div>
 
           <!-- node → prism: the connector draws behind the story light -->
@@ -170,9 +174,10 @@
 
           <!-- 01 · the individual -->
           <div class="glass wy-card wy-emp a-unfold amb-sheen" data-in="0" style="--d:.3s;--dur:.9s;${box(EMP.x, EMP.top, EMP.w, EMP.h)};--sh:-.4s">
+            <i class="wy-emp-ph" style="background-image:url('assets/photos/team-ops.jpg')"></i>
             <div class="wy-card-h"><span class="wy-num">01</span></div>
             <h3 class="wy-card-t">Employee level</h3>
-            <ul class="wy-list" data-stagger style="--stagger:.06s;--d:.46s">${EMPL.map((t) => `<li data-in="0">${t}</li>`).join('')}</ul>
+            <ul class="wy-list" data-stagger style="--stagger:.06s;--d:.46s">${EMPL.map((x) => li(x, ' data-in="0"')).join('')}</ul>
           </div>
 
           <div class="wy-node a-materialize" data-in="0" style="--d:.42s;--dur:.9s;${box(NODE.x - NODE.r, FY - NODE.r, NODE.r * 2, NODE.r * 2)}">
@@ -197,7 +202,7 @@
           <div class="glass wy-card wy-org ${o.cls} a-unfold amb-sheen" data-in="0" style="--d:${o.d}s;--dur:.75s;${box(X1, o.y[0], 1776 - X1, o.y[1] - o.y[0])};--sh:${o.sh}">
             <div class="wy-card-h"><span class="wy-num">${o.k}</span></div>
             <h3 class="wy-card-t">${o.label}</h3>
-            <ul class="wy-list">${o.items.map((t) => `<li>${t}</li>`).join('')}</ul>
+            <ul class="wy-list">${o.items.map((x) => li(x)).join('')}</ul>
           </div>
           <div class="wy-port a-materialize" data-in="0" style="--d:${o.d + .12}s;--dur:.7s;${box(X1 - 38, (o.y[0] + o.y[1]) / 2 - 38, 76, 76)}">${Deck.icon(o.icon, 'wy-port-ic')}</div>`).join('')}
         </div>
@@ -205,6 +210,7 @@
 
       <!-- stop 1: strategic value. Key: the statement; then the purpose line (the spark
            lands after it); the six values and the three outcomes are supporting context -->
+      <div class="wy-g1">
       <div class="pad wy-sv">
         <div class="kicker a-wipe" data-in="1" style="--d:.45s">Strategic value</div>
         <h2 class="h2 wy-sv-st" data-in="1" data-split style="--d:.45s;--wstep:.035s">The initiative does not create new <span class="wy-nw">values —</span> it helps employees recognise and apply <em class="hl">the values Tahakom already has.</em></h2>
@@ -214,7 +220,8 @@
         ${VALUES.map((v, i) => `<span class="wy-chip glass a-flip" data-in="1" style="--k:${i}"><i></i>${v}</span>`).join('')}
       </div>
       <div class="wy-pillars" data-stagger style="--stagger:.1s;--d:1.12s">
-        ${PILLARS.map((p, i) => `<div class="wy-p glass plum a-unfold" data-in="1" style="--dur:.8s"><div class="wy-p-h"><span class="num">${String(i + 1).padStart(2, '0')}</span><span class="wy-p-r"><i></i><b></b></span></div><div class="wy-p-t">${p}</div></div>`).join('')}
+        ${PILLARS.map(([p, ic], i) => `<div class="wy-p glass plum a-unfold" data-in="1" style="--dur:.8s"><div class="wy-p-h"><span class="num">${String(i + 1).padStart(2, '0')}</span><span class="wy-p-r"><i></i><b></b></span>${Deck.icon(ic, 'wy-p-ic')}</div><div class="wy-p-t">${p}</div></div>`).join('')}
+      </div>
       </div>
 
       <!-- the lights' sampled paths (generated above, as the flow's markup was built) -->

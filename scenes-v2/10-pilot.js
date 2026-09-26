@@ -11,6 +11,14 @@
    target reads as it passes. A caption flags the targets as proposals, "what we
    need" is a quiet strip, and the decision is the hero while the fork of outcomes
    draws after it.
+   Pictures: each commitment carries its own raised key (a form, the cycle, a
+   dashboard); each KPI tile carries a small honest chart: reach as a 0–100% bar from
+   8% to the proposed 25%, the visibility gap as a 0–100% bar from 56% down past 40%,
+   participation as department dots lighting, engagement as a story reaching people,
+   sentiment as a small gauge whose needle moves up (no invented figures).
+   GPU: the room is one photo layer (its light leak painted in), one dim layer (the veil,
+   with the two shades that fade in over it) and the video wall; the stop-1 and stop-2
+   groups are visibility: hidden while they are off stage, so they hold no layers.
    All state is keyed off .st-n, so back navigation lands on the same frame.
    Audience first — stop 0: the ask. Stop 1: "one quarterly cycle" (lit in the line
    and in the ring's core) and the three commitment titles; their descriptions are
@@ -38,12 +46,13 @@
   /* ── the KPI panel: five tiles under a compact measurement rail ── */
   const RAIL_Y = 320;                            // the rail runs along the tiles' top edges
   const KX = 144, KW = 312, KG = 18;             // tile left, width and gap (5 × 312 + 4 × 18 = 1632)
+  const CW = KW - 48;                            // a tile's chart width (264)
   const KPIS = [
-    { k: 'Participation', m: 'Nominations from every department', b: '—', t: 'every department' },
-    { k: 'Engagement', m: 'Colleagues reading at least one story', b: 'measured from month 1', t: 'most colleagues' },
-    { k: 'Sentiment', m: '“My work is seen”: pulse, 3 questions', b: 'baseline at launch', t: 'up by quarter end' },
-    { k: 'Recognition reach', m: 'Re-survey (same question)', b: 8, t: 25 },
-    { k: 'Visibility gap', m: 'Re-survey (same question)', b: 56, t: 40, pre: 'below' },
+    { k: 'Participation', m: 'Nominations from every department', b: '—', t: 'every department', c: 'dots' },
+    { k: 'Engagement', m: 'Colleagues reading at least one story', b: 'measured from month 1', t: 'most colleagues', c: 'people' },
+    { k: 'Sentiment', m: '“My work is seen”: pulse, 3 questions', b: 'baseline at launch', t: 'up by quarter end', c: 'gauge' },
+    { k: 'Recognition reach', m: 'Re-survey (same question)', b: 8, t: 25, c: 'bar' },
+    { k: 'Visibility gap', m: 'Re-survey (same question)', b: 56, t: 40, pre: 'below', c: 'bar' },
   ];
   // the story light's path runs x -60 → 1980: one quick pass with the build, then
   // a slow lap every 10 s while the presenter talks, with a second story half a
@@ -57,6 +66,33 @@
     const tf = FIRST_AT + frac(x) * FIRST, ts = FIRST_AT + FIRST + frac(x) * SLOW;
     return r2(ts - SLOW / 2 >= tf + 1.05 ? ts - SLOW / 2 : ts);
   };
+  // the charts (a tile's chart box is CW × 56). Bars use a true 0–100% scale; the proposed
+  // target is drawn dashed. Only the survey's exact figures appear.
+  const px = (v) => r2(v / 100 * CW);
+  const chart = (x) => {
+    if (x.c === 'bar') {             // reach: 8% → 25% · the visibility gap: 56% → below 40%
+      const b = px(x.b), t = px(x.t);
+      // the target bar starts at the baseline's length and moves to the target with the count-up
+      return `<svg class="pl-bar" viewBox="0 0 ${CW} 56" aria-hidden="true">
+        <rect class="pl-trk" x="0" y="4" width="${CW}" height="13" rx="3.5"/><rect class="pl-trk" x="0" y="24" width="${CW}" height="13" rx="3.5"/>
+        <rect class="pl-base" x="0" y="4" height="13" rx="3.5" style="width:${b}px"/>
+        <rect class="pl-tgt" x="0.8" y="24.8" height="11.4" rx="3" style="--w0:${b}px;--w1:${r2(t - 1.6)}px"/>
+        <text class="pl-bl" x="${r2(b + 8)}" y="11">${x.b}%</text><text class="pl-tl" x="${r2(t + 8)}" y="31">${x.pre ? x.pre + ' ' : ''}${x.t}%</text>
+        <text class="pl-ax" x="0" y="53">0</text><text class="pl-ax e" x="${CW}" y="53">100%</text>
+      </svg>`;
+    }
+    if (x.c === 'dots')              // participation: a dot per department lights (illustrative)
+      return `<div class="pl-dots">${Array.from({ length: 20 }, (_, k) => `<i style="--k:${(k % 10) + Math.floor(k / 10) * .5}"></i>`).join('')}</div>`;
+    if (x.c === 'people')            // engagement: a story reaches colleagues
+      return `<div class="pl-ppl"><span class="pl-story"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="5" width="30" height="38" rx="4"/><path d="M15 14h18M15 21h18M15 28h11"/><path d="M16 36.5l2 2 4-4.2"/></svg></span><svg class="pl-flow" viewBox="0 0 96 8" aria-hidden="true"><path d="M2 4H94" pathLength="100"/></svg>${Deck.icon('users-connected', 'pl-pi')}</div>`;
+    // sentiment: a gauge; the needle moves up from launch to quarter end (no scale, no figure)
+    return `<svg class="pl-gauge" viewBox="0 0 ${CW} 56" aria-hidden="true">
+      <path class="pl-g-trk" d="M94 52A38 38 0 0 1 170 52"/><path class="pl-g-arc" d="M94 52A38 38 0 0 1 170 52" pathLength="100"/>
+      <path class="pl-g-up" d="M109 12.2A46 46 0 0 1 150.7 10M145.8 10.95 150.7 10 148.1 5.7" pathLength="100"/>
+      <line class="pl-g-was" x1="132" y1="52" x2="132" y2="22"/>
+      <g class="pl-g-nd"><line x1="132" y1="52" x2="132" y2="20"/></g><circle class="pl-g-hub" cx="132" cy="52" r="4.5"/>
+    </svg>`;
+  };
   const kpi = (x, i) => {
     const cx = KX + i * (KW + KG) + KW / 2, num = typeof x.t === 'number';
     const base = typeof x.b === 'number' ? `<b class="pl-kb-n">${x.b}%</b>` : `<span class="pl-kb-t">${x.b}</span>`;
@@ -69,20 +105,29 @@
       <i class="pl-k-pip"></i><i class="pl-k-beam"></i>
       <div class="pl-k-h"><b class="pl-k-no">${String(i + 1).padStart(2, '0')}</b><span class="pl-k-name">${x.k}</span></div>
       <p class="pl-k-m">${x.m}</p>
+      <div class="pl-ch pl-ch-${x.c}">${chart(x)}</div>
       <div class="pl-kb"><span class="pl-k-l">Baseline</span>${base}</div>
       <div class="pl-kt"><span class="pl-k-l t">Target</span>${target}</div>
     </div>`;
   };
 
+  /* ── the commitments' pictures (outline, currentColor, round caps; 48-unit box) ── */
+  const CICON = {
+    form: '<rect x="9" y="4" width="30" height="40" rx="4.5"/><path d="M15 11.5h18"/><rect x="15" y="18" width="6.5" height="6.5" rx="1.6"/><path d="M26 21.2h7"/><path d="M16.4 21.4l1.5 1.5 2.5-2.9"/><rect x="15" y="28.5" width="6.5" height="6.5" rx="1.6"/><path d="M26 31.8h7"/><path d="M19 39.5h10"/>',
+    cycle: '<g class="pl-cyc"><path d="M9 24A15 15 0 0 1 34.6 13.4"/><path d="M28.7 12.4 34.6 13.4 33.6 7.5"/><path d="M39 24A15 15 0 0 1 13.4 34.6"/><path d="M19.3 35.6 13.4 34.6 14.4 40.5"/></g><circle cx="24" cy="24" r="3.2" fill="currentColor" stroke="none"/>',
+    chart: '<path d="M6 42.5h36"/><rect x="10" y="29" width="6" height="13.5" rx="1.6"/><rect x="21" y="22" width="6" height="20.5" rx="1.6"/><rect x="32" y="15" width="6" height="27.5" rx="1.6"/><path d="M8 19l10-8 8.5 4.5L39 6"/><path d="M33.6 6.2 39 6l-.5 5.3"/>',
+  };
+  const cic = (k) => `<span class="pl-ci"><svg viewBox="0 0 48 48" aria-hidden="true">${CICON[k]}</svg></span>`;
+
   /* ── the room: the video wall keeps working ── */
   const blips = Array.from({ length: 24 }, (_, i) => `<b style="--x:${(i * 41) % 97}%;--y:${4 + (i * 59) % 32}%;--w:${16 + (i * 7) % 30}px;--t:${2.2 + (i % 5) * .8}s;--dl:${-i * .37}s"></b>`).join('');
-  const dust = Array.from({ length: 18 }, (_, i) => `<i style="left:${4 + (i * 137) % 92}%;top:${58 + (i * 71) % 40}%;--t:${11 + (i % 6) * 2.2}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 13) % 50)}px;--dy:${-150 - (i * 29) % 180}px"></i>`).join('');
+  const dust = Array.from({ length: 18 }, (_, i) => `<i style="left:${Math.round((4 + (i * 137) % 92) * 19.2)}px;top:${Math.round((58 + (i * 71) % 40) * 10.8)}px;--t:${11 + (i % 6) * 2.2}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 13) % 50)}px;--dy:${-150 - (i * 29) % 180}px"></i>`).join('');
 
-  const HERO_Y = 800;   // top of the decision's hero line (keep in step with .pl-hero in 10-pilot.css)
+  const HERO_Y = 826;   // top of the decision's hero line (keep in step with .pl-final in 10-pilot.css)
   // after "stop." the pilot's path forks three ways: one recommendation, three possible outcomes
   // (box: stage FX,FY · FW×140; the stem starts just after the spark; every branch is drawn
   // equal, so none is favoured)
-  const FX = 1026, FY = 790, FW = 740, FN = FW - 30, FB = 250;
+  const FX = 1026, FY = HERO_Y - 10, FW = 740, FN = FW - 30, FB = 250;
   const FORK = [`M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 32, ${FN} 32`, `M30 76 H${FN}`, `M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 120, ${FN} 120`];
   const fork = FORK.map((d, i) => `<path class="pl-fb" d="${d}" pathLength="100" style="--i:${i}"/>`).join('');
   const forkLights = FORK.map((d, i) => `<i class="pl-fl" style="offset-path:path('${d}');--i:${i}"><b class="light sm"></b></i>`).join('');
@@ -107,24 +152,25 @@
       { calm: [[80, 110, 1840, 960, .88]] },
     ],
     html: `
-      <div class="pl-cam a-zoom" data-in="0" style="--dur:2.2s">
+      <!-- the room: one photo layer (the light leak is painted in with it), the video wall, and one
+           dim layer (the veil, with the shades that land over it at stops 1 and 2) -->
+      <div class="pl-cam">
         <div class="pl-plate">
           <div class="photo pl-photo" style="background-image:url('assets/photos/team-ops.jpg')"></div>
+          <div class="pl-leak"></div>
           <div class="pl-wall"><i class="pl-wglow"></i>${blips}<em class="pl-wscan"></em><em class="pl-wsweep"></em></div>
-          <div class="amb-leak pl-leak"></div>
         </div>
       </div>
-      <div class="fill pl-veil"></div>
+      <div class="pl-dim"><i class="fill pl-veil"></i><i class="fill pl-shade-1 a-fade" data-in="1" style="--dur:1.2s"></i><i class="fill pl-shade-2 a-fade" data-in="2" style="--dur:1s"></i></div>
       <div class="pl-cove"></div>
       <div class="amb-dust pl-dust">${dust}</div>
-      <div class="fill pl-shade-1 a-fade" data-in="1" style="--dur:1.2s"></div>
-      <div class="fill pl-shade-2 a-fade" data-in="2" style="--dur:1s"></div>
 
       <!-- stop 0 · the ask -->
       <div class="kicker pl-kicker a-wipe" data-in="0" style="--d:.2s">The ask</div>
       <h1 class="display pl-title" data-in="0" data-split data-spark="0" data-spark-delay="1.05" style="--d:.35s;--wstep:.09s">Approve the pilot.</h1>
 
-      <!-- stop 1 · one quarter, three commitments -->
+      <!-- stop 1 · one quarter, three commitments (the group is hidden while off stage) -->
+      <div class="pl-g1">
       <p class="lead pl-sub" data-in="1" data-out="2" style="--d:.15s">Start with <b class="pl-key">one quarterly cycle</b> and measure what changes.</p>
       <div class="pl-plan" data-out="2">
         <i class="pl-rglow" style="left:${CX}px;top:${CY}px"></i>
@@ -147,20 +193,22 @@
         <span class="label pl-mark a-fade" data-in="1" style="right:${1920 - 744}px;top:${CY + 20}px;--d:1.15s">Quarter end</span>
 
         <div class="pl-c pl-c1 glass a-left" data-in="1" style="--d:.3s">
-          <h3 class="pl-ct"><b class="pl-n">01</b>Open nominations</h3>
-          <p class="pl-cx">Accept peer and leader nominations through a simple form.</p>
+          ${cic('form')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">01</b>Open nominations</h3>
+          <p class="pl-cx">Accept peer and leader nominations through a simple form.</p></div>
         </div>
         <div class="pl-c pl-c2 glass a-right" data-in="1" style="left:${C2X}px;top:${CY - 85}px;--d:.72s">
-          <h3 class="pl-ct"><b class="pl-n">02</b>Run one full cycle</h3>
-          <p class="pl-cx"><span class="pl-chain">Capture → Curate → Feature → Reinforce</span> <span class="pl-nb">within the quarter.</span></p>
+          ${cic('cycle')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">02</b>Run one full cycle</h3>
+          <p class="pl-cx"><span class="pl-chain">Capture → Curate → Feature → Reinforce</span> <span class="pl-nb">within the quarter.</span></p></div>
         </div>
         <div class="pl-c pl-c3 glass a-left" data-in="1" style="--d:1.08s">
-          <h3 class="pl-ct"><b class="pl-n">03</b>Report what changed</h3>
-          <p class="pl-cx">On a quarterly dashboard.</p>
+          ${cic('chart')}<div class="pl-cb"><h3 class="pl-ct"><b class="pl-n">03</b>Report what changed</h3>
+          <p class="pl-cx">On a quarterly dashboard.</p></div>
         </div>
       </div>
+      </div>
 
-      <!-- stop 2 · how we'll judge it: the KPI panel -->
+      <!-- stop 2 · how we'll judge it: the KPI panel (the group is hidden while off stage) -->
+      <div class="pl-g2">
       <div class="kicker pl-judge a-wipe" data-in="2" style="--d:.15s">How we’ll judge it</div>
       <div class="pl-rail a-wipe" data-in="2" style="top:${RAIL_Y}px;--d:.2s;--dur:1s"></div>
       <div class="pl-car" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light lg"></i></div>
@@ -180,6 +228,8 @@
         <svg viewBox="0 0 ${FW} 140" style="width:${FW}px">${fork}</svg>
         ${forkLights}${forkNodes}
       </div>
+      </div>
+      <svg class="pl-defs" aria-hidden="true"><defs><linearGradient id="plGaugeG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C9A6D3"/><stop offset=".55" stop-color="#25C7BC"/><stop offset="1" stop-color="#03FFCB"/></linearGradient></defs></svg>
     `,
     step(n, prev, ctx) {
       // the spark rests just after the full stop, at the x-height of the display line

@@ -127,6 +127,9 @@ body:not(.ready) #field, body:not(.ready) #glow, body:not(.ready) #beams, body:n
 /* scenes that are off screen keep their DOM but not their motion: infinite ambient loops in
    hidden scenes would otherwise tick (style work every frame) for the whole talk */
 .scene:not(.active):not(.leaving), .scene:not(.active):not(.leaving) *, .scene:not(.active):not(.leaving) *::before, .scene:not(.active):not(.leaving) *::after { animation-play-state: paused !important; }
+/* …and they hold no GPU layers: a paused animation keeps its layer while visible, and a child
+   with its own visibility:visible would otherwise escape the hidden scene */
+.scene:not(.active):not(.leaving) * { visibility: hidden !important; }
 
 /* ── step visibility ──────────────────────────────────────────────────────
    data-in="n"   hidden until the scene reaches stop n, then animates in.

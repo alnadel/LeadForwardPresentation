@@ -4,8 +4,14 @@
 
 /* ── stop 0 lives in one group; at stop 1 the camera rises and it drifts away ── */
 #s-why .wy-rise { position: absolute; inset: 0; transform-origin: 50% 64%;
-  transition: transform 1.3s cubic-bezier(.6, 0, .3, 1), opacity .7s var(--ease-soft) .12s, filter .8s var(--ease-soft); }
-#s-why.st-1 .wy-rise { transform: translateY(-340px) scale(.9); opacity: 0; filter: blur(4px); pointer-events: none; }
+  transition: transform 1.3s cubic-bezier(.6, 0, .3, 1), opacity .7s var(--ease-soft) .12s, filter .8s var(--ease-soft), visibility 0s; }
+/* once it has risen out of sight it is hidden, so it holds no layers */
+#s-why.st-1 .wy-rise { transform: translateY(-340px) scale(.9); opacity: 0; filter: blur(4px); pointer-events: none; visibility: hidden;
+  transition: transform 1.3s cubic-bezier(.6, 0, .3, 1), opacity .7s var(--ease-soft) .12s, filter .8s var(--ease-soft), visibility 0s linear 1.35s; }
+/* the stop-1 groups (the city and its veil; the statement, values and outcomes) are hidden while off stage
+   (on stage they inherit, so they also hide with the scene when it is not showing) */
+#s-why .wy-g1 { display: contents; visibility: hidden; transition: visibility 0s linear .9s; }
+#s-why.st-1 .wy-g1 { visibility: inherit; transition: none; }
 
 /* header: the link statement (key) and its caveat */
 #s-why .wy-st { margin-top: 28px; max-width: 1560px; font-size: 70px; }
@@ -13,12 +19,14 @@
 #s-why .wy-cav { margin: 22px 0 0; font: 400 21px/1.35 var(--font); color: rgba(255, 255, 255, .72); }
 
 /* ── the flow ────────────────────────────────────────────────────────── */
-#s-why .wy-flow { position: absolute; inset: 0; }
+/* (no box of its own: the flow's pieces are placed in stage px and layer on their own) */
+#s-why .wy-flow { display: contents; }
 /* the shared story's glow pool: the brightest light in the frame, breathing */
-#s-why .wy-pool { position: absolute; width: 840px; height: 760px; border-radius: 50%; pointer-events: none;
+/* (drawn at half size and scaled up: a soft gradient scales cleanly, and its layer stays small) */
+#s-why .wy-pool { position: absolute; width: 420px; height: 380px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 255, 203, .32), rgba(37, 199, 188, .13) 45%, transparent); }
 #s-why .wy-pool.is-in { animation: wyPool 5.2s ease-in-out infinite; }
-@keyframes wyPool { 0%, 100% { transform: scale(.88); opacity: .7; } 50% { transform: scale(1.06); opacity: 1; } }
+@keyframes wyPool { 0%, 100% { transform: scale(1.76); opacity: .7; } 50% { transform: scale(2.12); opacity: 1; } }
 /* the individual's light, breathing in a soft halo with a glow turning inside it */
 #s-why .wy-halo { position: absolute; width: 460px; height: 460px; pointer-events: none; }
 #s-why .wy-halo i { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .4), rgba(37, 199, 188, .1) 45%, transparent 100%); animation: wyHalo 4.8s ease-in-out infinite; }
@@ -80,9 +88,17 @@
 #s-why .wy-num { font: 700 22px/1 var(--font); letter-spacing: .14em; color: var(--teal); }
 #s-why .wy-card-t { margin: 10px 0 0; font: 700 34px/1.08 var(--font); letter-spacing: -.014em; color: var(--white); white-space: nowrap; }
 #s-why .wy-list { list-style: none; margin: 8px 0 0; padding: 0; }
-#s-why .wy-list li { position: relative; padding-left: 24px; margin-top: 8px; font: 400 23px/1.34 var(--font); color: rgba(255, 255, 255, .64); white-space: nowrap; }
-#s-why .wy-list li::before { content: ''; position: absolute; left: 0; top: .5em; width: 9px; height: 9px; border-radius: 28%; background: rgba(37, 199, 188, .75); }
-#s-why .wy-emp { padding: 0 34px; background: linear-gradient(165deg, rgba(37, 199, 188, .16), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .05)), rgba(7, 18, 32, .66); }
+#s-why .wy-list li { position: relative; padding-left: 40px; margin-top: 8px; font: 400 23px/1.34 var(--font); color: rgba(255, 255, 255, .64); white-space: nowrap; }
+/* each bullet's icon, in place of its dot */
+#s-why .wy-li-ic { position: absolute; left: 0; top: .08em; font-size: 27px; color: rgba(37, 199, 188, .9); }
+/* the team heads the individual's card: a photo band that fades into the glass (no text over it) */
+#s-why .wy-emp-ph { position: absolute; left: 0; top: 0; right: 0; height: 132px; border-radius: 22px 22px 0 0; pointer-events: none;
+  background-size: 620px auto; background-position: 50% 64%; opacity: .72;
+  -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent);
+          mask-image: linear-gradient(180deg, #000 40%, transparent); }
+#s-why .wy-emp-ph::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(10, 36, 52, .1), rgba(12, 44, 58, .45)); }
+#s-why .wy-emp > :not(.wy-emp-ph):not(.gl-edge) { position: relative; }
+#s-why .wy-emp { justify-content: flex-start; padding: 128px 34px 0; background: linear-gradient(165deg, rgba(37, 199, 188, .16), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .05)), rgba(7, 18, 32, .66); }
 #s-why .wy-emp .wy-list li { margin-top: 10px; }
 /* the organisation benefits: teal like the individual (purple is kept for gaps) */
 #s-why .wy-org { padding: 0 24px 0 66px; background: linear-gradient(165deg, rgba(37, 199, 188, .13), rgba(255, 255, 255, .03) 55%, rgba(143, 194, 220, .05)), rgba(7, 18, 32, .66); }
@@ -145,7 +161,7 @@
 /* it runs beneath the prism, so it enters the shared story and re-emerges on the beams */
 #s-why .wy-run { position: absolute; left: 0; top: 0; opacity: 0; offset-rotate: 0deg; offset-distance: 0%; pointer-events: none; z-index: 0; }
 #s-why.wy-run-in .wy-run { animation: wyRun 1.05s linear calc(var(--enter, 0s) + 1s) both; }
-@keyframes wyRun { 0% { offset-distance: 0%; opacity: 0; } 15% { opacity: 1; } 34% { offset-distance: 45%; } 85% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
+@keyframes wyRun { 0% { offset-distance: 0%; opacity: 0; } 18% { opacity: 1; } 34% { offset-distance: 45%; } 82% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 
 /* ── stop 1: Riyadh from above, under a plum veil ────────────────────── */
 #s-why .wy-city { position: absolute; inset: 0; }
@@ -154,7 +170,9 @@
 #s-why .wy-city[data-in]:not(.is-in) { transform: translateY(18%) scale(1.14); filter: none; transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
 #s-why .wy-plate { position: absolute; inset: 0; transform-origin: 70% 55%; }
 #s-why .wy-photo { opacity: .95; }
-#s-why .wy-leak { opacity: 1; }
+/* the light leak is painted with the photo (it rides the push-in instead of its own full-size layer) */
+#s-why .wy-leak { position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(40% 60% at 20% 30%, rgba(255, 180, 120, .13), transparent 70%), radial-gradient(30% 50% at 80% 70%, rgba(37, 199, 188, .12), transparent 70%); }
 #s-why .wy-glints i { position: absolute; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 226, 170, .82), rgba(255, 190, 110, .24) 45%, transparent);
   transform: scale(var(--s)); opacity: .2; animation-name: wyCity; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
@@ -195,13 +213,14 @@
 #s-why .wy-p-h { display: flex; align-items: center; gap: 18px; height: 26px; }
 #s-why .wy-p-h .num { font: 700 24px/1 var(--font); letter-spacing: .16em; color: var(--teal); }
 #s-why .wy-p-r { position: relative; flex: 1; height: 2px; }
+#s-why .wy-p-ic { font-size: 40px; color: rgba(201, 166, 211, .9); margin: -8px -4px -8px 0; }
 #s-why .wy-p-h i { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(37, 199, 188, .9), rgba(255, 255, 255, .04)); transform-origin: 0 50%; transform: scaleX(0); transition: transform 1s var(--ease-out) calc(var(--delay) + .3s); }
 #s-why .wy-p.is-in .wy-p-h i { transform: none; }
 /* a light leads each rule as it draws (live builds only; at rest it is gone) */
 #s-why .wy-p-r b { position: absolute; left: 0; top: 1px; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 28%; opacity: 0; pointer-events: none;
   background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 10px var(--sea), 0 0 26px rgba(3, 255, 203, .55); }
 #s-why.wy-sv-live .wy-p.is-in .wy-p-r b { animation: wyLead 1s var(--ease-out) calc(var(--delay) + .3s) both; }
-@keyframes wyLead { 0% { left: 0; opacity: 0; } 16% { opacity: 1; } 70% { opacity: .9; } 100% { left: 100%; opacity: 0; } }
+@keyframes wyLead { 0% { left: 0; opacity: 0; } 19% { opacity: 1; } 70% { opacity: .9; } 100% { left: 100%; opacity: 0; } }
 #s-why .wy-p-t { margin-top: 16px; font: 700 33px/1.12 var(--font); letter-spacing: -.014em; color: rgba(255, 255, 255, .9); white-space: nowrap; }
 
 /* loops out of sight rest: the flow once it has risen away (.wy-parked, set by the script after
