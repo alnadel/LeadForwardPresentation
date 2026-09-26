@@ -7,14 +7,19 @@
       through) and leaves as two teal beams that reach the organisation's two glass
       cards (02A, 02B). The cards are support, a step quieter than the statement.
    1  An in-scene camera rise: the flow drifts up and away, Riyadh from above rises
-      in behind a plum veil, with the STRATEGIC VALUE statement, the purpose line
-      (Urban Intelligence for a Better Life: key, one step below the headline, where
-      the spark lands), the six values as glass tiles lighting in turn and the three
-      outcomes as glass cards.
+      in behind a plum veil, with the STRATEGIC VALUE statement (the hero), then the
+      mechanism under it, left to right: a colleague's story card sends its light into
+      a glass prism, which splits it into six rays, one per value (all six are there,
+      drawn faintly: Tahakom already has them); the story lights the value it shows,
+      and that ray runs on into the purpose node, where the spark lands, beside the
+      purpose line (Urban Intelligence for a Better Life: key) in a glass panel over
+      the city. The three outcomes are glass cards with lit 3D icon tiles (support).
    Ambient: light washes and flows along the beams, stories ride them, ripples
    leave the employee node, the shared story breathes in its glow pool and a light
    runs round its rim; at stop 1 the city drifts and shimmers under a light leak,
-   the values light in turn and a light passes through the purpose.
+   every 5 s another story takes the card and lights the next value (its light runs
+   story → prism → value → purpose), light flows along the beam into the prism, the
+   prism's glow and the purpose node breathe, and a light passes through the purpose.
    All state is keyed off .st-n; the travelling lights are one-shot on live clicks. */
 (function () {
   // Geometry in stage px. The flow runs along y = FY.
@@ -92,6 +97,58 @@
   // city lights that shimmer over the photo (stage px, on its bright districts)
   const GLINTS = [[1560, 575, 1], [1742, 338, .8], [1640, 282, .7], [1402, 500, .8], [1286, 222, .6], [1208, 655, .7], [1812, 842, .9], [1700, 470, .9], [1480, 350, .6], [1860, 610, .8],
     [1590, 640, 1.4], [1740, 700, 1.5], [1450, 625, 1.2], [1325, 752, 1.1], [1680, 800, 1.3], [1850, 735, 1.2], [1530, 715, 1.1], [1395, 680, 1], [1060, 845, .8], [800, 868, .7], [1150, 560, .6], [1500, 240, .7]];
+
+  /* ── stop 1: one story's light passes through the values Tahakom already has, into its purpose ──
+     A story card (left) sends its light into a glass prism; the prism splits it into six rays, one
+     per value (the values are all there, drawn faintly); the story lights the value it shows, and
+     that ray runs on into the purpose. Every 5 s another story takes the card and lights the next
+     value (each value is lit by some story), and its light runs the path again. */
+  const SV_BY = 598;                                        // the story's beam
+  const SV_CARD = { x: 144, y: 452, w: 270, h: 292 };       // the story card (its right edge sends the beam)
+  const PR = { apex: [630, 474], bl: [522, 704], br: [738, 704] };   // the prism (front face)
+  const faceX = (a, b, y) => a[0] + (y - a[1]) / (b[1] - a[1]) * (b[0] - a[0]);
+  const ENTRY = [+faceX(PR.apex, PR.bl, SV_BY).toFixed(1), SV_BY];
+  const EXIT = (k) => { const y = 566 + k * 13; return [+faceX(PR.apex, PR.br, y).toFixed(1), y]; };
+  const CHX = 852, CHW = 222, CHH = 44, CHY0 = 440, CHS = 56;          // the six value chips
+  const chipY = (k) => CHY0 + CHH / 2 + k * CHS;                      // 462 … 742
+  const OUT0 = CHX + CHW;                                             // their right edge (1074)
+  const PNODE = [1218, SV_BY], NODE_R = 30;                            // where the rays converge: the purpose
+  const outD = (k) => `M${OUT0} ${chipY(k)} C${OUT0 + 64} ${chipY(k)} ${PNODE[0] - NODE_R - 72} ${SV_BY} ${PNODE[0] - NODE_R} ${SV_BY}`;
+  const PH = 5, CYC = 6 * PH;           // s: one story's phase, the lap of six (the first story lights 1.5 s after the click; the CSS keeps these timings)
+  // each story lights the one value it shows (as the featuring criteria ask: one primary value),
+  // walking down the six in turn; three colleagues' photos take the card in turn
+  const PHOTOS = [
+    { ph: 'nouf.jpg', pos: '22% 40%' },
+    { ph: 'faisal.jpg', pos: '50% 22%' },
+    { ph: 'nouf-question.jpg', pos: '46% 38%' },
+  ];
+  const PHASE = VALUES.map((v, k) => k);                              // story k lights value k
+  // each value's lit path: through the prism, out along its ray to its chip, and on into the purpose
+  const litSvg = (k) => {
+    const e = EXIT(k), y = chipY(k), y0 = Math.min(y, 560) - 8, y1 = Math.max(y, 640) + 8, x0 = ENTRY[0] - 6, x1 = PNODE[0] - NODE_R + 4;
+    return `<svg class="sv-lit" style="--p:${PHASE[k]};left:${x0}px;top:${y0}px;width:${x1 - x0}px;height:${y1 - y0}px" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}" aria-hidden="true">
+          <path class="in" d="M${ENTRY.join(' ')} L${e.join(' ')}"/>
+          <path class="fan" d="M${e.join(' ')} L${CHX} ${y}"/>
+          <rect class="ch" x="${CHX + 1}" y="${y - CHH / 2 + 1}" width="${CHW - 2}" height="${CHH - 2}" rx="15"/>
+          <path class="out" d="${outD(k)}"/>
+        </svg>`;
+  };
+  // the story's light rides each lit path on transforms (the compositor): sampled keyframe tracks,
+  // two runs in its story's phase, parked unseen otherwise (opacity keeps its own keyframes: svBeadO)
+  const RUNS = [.4], RUN = 2.4;
+  const beadTrack = (k) => {
+    const e = EXIT(k), y = chipY(k);
+    const sp = sampler(`M${SV_CARD.x + SV_CARD.w} ${SV_BY} L${ENTRY.join(' ')} L${e.join(' ')} L${CHX} ${y} L${OUT0} ${y} ${outD(k).replace(/^M[\d.]+ [\d.]+ /, '')}`);
+    const name = 'wySB' + k, E = bezier(.45, .05, .55, .95), fr = [];
+    const pos = (u) => { const q = sp.at(E(u) * sp.L); return `transform: translate(${q.x.toFixed(1)}px, ${q.y.toFixed(1)}px);`; };
+    fr.push(`0% { ${pos(0)} }`);
+    RUNS.forEach((r0) => { for (let i = 0; i <= 24; i++) fr.push(`${((r0 + RUN * i / 24) / CYC * 100).toFixed(2)}% { ${pos(i / 24)} }`); fr.push(`${((r0 + RUN) / CYC * 100 + .05).toFixed(2)}% { ${pos(0)} }`); });
+    fr.push(`100% { ${pos(0)} }`);
+    KF.push(`@keyframes ${name} { ${fr.join(' ')} }`);
+    return `<i class="sv-bead" style="--p:${PHASE[k]};animation-name:${name},svBeadO"></i>`;
+  };
+  const pct = (t) => (t / CYC * 100).toFixed(2) + '%';
+  KF.push(`@keyframes svBeadO { 0% { opacity: 0; } ${RUNS.map((r0) => `${pct(r0)} { opacity: 0; } ${pct(r0 + .25)} { opacity: 1; } ${pct(r0 + RUN - .3)} { opacity: 1; } ${pct(r0 + RUN)} { opacity: 0; }`).join(' ')} 100% { opacity: 0; } }`);
 
   Deck.scene({
     id: 'why',
@@ -208,19 +265,71 @@
         </div>
       </div>
 
-      <!-- stop 1: strategic value. Key: the statement; then the purpose line (the spark
-           lands after it); the six values and the three outcomes are supporting context -->
+      <!-- stop 1: strategic value. Key: the statement; then the purpose (the spark lands on the
+           node where the values' light converges into it); the story, the prism and the six values
+           show how; the three outcomes are support -->
       <div class="wy-g1">
       <div class="pad wy-sv">
         <div class="kicker a-wipe" data-in="1" style="--d:.45s">Strategic value</div>
         <h2 class="h2 wy-sv-st" data-in="1" data-split style="--d:.45s;--wstep:.035s">The initiative does not create new <span class="wy-nw">values —</span> it helps employees recognise and apply <em class="hl">the values Tahakom already has.</em></h2>
-        <p class="wy-purp" data-in="1" style="--d:.85s">Every story shows how daily work serves Tahakom’s purpose: <em class="wy-pp" data-spark="1" data-spark-at="r" data-spark-delay="1.25"><span class="amb-shimmer">Urban Intelligence for a Better Life.</span></em></p>
       </div>
-      <div class="wy-chips" data-stagger style="--stagger:.06s;--d:1s">
-        ${VALUES.map((v, i) => `<span class="wy-chip glass a-flip" data-in="1" style="--k:${i}"><i></i>${v}</span>`).join('')}
+
+      <!-- the values' rays, faint: all six are there before any story lights them -->
+      <svg class="sv-rays a-wipe" data-in="1" style="--d:1s;--dur:.55s;left:${ENTRY[0] - 4}px;top:${CHY0}px;width:${CHX - ENTRY[0] + 4}px;height:${6 * CHS}px" viewBox="${ENTRY[0] - 4} ${CHY0} ${CHX - ENTRY[0] + 4} ${6 * CHS}" aria-hidden="true">
+        ${VALUES.map((v, k) => `<path d="M${ENTRY.join(' ')} L${EXIT(k).join(' ')} L${CHX} ${chipY(k)}"/>`).join('')}
+      </svg>
+
+      <!-- the story card: a colleague's story (illustrative); another story takes it every five seconds -->
+      <div class="sv-card glass a-swing" data-in="1" style="--d:.7s;--dur:1s;left:${SV_CARD.x}px;top:${SV_CARD.y}px;width:${SV_CARD.w}px;height:${SV_CARD.h}px">
+        <i class="sv-ph" style="background-image:url('assets/photos/${PHOTOS[0].ph}');background-position:${PHOTOS[0].pos}"></i>
+        ${VALUES.map((v, p) => { const ph = PHOTOS[p % 3]; return `<div class="sv-story" style="--p:${p}">${p % 3 ? `<i class="sv-ph" style="background-image:url('assets/photos/${ph.ph}');background-position:${ph.pos}"></i>` : ''}<span class="sv-dots">${VALUES.map((w, k) => `<b${PHASE[k] === p ? ' class="on"' : ''}></b>`).join('')}</span></div>`; }).join('')}
+        <span class="sv-tag">Story</span>
+        <span class="sv-av">${Deck.icon('employee-female', 'sv-av-ic')}</span>
+        <i class="sv-ln" style="top:196px;width:176px"></i><i class="sv-ln" style="top:220px;width:124px"></i>
+        <span class="sv-dots sv-dots-0">${VALUES.map(() => '<b></b>').join('')}</span>
       </div>
+
+      <!-- the story's beam into the prism, light flowing along it -->
+      <div class="sv-beam a-wipe" data-in="1" style="--d:.95s;--dur:.35s;left:${SV_CARD.x + SV_CARD.w}px;top:${SV_BY - 10}px;width:${ENTRY[0] - SV_CARD.x - SV_CARD.w}px"><i></i></div>
+
+      <!-- the story's light, riding each lit path in its story's phase -->
+      <div class="sv-beads">${VALUES.map((v, k) => beadTrack(k)).join('')}</div>
+
+      <!-- the prism: a glass triangle with depth, a light sweeping through it -->
+      <div class="sv-prism a-materialize" data-in="1" style="--d:.95s;--dur:.9s">
+        <i class="sv-pool" style="left:${PR.apex[0] - 130}px;top:${SV_BY - 110}px"></i>
+        <svg viewBox="${PR.bl[0] - 10} ${PR.apex[1] - 22} ${PR.br[0] - PR.bl[0] + 44} ${PR.bl[1] - PR.apex[1] + 34}" style="left:${PR.bl[0] - 10}px;top:${PR.apex[1] - 22}px;width:${PR.br[0] - PR.bl[0] + 44}px;height:${PR.bl[1] - PR.apex[1] + 34}px" aria-hidden="true">
+          <defs>
+            <linearGradient id="svGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E8FFFB" stop-opacity=".26"/><stop offset=".5" stop-color="#25C7BC" stop-opacity=".12"/><stop offset="1" stop-color="#8FC2DC" stop-opacity=".2"/></linearGradient>
+            <linearGradient id="svSide" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0E3F52" stop-opacity=".85"/><stop offset="1" stop-color="#071A2A" stop-opacity=".9"/></linearGradient>
+          </defs>
+          <polygon class="side" points="${PR.apex.join(',')} ${PR.apex[0] + 22},${PR.apex[1] - 14} ${PR.br[0] + 22},${PR.br[1] - 14} ${PR.br.join(',')}"/>
+          <polygon class="front" points="${PR.apex.join(',')} ${PR.br.join(',')} ${PR.bl.join(',')}"/>
+          <polyline class="hi" points="${PR.bl.join(',')} ${PR.apex.join(',')} ${PR.apex[0] + 22},${PR.apex[1] - 14}"/>
+        </svg>
+        <i class="sv-flare" style="left:${ENTRY[0] - 45}px;top:${SV_BY - 45}px"></i>
+        <div class="sv-sweep" style="clip-path:polygon(${PR.apex[0] - PR.bl[0]}px 0, ${PR.br[0] - PR.bl[0]}px ${PR.bl[1] - PR.apex[1]}px, 0 ${PR.bl[1] - PR.apex[1]}px);left:${PR.bl[0]}px;top:${PR.apex[1]}px;width:${PR.br[0] - PR.bl[0]}px;height:${PR.bl[1] - PR.apex[1]}px"><i></i></div>
+      </div>
+
+      <!-- the six values: glass chips, all present; the lit pair glows (drawn above, in .sv-lits) -->
+      <div class="sv-chips" data-stagger style="--stagger:.05s;--d:1.02s">
+        ${VALUES.map((v, k) => `<span class="sv-chip glass a-flip" data-in="1" style="left:${CHX}px;top:${chipY(k) - CHH / 2}px;width:${CHW}px;height:${CHH}px">${v}</span>`).join('')}
+      </div>
+      <!-- the lit pair: its rays, its chips' glow and the way on into the purpose (one layer per value, over the chips) -->
+      <div class="sv-lits a-fade" data-in="1" style="--d:1.1s;--dur:.5s">${VALUES.map((v, k) => litSvg(k)).join('')}</div>
+
+      <!-- the purpose: where every story's values lead -->
+      <div class="sv-purp glass a-unfold" data-in="1" style="--d:.85s;--dur:.9s;left:${PNODE[0]}px;top:${SV_BY - 128}px;width:${1776 - PNODE[0]}px;height:256px">
+        <p class="sv-lead">Every story shows how daily work serves Tahakom’s purpose:</p>
+        <p class="sv-pp"><span class="amb-shimmer">Urban Intelligence<br>for a Better Life.</span></p>
+      </div>
+      <div class="sv-node a-materialize" data-in="1" style="--d:1.05s;--dur:.8s;left:${PNODE[0] - NODE_R}px;top:${SV_BY - NODE_R}px;width:${NODE_R * 2}px;height:${NODE_R * 2}px"><i></i></div>
+      <!-- the spark lands in the node: the story's light arrives at the purpose -->
+      <i class="sv-spk" data-spark="1" data-spark-xy="${PNODE[0]},${SV_BY}" data-spark-delay="1.25"></i>
+
+      <!-- the three outcomes (support): glass cards across the foot of the frame, each with a lit icon tile -->
       <div class="wy-pillars" data-stagger style="--stagger:.1s;--d:1.12s">
-        ${PILLARS.map(([p, ic], i) => `<div class="wy-p glass plum a-unfold" data-in="1" style="--dur:.8s"><div class="wy-p-h"><span class="num">${String(i + 1).padStart(2, '0')}</span><span class="wy-p-r"><i></i><b></b></span>${Deck.icon(ic, 'wy-p-ic')}</div><div class="wy-p-t">${p}</div></div>`).join('')}
+        ${PILLARS.map(([p, ic], i) => `<div class="wy-p glass a-unfold" data-in="1" style="--dur:.8s"><span class="wy-p-tile">${Deck.icon(ic, 'wy-p-ic')}</span><div class="wy-p-tx"><span class="num">${String(i + 1).padStart(2, '0')}</span><span class="wy-p-t">${p}</span></div><span class="wy-p-r"><i></i><b></b></span></div>`).join('')}
       </div>
       </div>
 

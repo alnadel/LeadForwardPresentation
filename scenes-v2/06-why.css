@@ -182,46 +182,121 @@
   linear-gradient(180deg, rgba(22, 8, 22, .72) 0%, rgba(22, 8, 22, .22) 22%, transparent 34%),
   linear-gradient(0deg, rgba(14, 7, 18, .96) 0%, rgba(14, 7, 18, .86) 20%, rgba(14, 7, 18, .34) 36%, transparent 48%); }
 
-#s-why .wy-sv-st { margin-top: 30px; font-size: 64px; line-height: 1.04; max-width: 1200px; }
-/* the purpose line: key, one step below the headline. The lead-in is quiet; Tahakom's
-   purpose is lit (a light passes through it now and then) and the spark rests after it */
-#s-why .wy-purp { margin: 28px 0 0; max-width: 1180px; font: 400 32px/1.3 var(--font); letter-spacing: -.004em; color: rgba(255, 255, 255, .8); }
-#s-why .wy-pp { display: inline-block; margin-top: 4px; font: 700 42px/1.1 var(--font); font-style: normal; letter-spacing: -.018em; color: var(--sea); white-space: nowrap;
-  text-shadow: 0 0 30px rgba(3, 255, 203, .28); }
-#s-why .wy-pp .amb-shimmer { animation-duration: 6.5s; padding-right: .06em; }
-/* the purpose is off screen at stop 0: its shimmer waits there */
-#s-why:not(.st-1) .wy-pp .amb-shimmer { animation-play-state: paused; }
+#s-why .wy-sv-st { margin-top: 30px; font-size: 60px; line-height: 1.04; max-width: 1180px; }
 
-/* the six values: glass tiles in one row, one in the light at a time, the light passing tile to tile */
-/* supporting context: compact, quieter tiles under the purpose they serve */
-#s-why .wy-chips { position: absolute; left: 144px; top: 574px; width: 1632px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
-#s-why .wy-chip { display: flex; align-items: center; justify-content: center; gap: 12px; height: 56px; border-radius: 16px;
-  font: 700 19px/1 var(--font); letter-spacing: .13em; text-transform: uppercase; color: rgba(255, 255, 255, .74);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .1); }
-#s-why .wy-chip > i { position: relative; width: 9px; height: 9px; border-radius: 28%; flex: none; background: rgba(37, 199, 188, .55); }
-/* the tile's dot lights with it: a static lit dot fades in over the resting one */
-#s-why .wy-chip > i::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--sea); box-shadow: 0 0 10px var(--sea); opacity: 0; }
-#s-why .wy-chip::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
-  background: radial-gradient(120% 140% at 50% 50%, rgba(37, 199, 188, .26), rgba(37, 199, 188, .06) 70%, transparent); box-shadow: 0 0 26px rgba(37, 199, 188, .4), inset 0 0 0 1.5px rgba(37, 199, 188, .85); }
-#s-why.st-1 .wy-chip.is-in::after { animation: wyChip 8.4s ease-in-out calc(var(--delay) + .9s + var(--k) * 1.4s) infinite both; }
-#s-why.st-1 .wy-chip.is-in > i::after { animation: wyChip 8.4s ease-in-out calc(var(--delay) + .9s + var(--k) * 1.4s) infinite both; }
-@keyframes wyChip { 0%, 25%, 100% { opacity: 0; } 5%, 17% { opacity: 1; } }
+/* ── stop 1: the story → the prism → the six values → the purpose ─────── */
+/* the story card: glass, turned a little toward the prism (it turns on its right edge, where the beam leaves) */
+#s-why .sv-card { position: absolute; border-radius: 20px; overflow: hidden; transform-origin: 100% 50%; transform: perspective(1400px) rotateY(-11deg);
+  background: linear-gradient(165deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .06)), rgba(8, 18, 32, .78); }
+#s-why .sv-card[data-in]:not(.is-in) { transform: perspective(1400px) rotateY(-40deg) translateX(-70px); }
+#s-why .sv-ph { position: absolute; left: 0; top: 0; right: 0; height: 152px; background-size: cover; }
+#s-why .sv-ph::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 18, 32, 0) 55%, rgba(8, 18, 32, .55)); }
+/* the stories take turns: each one's photo and its lit value fade in over the card in its phase */
+#s-why .sv-story { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+#s-why.st-1 .sv-card.is-in .sv-story { animation: svLit 30s ease-in-out calc(1.5s + var(--p) * 5s) infinite backwards; }
+@keyframes svLit { 0% { opacity: 0; } 3.3% { opacity: 1; } 17% { opacity: 1; } 20.5%, 100% { opacity: 0; } }
+#s-why .sv-tag { position: absolute; left: 14px; top: 14px; padding: 7px 12px 6px; border-radius: 8px; font: 700 16px/1 var(--font); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--sea); background: rgba(4, 16, 28, .72); border: 1.5px solid rgba(3, 255, 203, .55); }
+#s-why .sv-av { position: absolute; left: 18px; top: 122px; width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center;
+  background: linear-gradient(160deg, #1C6F74, #0C3440); border: 2.5px solid var(--sea); color: #E8FFFB; box-shadow: 0 0 22px rgba(3, 255, 203, .45); }
+#s-why .sv-av-ic { font-size: 36px; }
+#s-why .sv-ln { position: absolute; left: 22px; height: 9px; border-radius: 5px; background: rgba(255, 255, 255, .34); }
+#s-why .sv-ln + .sv-ln { background: rgba(255, 255, 255, .18); }
+/* the six values: faint dots; the one this story shows lights */
+#s-why .sv-dots { position: absolute; left: 22px; bottom: 26px; display: flex; gap: 12px; }
+#s-why .sv-dots b { width: 16px; height: 16px; border-radius: 28%; border: 1.5px solid rgba(143, 194, 220, .45); background: rgba(255, 255, 255, .04); }
+#s-why .sv-story .sv-dots b { border-color: transparent; background: none; }
+#s-why .sv-story .sv-dots b.on { border-color: #E4FFFA; background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 12px var(--sea); }
 
-/* the three outcomes (support): glass cards across the foot of the frame */
-#s-why .wy-pillars { position: absolute; left: 144px; top: 716px; width: 1632px; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 24px; }
-#s-why .wy-p { padding: 24px 28px 28px; border-radius: 22px; }
-#s-why .wy-p-h { display: flex; align-items: center; gap: 18px; height: 26px; }
-#s-why .wy-p-h .num { font: 700 24px/1 var(--font); letter-spacing: .16em; color: var(--teal); }
-#s-why .wy-p-r { position: relative; flex: 1; height: 2px; }
-#s-why .wy-p-ic { font-size: 40px; color: rgba(201, 166, 211, .9); margin: -8px -4px -8px 0; }
-#s-why .wy-p-h i { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(37, 199, 188, .9), rgba(255, 255, 255, .04)); transform-origin: 0 50%; transform: scaleX(0); transition: transform 1s var(--ease-out) calc(var(--delay) + .3s); }
-#s-why .wy-p.is-in .wy-p-h i { transform: none; }
-/* a light leads each rule as it draws (live builds only; at rest it is gone) */
+/* the beam: into the prism, light flowing along it */
+#s-why .sv-beam { position: absolute; height: 20px; overflow: hidden; pointer-events: none; }
+#s-why .sv-beam::before { content: ''; position: absolute; left: 0; right: 0; top: 8.5px; height: 3px; border-radius: 2px; background: linear-gradient(90deg, rgba(232, 255, 251, .5), rgba(232, 255, 251, .95)); box-shadow: 0 0 10px rgba(3, 255, 203, .6); }
+#s-why .sv-beam i { position: absolute; left: -26.5px; top: 0; width: calc(100% + 50px); height: 100%; opacity: .9;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='25' height='20'%3E%3Crect x='0' y='8' width='7' height='4' rx='2' fill='%23FFFFFF'/%3E%3C/svg%3E") 0 0 / 25px 20px repeat-x;
+  filter: drop-shadow(0 0 4px var(--sea)); }
+#s-why.st-1 .sv-beam.is-in i { animation: wyFlow 1.1s linear infinite; }
+
+/* the prism: glass with depth (a darker side face), a light sweeping through it now and then */
+#s-why .sv-prism { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-why .sv-prism svg { position: absolute; overflow: visible; filter: drop-shadow(0 0 26px rgba(37, 199, 188, .35)); }
+#s-why .sv-prism .front { fill: url(#svGlass); stroke: rgba(232, 255, 251, .75); stroke-width: 2; stroke-linejoin: round; }
+#s-why .sv-prism .side { fill: url(#svSide); stroke: rgba(37, 199, 188, .55); stroke-width: 1.5; stroke-linejoin: round; }
+#s-why .sv-prism .hi { fill: none; stroke: #FFFFFF; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: .8; }
+/* a glow pool behind the prism (drawn at half size, scaled up); it breathes */
+#s-why .sv-pool { position: absolute; width: 260px; height: 220px; border-radius: 50%; pointer-events: none; transform: scale(1.7); opacity: .7;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .2), rgba(37, 199, 188, .07) 55%, transparent); }
+#s-why.st-1 .sv-prism.is-in .sv-pool { animation: svPool 5.2s ease-in-out 1.8s infinite; }
+@keyframes svPool { 0%, 100% { transform: scale(1.7); opacity: .7; } 50% { transform: scale(2); opacity: 1; } }
+/* where the story's light enters the glass: a flare that breathes */
+#s-why .sv-flare { position: absolute; width: 90px; height: 90px; border-radius: 50%; pointer-events: none; opacity: .55;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .85), rgba(3, 255, 203, .35) 35%, transparent); }
+#s-why.st-1 .sv-prism.is-in .sv-flare { animation: svFlare 3.2s ease-in-out 1.8s infinite; }
+@keyframes svFlare { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+#s-why .sv-sweep { position: absolute; overflow: hidden; pointer-events: none; }
+#s-why .sv-sweep i { position: absolute; left: 0; top: -20%; width: 70px; height: 140%; opacity: 0; transform: translateX(-90px) skewX(-16deg);
+  background: linear-gradient(90deg, transparent, rgba(232, 255, 251, .38), transparent); }
+#s-why.st-1 .sv-prism.is-in .sv-sweep i { animation: svSweep 6.5s ease-in-out 2.4s infinite; }
+@keyframes svSweep { 0%, 55% { transform: translateX(-90px) skewX(-16deg); opacity: 0; } 60% { opacity: 1; } 92% { opacity: 1; } 100% { transform: translateX(260px) skewX(-16deg); opacity: 0; } }
+
+/* the six rays, faint (the values are all there) */
+#s-why .sv-rays { position: absolute; overflow: visible; pointer-events: none; }
+#s-why .sv-rays path { fill: none; stroke: rgba(210, 240, 255, .26); stroke-width: 1.6; stroke-linejoin: round; }
+#s-why .sv-rays[data-in] { transition-timing-function: linear; }
+
+/* the six values: glass chips; the lit pair's glow and rays ride over them (.sv-lit) */
+#s-why .sv-chip { position: absolute; display: flex; align-items: center; padding-left: 22px; border-radius: 15px;
+  font: 700 19px/1 var(--font); letter-spacing: .14em; text-transform: uppercase; color: rgba(255, 255, 255, .8);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .34), inset 0 1px 0 rgba(255, 255, 255, .1); }
+#s-why .sv-lits { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-why .sv-lit { position: absolute; overflow: visible; pointer-events: none; opacity: 0; }
+#s-why.st-1 .sv-lits.is-in .sv-lit { animation: svLit 30s ease-in-out calc(1.5s + var(--p) * 5s) infinite backwards; }
+#s-why .sv-lit path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+#s-why .sv-lit .in { stroke: rgba(232, 255, 251, .9); stroke-width: 2.4; }
+#s-why .sv-lit .fan { stroke: var(--sea); stroke-width: 3; filter: drop-shadow(0 0 5px rgba(3, 255, 203, .8)); }
+#s-why .sv-lit .out { stroke: var(--sea); stroke-width: 3; filter: drop-shadow(0 0 5px rgba(3, 255, 203, .8)); }
+#s-why .sv-lit .ch { fill: rgba(37, 199, 188, .16); stroke: var(--sea); stroke-width: 2; filter: drop-shadow(0 0 10px rgba(3, 255, 203, .65)); }
+
+/* the story's light */
+#s-why .sv-beads { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-why .sv-bead { position: absolute; left: 0; top: 0; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 28%; opacity: 0;
+  background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 12px var(--sea), 0 0 30px rgba(3, 255, 203, .55);
+  animation-duration: 30s; animation-timing-function: linear; animation-iteration-count: infinite; animation-fill-mode: backwards; animation-play-state: paused; }
+#s-why.st-1 .sv-bead { animation-delay: calc(1.5s + var(--p) * 5s); animation-play-state: running; }
+
+/* the purpose: key, one step below the headline; the rays converge into its node */
+#s-why .sv-purp { position: absolute; padding: 36px 34px 0 62px; border-radius: 22px;
+  background: linear-gradient(165deg, rgba(37, 199, 188, .16), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .06)), rgba(8, 16, 30, .74); }
+#s-why .sv-lead { margin: 0; font: 400 23px/1.36 var(--font); color: rgba(255, 255, 255, .72); text-wrap: balance; }
+#s-why .sv-pp { margin: 14px 0 0; font: 700 46px/1.08 var(--font); letter-spacing: -.018em; color: var(--sea); text-shadow: 0 0 30px rgba(3, 255, 203, .28); }
+#s-why .sv-pp .amb-shimmer { animation-duration: 6.5s; padding-right: .06em; }
+#s-why:not(.st-1) .sv-pp .amb-shimmer { animation-play-state: paused; }
+#s-why .sv-node { position: absolute; z-index: 2; display: grid; place-items: center; border-radius: 28%; border: 2px solid var(--sea); color: var(--white);
+  background: linear-gradient(160deg, rgba(20, 70, 80, .98), rgba(8, 30, 44, .98)); box-shadow: 0 0 26px rgba(3, 255, 203, .45); }
+/* its glow breathes: a static layer whose opacity changes */
+#s-why .sv-node > i { position: absolute; inset: -2px; border-radius: 28%; pointer-events: none; opacity: 0; box-shadow: 0 0 0 10px rgba(3, 255, 203, .1), 0 0 60px rgba(3, 255, 203, .6); }
+#s-why.st-1 .sv-node.is-in > i { animation: wyPulse 3.25s ease-in-out 2s infinite; }
+#s-why .sv-spk { position: absolute; width: 0; height: 0; }
+
+/* the three outcomes (support): glass cards across the foot, each with a lit 3D icon tile */
+#s-why .wy-pillars { position: absolute; left: 144px; top: 790px; width: 1632px; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 24px; }
+#s-why .wy-p { position: relative; display: flex; align-items: center; gap: 24px; height: 150px; padding: 0 28px 0 26px; border-radius: 22px; }
+#s-why .wy-p-tile { position: relative; flex: none; width: 92px; height: 92px; border-radius: 28%; display: grid; place-items: center; color: #FFFFFF;
+  background: linear-gradient(155deg, #3FE0D2 0%, #1BA79E 45%, #0D5E63 100%);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, .45), 0 0 30px rgba(37, 199, 188, .3), inset 0 2px 0 rgba(255, 255, 255, .45), inset 0 -6px 12px rgba(4, 40, 48, .45); }
+/* the tile's depth: a darker slab below it */
+#s-why .wy-p-tile::before { content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: -1; transform: translateY(7px); background: #0A4247; box-shadow: 0 0 0 1px rgba(3, 255, 203, .25); }
+#s-why .wy-p-ic { font-size: 54px; filter: drop-shadow(0 2px 3px rgba(4, 40, 48, .5)); }
+#s-why .wy-p-tx { display: flex; flex-direction: column; gap: 10px; min-height: 100px; }
+#s-why .wy-p-tx .num { font: 700 20px/1 var(--font); letter-spacing: .18em; color: var(--teal); }
+#s-why .wy-p-t { font: 700 31px/1.12 var(--font); letter-spacing: -.012em; color: rgba(255, 255, 255, .92); text-wrap: balance; }
+/* a rule draws along the card's foot as it lands, a light leading it (live builds only) */
+#s-why .wy-p-r { position: absolute; left: 26px; right: 26px; bottom: 0; height: 2px; }
+#s-why .wy-p-r i { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(37, 199, 188, .9), rgba(255, 255, 255, .04)); transform-origin: 0 50%; transform: scaleX(0); transition: transform 1s var(--ease-out) calc(var(--delay) + .3s); }
+#s-why .wy-p.is-in .wy-p-r i { transform: none; }
 #s-why .wy-p-r b { position: absolute; left: 0; top: 1px; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 28%; opacity: 0; pointer-events: none;
   background: radial-gradient(circle at 35% 30%, #fff 0 14%, var(--sea) 42%, var(--teal) 85%); box-shadow: 0 0 10px var(--sea), 0 0 26px rgba(3, 255, 203, .55); }
 #s-why.wy-sv-live .wy-p.is-in .wy-p-r b { animation: wyLead 1s var(--ease-out) calc(var(--delay) + .3s) both; }
 @keyframes wyLead { 0% { left: 0; opacity: 0; } 19% { opacity: 1; } 70% { opacity: .9; } 100% { left: 100%; opacity: 0; } }
-#s-why .wy-p-t { margin-top: 16px; font: 700 33px/1.12 var(--font); letter-spacing: -.014em; color: rgba(255, 255, 255, .9); white-space: nowrap; }
 
 /* loops out of sight rest: the flow once it has risen away (.wy-parked, set by the script after
    the rise), the city before stop 1 */

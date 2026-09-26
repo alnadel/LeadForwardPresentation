@@ -13,12 +13,14 @@
    1 · nominations drift into the always-open lane and glide to the form; a playhead
        sweeps the quarter, lighting each month's card (its pseudo-3D step rises month by
        month: curate, feature, reinforce), then drops a story into the annual collection;
-   2 · the three tiers are nested squircles (the hero): the camera pulls out twice
-       (certificate → quarterly feature → annual collection); a pulse travels out
-       through the frames, lighting each tier (and its row on the left) as it crosses;
-       a light orbits the outer frame.
-   GPU: a board off screen is hidden (no layers); the frame lights (flash, orbit) live in a
-   layer at the settled frame size, shown once the pull-out has landed, never at close-up size.
+   2 · the three tiers are three pictured objects on three equal plinths in one row (featured,
+       not ranked: no podium): a certificate with a leader's signature and seal, a featured story
+       on a screen broadcast to an audience, the annual story collection. In front of them stands
+       the person they recognise, on a lit disc. The plinths rise out of the floor, then in turn
+       each tier lights (a shaft of light, a lit rim, its row on the left) and sends a light down
+       its thread to the person, who glows as it arrives; the broadcast pulses, sparkles rise
+       over the collection.
+   GPU: a board off screen is hidden (no layers); board 2 is small svgs and a few small lights.
    All state is keyed off .st-n / data-step, so back navigation lands on the same frame. */
 (function () {
   const TABS = [
@@ -143,45 +145,110 @@
     </div>`).join('');
   const marks = MONTHS.map((m, k) => `<i class="rn-tick a-materialize" data-in="1" style="left:${k * (MW + MG) + 36}px;--k:${k};--d:${(.7 + k * .14).toFixed(2)}s"></i>`).join('');
 
-  /* ── board 2 · recognition: three frames, each the centre cell of the next ── */
-  const P = 6, G = 3, C = (100 - 2 * P - 2 * G) / 3;
-  const pos = (j) => (P + j * (C + G)).toFixed(3) + '%';
-  const cells = (cls, lit) => {
-    let h = '';
-    for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) {
-      if (r === 1 && c === 1) continue;
-      const i = r * 3 + c, on = lit && lit.includes(i);
-      h += `<i class="rn-cell ${cls}${on ? ' f' : ''}" style="left:${pos(c)};top:${pos(r)};--tw:${((i * 7) % 9) * .41}s"><b class="rn-dot"></b>${on ? '<b class="light"></b>' : ''}</i>`;
-    }
-    return h;
-  };
-  const centre = `left:${pos(1)};top:${pos(1)};width:${C.toFixed(3)}%;height:${C.toFixed(3)}%`;
+  /* ── board 2 · recognition: the three tiers as three pictured objects on equal plinths (one row,
+     one height: featured, not ranked), and in front of them the person they recognise ── */
   const tiers = TIERS.map((x, k) => `
     <div class="rn-t" data-in="2" style="--k:${k}">
       <span class="node rn-tn" data-n="${nn(k)}">${nn(k)}</span>
       <div><h3 class="rn-tt">${x.t}</h3><p class="rn-ts">${x.s}</p></div>
     </div>`).join('');
-
-  // The camera window onto the frames (stage px) and where the frames centre in it.
-  const VIEW = { x: 930, y: 190, w: 990, h: 790 }, FC = { x: 480, y: 395 };
-  // The zoom-out is one CSS transition of the outer frame's size (so strokes stay
-  // crisp). Its easing is built here: two pull-outs with a beat between them,
-  // each eased in log space so the camera moves at a steady perceived speed.
-  // a: the certificate frame fills the window; b: the quarterly frame does; c: settled.
-  const Z = { a: 4150, b: 1760, c: 720 };
-  function zoomEase() {
-    const eio = (u) => (u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2);
-    const la = Math.log(Z.a), lb = Math.log(Z.b), lc = Math.log(Z.c);
-    const L = (t) => (t < .42 ? la + (lb - la) * eio(t / .42) : t < .5 ? lb : lb + (lc - lb) * eio((t - .5) / .5));
-    const pts = [];
-    for (let i = 0; i <= 50; i++) {
-      const t = i / 50, s = Math.exp(L(t));
-      pts.push(((Z.a - s) / (Z.a - Z.c)).toFixed(4) + ' ' + (t * 100).toFixed(1) + '%');
-    }
-    return 'linear(' + pts.join(', ') + ')';
-  }
-  // the frame's geometry as custom properties: --a* the close-up, --z* settled (read by the CSS)
-  const sq = (k, s) => `--${k}l:${FC.x - s / 2}px;--${k}t:${FC.y - s / 2}px;--${k}s:${s}px`;
+  // stage px: the plinths' base centres, their radius (an ellipse seen from above: ry = .42 r) and height
+  const PX = [1120, 1385, 1650], PY = 620, PR = 100, PRY = 42, PH = 50, OS = 1.14;   // OS: the objects' scale
+  // each plinth is one svg box (object + plinth); its base centre sits at (BX, BY) in the box
+  const PB = { w: 300, h: 380, x: 150, y: 312 };
+  // the person: the disc's centre on the floor, and the portrait hovering above it
+  const HU = { x: 1385, y: 836, py: 744 };
+  // the floor: one elliptical glass stage under everything
+  const FL = { x: 1385, y: 690, rx: 420, ry: 180 };
+  const f1 = (v) => (+v).toFixed(1);
+  // a cylinder: its front band and its top ellipse (centred on its base at 0,0)
+  const cyl = (r, ry, h, cls) => `<g class="${cls}">` +
+    `<path class="cy-s" d="M${-r} ${-h}V0A${r} ${ry} 0 0 0 ${r} 0V${-h}A${r} ${ry} 0 0 1 ${-r} ${-h}Z"/>` +
+    `<ellipse class="cy-t" cx="0" cy="${-h}" rx="${r}" ry="${ry}"/></g>`;
+  // arcs of a broadcast (centre, radius, from/to angle in degrees)
+  const arc = (cx, cy, r, a0, a1) => {
+    const p = (a) => f1(cx + r * Math.cos(a * Math.PI / 180)) + ' ' + f1(cy + r * Math.sin(a * Math.PI / 180));
+    return `M${p(a0)}A${r} ${r} 0 0 1 ${p(a1)}`;
+  };
+  const person = (x, y, s) => `<g transform="translate(${x} ${y}) scale(${s})"><circle cx="0" cy="-15" r="6.4"/><path d="M-11.5 0C-11.5-7.6-6.4-10.4 0-10.4S11.5-7.6 11.5 0Z"/></g>`;
+  // the objects, drawn face-on on top of each plinth (origin: the plinth's top centre)
+  const OBJ = [
+    // 01 · a personal certificate on an easel: the employee's portrait, a title, a leader's signature and seal
+    `<g class="ob cert">
+       <path class="ez" d="M-58-40-70 2M58-40 70 2M0-60 0-2"/>
+       <rect class="dp" x="-89" y="-189" width="190" height="140" rx="8"/>
+       <rect class="pp" x="-95" y="-184" width="190" height="140" rx="8"/>
+       <rect class="pb" x="-86" y="-175" width="172" height="122" rx="5"/>
+       <circle class="av" cx="-56" cy="-146" r="17"/>${person(-56, -134, .9).replace('<g ', '<g class="avp" ')}
+       <path class="tl" d="M-28-153H60"/><path class="t2" d="M-28-138H36"/>
+       <path class="t3" d="M-66-112H66M-66-99H42"/>
+       <path class="sg" d="M-68-68c6-12 11-14 13-6s-2 12 3 6 8-15 12-9-1 10 4 7 9-8 14-6"/>
+       <path class="sl" d="M-70-61H-4"/>
+       <path class="rb" d="M47-63 40-33 49-38 54-29 57-60M69-63 76-33 67-38 62-29 59-60"/>
+       <circle class="se" cx="58" cy="-73" r="19"/><circle class="se2" cx="58" cy="-73" r="12.5"/>
+       <path class="st" d="m58-80.5 2.3 4.6 5 .7-3.6 3.5.9 5-4.6-2.4-4.6 2.4.9-5-3.6-3.5 5-.7z"/>
+     </g>`,
+    // 02 · a featured story on a screen, broadcast across the organisation to a small audience
+    `<g class="ob scr">
+       <path class="bc" d="${arc(-104, -131, 14, 150, 210)}${arc(-104, -131, 25, 148, 212)}${arc(-104, -131, 36, 146, 214)}${arc(104, -131, 14, -30, 30)}${arc(104, -131, 25, -32, 32)}${arc(104, -131, 36, -34, 34)}"/>
+       <rect class="dp" x="-98" y="-205" width="208" height="138" rx="11"/>
+       <path class="nk" d="M-9-62h18v36h-18z"/>
+       <ellipse class="ft" cx="0" cy="-22" rx="48" ry="11"/>
+       <rect class="bz" x="-104" y="-200" width="208" height="138" rx="11"/>
+       <rect class="sn" x="-97" y="-193" width="194" height="124" rx="6"/>
+       <path class="tl" d="M-86-110H16"/><path class="t3" d="M-86-96H70M-86-84H44"/>
+       <circle class="av" cx="76" cy="-86" r="9"/>
+       <g class="au">${[-64, -32, 0, 32, 64].map((x) => person(x, 22, 1)).join('')}</g>
+     </g>`,
+    // 03 · the annual story collection: an open book on a lectern, a ribbon marking a story
+    `<g class="ob bk">
+       <path class="lc" d="M-70-44H70L58-30H-58ZM-10-32h20v26h-20z"/><ellipse class="lcf" cx="0" cy="-5" rx="40" ry="8"/>
+       <path class="cv" d="M0-40C-34-50-76-49-112-42V-168C-76-176-34-174 0-162C34-174 76-176 112-168V-42C76-49 34-50 0-40Z"/>
+       <path class="pe" d="M0-45C-33-55-72-54-104-48M0-45C33-55 72-54 104-48"/>
+       <path class="pg" d="M0-50C-32-60-70-59-102-53V-178C-70-186-32-184 0-172ZM0-50C32-60 70-59 102-53V-178C70-186 32-184 0-172Z"/>
+       <path class="sp" d="M0-172V-50"/>
+       <rect class="ph" x="-88" y="-164" width="70" height="50" rx="5"/>${person(-53, -118, 1.25).replace('<g ', '<g class="php" ')}
+       <path class="t3" d="M-88-100H-20M-88-88H-34M-88-76H-26"/>
+       <path class="st2" d="m44-166 3.5 7 7.7 1.1-5.6 5.4 1.3 7.7-6.9-3.6-6.9 3.6 1.3-7.7-5.6-5.4 7.7-1.1z"/>
+       <path class="t3" d="M18-128H88M18-116H80M18-104H86M18-92H64"/>
+       <path class="rbn" d="M28-176h9v134l-4.5-5-4.5 5z"/>
+     </g>`,
+  ];
+  const plinths = PX.map((x, k) => `
+        <div class="rn-pd k${k}" data-in="2" style="left:${x - PB.x}px;top:${PY - PB.y}px;--d:${(.72 + k * .15).toFixed(2)}s">
+          <svg viewBox="0 0 ${PB.w} ${PB.h}" aria-hidden="true">
+            <g transform="translate(${PB.x} ${PB.y})">
+              <ellipse class="sh" cx="0" cy="6" rx="${PR + 30}" ry="${PRY + 14}"/>
+              ${cyl(PR, PRY, PH, 'pl')}
+              <ellipse class="pl-r" cx="0" cy="${-PH}" rx="${PR - 18}" ry="${PRY - 8}"/>
+              <g transform="translate(0 ${-PH}) scale(${OS})">${OBJ[k]}</g>
+            </g>
+          </svg>
+          ${k === 1 ? `<div class="rn-ban" style="left:${f1(PB.x - 91 * OS)}px;top:${f1(PB.y - PH - 187 * OS)}px;width:${f1(182 * OS)}px;height:${f1(61 * OS)}px;background-image:url('assets/photos/nouf.jpg')"><span>${ico(IC.star)}</span></div>` : ''}
+          <span class="rn-pn">${nn(k)}</span>
+        </div>`).join('');
+  // the light each tier sends down to the person: from the plinth's foot to the disc's rim
+  const THR = [[PX[0] + 34, PY + PRY - 4, HU.x - 58, HU.y - 10], [PX[1], PY + PRY + 2, HU.x, HU.y - 36], [PX[2] - 34, PY + PRY - 4, HU.x + 58, HU.y - 10]];
+  const FLB = { x: FL.x - FL.rx - 10, y: FL.y - FL.ry - 10, w: 2 * FL.rx + 20, h: 2 * FL.ry + 36 };   // the floor's svg box
+  const loc = (x, y) => f1(x - FLB.x) + ' ' + f1(y - FLB.y);
+  const floor = `<svg class="rn-floor" data-in="2" viewBox="0 0 ${FLB.w} ${FLB.h}" style="left:${FLB.x}px;top:${FLB.y}px;width:${FLB.w}px;height:${FLB.h}px;--d:.36s" aria-hidden="true">
+          <defs>
+            <linearGradient id="rn-cy" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#1B5E6E"/><stop offset=".38" stop-color="#124658"/><stop offset="1" stop-color="#061A2C"/></linearGradient>
+            <linearGradient id="rn-paper" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#F2FBF9"/><stop offset="1" stop-color="#C8E4E0"/></linearGradient>
+            <linearGradient id="rn-scr" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#103D59"/><stop offset="1" stop-color="#06182A"/></linearGradient>
+            <linearGradient id="rn-page" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FAF3FB"/><stop offset="1" stop-color="#DCC8E2"/></linearGradient>
+            <radialGradient id="rn-sh" cx=".5" cy=".5" r=".5"><stop offset=".55" stop-color="#000810" stop-opacity=".5"/><stop offset="1" stop-color="#000810" stop-opacity="0"/></radialGradient>
+            <radialGradient id="rn-fl-g" cx=".5" cy=".62" r=".6"><stop offset="0" stop-color="#25C7BC" stop-opacity=".16"/><stop offset=".55" stop-color="#25C7BC" stop-opacity=".05"/><stop offset="1" stop-color="#25C7BC" stop-opacity=".02"/></radialGradient></defs>
+          <g transform="translate(${loc(FL.x, FL.y)})">
+            <path class="fl-s" d="M${-FL.rx} 0V12A${FL.rx} ${FL.ry} 0 0 0 ${FL.rx} 12V0A${FL.rx} ${FL.ry} 0 0 1 ${-FL.rx} 0Z"/>
+            <ellipse class="fl-t" rx="${FL.rx}" ry="${FL.ry}"/>
+            <ellipse class="fl-r" rx="${FL.rx - 70}" ry="${FL.ry - 31}"/>
+            <ellipse class="fl-r" rx="${FL.rx - 150}" ry="${FL.ry - 66}" transform="translate(0 38)"/>
+          </g>
+          ${THR.map(([x0, y0, x1, y1]) => `<path class="fl-th" pathLength="1" d="M${loc(x0, y0)}L${loc(x1, y1)}"/>`).join('')}
+        </svg>`;
+  // the lights riding the threads (one carrier each), and the ring each one sets off on the person
+  const threadLights = THR.map(([x0, y0, x1, y1], k) => `<span class="rn-thl k${k}" style="left:${x0}px;top:${y0}px;--dx:${f1(x1 - x0)}px;--dy:${f1(y1 - y0)}px"><i class="light sm"></i></span>`).join('');
 
   Deck.scene({
     id: 'runs',
@@ -279,46 +346,36 @@
           <span class="rn-pr-k">Principle</span>
           <p class="rn-pr-t">Use <em class="amb-shimmer">Featured Story</em> — not Best Story.</p>
         </div>
-        <div class="rn-glow" style="left:${VIEW.x + FC.x}px;top:${VIEW.y + FC.y}px"></div>
-        <div class="rn-view" style="left:${VIEW.x}px;top:${VIEW.y}px;width:${VIEW.w}px;height:${VIEW.h}px">
-          <b class="rn-halo" style="left:${FC.x}px;top:${FC.y}px"></b>
-          <div class="rn-s3" style="${sq('a', Z.a)};${sq('z', Z.c)}">
-            ${cells('c3', [2, 3, 7])}
-            <div class="rn-s2" style="${centre}">
-              ${cells('c2')}
-              <div class="rn-s1" style="${centre}" data-spark="2" data-spark-xy="${VIEW.x + FC.x},${VIEW.y + FC.y}" data-spark-delay=".55">
-                <span class="rn-cert">${Deck.icon('document-certified')}</span>
-              </div>
-            </div>
+        <!-- illustrative: the three tiers as three objects on equal plinths, and the person they recognise -->
+        <div class="rn-glow" style="left:${FL.x}px;top:${FL.y}px"></div>
+        <div class="rn-rec" aria-hidden="true">
+          ${floor}
+          ${PX.map((x, k) => `<i class="rn-oh k${k}" style="left:${x}px;top:${f1(PY - PH - 118 * OS)}px"></i>`).join('')}
+          ${plinths}
+          <div class="rn-lights">
+            ${threadLights}
+            ${PX.map((x, k) => `<i class="rn-rim k${k}" style="left:${x}px;top:${PY - PH}px"></i><i class="rn-cone k${k}" style="left:${x}px;top:${PY - PH + 14}px"></i>`).join('')}
+            <svg class="rn-bcl" viewBox="-180 -60 360 120" style="left:${PX[1]}px;top:${f1(PY - PH - 131 * OS)}px">${[[14, 30], [25, 32], [36, 34]].map(([r, a]) => `<path d="${arc(-104 * OS, 0, r * OS, 180 - a, 180 + a)}${arc(104 * OS, 0, r * OS, -a, a)}"/>`).join('')}</svg>
+            ${[[-78, -232, 0], [70, -250, 1], [-4, -262, 2], [100, -196, 3]].map(([x, y, i]) => `<i class="rn-spk" style="left:${f1(PX[2] + x * OS)}px;top:${f1(PY - PH + y * OS)}px;--i:${i}">${ico(IC.star)}</i>`).join('')}
           </div>
-          <!-- the frames' lights (a flash as the pulse crosses each frame, a light orbiting the outer one)
-               sit at the settled frame size and show once the pull-out lands: never close-up sized layers -->
-          <div class="rn-ov" style="left:${FC.x - Z.c / 2}px;top:${FC.y - Z.c / 2}px;width:${Z.c}px;height:${Z.c}px">
-            <b class="rn-fg f3"></b>
-            <b class="rn-orb"><i></i></b>
-            <b class="rn-fg f2" style="${centre}"></b>
+          <div class="rn-hu" data-in="2" style="left:${HU.x}px;top:${HU.y}px;--d:1.2s">
+            <i class="rn-hu-pool"></i>
+            <svg class="rn-hu-d" viewBox="-80 -44 160 88"><g>${cyl(70, 29, 10, 'hd')}<ellipse class="hd-r" cx="0" cy="-10" rx="52" ry="21"/></g></svg>
+            <i class="rn-hu-beam"></i>
+            <i class="rn-ring"></i>
+            <span class="rn-hu-av" style="top:${HU.py - HU.y}px;background-image:url('assets/photos/nouf.jpg')" data-spark="2" data-spark-xy="${HU.x - 88},${HU.py - 42}" data-spark-delay=".9"></span>
           </div>
-          <!-- the pulse: an SVG squircle that grows (its own geometry, so the ring stays a crisp 2.5px), with a soft gradient fill -->
-          <svg class="rn-pulse" viewBox="0 0 ${VIEW.w} ${VIEW.h}" aria-hidden="true">
-            <defs><radialGradient id="rn-pulse-g" cx=".5" cy=".5" r=".5"><stop offset=".62" stop-color="#03FFCB" stop-opacity="0"/><stop offset="1" stop-color="#03FFCB" stop-opacity=".14"/></radialGradient></defs>
-            <g transform="translate(${FC.x} ${FC.y})"><rect class="rn-pulse-r" x="-10" y="-10" width="20" height="20" rx="5.6"/></g>
-          </svg>
         </div>
       </div>
 
       <div class="rn-sweep"></div>
     `,
-    init(ctx) {
-      let ease = 'cubic-bezier(.3, .7, .3, 1)';
-      try { if (window.CSS && CSS.supports('transition-timing-function', 'linear(0, 1)')) ease = zoomEase(); } catch (e) { /* keep the fallback */ }
-      ctx.el.style.setProperty('--rn-zoom', ease);
-    },
     step(n, prev, ctx) {
-      // recognition: the frames' lights and every loop in step with the pulse start once the
-      // pull-out has landed (at once when the board is reached settled, e.g. going back)
+      // recognition: the loops (the tiers' lights, the broadcast, the sparkles) start once the board has
+      // built (at once when it is reached settled, e.g. going back)
       const land = () => ctx.el.classList.add('rn-land');
       ctx.el.classList.remove('rn-land');
-      if (n === 2) { if (ctx.instant || prev < 0 || prev === 2) land(); else ctx.after(2200, land); }
+      if (n === 2) { if (ctx.instant || prev < 0 || prev === 2) land(); else ctx.after(2150, land); }
       // a camera pan between boards (the scene's own entrance is the engine's push)
       const sw = ctx.$('.rn-sweep');
       sw.classList.remove('run-f', 'run-b');
@@ -328,8 +385,8 @@
       // the sweep exists only while it runs (at rest it would be a full-screen layer)
       ctx.after(1300, () => sw.classList.remove('run-f', 'run-b'));
       if (window.Field) { Field.warp(fwd ? 'left' : 'right', 1.05, .7); Field.kick(fwd ? -210 : 210, 0, 1.6); }
-      // the pull-out ends: a ripple of light leaves the collection
-      if (n === 2 && fwd) ctx.after(2250, () => window.Field && Field.burst(VIEW.x + FC.x, VIEW.y + FC.y, { radius: 1100, dur: 2.2 }));
+      // the board lands: a ripple of light leaves the person the tiers recognise
+      if (n === 2 && fwd) ctx.after(1950, () => window.Field && Field.burst(HU.x, HU.py, { radius: 900, dur: 2 }));
     },
   });
 })();

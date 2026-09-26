@@ -37,7 +37,7 @@
    container that fades or turns is then a layer the size of what it holds) */
 #s-gap .gp-map { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; perspective: 1800px; perspective-origin: 960px 540px; opacity: 0; transition: opacity .4s var(--ease-soft); }
 #s-gap.st-0 .gp-map { opacity: 1; transition: opacity 1s var(--ease-soft) var(--enter, 0s); }
-#s-gap.st-2 .gp-map { opacity: .6; transition: opacity 1.3s var(--ease-soft); }
+#s-gap.st-2 .gp-map { opacity: .74; transition: opacity 1.3s var(--ease-soft); }
 #s-gap .gp-plane { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 960px 940px; transform-style: preserve-3d;
   transform: translateY(40px) rotateX(74deg) scale(1); transition: transform .5s var(--ease-soft); }
 #s-gap.st-0 .gp-plane { transform: translateY(0) rotateX(44deg) scale(1); transition: transform 2.2s cubic-bezier(.16, .84, .24, 1) var(--enter, 0s); }
@@ -108,8 +108,9 @@
 #s-gap.st-1 .gp-w.base { --wc: rgba(201, 166, 211, .62); }
 #s-gap.st-1 .gp-w.rim { --wc: rgba(232, 208, 238, .92); --ws: 0 0 22px rgba(157, 103, 170, .75), inset 0 0 18px rgba(157, 103, 170, .35); }
 #s-gap.st-2 .gp-w { --wc: rgba(255, 255, 255, 0); --ws: 0 0 0 rgba(0, 0, 0, 0); transform: translateZ(calc(var(--k) * 2.6px)); transition: transform 1.3s var(--ease-io), border-color 1s var(--ease-soft), box-shadow 1s var(--ease-soft); }
-#s-gap.st-2 .gp-w.base { --wc: rgba(37, 199, 188, .42); }
-#s-gap.st-2 .gp-w.rim { --wc: rgba(37, 199, 188, .3); }
+/* the payoff: as the bridges complete, each district's rim lights teal (connected) */
+#s-gap.st-2 .gp-w.base { --wc: rgba(37, 199, 188, .66); transition: transform 1.3s var(--ease-io), border-color .9s var(--ease-soft) calc(1.5s + var(--di) * .15s), box-shadow .9s var(--ease-soft) calc(1.5s + var(--di) * .15s); }
+#s-gap.st-2 .gp-w.rim { --wc: rgba(3, 255, 203, .6); --ws: 0 0 18px rgba(37, 199, 188, .5); transition: transform 1.3s var(--ease-io), border-color .9s var(--ease-soft) calc(1.5s + var(--di) * .15s), box-shadow .9s var(--ease-soft) calc(1.5s + var(--di) * .15s); }
 
 /* stop 1: a ripple leaves the first light in the district's own shape, runs
    across the floor, hits the wall and stops there; the wall flashes purple from
@@ -210,8 +211,9 @@
 @keyframes gpDash { to { stroke-dashoffset: -6.2; } }
 /* stop 2: the bridges complete — the gap closed */
 #s-gap.st-2 .gp-br-line { opacity: 0; animation: none; transition: opacity .6s var(--ease-soft); }
-#s-gap.st-2 .gp-br-glow { opacity: 1; stroke: rgba(37, 199, 188, .28); stroke-dasharray: 100 0; transition: stroke-dasharray 1.3s var(--ease-io) 1.1s, opacity .5s var(--ease-soft); }
-#s-gap.st-2 .gp-br-ok { opacity: .95; stroke-dasharray: 100 0; transition: stroke-dasharray 1.3s var(--ease-io) 1.1s, opacity .5s var(--ease-soft) 1.1s; }
+/* the story arcs complete bright: a wide soft glow, and a glowing sea stroke drawn over it */
+#s-gap.st-2 .gp-br-glow { opacity: 1; stroke: rgba(3, 255, 203, .2); stroke-width: 22; stroke-dasharray: 100 0; transition: stroke-dasharray 1.3s var(--ease-io) 1.1s, stroke-width .6s var(--ease-soft), opacity .5s var(--ease-soft); }
+#s-gap.st-2 .gp-br-ok { opacity: 1; stroke-width: 6.5; filter: drop-shadow(0 0 7px rgba(3, 255, 203, .95)); stroke-dasharray: 100 0; transition: stroke-dasharray 1.3s var(--ease-io) 1.1s, opacity .5s var(--ease-soft) 1.1s; }
 #s-gap.st-2 .gp-br.p2 .gp-br-ok, #s-gap.st-2 .gp-br.p2 .gp-br-glow { transition-delay: 1.5s; }
 
 /* the story light: at stop 1 it sets out and fails at the top of the arc */
@@ -247,6 +249,9 @@
 @keyframes gpCross { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 50% { offset-distance: 100%; opacity: 1; } 56%, 100% { offset-distance: 100%; opacity: 0; } }
 #s-gap.st-2 .gp-br.p1 .gp-bl.ok { animation: gpCross 6s var(--ease-soft) 2.4s infinite; }
 #s-gap.st-2 .gp-br.p2 .gp-bl.ok { animation: gpCross 6s var(--ease-soft) 4s infinite; }
+/* …and, half a period behind, the stop-1 story that failed there now crosses too */
+#s-gap.st-2 .gp-br.p1 .gp-bl:not(.ok) { animation: gpCross 6s var(--ease-soft) 5.4s infinite; }
+#s-gap.st-2 .gp-br.p2 .gp-bl:not(.ok) { animation: gpCross 6s var(--ease-soft) 7s infinite; }
 
 /* foreground dust */
 #s-gap .gp-dust i { width: 4px; height: 4px; }
@@ -260,24 +265,26 @@
 /* the payoff: the largest, brightest line on the stop */
 #s-gap .gp-c2 { margin: 40px 0 0; max-width: 1460px; font: 700 78px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); }
 #s-gap .gp-ask-w { display: inline-block; margin-top: 36px; }
-#s-gap .gp-ask { display: flex; align-items: center; gap: 28px; padding: 30px 52px 30px 36px; border-radius: 24px;
-  background: linear-gradient(100deg, rgba(37, 199, 188, .2), rgba(37, 199, 188, .06) 60%, rgba(157, 103, 170, .08)), rgba(7, 16, 32, .7);
-  box-shadow: 0 34px 90px rgba(0, 0, 0, .45), 0 0 70px rgba(37, 199, 188, .16), inset 0 1px 0 rgba(255, 255, 255, .16); }
-/* the story light docks here (the spark rests in this slot) */
-#s-gap .gp-ask-lt { position: relative; width: 40px; height: 40px; flex: none; }
-#s-gap .gp-ask-lt b { position: absolute; inset: 0; border-radius: 28%; border: 2px solid rgba(3, 255, 203, .6); opacity: 0; }
+#s-gap .gp-ask { display: flex; align-items: center; gap: 30px; padding: 24px 58px 24px 24px; border-radius: 28px;
+  background: linear-gradient(100deg, rgba(37, 199, 188, .3), rgba(37, 199, 188, .1) 55%, rgba(157, 103, 170, .1)), rgba(6, 16, 30, .8);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, .5), 0 0 96px rgba(37, 199, 188, .26), inset 0 1px 0 rgba(255, 255, 255, .2), inset 0 0 0 1.5px rgba(3, 255, 203, .32); }
+/* the story light docks here: the spark rests in a raised teal socket (its solid side shows below) */
+#s-gap .gp-ask-lt { position: relative; width: 72px; height: 72px; flex: none; border-radius: 22px;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .22), transparent), linear-gradient(160deg, rgba(63, 230, 214, .38), rgba(26, 158, 154, .3) 50%, rgba(8, 60, 70, .85)), #0A2F38;
+  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, .3), inset 0 0 0 1.5px rgba(120, 255, 235, .55), 0 6px 0 #06343A, 0 6px 0 1.5px rgba(37, 199, 188, .22), 0 14px 20px rgba(0, 0, 0, .45); }
+#s-gap .gp-ask-lt b { position: absolute; inset: -2px; border-radius: 24px; border: 2px solid rgba(3, 255, 203, .6); opacity: 0; }
 #s-gap.st-2 .gp-ask-lt b { animation: gpDock 3.4s var(--ease-out) 2.4s infinite; }
 /* (each ring fades in over 270 ms as it starts to spread, so no loop starts with a snap) */
 @keyframes gpDock { 0% { transform: scale(1); opacity: 0; animation-timing-function: ease-in-out; } 8% { transform: scale(1.3); opacity: .8; animation-timing-function: cubic-bezier(.16, 1, .3, 1); } 100% { transform: scale(2.6); opacity: 0; } }
 #s-gap .gp-ask-k { font: 700 24px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--sea); white-space: nowrap; }
 #s-gap .gp-ask-sep { width: 2px; height: 50px; background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .4), transparent); }
-#s-gap .gp-ask-t { font: 700 58px/1.05 var(--font); letter-spacing: -.016em; color: var(--white); white-space: nowrap; }
+#s-gap .gp-ask-t { font: 700 62px/1.05 var(--font); letter-spacing: -.018em; color: var(--white); white-space: nowrap; }
+#s-gap .gp-ask-t em { font-style: normal; color: var(--sea); text-shadow: 0 0 30px rgba(3, 255, 203, .35); }
 #s-gap .gp-ask.amb-sheen::after { animation-duration: 6.5s; animation-delay: 2.6s; }
 
 /* stop 2: the gap is closed — no more walls being hit, no more stories failing
    (kept last, and as specific as the stop-1 rules it overrides) */
 #s-gap.st-2 .gp-rip.a, #s-gap.st-2 .gp-rip.b, #s-gap.st-2 .gp-rip.a::before, #s-gap.st-2 .gp-rip.a::after, #s-gap.st-2 .gp-rip.b::before, #s-gap.st-2 .gp-rip.b::after,
-#s-gap.st-2 .gp-br.p1 .gp-bl:not(.ok), #s-gap.st-2 .gp-br.p2 .gp-bl:not(.ok),
 #s-gap.st-2 .gp-br.p1 .gp-x, #s-gap.st-2 .gp-br.p2 .gp-x,
 #s-gap.st-2 .gp-br.p1 .gp-frag, #s-gap.st-2 .gp-br.p2 .gp-frag { animation: none; opacity: 0; }
 
@@ -285,7 +292,7 @@
    is a compositor layer even at opacity 0. The ripples, the hits and the failing stories run on
    stop 1 only, the crossing stories on stop 2 (leaving their stop they stop at once, invisible) */
 #s-gap:not([data-step="1"]) .gp-rip, #s-gap:not([data-step="1"]) .gp-hit,
-#s-gap:not([data-step="1"]) .gp-x, #s-gap:not([data-step="1"]) .gp-frag, #s-gap:not([data-step="1"]) .gp-bl:not(.ok),
+#s-gap:not([data-step="1"]) .gp-x, #s-gap:not([data-step="1"]) .gp-frag, #s-gap[data-step="0"] .gp-bl:not(.ok),
 #s-gap:not([data-step="2"]) .gp-bl.ok { visibility: hidden; }
 /* the walls' middle layers are transparent except while the walls stand (.gp-walls, 03-gap.js) */
 #s-gap:not(.gp-walls) .gp-w.mid { visibility: hidden; }

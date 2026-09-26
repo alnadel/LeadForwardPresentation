@@ -13,20 +13,43 @@
 (function () {
   const ROWS = 10, N = 158; // 16 columns × 10 rows, filled column by column
   const METRICS = [
-    { v: 158, tone: 'base', label: 'Colleagues responded', text: 'An anonymous, eight-question survey.' },
-    { v: 56, tone: 'gap', label: 'Visibility gap', text: 'Rarely or never hear about another department’s achievement.' },
-    { v: 8, tone: 'hero', label: 'Recognition reach', text: 'Say praise for a colleague reaches the whole organisation.' },
-    { v: 80, tone: 'go', label: 'Connection', text: 'Say colleagues’ stories would strengthen connection to Tahakom.' },
+    { v: 158, tone: 'base', icon: 'survey', label: 'Colleagues responded', text: 'An anonymous, eight-question survey.' },
+    { v: 56, tone: 'gap', icon: 'unseen', label: 'Visibility gap', text: 'Rarely or never hear about another department’s achievement.' },
+    { v: 8, tone: 'hero', icon: 'reach', label: 'Recognition reach', text: 'Say praise for a colleague reaches the whole organisation.' },
+    { v: 80, tone: 'go', icon: 'link', label: 'Connection', text: 'Say colleagues’ stories would strengthen connection to Tahakom.' },
   ];
+  // each finding's picture: line icons on a 24 grid (outline, round caps)
+  const ico = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+  const IC = {
+    // an anonymous survey: a clipboard of ticked questions
+    survey: '<rect x="4.8" y="4.4" width="14.4" height="17" rx="2.4"/><path d="M9.2 4.4V2.9h5.6v1.5"/><path d="m8 10.2 1.5 1.5 2.7-2.7"/><path d="M14.4 10.6h2.2"/><path d="m8 15.6 1.5 1.5 2.7-2.7"/><path d="M14.4 16h2.2"/>',
+    // unseen: an eye, struck through
+    unseen: '<path d="M2.6 12s3.5-6.2 9.4-6.2S21.4 12 21.4 12s-3.5 6.2-9.4 6.2S2.6 12 2.6 12z"/><circle cx="12" cy="12" r="2.9"/><path d="M4.2 19.8 19.8 4.2"/>',
+    // reach: praise from a megaphone, carrying outward
+    reach: '<path d="M3.2 10.2v3.6c0 .6.4 1 1 1h2.2l6.4 4V5.2l-6.4 4H4.2c-.6 0-1 .4-1 1z"/><path d="m6.4 14.8 1.2 4.4"/><path d="M16 9.4a3.6 3.6 0 0 1 0 5.2"/><path d="M18.6 6.8a7.4 7.4 0 0 1 0 10.4"/>',
+    // connection: two colleagues, joined
+    link: '<circle cx="7.4" cy="8" r="2.6"/><path d="M2.8 18.6c.4-3 2.2-4.8 4.6-4.8s4.2 1.8 4.6 4.8"/><circle cx="16.6" cy="8" r="2.6"/><path d="M12 18.6c.4-3 2.2-4.8 4.6-4.8s4.2 1.8 4.6 4.8"/><path d="M10.4 8h3.2"/>',
+    // practical learning: a lightbulb
+    bulb: '<path d="M9.4 17.6h5.2"/><path d="M10.2 20.6h3.6"/><path d="M12 3.2a6 6 0 0 0-3.7 10.7c.7.6 1.1 1.4 1.1 2.3v1.4h5.2v-1.4c0-.9.4-1.7 1.1-2.3A6 6 0 0 0 12 3.2z"/><path d="M12 6.4a3 3 0 0 1 2.8 2"/>',
+  };
   const lit = (k) => (k >= 1 ? Math.round(N * METRICS[k].v / 100) : 0); // 88 · 13 · 126
   const CYCLES = 2;                         // reel cycles: every roll crosses from one to the other (see step)
   const SPARK = '110,356';                  // the story light rests at the figure's top-left
 
   /* ── the waffle, on a canvas ─────────────────────────────────────────── */
   const CS = 47, PITCH = 59;                // square and pitch (px): 16 × 10 on 932 × 578
-  const WW = 932, WH = 578;
+  const WW = 932, WH = 578, WX = 844, WY = 330;   // the grid's size and its place on the stage
   const PAD = { l: 112, t: 112, r: 40, b: 112 };   // room for the glows (the hero's fades out ~100 px from its square)
   const CELLS = Array.from({ length: N }, (_, i) => ({ c: Math.floor(i / ROWS), r: i % ROWS, rd: ((i * 53) % 97) / 97 }));
+  // depth: the grid stands as a panel turned a little away (8° about its upright, 4° back), seen in
+  // perspective, so the lit share (filled from the left) is nearest. Every tile is placed and sized by
+  // that projection here, in the canvas: no 3D layer. mir: a tile's reflection in the floor below.
+  const TURN = { y: 8 * Math.PI / 180, x: 4 * Math.PI / 180, p: 2000, ox: .4 * WW, oy: .6 * WH };
+  const proj = (x, y) => {
+    const X = x - TURN.ox, Y = y - TURN.oy, y1 = Y * Math.cos(TURN.x), z1 = Y * Math.sin(TURN.x);
+    const x2 = X * Math.cos(TURN.y) + z1 * Math.sin(TURN.y), z2 = -X * Math.sin(TURN.y) + z1 * Math.cos(TURN.y), s = TURN.p / (TURN.p - z2);
+    return { x: TURN.ox + x2 * s, y: TURN.oy + y1 * s, s };
+  };
   // the looks a square can take (background, border; glow: none | purple | teal)
   const LOOK = {
     off: { bg: [255, 255, 255, .1], bd: [255, 255, 255, .09], gp: 0, gt: 0 },
@@ -60,6 +83,36 @@
     return { cv, pad };
   }
 
+  // the floor light under the waffle, per figure (its colour eases from stop to stop)
+  const TONE = { base: [143, 194, 220, .14], gap: [157, 103, 170, .3], hero: [3, 255, 203, .15], go: [37, 199, 188, .26] };
+  const mixAt = (tv, t) => { const u = t <= tv.t0 ? 0 : Math.min(1, (t - tv.t0) / tv.d); return mixv(tv.a, tv.b, E.soft(u)); };
+  const DEP = 5, RAD = CS * .26;   // a tile's thickness, its corner radius (px)
+  const FLOOR = WH + DEP / 2 + 3;   // the floor line under the grid (grid px): the bottom row is mirrored in it,
+  const MSQ = .6;                   // foreshortened (a glossy floor seen from above), and faded out below
+  CELLS.forEach((cl) => {
+    const x = cl.c * PITCH + CS / 2, y = cl.r * PITCH + CS / 2;
+    cl.p = proj(x, y);
+    if (cl.r === 9) cl.m = proj(x, FLOOR + (FLOOR - y) * MSQ);
+  });
+  // the strip between a tile's face and its bottom edge (its visible thickness), centred on the tile
+  function sidePath() {
+    const h = CS / 2, R = RAD, P = new Path2D();
+    P.moveTo(-h, h - R); P.lineTo(-h, h - R + DEP);
+    P.arc(-h + R, h - R + DEP, R, Math.PI, Math.PI / 2, true); P.lineTo(h - R, h + DEP);
+    P.arc(h - R, h - R + DEP, R, Math.PI / 2, 0, true); P.lineTo(h, h - R);
+    P.arc(h - R, h - R, R, 0, Math.PI / 2, false); P.lineTo(-h + R, h);
+    P.arc(-h + R, h - R, R, Math.PI / 2, Math.PI, false); P.closePath();
+    return P;
+  }
+  // a tile's lit top: a white wash fading down the face (drawn once)
+  function hiSprite() {
+    const cv = document.createElement('canvas'), k = 2; cv.width = cv.height = CS * k;
+    const g = cv.getContext('2d'); g.scale(k, k);
+    const gr = g.createLinearGradient(0, 0, 0, CS); gr.addColorStop(0, 'rgba(255,255,255,.55)'); gr.addColorStop(.5, 'rgba(255,255,255,0)');
+    g.beginPath(); g.roundRect(1, 1, CS - 2, CS - 2, RAD - 1); g.fillStyle = gr; g.fill();
+    return cv;
+  }
+
   let reel = '';
   for (let k = 0; k < CYCLES * 10; k++) reel += `<b>${k % 10}</b>`;
   const slot = (k) => `<span class="sv-slot" style="--k:${k}"><span class="sv-reel">${reel}</span></span>`;
@@ -90,6 +143,8 @@
         <div class="sv-swap">
           <h2 class="h2 sv-h" data-in="0" data-out="3" data-split style="--d:.1s">Employee feedback validates the opportunity.</h2>
           <h2 class="h2 sv-punch" data-in="3" data-split style="--d:.45s;--wstep:.05s">The work exists. <em class="hl">The visibility channel does not.</em></h2>
+          <!-- the contrast, drawn: a lit line under the work; under the channel, a broken track a light cannot cross -->
+          <div class="sv-pu" data-in="3" style="--d:1.25s"><i class="sv-pu1"></i><i class="sv-pu2"><b></b></i></div>
         </div>
       </div>
 
@@ -100,7 +155,7 @@
         <div class="sv-reads">
           ${METRICS.map((m, k) => `
           <div class="sv-say ${m.tone}" data-in="${k}" ${k < 3 ? `data-out="${k + 1}"` : ''} style="--d:${k ? .32 : .5}s">
-            <div class="label sv-lab">${m.label}</div>
+            <div class="sv-labr"><span class="sv-ico">${ico(IC[m.icon])}</span><div class="label sv-lab">${m.label}</div></div>
             <p class="body sv-txt">${m.text}</p>
           </div>`).join('')}
         </div>
@@ -109,6 +164,9 @@
 
       <!-- the key (stops 1–2), then the second figure (stop 3), in one slot -->
       <!-- support: a small caption-weight key (the figure and its label lead) -->
+      <div class="sv-legend sv-leg0" data-in="0" data-out="1" style="--d:.9s">
+        <span class="sv-key"><i class="k-one"></i>Each square is one colleague</span>
+      </div>
       <div class="sv-legend" data-in="1" data-out="3" style="--d:.55s">
         <span class="sv-key"><i class="k-lit"></i><span class="sv-kt">${[1, 2].map((k) => `<b data-at="${k}">${lit(k)} of 158 · ${METRICS[k].label.toLowerCase()}</b>`).join('')}</span></span>
         <span class="sv-key"><i class="k-off"></i>Other respondents</span>
@@ -117,16 +175,15 @@
       <div class="sv-second glass amb-sheen" data-in="3" style="--d:.7s">
         <b class="num sv-49"><span data-count="49" data-dur=".9" data-delay=".75">0</span><small>%</small></b>
         <div class="sv-49t">
-          <div class="label teal">Practical learning</div>
+          <div class="label teal sv-49l"><span class="sv-ico sm">${ico(IC.bulb)}</span>Practical learning</div>
           <p>A colleague’s story gives them an approach they can use.</p>
         </div>
       </div>
 
       <i class="sv-wpool"></i>
-      <div class="sv-waffle">
-        <canvas class="sv-wcan" width="${WW + PAD.l + PAD.r}" height="${WH + PAD.t + PAD.b}" style="left:${-PAD.l}px;top:${-PAD.t}px;width:${WW + PAD.l + PAD.r}px;height:${WH + PAD.t + PAD.b}px"></canvas>
-        <div class="sv-sweep"></div>
-      </div>
+      <!-- the waffle (at ${WX}, ${WY}): one canvas, no wrapper (a wrapper box became a waffle-sized layer during the build) -->
+      <canvas class="sv-wcan" width="${WW + PAD.l + PAD.r}" height="${WH + PAD.t + PAD.b}" style="left:${WX - PAD.l}px;top:${WY - PAD.t}px;width:${WW + PAD.l + PAD.r}px;height:${WH + PAD.t + PAD.b}px"></canvas>
+      <div class="sv-sweep" style="left:${WX}px;top:${WY - 40}px;height:${WH + 80}px"></div>
       <i class="sv-clock"></i>
     `,
     init(ctx) {
@@ -142,6 +199,10 @@
       // the waffle's own entrance (the fade its container had: .9 s, --d .25 s after the scene enters)
       ctx.fade = { a: 0, b: 0, t0: 0, d: 900 };
       ctx.sq = CELLS.map(() => ({ pop: { a: 0, b: 0, t0: 0, d: 1 }, op: { a: 0, b: 0, t0: 0, d: 1 }, look: { a: LOOK.off, b: LOOK.off, t0: 0, d: 1 }, mode: '' }));
+      // depth: each square is a tile with a thickness (a strip under its face) and a lit top
+      ctx.side = sidePath();
+      ctx.hi = hiSprite();
+      ctx.floor = { a: TONE.base, b: TONE.base, t0: 0, d: 1 };
       ctx.spr = { p: glowSprite(20, 'rgba(157, 103, 170, .5)'), t: glowSprite(20, 'rgba(37, 199, 188, .5)'),
         hr: glowSprite(16, 'rgba(3, 255, 203, .75)', 1), h1: glowSprite(44, 'rgba(3, 255, 203, 1)', 1), h2: glowSprite(90, 'rgba(3, 255, 203, .3)', 1) };
     },
@@ -156,8 +217,10 @@
     step(n, prev, ctx) {
       window.LFPark && LFPark(ctx);   // what the stop has taken away leaves the compositor
       const el = ctx.el, m = n >= 0 ? METRICS[n] : null;
-      const w = ctx.$('.sv-waffle');
+      const w = ctx.$('.sv-sweep');
       el.dataset.tone = m ? m.tone : '';
+      { const to = TONE[m ? m.tone : 'base'], t = performance.now();
+        ctx.floor = ctx.instant ? { a: to, b: to, t0: 0, d: 1 } : { a: mixAt(ctx.floor, t), b: to, t0: t, d: 1000 }; }
       const k = lit(Math.max(n, 0)), tone = m ? m.tone : '';
       // the squares: every change starts from where the square is now, on its CSS timing
       const now = performance.now();
@@ -210,11 +273,22 @@
       });
       ctx.dg = dg;
       el.classList.toggle('sv-pct-on', n >= 1);
+      // the punchline's two lines of light sit under its two halves (measured: the words are laid out by the font)
+      if (n === 3) {
+        const ws = ctx.$$('.sv-punch .w'), em = ctx.$('.sv-punch em');
+        const w2 = em && em.closest('.w'), w1 = ws.filter((w) => w !== w2 && !w.contains(em));
+        if (w1.length && w2) {
+          const a = w1[0], z = w1[w1.length - 1], pu = ctx.$('.sv-pu');
+          pu.style.setProperty('--x1', a.offsetLeft + 'px'); pu.style.setProperty('--w1', (z.offsetLeft + z.offsetWidth - a.offsetLeft - 14) + 'px');
+          pu.style.setProperty('--x2', w2.offsetLeft + 'px'); pu.style.setProperty('--w2', (w2.offsetWidth - 14) + 'px');
+        }
+      }
 
       // one-shot lights play on live clicks only; their resting state is invisible
       el.classList.remove('sv-live'); void el.offsetWidth;
       if (!ctx.instant && n >= 0) el.classList.add('sv-live');
-      if (n >= 1 && !ctx.instant) { w.classList.remove('roll'); void w.offsetWidth; w.classList.add('roll'); }
+      w.classList.remove('roll');
+      if (n >= 1 && !ctx.instant) { void w.offsetWidth; w.classList.add('roll'); ctx.after(1500, () => w.classList.remove('roll')); }
     },
   });
 
@@ -239,7 +313,7 @@
     if (fade <= .002) return;
     g.setTransform(ctx.k, 0, 0, ctx.k, PAD.l * ctx.k, PAD.t * ctx.k);
     const heroes = [];
-    const one = (cl, q) => {
+    const one = (cl, q, mir) => {
       const pop = val(q.pop, now, E.back), p = Math.max(0, pop);
       let op = val(q.op, now), sc = p, rot = 45 * (1 - pop);
       const lk = lookAt(q.look, now);
@@ -247,20 +321,24 @@
       if (q.mode === 'hero') { const u = ((T + cl.r * .14) % 2.8) / 2.8; sc = loopAt(HS, u); rot = 0; q.hu = u; }
       if (op <= .003 || sc <= .003) return;
       g.save();
-      g.translate(cl.c * PITCH + CS / 2, cl.r * PITCH + CS / 2);
-      if (rot) g.rotate(rot * Math.PI / 180);
-      g.scale(sc, sc);
-      op *= fade;
+      const at = mir ? cl.m : cl.p;
+      g.translate(at.x, at.y);
+      if (rot) g.rotate((mir ? -rot : rot) * Math.PI / 180);
+      g.scale(sc * at.s, sc * at.s * (mir ? -MSQ : 1));
+      op *= fade * (mir ? .3 : 1);
       g.globalAlpha = op;
       const glow = (s, a) => { if (a > .003) { g.globalAlpha = op * a; g.drawImage(s.cv, -CS / 2 - s.pad, -CS / 2 - s.pad); g.globalAlpha = op; } };
-      glow(ctx.spr.p, lk.gp); glow(ctx.spr.t, lk.gt);
-      if (q.mode === 'hero') { const rest = loopAt(HR, q.hu); glow(ctx.spr.hr, rest); glow(ctx.spr.h1, 1 - rest); glow(ctx.spr.h2, 1 - rest); }
+      if (!mir) { glow(ctx.spr.p, lk.gp); glow(ctx.spr.t, lk.gt); }
+      if (q.mode === 'hero' && !mir) { const rest = loopAt(HR, q.hu); glow(ctx.spr.hr, rest); glow(ctx.spr.h1, 1 - rest); glow(ctx.spr.h2, 1 - rest); }
+      // the tile's thickness (a darker strip under its face), then its face and its lit top
+      g.fillStyle = rgba([lk.bg[0] * .42, lk.bg[1] * .42, lk.bg[2] * .5, Math.min(1, lk.bg[3] * 1.3)]); g.fill(ctx.side);
       g.beginPath(); g.roundRect(-CS / 2, -CS / 2, CS, CS, CS * .26);
       g.fillStyle = rgba(lk.bg); g.fill();
+      g.globalAlpha = op * (.1 + .3 * lk.bg[3]); g.drawImage(ctx.hi, -CS / 2, -CS / 2, CS, CS); g.globalAlpha = op;
       g.beginPath(); g.roundRect(-CS / 2 + .5, -CS / 2 + .5, CS - 1, CS - 1, CS * .26 - .5);
       g.lineWidth = 1; g.strokeStyle = rgba(lk.bd); g.stroke();
       // the wave of light drifting across the other respondents (their ::after)
-      if (!q.mode) {
+      if (!q.mode && !mir) {
         const wa = loopAt(WAVE, ((T + 5.2 * 4 - cl.c * .26 - cl.r * .05) % 5.2) / 5.2);
         if (wa > .003) {
           g.globalAlpha = op * wa;
@@ -270,7 +348,21 @@
       }
       g.restore();
     };
+    // the reflection first (under everything), then the tiles
+    CELLS.forEach((cl, i) => { if (cl.m) one(cl, ctx.sq[i], true); });
+    g.save(); g.globalCompositeOperation = 'destination-out'; g.globalAlpha = 1;
+    const rf = g.createLinearGradient(0, FLOOR + 4, 0, FLOOR + 34); rf.addColorStop(0, 'rgba(0,0,0,0)'); rf.addColorStop(1, 'rgba(0,0,0,1)');
+    g.fillStyle = rf; g.fillRect(-PAD.l, FLOOR, WW + PAD.l + PAD.r, PAD.b); g.restore();
     CELLS.forEach((cl, i) => { const q = ctx.sq[i]; if (q.mode === 'hero') heroes.push(i); else one(cl, q); });
     heroes.forEach((i) => one(CELLS[i], ctx.sq[i]));   // the thirteen sit above the rest (their z-index)
+    // the floor: a pool of the figure's colour under everything
+    const k = ctx.k, fp = proj(WW / 2, WH + 24);
+    const fc = mixAt(ctx.floor, now);
+    g.globalCompositeOperation = 'destination-over';
+    g.setTransform(k * WW * .6, 0, 0, k * 64, (PAD.l + fp.x) * k, (PAD.t + fp.y) * k);
+    const pg = g.createRadialGradient(0, 0, 0, 0, 0, 1);
+    pg.addColorStop(0, rgba([fc[0], fc[1], fc[2], fc[3] * fade])); pg.addColorStop(1, rgba([fc[0], fc[1], fc[2], 0]));
+    g.fillStyle = pg; g.beginPath(); g.arc(0, 0, 1, 0, Math.PI * 2); g.fill();
+    g.globalCompositeOperation = 'source-over'; g.setTransform(1, 0, 0, 1, 0, 0);
   }
 })();

@@ -6,7 +6,9 @@
    hard at the wall (the wall flashes as it is hit), and stories keep setting out
    over the bridges between teams and failing halfway (they break and fall).
    Stop 2: the map tilts back and recedes behind the conclusion; the walls sink and
-   the bridges complete — the gap closed — while today's ask takes the stage.
+   the bridges complete as bright story arcs — the gap closed — each district's rim
+   lights teal as they land, and two stories keep crossing each bridge; today’s ask
+   takes the stage as a glass chip whose raised socket the spark docks into.
    Every state is a pure function of the stop (.st-n classes in the CSS); the
    ambient loops are CSS animations, so there are no timers to keep in step. */
 (function () {
@@ -184,7 +186,7 @@
             <span class="gp-ask-lt" data-spark="2" data-spark-at="c" data-spark-delay="1.05"><b></b></span>
             <span class="gp-ask-k">Today’s ask</span>
             <span class="gp-ask-sep"></span>
-            <span class="gp-ask-t">Approve a one-quarter pilot</span>
+            <span class="gp-ask-t">Approve a <em>one-quarter pilot</em></span>
           </div>
         </div>
       </div>

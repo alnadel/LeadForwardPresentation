@@ -347,117 +347,176 @@
   93.5% { transform: translate(1424px, 108px) scale(1); } 95.5%, 100% { transform: translate(1424px, 108px) scale(2.6); } }
 @keyframes rnShotO { 0%, 86.3% { opacity: 0; } 88% { opacity: 1; } 93.5% { opacity: 1; } 95.5%, 100% { opacity: 0; } }
 
-/* ── 2 · recognition: three tiers as nested squircles (the hero) ─────── */
+/* ── 2 · recognition: three pictured tiers on equal plinths, and the person they recognise ── */
 #s-runs .rn-h2 { width: 800px; white-space: normal; }
 #s-runs .rn-tiers { position: absolute; left: var(--m); top: 398px; width: 800px; }
 #s-runs .rn-t { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 30px; }
 #s-runs .rn-tn { position: relative; flex: none; width: 56px; height: 56px; font-size: 22px; }
-/* the tier lights as the pulse crosses its frame: a lit copy of the node, cross-faded */
+/* the tier lights as its object does: a lit copy of the node, cross-faded */
 #s-runs .rn-tn::after { content: attr(data-n); position: absolute; inset: -2px; border-radius: inherit; display: grid; place-items: center; pointer-events: none;
   color: var(--navy); background: var(--teal); border: 2px solid var(--teal); box-shadow: 0 0 34px rgba(37, 199, 188, .6); opacity: 0; }
-/* the pulse and everything in step with it start together once the pull-out has landed (.rn-land,
-   set by 09-runs.js): the pulse crosses the frames at 8 · 44 · 79 % of its 4.5 s lap */
-#s-runs.rn-land .rn-tn::after { animation: rnTier 4.5s ease-out infinite; }
-#s-runs.rn-land .rn-t:nth-child(1) .rn-tn::after { animation-delay: .37s; }
-#s-runs.rn-land .rn-t:nth-child(2) .rn-tn::after { animation-delay: 1.99s; }
-#s-runs.rn-land .rn-t:nth-child(3) .rn-tn::after { animation-delay: 3.56s; }
+/* the loops start together once the board has built (.rn-land, set by 09-runs.js). One lap is 6 s:
+   each tier in turn (0 · 2 · 4 s) lights its object and its row, and sends a light down to the person */
+#s-runs.rn-land .rn-tn::after { animation: rnTier 6s ease-out infinite; }
+#s-runs.rn-land .rn-t:nth-child(2) .rn-tn::after { animation-delay: 2s; }
+#s-runs.rn-land .rn-t:nth-child(3) .rn-tn::after { animation-delay: 4s; }
+@keyframes rnTier { 0% { opacity: 0; animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 6% { opacity: 1; } 30%, 100% { opacity: 0; } }
 /* the three tier names are what the room reads; each description is support */
 #s-runs .rn-tt { margin: 2px 0 0; font: 700 46px/1.08 var(--font); letter-spacing: -.02em; color: var(--white); }
 #s-runs .rn-ts { margin: 8px 0 0; max-width: 700px; font: 400 23px/1.4 var(--font); color: rgba(255, 255, 255, .6); text-wrap: pretty; }
-@keyframes rnTier { 0% { opacity: 0; animation-timing-function: cubic-bezier(.4, 0, .6, 1); } 6% { opacity: 1; } 30%, 100% { opacity: 0; } }
 #s-runs .rn-pr { position: absolute; left: var(--m); top: 836px; width: 860px; }
 #s-runs .rn-pr::before { content: ''; position: absolute; left: 0; top: -22px; width: 780px; height: 1px; background: linear-gradient(90deg, rgba(37, 199, 188, .6), rgba(37, 199, 188, 0)); }
 #s-runs .rn-pr-k { display: block; font: 700 20px/1 var(--font); letter-spacing: .24em; text-transform: uppercase; color: rgba(37, 199, 188, .9); }
 #s-runs .rn-pr-t { margin: 12px 0 0; font: 700 54px/1.1 var(--font); letter-spacing: -.02em; color: var(--white); white-space: nowrap; }
 #s-runs .rn-pr-t em { font-style: normal; color: var(--teal); }
 
-/* a pool of light behind the frames (drawn at a quarter size and scaled up) */
-#s-runs .rn-glow { position: absolute; width: 300px; height: 275px; margin: -137.5px 0 0 -150px; pointer-events: none; opacity: 0; transform: scale(2.8);
+/* a pool of light over the stage (drawn at a quarter size and scaled up) */
+#s-runs .rn-glow { position: absolute; width: 250px; height: 150px; margin: -75px 0 0 -125px; pointer-events: none; opacity: 0; transform: scale(3.2);
   transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
 #s-runs .rn-glow::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .17), rgba(37, 199, 188, .06) 45%, rgba(157, 103, 170, .06) 65%, transparent); }
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .16), rgba(37, 199, 188, .05) 50%, rgba(157, 103, 170, .05) 70%, transparent); }
 #s-runs.st-2 .rn-glow { opacity: 1; transform: scale(4); transition: opacity 1.4s var(--ease-soft) .3s, transform 2.2s var(--ease-out) .3s; }
 #s-runs.rn-land .rn-glow::before { animation: rnGlowB 6s ease-in-out .2s infinite both; }
 @keyframes rnGlowB { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .7; transform: scale(1.06); } }
-/* the camera window onto the frames; its edges fade so the pull-out reads as depth */
-#s-runs .rn-view { position: absolute; overflow: hidden; pointer-events: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 110px, #000 calc(100% - 60px), transparent), linear-gradient(180deg, transparent, #000 30px, #000 calc(100% - 30px), transparent);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(90deg, transparent, #000 110px, #000 calc(100% - 60px), transparent), linear-gradient(180deg, transparent, #000 30px, #000 calc(100% - 30px), transparent);
-  mask-composite: intersect; }
-/* only the outer frame is resized; everything inside is in %, so strokes stay crisp.
-   Close-up: the certificate frame fills the window; then two pull-outs (see the JS easing). */
-#s-runs .rn-s3 { position: absolute; left: var(--al); top: var(--at); width: var(--as); height: var(--as);
-  transition: left .8s var(--ease-io), top .8s var(--ease-io), width .8s var(--ease-io), height .8s var(--ease-io); }
-#s-runs.st-2 .rn-s3 { left: var(--zl); top: var(--zt); width: var(--zs); height: var(--zs);
-  transition: left 1.95s var(--rn-zoom) .38s, top 1.95s var(--rn-zoom) .38s, width 1.95s var(--rn-zoom) .38s, height 1.95s var(--rn-zoom) .38s; }
-#s-runs .rn-s2, #s-runs .rn-s1 { position: absolute; }
-#s-runs .rn-s3::before, #s-runs .rn-s2::before, #s-runs .rn-s1::before { content: ''; position: absolute; inset: 0; border-radius: 28%; }
-#s-runs .rn-s3::before { border: 2px solid rgba(37, 199, 188, .55);
-  background: linear-gradient(160deg, rgba(255, 255, 255, .07), rgba(10, 30, 52, .35) 45%, rgba(37, 199, 188, .06));
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .1), 0 40px 100px rgba(0, 0, 0, .35); }
-#s-runs .rn-s2::before { border: 2px solid rgba(37, 199, 188, .7); background: rgba(6, 26, 48, .6); box-shadow: 0 0 30px rgba(37, 199, 188, .12); }
-#s-runs .rn-s1::before { border: 2.5px solid var(--sea); background: rgba(37, 199, 188, .2); box-shadow: 0 0 40px rgba(37, 199, 188, .4), inset 0 0 20px rgba(3, 255, 203, .2); }
-/* the certificate: the moment the employee is seen */
-#s-runs .rn-cert { position: absolute; left: 22%; top: 22%; width: 56%; height: 56%; color: var(--sea); filter: drop-shadow(0 0 8px rgba(3, 255, 203, .6)); }
-#s-runs .rn-cert .icon, #s-runs .rn-cert svg { width: 100%; height: 100%; display: block; }
-/* the frames' lights: layers at the settled frame size (720 px), which exist only once the pull-out
-   has landed (.rn-land): no close-up-sized layer is ever promoted, none waits through the zoom */
-#s-runs .rn-ov { position: absolute; pointer-events: none; opacity: 0; transition: opacity .3s var(--ease-soft); }
-#s-runs.rn-land .rn-ov { opacity: 1; transition: opacity .6s var(--ease-soft); }
-#s-runs .rn-fg { position: absolute; inset: 0; border-radius: 28%; pointer-events: none; opacity: 0; border: 2px solid rgb(3, 255, 203); }
-#s-runs .rn-fg.f2 { inset: auto; }
-#s-runs .rn-fg.f3 { box-shadow: 0 0 50px rgba(3, 255, 203, .35); }
-#s-runs .rn-fg.f2 { box-shadow: 0 0 40px rgba(3, 255, 203, .45); }
-#s-runs.rn-land .rn-fg.f3 { animation: rnTier 4.5s ease-out 3.56s infinite; }
-#s-runs.rn-land .rn-fg.f2 { animation: rnTier 4.5s ease-out 1.99s infinite; }
-/* a light orbits the outer frame (the conic just covers the frame's corners) */
-#s-runs .rn-orb { position: absolute; inset: 0; border-radius: 28%; padding: 3px; pointer-events: none;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-#s-runs .rn-orb i { position: absolute; inset: -9.5%; border-radius: 50%;
-  background: conic-gradient(rgba(3, 255, 203, 0) 0deg, rgba(3, 255, 203, 0) 240deg, rgba(3, 255, 203, .95) 330deg, rgba(255, 255, 255, .9) 340deg, rgba(3, 255, 203, 0) 346deg); }
-#s-runs.rn-land .rn-orb i { animation: rnOrb 9s linear infinite; }
-@keyframes rnOrb { to { transform: rotate(360deg); } }
-#s-runs .rn-cell { position: absolute; width: 27.333%; height: 27.333%; border-radius: 28%; border: 2px solid rgba(255, 255, 255, .22); background: rgba(255, 255, 255, .05); display: grid; place-items: center; }
-/* the cells twinkle once the camera has landed (resting at the twinkle's low point until then) */
-#s-runs .rn-dot { grid-area: 1 / 1; width: 8px; height: 8px; border-radius: 28%; background: rgba(37, 199, 188, .75); box-shadow: 0 0 10px rgba(37, 199, 188, .5); opacity: .3; }
-#s-runs.rn-land .rn-dot { animation: rnTw 3.6s ease-in-out var(--tw) infinite both; }
-#s-runs .rn-cell.c3 .rn-dot { width: 12px; height: 12px; }
-@keyframes rnTw { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
-/* featured, not ranked: several stories carry the light, all the same size */
-#s-runs .rn-cell.f { border-color: rgba(37, 199, 188, .55); background: rgba(37, 199, 188, .08); transition: border-color .8s var(--ease-soft) 1.85s; }
-#s-runs .rn-cell .light { position: relative; grid-area: 1 / 1; width: 18px; height: 18px; opacity: 0; transform: scale(.3); transition: opacity .7s var(--ease-soft), transform .8s var(--ease-back);
-  box-shadow: 0 0 10px var(--sea), 0 0 26px rgba(3, 255, 203, .45); }
-#s-runs .rn-cell .light::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: 0 0 16px var(--sea), 0 0 54px rgba(3, 255, 203, .62); opacity: 0; }
-#s-runs.rn-land .rn-cell .light::after { animation: rnFeat 3.2s ease-in-out infinite; }
-#s-runs.st-2 .rn-cell.f .light { opacity: 1; transform: none; transition-delay: 1.85s; }
-#s-runs.st-2 .rn-cell.f:nth-child(5) .light { transition-delay: 1.95s; }
-#s-runs.st-2 .rn-cell.f:nth-child(9) .light { transition-delay: 2.05s; }
-#s-runs .rn-cell.f .rn-dot { display: none; }
-@keyframes rnFeat { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
-/* a pulse leaves the story every 4.5 s and travels out through every frame (sizes: 54 · 197 · 720) */
-/* the pulse: an SVG squircle that grows 20px → 1000px by its own geometry (x/y/width/height/rx):
-   no HTML layout, the ring stays a crisp 2.5px at every size, and the svg is its own layer, so its
-   per-frame repaint is just this one thin shape (a compositor scale would blur and thicken the ring) */
-#s-runs .rn-pulse { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; will-change: transform; }
-#s-runs .rn-pulse-r { fill: url(#rn-pulse-g); stroke: rgba(3, 255, 203, .9); stroke-width: 2.5; opacity: 0; }
-#s-runs.rn-land .rn-pulse-r { animation: rnPulse 4.5s linear infinite; }
-@keyframes rnPulse {
-  0%   { x: -10px; y: -10px; width: 20px; height: 20px; rx: 5.6px; opacity: 0; }
-  5%   { opacity: .95; }
-  8%   { x: -27px; y: -27px; width: 54px; height: 54px; rx: 15.12px; }
-  44%  { x: -98.5px; y: -98.5px; width: 197px; height: 197px; rx: 55.16px; }
-  79%  { x: -360px; y: -360px; width: 720px; height: 720px; rx: 201.6px; opacity: .75; }
-  95%, 100% { x: -500px; y: -500px; width: 1000px; height: 1000px; rx: 280px; opacity: 0; }
+
+/* the stage: a zero-size wrapper (stage coordinates), its children overflow */
+#s-runs .rn-rec { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-runs .rn-rec svg { overflow: visible; }
+#s-runs .rn-floor { position: absolute; }
+#s-runs .rn-floor .fl-t { fill: url(#rn-fl-g); stroke: rgba(37, 199, 188, .42); stroke-width: 1.5; }
+#s-runs .rn-floor .fl-s { fill: rgba(6, 30, 50, .75); stroke: rgba(37, 199, 188, .3); stroke-width: 1; }
+#s-runs .rn-floor .fl-r { fill: none; stroke: rgba(255, 255, 255, .07); stroke-width: 1.2; stroke-dasharray: 3 7; }
+/* the threads: each tier's light runs down one to the person; they draw in as the board builds */
+#s-runs .rn-floor .fl-th { fill: none; stroke: rgba(3, 255, 203, .5); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+#s-runs .rn-floor.is-in .fl-th { stroke-dashoffset: 0; transition: stroke-dashoffset 1s var(--ease-out) 1.4s; }
+#s-runs .rn-floor.is-in .fl-th:nth-of-type(2) { transition-delay: 1.52s; }
+#s-runs .rn-floor.is-in .fl-th:nth-of-type(3) { transition-delay: 1.64s; }
+
+/* the plinths rise out of the floor (a slit at the floor line: the clip moves against the rise) */
+#s-runs .rn-pd { position: absolute; width: 300px; height: 380px; clip-path: inset(-60px -60px 0 -60px); }
+#s-runs .rn-pd > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+#s-runs [data-in].rn-pd:not(.is-in) { transform: translateY(96px); filter: none; clip-path: inset(-60px -60px 96px -60px); }
+#s-runs .rn-pd .sh { fill: url(#rn-sh); }
+#s-runs .rn-pd .pl .cy-s { fill: url(#rn-cy); stroke: rgba(37, 199, 188, .38); stroke-width: 1; }
+#s-runs .rn-pd .pl .cy-t { fill: rgba(22, 78, 98, .92); stroke: rgba(3, 255, 203, .8); stroke-width: 1.6; }
+#s-runs .rn-pd .pl-r { fill: none; stroke: rgba(3, 255, 203, .22); stroke-width: 1.2; }
+/* its number, on the plinth's front (the row on the left reads the same) */
+#s-runs .rn-pn { position: absolute; left: 150px; top: 309px; width: 44px; height: 30px; margin-left: -22px; border-radius: 9px; display: grid; place-items: center;
+  font: 700 18px/1 var(--font); letter-spacing: .06em; color: var(--sea); background: rgba(4, 20, 36, .8); border: 1.5px solid rgba(3, 255, 203, .5); }
+/* the objects, drawn face-on */
+#s-runs .rn-pd .ob path, #s-runs .rn-pd .ob rect, #s-runs .rn-pd .ob circle, #s-runs .rn-pd .ob ellipse { stroke-linecap: round; stroke-linejoin: round; }
+#s-runs .rn-pd .dp { fill: #0C2C40; stroke: rgba(37, 199, 188, .45); stroke-width: 1.2; }
+#s-runs .rn-pd .t3 { fill: none; stroke: rgba(43, 110, 120, .55); stroke-width: 4; }
+/* 01 · the certificate */
+#s-runs .rn-pd .cert .ez { fill: none; stroke: #7FA9AC; stroke-width: 5; }
+#s-runs .rn-pd .cert .pp { fill: url(#rn-paper); stroke: rgba(3, 255, 203, .85); stroke-width: 1.4; }
+#s-runs .rn-pd .cert .pb { fill: none; stroke: rgba(37, 160, 150, .5); stroke-width: 1.4; }
+#s-runs .rn-pd .cert .av { fill: #25C7BC; stroke: #0B4A55; stroke-width: 2; }
+#s-runs .rn-pd .cert .avp { fill: #06213D; }
+#s-runs .rn-pd .cert .tl { fill: none; stroke: #0E3D55; stroke-width: 8; }
+#s-runs .rn-pd .cert .t2 { fill: none; stroke: #2B8F8A; stroke-width: 5; }
+#s-runs .rn-pd .cert .sg { fill: none; stroke: #0E3D55; stroke-width: 2.2; }
+#s-runs .rn-pd .cert .sl { fill: none; stroke: rgba(14, 61, 85, .4); stroke-width: 1.4; }
+#s-runs .rn-pd .cert .rb { fill: #9D67AA; stroke: #C9A6D3; stroke-width: 1.2; }
+#s-runs .rn-pd .cert .se { fill: #F2C94C; stroke: #FFF1BF; stroke-width: 1.6; }
+#s-runs .rn-pd .cert .se2 { fill: none; stroke: #C99A2E; stroke-width: 1.4; stroke-dasharray: 2 2.4; }
+#s-runs .rn-pd .cert .st { fill: #FFF6D6; }
+/* 02 · the featured story on a screen, broadcast to an audience */
+#s-runs .rn-pd .scr .bc { fill: none; stroke: rgba(3, 255, 203, .3); stroke-width: 3; }
+#s-runs .rn-pd .scr .nk { fill: #0F3A50; stroke: rgba(37, 199, 188, .5); stroke-width: 1; }
+#s-runs .rn-pd .scr .ft { fill: #16475E; stroke: rgba(3, 255, 203, .6); stroke-width: 1.2; }
+#s-runs .rn-pd .scr .bz { fill: #0A2236; stroke: rgba(3, 255, 203, .85); stroke-width: 2; }
+#s-runs .rn-pd .scr .sn { fill: url(#rn-scr); }
+#s-runs .rn-pd .scr .tl { fill: none; stroke: var(--sea); stroke-width: 7; }
+#s-runs .rn-pd .scr .t3 { stroke: rgba(255, 255, 255, .4); stroke-width: 3.5; }
+#s-runs .rn-pd .scr .av { fill: rgba(37, 199, 188, .6); stroke: var(--sea); stroke-width: 1.4; }
+#s-runs .rn-pd .scr .au { fill: #3FB6AE; }
+#s-runs .rn-ban { position: absolute; border-radius: 5px; background-size: cover; background-position: 50% 30%; }
+#s-runs .rn-ban::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(180deg, rgba(6, 26, 44, 0) 45%, rgba(6, 26, 44, .55)); }
+#s-runs .rn-ban span { position: absolute; left: 6px; top: 6px; z-index: 1; width: 26px; height: 20px; border-radius: 6px; display: grid; place-items: center; color: #062036; background: var(--sea); }
+#s-runs .rn-ban .rn-svgi { width: 15px; height: 15px; fill: currentColor; stroke-width: 1; }
+/* 03 · the annual collection */
+#s-runs .rn-pd .bk .lc { fill: #3A1631; stroke: rgba(201, 166, 211, .6); stroke-width: 1.3; }
+#s-runs .rn-pd .bk .cv { fill: #6E3B78; stroke: rgba(232, 208, 238, .8); stroke-width: 1.4; }
+#s-runs .rn-pd .bk .pe { fill: none; stroke: rgba(232, 208, 238, .55); stroke-width: 1.5; }
+#s-runs .rn-pd .bk .pg { fill: url(#rn-page); stroke: rgba(232, 208, 238, .9); stroke-width: 1.2; }
+#s-runs .rn-pd .bk .sp { fill: none; stroke: rgba(110, 59, 120, .45); stroke-width: 2; }
+#s-runs .rn-pd .bk .ph { fill: #7E4C8A; }
+#s-runs .rn-pd .bk .php { fill: #E8D0EE; }
+#s-runs .rn-pd .bk .t3 { stroke: rgba(110, 59, 120, .45); stroke-width: 3.5; }
+#s-runs .rn-pd .bk .st2 { fill: #F2C94C; stroke: #FFF1BF; stroke-width: 1; }
+#s-runs .rn-pd .bk .rbn { fill: #F2C94C; stroke: #FFF1BF; stroke-width: .8; }
+#s-runs .rn-pd .bk .lcf { fill: #4A1D3F; stroke: rgba(201, 166, 211, .6); stroke-width: 1.2; }
+
+/* the person: a disc on the floor, a beam, their portrait (the story's colleague) */
+#s-runs .rn-hu { position: absolute; width: 0; height: 0; }
+#s-runs [data-in].rn-hu:not(.is-in) { transform: translateY(-40px); filter: blur(4px); }
+#s-runs .rn-hu > * { position: absolute; }
+#s-runs .rn-hu-pool { left: -90px; top: -38px; width: 180px; height: 64px; border-radius: 50%; transform: scale(1.6); opacity: .8;
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .34), rgba(37, 199, 188, .1) 60%, transparent); }
+#s-runs .rn-hu-d { left: -80px; top: -44px; width: 160px; height: 88px; }
+#s-runs .rn-hu-d .cy-s { fill: #0C3A4A; stroke: rgba(3, 255, 203, .5); stroke-width: 1; }
+#s-runs .rn-hu-d .cy-t { fill: rgba(37, 199, 188, .42); stroke: var(--sea); stroke-width: 1.8; }
+#s-runs .rn-hu-d .hd-r { fill: none; stroke: rgba(255, 255, 255, .35); stroke-width: 1; stroke-dasharray: 2 5; }
+#s-runs .rn-hu-beam { left: -62px; top: -176px; width: 124px; height: 168px; opacity: .85;
+  background: linear-gradient(0deg, rgba(3, 255, 203, .3), rgba(3, 255, 203, .08) 55%, rgba(3, 255, 203, 0));
+  clip-path: polygon(0 100%, 100% 100%, 84% 0, 16% 0); }
+#s-runs .rn-hu-av { left: -52px; width: 104px; height: 104px; margin-top: -52px; border-radius: 50%; background-color: #1a1f2b; background-size: auto 300%; background-position: 24.5% 21%;
+  border: 4px solid #0B1F36; box-shadow: 0 0 0 2px var(--sea), 0 0 34px rgba(3, 255, 203, .45), 0 14px 30px rgba(0, 0, 0, .5); }
+#s-runs .rn-ring { left: -60px; top: -152px; width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--sea); box-shadow: 0 0 22px rgba(3, 255, 203, .5); opacity: 0; }
+
+/* the loops (from .rn-land) */
+#s-runs .rn-lights { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+#s-runs .rn-lights > * { position: absolute; pointer-events: none; }
+/* each tier's light: it leaves the plinth's foot and runs down its thread to the person */
+#s-runs .rn-thl { width: 0; height: 0; }
+#s-runs .rn-thl .light { position: absolute; left: -7px; top: -7px; opacity: 0; }
+#s-runs.rn-land .rn-thl .light { animation: rnTL 6s linear infinite; }
+#s-runs.rn-land .rn-thl.k1 .light { animation-delay: 2s; }
+#s-runs.rn-land .rn-thl.k2 .light { animation-delay: 4s; }
+@keyframes rnTL {
+  0%   { transform: translate(0, 0) scale(.4); opacity: 0; }
+  5%   { transform: translate(0, 0) scale(1); opacity: 1; animation-timing-function: cubic-bezier(.45, 0, .4, 1); }
+  20%  { transform: translate(var(--dx), var(--dy)) scale(1); opacity: 1; }
+  25%, 100% { transform: translate(var(--dx), var(--dy)) scale(2.2); opacity: 0; }
 }
-#s-runs .rn-halo { position: absolute; width: 460px; height: 460px; margin: -230px 0 0 -230px; border-radius: 50%; pointer-events: none;
-  background: radial-gradient(closest-side, rgba(37, 199, 188, .5), rgba(37, 199, 188, .14) 55%, rgba(37, 199, 188, 0)); opacity: .35; transform: scale(.8); }
-#s-runs.rn-land .rn-halo { animation: rnHalo 4.5s infinite; }
-@keyframes rnHalo {
-  0%, 100% { opacity: .35; transform: scale(.8); animation-timing-function: cubic-bezier(.3, .6, .4, 1); }
-  14%      { opacity: 1; transform: scale(1.05); animation-timing-function: cubic-bezier(.5, 0, .85, .5); }
+/* each object lights as its tier fires: a lit rim on its plinth, a halo behind it */
+#s-runs .rn-rim { width: 200px; height: 84px; margin: -42px 0 0 -100px; border-radius: 50%; border: 2px solid var(--sea); box-shadow: 0 0 26px rgba(3, 255, 203, .55), inset 0 0 18px rgba(3, 255, 203, .3); opacity: 0; }
+#s-runs .rn-oh { position: absolute; width: 180px; height: 150px; margin: -75px 0 0 -90px; border-radius: 50%; pointer-events: none; opacity: 0; transform: scale(2);
+  background: radial-gradient(closest-side, rgba(3, 255, 203, .5), rgba(37, 199, 188, .18) 55%, transparent); }
+#s-runs .rn-oh.k2 { background: radial-gradient(closest-side, rgba(3, 255, 203, .36), rgba(157, 103, 170, .22) 55%, transparent); }
+/* …and a shaft of light from above picks it out (the same light for each: featured, not ranked) */
+#s-runs .rn-cone { width: 260px; height: 330px; margin: -330px 0 0 -130px; opacity: 0; clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(3, 255, 203, 0), rgba(3, 255, 203, .07) 40%, rgba(3, 255, 203, .16));
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 32%, #000 68%, transparent); mask-image: linear-gradient(90deg, transparent, #000 32%, #000 68%, transparent); }
+#s-runs.rn-land .rn-rim, #s-runs.rn-land .rn-oh, #s-runs.rn-land .rn-cone { animation: rnLit 6s ease-in-out infinite; }
+#s-runs.rn-land .rn-rim.k1, #s-runs.rn-land .rn-oh.k1, #s-runs.rn-land .rn-cone.k1 { animation-delay: 2s; }
+#s-runs.rn-land .rn-rim.k2, #s-runs.rn-land .rn-oh.k2, #s-runs.rn-land .rn-cone.k2 { animation-delay: 4s; }
+@keyframes rnLit { 0% { opacity: 0; } 6%, 16% { opacity: 1; } 32%, 100% { opacity: 0; } }
+/* the person is seen: a ring leaves the portrait as each light arrives (1.2 · 3.2 · 5.2 s) */
+#s-runs.rn-land .rn-ring { animation: rnRing 6s linear infinite; }
+@keyframes rnRing {
+  0%, 19.5% { opacity: 0; transform: scale(.9); }  21% { opacity: 1; transform: scale(.94); animation-timing-function: cubic-bezier(.2, .6, .4, 1); }  34% { opacity: 0; transform: scale(1.5); }
+  52.8% { opacity: 0; transform: scale(.9); }  54.3% { opacity: 1; transform: scale(.94); animation-timing-function: cubic-bezier(.2, .6, .4, 1); }  67.3% { opacity: 0; transform: scale(1.5); }
+  86.1% { opacity: 0; transform: scale(.9); }  87.6% { opacity: 1; transform: scale(.94); animation-timing-function: cubic-bezier(.2, .6, .4, 1); }  100% { opacity: 0; transform: scale(1.5); }
 }
+#s-runs.rn-land .rn-hu-beam { animation: rnBeam 6s ease-in-out infinite; }
+#s-runs.rn-land .rn-hu-pool { animation: rnPool 6s ease-in-out infinite; }
+@keyframes rnBeam { 0%, 100% { opacity: .85; } 50% { opacity: .55; } }
+@keyframes rnPool { 0%, 100% { opacity: .8; transform: scale(1.6); } 50% { opacity: 1; transform: scale(1.75); } }
+/* the broadcast: its arcs light in turn, outward */
+#s-runs .rn-bcl { width: 360px; height: 120px; margin: -60px 0 0 -180px; }
+#s-runs .rn-bcl path { fill: none; stroke: var(--sea); stroke-width: 3; stroke-linecap: round; opacity: 0; }
+#s-runs.rn-land .rn-bcl path { animation: rnBc 2.4s ease-in-out infinite; }
+#s-runs.rn-land .rn-bcl path:nth-child(2) { animation-delay: .3s; }
+#s-runs.rn-land .rn-bcl path:nth-child(3) { animation-delay: .6s; }
+@keyframes rnBc { 0%, 100% { opacity: 0; } 25% { opacity: .95; } 60% { opacity: 0; } }
+/* the annual collection: a few sparkles over the book */
+#s-runs .rn-spk { width: 22px; height: 22px; margin: -11px 0 0 -11px; color: #F2C94C; opacity: 0; }
+#s-runs .rn-spk .rn-svgi { width: 100%; height: 100%; display: block; fill: currentColor; stroke-width: 1; }
+#s-runs .rn-spk:nth-child(even) { color: var(--purple-lt); width: 16px; height: 16px; margin: -8px 0 0 -8px; }
+#s-runs.rn-land .rn-spk { animation: rnSpk 3.2s ease-in-out infinite; animation-delay: calc(var(--i) * .8s); }
+@keyframes rnSpk { 0%, 100% { opacity: 0; transform: scale(.4) rotate(0deg); } 40% { opacity: 1; transform: scale(1) rotate(25deg); } 75% { opacity: 0; transform: scale(.6) rotate(45deg); } }
 
 /* ── each board's ambient loops run only while that board is on screen (they freeze, without a
    jump, as it pans away, and resume when it returns) ─────────────────────────────────────── */
