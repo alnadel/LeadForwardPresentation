@@ -160,7 +160,7 @@
   function resize(scale) {
     if (!canvas) return;
     const dpr = window.devicePixelRatio || 1;
-    k = clamp(scale * dpr, .5, 1.5);
+    k = clamp(scale * dpr, .5, 1.25);   // soft dots and lines: no need for full retina resolution
     canvas.width = Math.round(W * k);
     canvas.height = Math.round(H * k);
   }
@@ -179,8 +179,8 @@
   function frame(now) {
     raf = requestAnimationFrame(frame);
     if (!last) { last = now; t0 = now; }
-    // real time down to ~4 fps, so bursts and flashes last as long on a slow machine as on a fast one
-    const dt = Math.min(.25, (now - last) / 1000);
+    // capped step: after a hitch the field eases on instead of jumping (smoothness over clock accuracy)
+    const dt = Math.min(.05, (now - last) / 1000);
     last = now;
     const t = (now - t0) / 1000;
     const e = 1 - Math.exp(-dt / rate);

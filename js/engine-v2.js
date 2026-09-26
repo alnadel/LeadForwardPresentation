@@ -342,12 +342,14 @@
     const t = rec.el.querySelector('[data-spark="' + n + '"]');
     if (!t) { if (rec.def.spark !== 'keep') { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); sparkShow(false); } return; }
     const p = sparkPoint(t);
-    $$('.sparked', rec.el).forEach((x) => x.classList.remove('sparked'));
-    clearTimeout(SPK.flash);
     if (instant) { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); SPK.el.classList.remove('fly'); SPK.hist.length = 0; sparkPlace(p.x, p.y); sparkShow(true); return; }
     const d = (parseFloat(t.dataset.sparkDelay || .12) + (extraDelay || 0)) * 1000;
     // the flash is transient, so the target's own ambient animation resumes afterwards
-    sparkFly(p.x, p.y, d, () => { t.classList.add('sparked'); SPK.flash = setTimeout(() => t.classList.remove('sparked'), 1150); });
+    // the landing flash is layered on top (Web Animations), so the target's own ambient loop keeps
+    // running underneath instead of being replaced and restarted (which showed as a jump)
+    sparkFly(p.x, p.y, d, () => {
+      if (t.animate && !stage.classList.contains('lite')) t.animate([{ filter: 'brightness(1)' }, { filter: 'brightness(1.45)', offset: .25 }, { filter: 'brightness(1)' }], { duration: 1000, easing: 'ease-out' });
+    });
   }
 
   /* ── scene transitions ─────────────────────────────────────────────── */
