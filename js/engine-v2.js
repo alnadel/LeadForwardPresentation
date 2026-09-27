@@ -48,7 +48,7 @@
   const T = Deck.t;
   Deck.ACTS = T(['The story', 'The need', 'The solution', 'The value', 'The plan'], ['القصة', 'الحاجة', 'الحل', 'القيمة', 'الخطة']);
   // pace targets for the speaker view: minutes elapsed by the end of each act
-  Deck.ACT_TARGETS = [2, 5.75, 9.5, 11, 15];   // minutes: when each act should be finished (Impact Makers timing)
+  Deck.ACT_TARGETS = [2.25, 5.25, 8.25, 9.25, 15];   // minutes: when each act should be finished (Impact Makers timing)
   Deck.VERSION = 'v2';
   // The two people who know (the opening story, stop 1). The close starts the
   // nomination chain from exactly these field positions. Stage px.
@@ -393,7 +393,7 @@
   }
   function sparkFor(rec, n, instant, extraDelay) {
     if (!SPK.el) return;
-    if (rec.def.spark === false || n < 0) { sparkShow(false); return; }
+    if (rec.def.spark === false || n < 0) { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); sparkShow(false); return; }
     const t = rec.el.querySelector('[data-spark="' + n + '"]');
     if (!t) { if (rec.def.spark !== 'keep') { cancelAnimationFrame(SPK.raf); clearTimeout(SPK.to); sparkShow(false); } return; }
     const p = sparkPoint(t);
