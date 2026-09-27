@@ -1,6 +1,7 @@
 /* 06b · Three ways to close the gap (v4) — strategic options, then one recommendation.
    Each option has a pictured identity: a small isometric scene at the top of its glass card
-   (A · a podium with one trophy in a spotlight and colleagues left in the shade; B · a laptop
+   (A · a small team under a closed glass dome, its manager's thank-you held inside the glass and
+   the colleagues outside left in the shade; B · a laptop
    with a leaderboard, a floating badge and a stack of points coins; C · a story card on a
    plinth, broadcasting to a ring of colleagues). The table under the pictures stays scannable:
    five criteria rows with drawn Harvey-ball marks, and a watch-out row under each option.
@@ -17,16 +18,15 @@
    descriptions, criteria labels and watch-outs are small and dim; the marks are drawn shapes
    (full, half, empty), big enough to read at a glance.
    Ambient: stop 0, a reading band walks the five criteria rows (each row's strong marks glow
-   as it passes), glow pools drift, a sheen crosses the cards, and each picture breathes (the
-   spotlight, the badge bobbing, the broadcast rippling out); stop 1, C's edge light, the
+   as it passes), glow pools drift, a sheen crosses the cards, and each picture breathes (A's
+   heart beating and its ripple dying at the glass, the badge bobbing, the broadcast rippling
+   out); stop 1, C's edge light, the
    reading band on C's rows, C's broadcast and its colleagues lighting in turn, C's glow and
    the hero's glow breathing. Nothing moves inside text.
    All state keys off .st-n / .is-in; one-shot lights play only on a live click and rest
    invisible, so back navigation lands on the same frame. */
 (function () {
   const t = Deck.t, AR = Deck.rtl;
-  // Arabic: digits with % after Arabic words stay as written ("8%"), in a left-to-right isolate
-  const bidi = (s) => s.replace(/[+\u2212]?\d+%|[+\u2212]\d+/g, (m) => '\u2066' + m + '\u2069');
   /* ── geometry (stage px) ── */
   const T = 326;                    // top of the table (stop 0; the table steps down DROP px at stop 1)
   const H = 556;                    // column height
@@ -41,7 +41,7 @@
 
   // (k names the option in the markup; l is its letter on screen: A B C, in Arabic أ ب ج)
   const OPTS = [
-    { k: 'A', l: t('A', 'أ'), t: t('Awards', 'الجوائز'), s: t('Employee of the month or year.', 'موظف الشهر أو السنة.'), w: t('Rewards a few; popularity can decide.', 'تكافئ القلة، وقد تحسمها الشعبية.') },
+    { k: 'A', l: t('A', 'أ'), t: t('Manager<br>thank-yous'), s: t('Each manager recognises good work in their own team.'), w: t('Stays inside the team;<br>the learning never travels.') },
     { k: 'B', l: t('B', 'ب'), t: t('A new<br>platform', 'منصة<br>جديدة'), s: t('Buy a digital recognition tool.', 'شراء أداة رقمية للتقدير.'), w: t('Cost and adoption risk; points don’t teach.', 'تكلفة ومخاطر في التبنّي، والنقاط لا تُعلِّم.') },
     { k: 'C', l: t('C', 'ج'), t: t('A story<br>campaign', 'حملة<br>قصص'), s: t('Real stories on the channels we already have.', 'قصص حقيقية عبر قنواتنا القائمة.'), w: t('Needs curation time and leaders’ participation, <em>both built into the plan.</em>', 'تتطلب وقتًا للانتقاء ومشاركة القادة، <em>وكلاهما مدمج في الخطة.</em>') },
   ];
@@ -51,7 +51,7 @@
     [0, 1, 2],
     [0, 0, 2],
     [1, 1, 2],
-    [1, 0, 2],
+    [2, 0, 2],
     [2, 0, 2],
   ];
   // the honest tally: how many of C's five marks are strong (a count of the table, nothing more)
@@ -90,28 +90,43 @@
   const star = (x, y, r, cls, k) => `<g transform="translate(${(+x).toFixed(1)} ${(+y).toFixed(1)})"><path class="${cls}" style="--k:${k || 0}" d="M0 ${-r}C${r * .16} ${-r * .16} ${r * .16} ${-r * .16} ${r} 0C${r * .16} ${r * .16} ${r * .16} ${r * .16} 0 ${r}C${-r * .16} ${r * .16} ${-r * .16} ${r * .16} ${-r} 0C${-r * .16} ${-r * .16} ${-r * .16} ${-r * .16} 0 ${-r}Z"/></g>`;
   const shadow = (g, x, y, rx, ry) => { const c = g.ip(x, y, 0); return `<ellipse class="sh" cx="${c[0].toFixed(1)}" cy="${(c[1] + 3).toFixed(1)}" rx="${rx}" ry="${ry}"/>`; };
 
-  // A · Awards: a podium, one trophy in the spotlight, colleagues left in the shade
+  // A · Manager thank-yous: a small team under a closed glass dome, its manager giving a thank-you
+  // (a heart in a speech bubble); the colleagues outside stay in the shade. Nothing leaves the glass:
+  // the thank-you's ripple runs out across the team's floor and stops at the dome's wall.
   const artA = (() => {
-    const g = iso([108, 90], 1.65);
-    const fig = (list) => list.map(([x, y]) => person(g.at(x, y, 0), 'dim', 0, false, 1.3)).join('');
-    const tro = g.ip(30, 11, 26);
+    const cx = 156, cy = 106;               // the dome's centre, on the ground
+    const DR = 70, GR = DR * .577;          // the dome's radius; its base ring's depth (the iso squash)
+    const PR = 77, PG = PR * .577, PT = 6;  // the plinth: radius, depth, thickness
+    const f = (v) => (+v).toFixed(1);
+    const fig = (list, cls, s) => list.map(([x, y]) => person(`${x} ${y}`, cls, 0, false, s)).join('');
+    const dome = `M${cx - DR} ${cy}A${DR} ${DR} 0 0 1 ${cx + DR} ${cy}`;          // its silhouette: a half circle
+    const arc = (r, a0, a1) => { const p = (a) => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)].map(f).join(' ');
+      return `M${p(a0)}A${r} ${r} 0 0 1 ${p(a1)}`; };
+    const heart = 'M0 4.6C-3.4 2.1-6.4-.5-6.4-3.4C-6.4-5.5-4.9-7-3-7C-1.6-7-.5-6.2 0-5C.5-6.2 1.6-7 3-7C4.9-7 6.4-5.5 6.4-3.4C6.4-.5 3.4 2.1 0 4.6Z';
     return `
       <defs>
-        <linearGradient id="opGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1BF"/><stop offset=".45" stop-color="#F2C94C"/><stop offset="1" stop-color="#A9781C"/></linearGradient>
-        <linearGradient id="opCone" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1BF" stop-opacity="0"/><stop offset=".3" stop-color="#FFF1BF" stop-opacity=".16"/><stop offset="1" stop-color="#FFF1BF" stop-opacity=".05"/></linearGradient>
+        <radialGradient id="opFloorA" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#E9A9DF" stop-opacity=".34"/><stop offset=".6" stop-color="#9D67AA" stop-opacity=".16"/><stop offset="1" stop-color="#9D67AA" stop-opacity=".04"/></radialGradient>
+        <linearGradient id="opGlassA" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#D8F1FA" stop-opacity=".2"/><stop offset=".45" stop-color="#8FC2DC" stop-opacity=".06"/><stop offset="1" stop-color="#8FC2DC" stop-opacity=".1"/></linearGradient>
+        <linearGradient id="opHeart" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#FFE6F6"/><stop offset=".5" stop-color="#E7A2D2"/><stop offset="1" stop-color="#A25A9A"/></linearGradient>
       </defs>
-      ${shadow(g, 30, 14, 100, 26)}
-      <polygon class="cone" points="${(tro[0] - 12).toFixed(1)},2 ${(tro[0] + 12).toFixed(1)},2 ${(tro[0] + 40).toFixed(1)},${(tro[1] + 8).toFixed(1)} ${(tro[0] - 40).toFixed(1)},${(tro[1] + 8).toFixed(1)}"/>
-      ${fig([[-30, 18], [62, -18]])}
-      ${g.box(0, 0, 0, 20, 22, 15, 'pd')}${g.box(20, 0, 0, 20, 22, 26, 'pd hi')}${g.box(40, 0, 0, 20, 22, 9, 'pd')}
-      ${star(...g.ip(30, 22, 14), 6, 'pst')}
-      <g class="tro" transform="translate(${tro[0].toFixed(1)} ${tro[1].toFixed(1)}) scale(1.3)">
-        <path class="cup" d="M-8 -3h16l-2-4h-12Z M-2.5-7h5l-.6-8h-3.8Z M-12-36h24c0 12-5 20-12 21c-7-1-12-9-12-21Z"/>
-        <path class="hdl" d="M-12-32c-7 0-8 9 0 11M12-32c7 0 8 9 0 11"/>
-        <path class="gl" d="M-7-32c0 6 1.5 10 4 12"/>
+      <ellipse class="sh" cx="${cx}" cy="${cy + 10}" rx="104" ry="30"/>
+      ${fig([[66, 84], [242, 78]], 'dim', 1.2)}
+      <path class="plS" d="M${cx - PR} ${cy}A${PR} ${f(PG)} 0 0 0 ${cx + PR} ${cy}V${cy + PT}A${PR} ${f(PG)} 0 0 1 ${cx - PR} ${cy + PT}Z"/>
+      <ellipse class="plT" cx="${cx}" cy="${cy}" rx="${PR}" ry="${f(PG)}"/>
+      <ellipse class="flr" cx="${cx}" cy="${cy}" rx="${DR}" ry="${f(GR)}"/>
+      <ellipse class="rgB" cx="${cx}" cy="${cy}" rx="${DR}" ry="${f(GR)}"/>
+      <g class="amb"><ellipse class="rpa" cx="${cx}" cy="${cy}" rx="${DR - 3}" ry="${f(GR - 1.7)}"/></g>
+      ${fig([[cx + 18, cy - 19]], 'tm', 1.35)}${fig([[cx + 38, cy + 2]], 'tm', 1.35)}${fig([[cx - 34, cy + 4]], 'mgr', 1.5)}${fig([[cx + 6, cy + 23]], 'tm', 1.35)}
+      <g transform="translate(${cx - 10} ${cy - 46}) scale(1.15)">
+        <path class="bub" d="M-11-11H11A4 4 0 0 1 15-7V4A4 4 0 0 1 11 8H-4L-12 13-9 8H-11A4 4 0 0 1-15 4V-7A4 4 0 0 1-11-11Z"/>
+        <path class="hrt" d="${heart}"/>
       </g>
-      ${fig([[-12, 42], [66, 8]])}
-      ${star(tro[0] + 30, tro[1] - 44, 6.5, 'spk', 0)}${star(tro[0] - 27, tro[1] - 30, 5, 'spk', 1)}${star(tro[0] + 36, tro[1] - 12, 4, 'spk', 2)}`;
+      <path class="gls" d="${dome}A${DR} ${f(GR)} 0 0 1 ${cx - DR} ${cy}Z"/>
+      <path class="rgF" d="M${cx - DR} ${cy}A${DR} ${f(GR)} 0 0 0 ${cx + DR} ${cy}"/>
+      <path class="rim" d="${dome}"/>
+      <path class="spec" d="${arc(DR - 7, 198, 246)}"/><path class="spec s2" d="${arc(DR - 7, 254, 262)}"/>
+      <g class="amb"><path class="gl2" d="${dome}A${DR} ${f(GR)} 0 0 1 ${cx - DR} ${cy}"/></g>
+      ${fig([[254, 124]], 'dim', 1.2)}`;
   })();
 
   // B · A new platform: a laptop with a leaderboard, a floating badge and a stack of points coins
@@ -124,6 +139,7 @@
     const coin = (z, cls) => `<g class="coin ${cls || ''}">${g.circ([80, 22, z], 8, 'z', 'cs', 28)}${g.circ([80, 22, z + 2.4], 8, 'z', 'ct', 28)}</g>`;
     const keys = Array.from({ length: 4 }, (_, r) => g.line([[6, 5 + r * 5, 3], [54, 5 + r * 5, 3]], 'key')).join('');
     return `
+      <defs><linearGradient id="opGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1BF"/><stop offset=".45" stop-color="#F2C94C"/><stop offset="1" stop-color="#A9781C"/></linearGradient></defs>
       ${shadow(g, 40, 20, 104, 26)}
       ${g.box(0, 0, 0, 60, 40, 3, 'lp')}${keys}
       ${g.quad([20, 27, 3], [40, 27, 3], [40, 37, 3], [20, 37, 3], 'pad')}
@@ -214,15 +230,12 @@
     act: 2,
     bg: 'navy',
     transition: 'chapter',
-    cues: t(['Three options · five criteria', 'We recommend C · the story campaign'], ['ثلاثة خيارات · خمسة معايير', 'نوصي بالخيار ج · حملة القصص']),
+    cues: [t('Beyond the awards we run · three options · five criteria'), t('We recommend C · the story campaign', 'نوصي بالخيار ج · حملة القصص')],
     holds: [16, 11],
-    notes: t([
-      'We did not start from the answer. We weighed three ways to close the gap: awards, a new recognition platform, and a story campaign. Awards reward a few. A platform costs money and teaches little. Doing nothing keeps reach at 8%.',
-      'So we recommend the story campaign. It reaches everyone, the learning travels, it is fair by design, it costs little and it starts now, on the channels we already have. Awards and tools can plug into it later.',
-    ], [
-      'لم نبدأ من الإجابة. وازنّا بين ثلاث طرق لسدّ الفجوة: الجوائز (أ)، ومنصة تقدير جديدة (ب)، وحملة قصص (ج). الجوائز تكافئ القلة، والمنصة مكلفة وقليلة الأثر في التعلّم، والبقاء على الوضع الحالي يُبقي مدى وصول التقدير عند 8%.',
-      'لذلك نوصي بالخيار ج: حملة القصص. تصل إلى الجميع، وينتقل بها التعلّم، وهي عادلة بالتصميم، وقليلة التكلفة، وتبدأ الآن عبر قنواتنا القائمة. ويمكن ربط الجوائز والأدوات بها لاحقًا.',
-    ].map(bidi)),
+    notes: [
+      'We did not start from the answer. Tahakom already runs awards for the best stories, so we looked beyond them and weighed three ways to close the gap. Manager thank-yous are quick and free, but they stay inside the team: the learning never travels. A new platform costs money and teaches little. A story campaign reaches everyone and makes the learning travel. Doing nothing keeps reach at 8%.',
+      'So we recommend the story campaign. It reaches everyone, the learning travels, it is fair by design, it costs little and it starts now, on the channels we already have. The awards we already run, and any tools, can plug into it.',
+    ],
     field: [
       { dim: .3, lit: .02, travel: .22, offset: [-110, 170], litFrom: null, warm: .12, links: .45, wave: .55, streaks: .1, sparkle: 1.1, drift: 1,
         calm: [[100, 120, 1560, 290, .75], [110, 300, 1810, 930, .85]] },
@@ -237,7 +250,7 @@
         <i class="op-hglow"></i>
         <h2 class="h2 op-h" data-in="0" data-out="1" data-split style="--d:.12s">${t('We weighed three ways to close the gap.', 'وازنّا بين ثلاث طرق لسدّ الفجوة.')}</h2>
         <h2 class="h2 op-h op-hero" data-in="1" data-split data-spark="1" data-spark-delay=".5" style="--d:.34s;--wstep:.045s">${t('We recommend <em class="hl">C: a story campaign</em><br>on the channels we already have.', 'نوصي <em class="hl">بالخيار ج: حملة قصص</em><br>عبر قنواتنا القائمة.')}</h2>
-        <p class="op-sub a-fade" data-in="1" style="--d:.95s;--dur:.8s">${t('Awards and tools can plug into it later.', 'ويمكن ربط الجوائز والأدوات بها لاحقًا.')}</p>
+        <p class="op-sub a-fade" data-in="1" style="--d:.95s;--dur:.8s">${t('Existing awards and tools can plug into it.')}</p>
       </div>
 
       <!-- the table: it steps down at stop 1 to make room for the recommendation -->

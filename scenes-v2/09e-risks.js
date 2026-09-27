@@ -1,7 +1,7 @@
 /* 09e · What could break it (v4) — the risk plan, in one stop. Four glass rows
    slide in one by one; in each, the risk (left) is the hero, carried by its own
-   picture on a raised plum key (a podium, an empty inbox, a locked document, dots
-   bunched in one corner). As a row lands, its guard (right) reaches back along a
+   picture on a raised plum key (two theatre masks, an empty inbox, a locked document,
+   dots bunched in one corner). As a row lands, its guard (right) reaches back along a
    stem to a raised teal shield at the risk's edge, and the shield's padlock snaps
    shut: the guard locks on. The owner sits quietly at the end of the row. The
    spark lands on the corner of the first risk's key.
@@ -16,13 +16,17 @@
 (function () {
   const t = Deck.t;
   // the risks' pictures: outline, currentColor, round caps (48-unit box, drawn at 58px)
-  const star = (cx, cy, R, r) => 'M' + Array.from({ length: 10 }, (_, k) => {
-    const a = -Math.PI / 2 + k * Math.PI / 5, d = k % 2 ? r : R;
-    return (cx + d * Math.cos(a)).toFixed(2) + ' ' + (cy + d * Math.sin(a)).toFixed(2);
-  }).join('L') + 'Z';
+  // a theatre mask: a gently domed brow, straight cheeks, a rounded chin (x, y: its top-left; w, h: its size)
+  const face = (x, y, w, h) => `M${x} ${y + 2}C${x + w * .3} ${y - 1} ${x + w * .7} ${y - 1} ${x + w} ${y + 2}V${y + h * .45}` +
+    `C${x + w} ${y + h * .8} ${x + w * .72} ${y + h} ${x + w / 2} ${y + h}C${x + w * .28} ${y + h} ${x} ${y + h * .8} ${x} ${y + h * .45}Z`;
+  const FRONT = face(4, 17, 23, 27), FT = 'rotate(-8 15.5 30.5)';
   const ICONS = {
-    // a popularity contest: the podium, a star over the winner
-    podium: `<path d="M4 43H44"/><path d="M17.5 43V22h13v21"/><path d="M5.5 43V29h12"/><path d="M30.5 34h12v9"/><path d="M22 28.5h4" opacity=".55"/><path d="${star(24, 11.5, 6.4, 2.7)}"/>`,
+    // stories feel staged: two theatre masks, the smiling one in front (the one behind is cut
+    // clear of it, so the two read as stacked, not tangled)
+    masks: `<defs><mask id="rkMaskM" maskUnits="userSpaceOnUse" x="-4" y="-4" width="56" height="56"><rect x="-4" y="-4" width="56" height="56" fill="#fff"/>` +
+      `<path d="${FRONT}" transform="${FT}" fill="#000" stroke="#000" stroke-width="5.4"/></mask></defs>` +
+      `<g mask="url(#rkMaskM)"><g transform="rotate(11 32.5 17.5)"><path d="${face(21, 4, 23, 27)}"/><path d="M25.2 12.6q2.4 1.9 4.8 0M35 12.6q2.4 1.9 4.8 0"/><path d="M27 25.4q5.5-5.2 11 0"/></g></g>` +
+      `<g transform="${FT}"><path d="${FRONT}"/><path d="M8.3 27.4q2.5-3 5 0M17.7 27.4q2.5-3 5 0"/><path d="M10 33.4q5.5 6.2 11 0"/></g>`,
     // nominations dry up: an empty inbox, a dashed arrow with nothing on it
     inbox: `<path d="M6 30l6.5-11h23L42 30v9.5a2.5 2.5 0 0 1-2.5 2.5h-31A2.5 2.5 0 0 1 6 39.5z"/><path d="M6 30h10.5l3 5h9l3-5H42"/><path d="M24 3.5v10" stroke-dasharray="2.4 3.6"/><path d="M19.8 10.5 24 14.7l4.2-4.2"/>`,
     // a sensitive story: the document, locked
@@ -31,7 +35,7 @@
     cluster: `<rect x="5" y="5" width="38" height="38" rx="8.5"/><g class="rk-dot" stroke="none">${[[32.5, 12], [38, 12], [35.2, 17], [29.7, 17], [38, 22], [32.5, 22]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.8"/>`).join('')}</g><g opacity=".38" stroke-width="1.5">${[[13, 16], [14, 33], [26, 35], [36.5, 34]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.5"/>`).join('')}</g>`,
   };
   const ROWS = [
-    { risk: t('It becomes a popularity contest or a broadcast', 'تتحوّل إلى مسابقة شعبية أو بثّ من طرف واحد'), guard: t('Peers nominate; the criteria are published.', 'الزملاء يرشّحون؛ والمعايير معلنة.'), owner: t('Curation panel', 'لجنة الانتقاء'), i: 'team', p: 'podium' },
+    { risk: t('Stories feel staged, like corporate PR'), guard: t('Colleagues nominate; facts checked;<br>told in their own words.'), owner: t('Curation panel', 'لجنة الانتقاء'), i: 'team', p: 'masks' },
     { risk: t('Nominations dry up after launch', 'تتراجع الترشيحات بعد الإطلاق'), guard: t('Always open; each featured colleague nominates the next.', 'الترشيح مفتوح دائمًا؛ وكل زميل تُبرَز قصته يرشّح التالي.'), owner: t('Internal Communications', 'الاتصال الداخلي'), i: 'person-message', p: 'inbox' },
     { risk: t('A sensitive story is published', 'تُنشر قصة حسّاسة'), guard: t('Facts checked and consent given before anything is shared.', 'تدقيق الحقائق وأخذ إذن صاحب القصة قبل أي نشر.'), owner: t('HR, with Legal on request', 'الموارد البشرية، مع الشؤون القانونية عند الحاجة'), i: 'handshake', p: 'doc' },
     { risk: t('Stories cluster in a few departments', 'تتركّز القصص في إدارات قليلة'), guard: t('Representation tracked from month one.', 'متابعة تمثيل الإدارات من الشهر الأول.'), owner: t('HR / People Analytics', 'الموارد البشرية / تحليلات الموظفين'), i: 'laptop-analytics', p: 'cluster' },
@@ -93,11 +97,9 @@
     transition: 'push',
     cues: t(['Four risks · the guard built in'], ['أربعة مخاطر · والضمانة مدمجة في التصميم']),
     holds: [12],
-    notes: t([
-      'What could break it? Four risks, each with a guard already in the design and an owner. And the change stays small, because it runs on meetings and channels people already use.',
-    ], [
-      'ما الذي قد يُفشلها؟ أربعة مخاطر، لكلٍّ منها ضمانة مدمجة في التصميم ومسؤول عنها. ويبقى التغيير محدودًا، لأنها تعمل عبر اجتماعات وقنوات يستخدمها الموظفون أصلًا.',
-    ]),
+    notes: [
+      'What could break it? Four risks, each with a guard already in the design and an owner. The first: the stories could feel staged, like corporate PR. So colleagues nominate, the facts are checked, and every story stays in the colleague’s own words; the curation panel owns that. And the change stays small, because it runs on meetings and channels people already use.',
+    ],
     field: [
       { dim: .34, lit: .03, travel: .4, offset: [140, 180], warm: .2, litFrom: [1500, 220], links: .5, wave: .6, streaks: .18, sparkle: 1.6, drift: 1,
         calm: [[100, 120, 1400, 290, .8], [110, 300, 1810, 850, .9], [110, 855, 1000, 945, .8]] },

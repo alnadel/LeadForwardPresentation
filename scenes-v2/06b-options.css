@@ -102,14 +102,24 @@
 #s-options .op-art .fr { fill: #082438; stroke: rgba(37, 199, 188, .5); stroke-width: 1; }
 #s-options .op-art .pp circle, #s-options .op-art .pp path { fill: #27536A; stroke: rgba(143, 194, 220, .55); stroke-width: 1; }
 #s-options .op-art .pp.dim circle, #s-options .op-art .pp.dim path { fill: #1A3346; stroke: rgba(143, 194, 220, .32); }
-/* A · the podium, the trophy in its spotlight */
-#s-options .art-a .pd.hi .ft { fill: #1E6474; }
-#s-options .art-a .pst { fill: #F2C94C; opacity: .8; }
-#s-options .art-a .cone { fill: url(#opCone); }
-#s-options .art-a .cup { fill: url(#opGold); stroke: #FFF1BF; stroke-width: 1; }
-#s-options .art-a .hdl { fill: none; stroke: #F2C94C; stroke-width: 2.4; }
-#s-options .art-a .gl { fill: none; stroke: rgba(255, 255, 255, .85); stroke-width: 1.6; }
-#s-options .art-a .spk { fill: #FFF1BF; transform-box: fill-box; transform-origin: 50% 50%; }
+/* A · a team under a closed glass dome: the manager's thank-you (a heart) stays inside the glass;
+   the colleagues outside stay in the shade */
+#s-options .art-a .plS { fill: #0A2C40; stroke: rgba(37, 199, 188, .42); stroke-width: 1; }
+#s-options .art-a .plT { fill: #123E54; stroke: rgba(3, 255, 203, .5); stroke-width: 1.1; }
+#s-options .art-a .flr { fill: url(#opFloorA); }
+#s-options .art-a .rgB { fill: none; stroke: rgba(180, 228, 244, .26); stroke-width: 1.1; }
+#s-options .art-a .gls { fill: url(#opGlassA); }
+#s-options .art-a .rgF { fill: none; stroke: rgba(180, 228, 244, .62); stroke-width: 1.4; }
+#s-options .art-a .rim { fill: none; stroke: rgba(190, 234, 248, .78); stroke-width: 1.6; }
+#s-options .art-a .spec { fill: none; stroke: rgba(255, 255, 255, .72); stroke-width: 2.6; }
+#s-options .art-a .spec.s2 { stroke-width: 2; opacity: .55; }
+#s-options .art-a .pp.tm circle, #s-options .art-a .pp.tm path { fill: #2E6076; stroke: rgba(200, 230, 244, .72); }
+#s-options .art-a .pp.mgr circle, #s-options .art-a .pp.mgr path { fill: #3B7088; stroke: #EBC8F2; stroke-width: 1.2; }
+#s-options .art-a .bub { fill: rgba(52, 22, 50, .92); stroke: #E7C6F0; stroke-width: 1.3; }
+#s-options .art-a .hrt { fill: url(#opHeart); transform-box: fill-box; transform-origin: 50% 50%; }
+#s-options .art-a .rpa { fill: none; stroke: rgba(242, 200, 238, .9); stroke-width: 1.6; opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; }
+#s-options .art-a .gl2 { fill: none; stroke: #F6E4FB; stroke-width: 2.2; opacity: 0; }
+#s-options .art-a .amb { transition: opacity .5s var(--ease-soft); }
 /* B · the laptop: a leaderboard on its screen, a badge and points coins */
 #s-options .art-b .lp .ft { fill: #16475E; }
 #s-options .art-b .key { fill: none; stroke: rgba(143, 220, 214, .28); stroke-width: 1; }
@@ -147,10 +157,15 @@
 #s-options .art-c .pp .lt circle, #s-options .art-c .pp .lt path { fill: #7FF7E8; stroke: #E4FFFA; }
 
 /* ── the pictures breathe (stop 0: every picture; stop 1: only C's) ── */
-#s-options[data-step="0"] .art-a .spk { animation: opTwinkle 3.2s ease-in-out calc(var(--k) * -1.1s) infinite; }
-@keyframes opTwinkle { 0%, 100% { opacity: .15; transform: scale(.5); } 50% { opacity: 1; transform: scale(1); } }
-#s-options[data-step="0"] .art-a .cone { animation: opCone 5s ease-in-out infinite; }
-@keyframes opCone { 0%, 100% { opacity: .6; } 50% { opacity: 1; } }
+/* A: the heart beats; its ripple runs out across the team's floor and dies at the glass, which glints
+   where it is stopped (they rest, faded, once A steps back at stop 1) */
+#s-options.st-0 .art-a .hrt { animation: opBeatA 4.8s ease-in-out calc(var(--enter, 0s) + 2.4s) infinite; }
+@keyframes opBeatA { 0%, 26%, 100% { transform: scale(1); } 7% { transform: scale(1.24); } 13% { transform: scale(.96); } 19% { transform: scale(1.12); } }
+#s-options.st-0 .art-a .rpa { animation: opRipA 4.8s cubic-bezier(.3, .45, .45, 1) calc(var(--enter, 0s) + 2.4s) infinite; }
+@keyframes opRipA { 0%, 8% { transform: scale(.16); opacity: 0; } 15% { opacity: .95; } 46% { opacity: .8; } 52% { transform: scale(1); opacity: .55; } 62%, 100% { transform: scale(1); opacity: 0; } }
+#s-options.st-0 .art-a .gl2 { animation: opGlintA 4.8s ease-in-out calc(var(--enter, 0s) + 2.4s) infinite; }
+@keyframes opGlintA { 0%, 43% { opacity: 0; } 53% { opacity: .9; } 74%, 100% { opacity: 0; } }
+#s-options.st-1 .art-a .amb { opacity: 0; }
 #s-options[data-step="0"] .art-b .medal { animation: opBob 4.6s ease-in-out infinite; }
 @keyframes opBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 #s-options[data-step="0"] .art-c .rp, #s-options[data-step="1"] .art-c .rp { animation: opRipple 3.6s cubic-bezier(.25, .4, .5, 1) infinite; }
