@@ -1,8 +1,12 @@
-/* 11 · Close (v2) */
+/* 11 · Close (v2) — stop 0: the finale (three beats, one click); stop 1: the lockup */
 
-/* ── stop 0 · the callback: the same image as 02.1 (halo and breathing mirror 02-night.css) ── */
-#s-close .cl-pair { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+/* ── stop 0 · beat 1, the callback: the same image as 02.1 (halo and breathing mirror 02-night.css) ── */
+#s-close .cl-pair, #s-close .cl-pair-i { position: absolute; left: 0; top: 0; width: 0; height: 0; }
 #s-close .cl-mid, #s-close .cl-p { position: absolute; left: 0; top: 0; width: 0; height: 0; }
+/* beat 3: the two who knew leave last (their lights fly on in the canvas) */
+#s-close .cl-pair-i { transition: opacity .35s var(--ease-soft); }
+#s-close.cl-pl .cl-pair-i { opacity: 0; visibility: hidden; transition: opacity .35s var(--ease-soft), visibility 0s linear .35s; }
+#s-close.cl-pl .cl-p .light, #s-close.cl-pl .cl-p .light::before, #s-close.cl-pl .cl-p .light::after, #s-close.cl-pl .cl-halo { animation-play-state: paused; }
 #s-close .cl-halo { position: absolute; left: -130px; top: -130px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(closest-side, rgba(37, 199, 188, .14), rgba(37, 199, 188, .07) 55%, transparent); animation: clHalo 3s ease-in-out -.75s infinite; }
 @keyframes clHalo { 0%, 100% { transform: scale(.94); opacity: .6; } 50% { transform: scale(1.2); opacity: 1; } }
 /* each light breathes deeply: the square scales (transform) while its glow crossfades from the
@@ -20,12 +24,37 @@
 #s-close .cl-knew { position: absolute; width: 760px; text-align: center; }
 #s-close .cl-knew .h1 { font: 700 80px/1 var(--font); letter-spacing: -.028em; color: var(--white); }
 #s-close .cl-knew h2.h1 { position: relative; }   /* above its glow */
+/* the lines of the finale are timed by the scene (phase classes on the section), not by the stops:
+   beat 1's line lifts away (.cl-p2), beat 2's line lands in its place, then lifts away as the lights rise (.cl-p3) */
+#s-close .cl-l1 { position: relative; transition: opacity .7s var(--ease-soft), transform 1s var(--ease-soft); }
+#s-close.cl-p2 .cl-l1 { opacity: 0; transform: translateY(-26px); visibility: hidden; transition: opacity .7s var(--ease-soft), transform 1s var(--ease-soft), visibility 0s linear 1s; }
+#s-close .cl-knew h2.cl-now { position: absolute; left: -80px; right: -80px; top: 0; margin: 0; line-height: 1.04; opacity: 0; visibility: hidden;
+  text-shadow: 0 0 44px rgba(3, 255, 203, .22); transition: opacity .8s var(--ease-soft), transform 1s var(--ease-soft); }
+#s-close .cl-now em { font-style: normal; color: var(--sea); }
+#s-close.cl-p2:not(.cl-p3) .cl-knew h2.cl-now { opacity: 1; visibility: inherit; }
+#s-close.cl-p3 .cl-knew h2.cl-now { transform: translateY(-34px); transition: opacity .8s var(--ease-soft), transform 1.1s var(--ease-soft), visibility 0s linear 1.1s; }
+/* its words flip in as the engine's split headlines do, on .is-in (set by the scene) */
+#s-close .cl-now:not(.is-in) .w > span { transform: translateY(110%) rotateX(-70deg); opacity: 0; transition-duration: .35s; transition-delay: 0s; }
+/* a settled landing or a fresh run sets the phase without playing it */
+#s-close.cl-snap .cl-l1, #s-close.cl-snap .cl-now, #s-close.cl-snap .cl-now .w > span, #s-close.cl-snap .cl-pair-i, #s-close.cl-snap .cl-bloom { transition: none !important; }
+
+/* beat 3: one canvas for every light (the scene sizes it: the stage while they fly, the name's band once formed) */
+#s-close .cl-motes { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; visibility: hidden; }
+#s-close .cl-motes.on { visibility: inherit; }
+/* the formed name's bloom: a soft pool of light behind it that breathes slowly (drawn at half size and
+   scaled up: 640×190 → 1280×380, centred on the name), gone when the lockup takes over */
+#s-close .cl-bloom { position: absolute; left: 640px; top: 172px; width: 640px; height: 190px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(37, 199, 188, .2), rgba(37, 199, 188, .09) 48%, rgba(37, 199, 188, .025) 76%, transparent);
+  transform: scale(2); opacity: 0; visibility: hidden; transition: opacity 1.4s var(--ease-soft), visibility 0s linear 1.4s; }
+#s-close.cl-p4:not(.st-1) .cl-bloom { opacity: 1; visibility: inherit; transition: opacity 1.6s var(--ease-soft); animation: clBloom 6s ease-in-out infinite; }
+@keyframes clBloom { 0%, 100% { transform: scale(2); } 50% { transform: scale(2.12, 2.22); } }
+#s-close.st-1 .cl-bloom { transition: opacity .7s var(--ease-soft), visibility 0s linear .7s; }
 /* the same slow glow as 02.1's "Two people know.": a glow-only copy of the line under it
    (transparent text; its static text-shadow 52px equals the old drop-shadow(0 0 26px), since
    Chrome's drop-shadow blur is twice a text-shadow's); only the copy's opacity breathes */
 #s-close .cl-knew .cl-kglow { position: absolute; left: 0; top: 0; width: 100%; color: transparent; text-shadow: 0 0 52px rgba(3, 255, 203, .46); opacity: 0; pointer-events: none; }
 #s-close .cl-kglow .w { overflow: visible; }
-#s-close.st-0 .cl-kglow { animation: clKnow 3s ease-in-out 2.4s infinite; }
+#s-close.st-0:not(.cl-p2) .cl-kglow { animation: clKnow 3s ease-in-out 1.4s infinite backwards; }
 @keyframes clKnow { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
 /* (the running glow always overrode a blur here, so the exit never blurred; it still does not) */
 #s-close .cl-knew.is-out { transform: translateY(-16px); transition: opacity .6s var(--ease-soft), transform .8s var(--ease-soft); }
@@ -55,7 +84,7 @@
 @keyframes clLeak { from { opacity: .45; transform: translate3d(-76.8px, 0, 0) scale(2); } to { opacity: 1; transform: translate3d(96px, -19.2px, 0) scale(2); } }
 #stage.lite #s-close .cl-trails { display: none; }
 
-/* stories travel across the city, in the band between the lines and the ask */
+/* stories travel across the city, in the band between the lines and the business case */
 #s-close .cl-stories { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; }   /* zero-size: a layer the size of what it holds */
 #s-close .cl-story { position: absolute; left: 0; top: 0; width: 0; height: 0; offset-rotate: auto; offset-distance: 0%; opacity: 0; }
 #s-close .cl-story .light { position: absolute; left: -7px; top: -7px; }
@@ -63,14 +92,19 @@
 #s-close.st-1 .cl-story { animation: clStory var(--t) linear var(--dl) infinite; }
 @keyframes clStory { 0% { offset-distance: 0%; opacity: 0; } 6% { opacity: 1; } 94% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
 
-/* the brand frame. Key: the title (and, in the card below, the ask). The Arabic line, the
+/* the brand frame. Key: the title (and, in the card below, the business case). The Arabic line, the
    two closing lines and the thank-you support it: smaller and quieter */
 #s-close .cl-logo { position: absolute; left: 50%; top: 44px; width: 116px; margin-left: -58px; color: #fff; }
 #s-close .cl-logo svg { width: 100%; display: block; }
-#s-close .cl-main { position: absolute; left: 0; right: 0; top: 196px; text-align: center; }
-#s-close .cl-title { font-size: 140px; }
-#s-close .cl-ar { margin-top: 20px; font: 700 52px/1.2 var(--font); color: var(--teal); letter-spacing: 0; }
-#s-close .cl-make { margin: 28px auto 0; font: 400 28px/1.3 var(--font); letter-spacing: 0; color: rgba(255, 255, 255, .72); }
+#s-close .cl-main { position: absolute; left: 0; right: 0; top: 190px; text-align: center; }
+/* the title is exactly the name the lights formed in stop 0 (11-close.js samples it): at the click
+   a wipe reveals it left to right while each dot flashes and goes as the edge passes it
+   (keep the wipe's delay, time, curve and 70px margin in step with WIPE… in 11-close.js) */
+#s-close .cl-title { width: fit-content; margin: 0 auto; font-size: 164px; line-height: .92; text-shadow: 0 0 56px rgba(37, 199, 188, .3); }
+#s-close .cl-title[data-in] { transform: none; filter: none; opacity: 1; clip-path: inset(-70px -70px -70px -70px); transition: clip-path 1s cubic-bezier(.45, 0, .55, 1) .1s; }
+#s-close .cl-title[data-in]:not(.is-in) { transform: none; filter: none; opacity: 1; clip-path: inset(-70px calc(100% + 70px) -70px -70px); transition: clip-path .35s var(--ease-soft); }
+#s-close .cl-ar { margin-top: 18px; font: 700 52px/1.2 var(--font); color: var(--teal); letter-spacing: 0; }
+#s-close .cl-make { margin: 22px auto 0; font: 400 28px/1.3 var(--font); letter-spacing: 0; color: rgba(255, 255, 255, .72); }
 #s-close .cl-way { margin: 16px 0 0; display: inline-flex; align-items: center; gap: 14px; font: 400 28px/1.1 var(--font); color: var(--sea); }
 #s-close .cl-way .light { animation: ambBreathe 3s ease-in-out infinite; }
 /* a gentle light passes through "Light the way." now and then */
@@ -84,13 +118,13 @@
 #s-close .cl-hush { position: absolute; left: 510px; top: 210px; width: 900px; height: 360px; border-radius: 50%; pointer-events: none;
   background: radial-gradient(closest-side, rgba(3, 8, 16, .8), rgba(3, 8, 16, .66) 45%, rgba(3, 8, 16, .3) 75%, transparent); }
 
-/* the team: a quiet credit line above the ask (support weight, readable) */
+/* the team: a quiet credit line above the business case (support weight, readable) */
 #s-close .cl-team { position: absolute; left: 0; right: 0; top: 684px; margin: 0; text-align: center; white-space: nowrap;
-  font: 500 23px/1 var(--font); letter-spacing: .005em; color: rgba(255, 255, 255, .8); text-shadow: 0 2px 14px rgba(3, 8, 16, .9); }
-#s-close .cl-team-k { font: 700 19px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--teal); }
-#s-close .cl-team i { font-style: normal; font-weight: 700; margin: 0 .4em; color: var(--teal); }
+  font: 500 22px/1 var(--font); letter-spacing: .005em; color: rgba(255, 255, 255, .8); text-shadow: 0 2px 14px rgba(3, 8, 16, .9); }
+#s-close .cl-team-k { font: 700 18px/1 var(--font); letter-spacing: .22em; text-transform: uppercase; color: var(--teal); }
+#s-close .cl-team i { font-style: normal; font-weight: 700; margin: 0 .36em; color: var(--teal); }
 
-/* the ask, kept on screen for Q&A: the hero card (glass, with a light travelling round its edge) */
+/* the business case, kept on screen for Q&A: the hero card (glass, with a light travelling round its edge) */
 #s-close .cl-ask { position: absolute; left: 144px; top: 740px; width: 1632px; height: 214px; display: flex; align-items: center; padding: 0 56px; border-radius: 26px;
   background: linear-gradient(165deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .03) 55%, rgba(37, 199, 188, .07)), rgba(4, 12, 24, .84);
   box-shadow: 0 34px 90px rgba(0, 0, 0, .5), 0 0 80px rgba(37, 199, 188, .16), inset 0 1px 0 rgba(255, 255, 255, .16); }
@@ -98,7 +132,7 @@
   background: radial-gradient(60% 120% at 22% 0%, rgba(37, 199, 188, .12), transparent 70%); }
 #s-close .cl-ask-l { flex: none; }
 #s-close .cl-ask .kicker { font-size: 22px; }
-/* the ask is the hero of the card: large and bright */
+/* its line is the hero of the card: large and bright */
 #s-close .cl-ask-h { margin-top: 16px; font: 700 84px/1.02 var(--font); letter-spacing: -.026em; color: var(--white); white-space: nowrap; text-shadow: 0 0 44px rgba(37, 199, 188, .24); }
 #s-close .cl-ask-div { flex: none; width: 2px; height: 150px; margin: 0 52px 0 auto; border-radius: 1px;
   background: linear-gradient(180deg, transparent, rgba(37, 199, 188, .6), transparent); }
