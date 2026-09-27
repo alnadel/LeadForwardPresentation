@@ -50,7 +50,7 @@
   // pace targets for the speaker view: minutes elapsed by the end of each act
   Deck.ACT_TARGETS = [2, 5.75, 9.5, 11, 15];   // minutes: when each act should be finished (Impact Makers timing)
   Deck.VERSION = 'v2';
-  // The two colleagues who knew (03 · One night, stop 3). Scene 17 starts the
+  // The two people who know (the opening story, stop 1). The close starts the
   // nomination chain from exactly these field positions. Stage px.
   Deck.NIGHT_PAIR = [[1084, 548], [1169, 572]];   // two same-layer colleagues, 88px apart
   Deck.NIGHT_OFFSET = [120, 40];                   // the field's camera offset in both scenes
