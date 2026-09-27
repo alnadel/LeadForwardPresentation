@@ -543,4 +543,8 @@ html[lang="ar"] #tx-chapter .ch-label, html[lang="ar"] #gate, html[lang="ar"] #o
 html[lang="ar"] #chrome .acts > span .nm { margin-left: 0; margin-right: .7em; }
 /* word-by-word headlines: each word is a clipped box, which in Arabic cut hamzas, dots and
    descenders (أ read as آ, في as فى); the box gets room above and below without moving the text */
-html[lang="ar"] [data-split] .w, html[lang="ar"] [data-split] .w > span { padding: .14em 0 .36em; margin: -.14em 0 -.36em; }
+html[lang="ar"] [data-split] .w, html[lang="ar"] [data-split] .w > span { padding: .3em 0 .38em; margin: -.3em 0 -.38em; }
+/* Arabic kickers: without tracking and capitals, 20px reads smaller than the English, so they
+   are set a little larger; a wipe on flipped text opens from the right (where Arabic starts) */
+html[lang="ar"] .kicker { font-size: 24px; }
+html[lang="ar"] .rtl-flip[data-in].a-wipe:not(.is-in) { clip-path: inset(0 0 0 100%); }
