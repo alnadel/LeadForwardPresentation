@@ -1,20 +1,15 @@
-/* 09b · Leaders go first (v4) — leadership involvement, act IV opens.
-   Stop 0 builds while the chapter card's line opens the frame: the headline, then
-   the three roles as a cascade. Left: the role names are the heroes (Executive
-   sponsor · Department leaders · Managers), their actions small and dim beneath.
-   Right: the same tiers as a tree of light, drawn as people — one sponsor, their
-   department leaders, the managers, and every colleague at the foot. The spark lands
-   just after "Executive sponsor"; a level line carries its light to the tree's root
-   and the links draw down, tier by tier, to the colleagues.
-   Ambient (stop 0): stories keep flowing down the cascade (sponsor → a leader →
-   a manager → a colleague; each node flares as a light arrives, each colleague
-   lights), a light runs the sponsor's level line into the root, the root's halo
-   breathes, and two washes drift.
-   Stop 1: the headline swaps to "Leaders spotlight others, never themselves.";
-   the role texts step out and two lists take their place, each line with its own
-   drawn icon (what leaders do ↔ what they don't: nominate ↔ self-nominate, a story
-   ↔ a podium, consent ↔ a broadcast). The tree folds away; its root, now dark,
-   slides onto a photo window of a team and casts a slow spotlight across them.
+/* 09b · Leaders go first — leadership involvement, in act V (the plan), after the roadmap.
+   One stop: the headline, then the three roles as a cascade. Left: the role names are
+   the heroes (Executive sponsor · Department leaders · Managers), their actions small
+   and dim beneath. Right: the same tiers as a tree of light, drawn as people — one
+   sponsor, their department leaders, the managers, and every colleague at the foot.
+   The spark lands just after "Executive sponsor"; a level line carries its light to
+   the tree's root and the links draw down, tier by tier, to the colleagues.
+   Ambient: stories keep flowing down the cascade (sponsor → a leader → a manager → a
+   colleague; each node flares as a light arrives, each colleague lights), a light runs
+   the sponsor's level line into the root, the root's halo breathes, and two washes drift.
+   (The former stop 1, "Leaders spotlight others, never themselves", was removed; its
+   rule lives on in the notes.)
    GPU: every layer is sized to what it draws (the tree has its own box; washes and
    glows are drawn small and scaled up); the story lights ride 4 carriers (2 routes
    each) instead of 24 lights and 24 flares; each stop's content is hidden
@@ -165,49 +160,20 @@
       <p class="ld-act a-fade" data-in="0" style="--d:${(.52 + k * .16).toFixed(2)}s;--dur:.8s">${x.a}</p>
     </div>`).join('');
 
-  /* ── stop 1: what leaders do ↔ what they don't, each with a drawn icon (32-unit line icons) ── */
-  const ic = (body) => `<svg viewBox="0 0 32 32" aria-hidden="true">${body}</svg>`;
-  const ICONS = {
-    // nominate: an arrow puts a colleague forward (a spark above them)
-    nominate: ic('<circle cx="19.5" cy="11.2" r="4"/><path d="M12 26.5c.6-4.6 3.7-7.3 7.5-7.3s6.9 2.7 7.5 7.3"/><path d="M3.5 17.8h6.8M7.6 14.8l3 3-3 3"/><path d="M27 3.2v4.4M24.8 5.4h4.4"/>'),
-    // a story bubble about someone else
-    story: ic('<path d="M6.2 6h19.6a2.7 2.7 0 0 1 2.7 2.7v11a2.7 2.7 0 0 1-2.7 2.7H14.5l-5.6 4.4v-4.4H6.2a2.7 2.7 0 0 1-2.7-2.7v-11A2.7 2.7 0 0 1 6.2 6z"/><circle cx="16" cy="11.6" r="2.6"/><path d="M11.4 18.6c.5-2.3 2.3-3.7 4.6-3.7s4.1 1.4 4.6 3.7"/>'),
-    // consent and fairness: a shield with a tick
-    consent: ic('<path d="M16 3.5l10 3.8v7.1c0 6.3-4.2 10.6-10 13.1-5.8-2.5-10-6.8-10-13.1V7.3z"/><path d="M11.2 15.6l3.4 3.4 6.3-6.8"/>'),
-    // self-nomination: the arrow turns back on the nominator
-    self: ic('<circle cx="11.5" cy="11.2" r="4"/><path d="M4 26.5c.6-4.6 3.7-7.3 7.5-7.3s6.9 2.7 7.5 7.3"/><path d="M19.6 21.4c4.6-.3 7.6-3.4 7.6-7.4s-3-7-7.6-7.2"/><path d="M22.2 4.2l-2.6 2.6 2.6 2.6"/>'),
-    // ranking: a podium with a star over first place
-    podium: ic('<path d="M3.5 27.5h25M12 27.5V15.5h8v12M4.5 27.5v-7.5H12M20 22h7.5v5.5"/><path d="M16 5.2l1.3 2.6 2.9.4-2.1 2 .5 2.9-2.6-1.4-2.6 1.4.5-2.9-2.1-2 2.9-.4z"/>'),
-    // a broadcast: a megaphone
-    broadcast: ic('<path d="M5.5 13.2v5.6c0 .8.7 1.5 1.5 1.5h2.4l9.1 5.2V6.5l-9.1 5.2H7c-.8 0-1.5.7-1.5 1.5z"/><path d="M10 20.4l1.6 5.6h3"/><path d="M22.5 12.4a5 5 0 0 1 0 7.2M25.6 9.3a9.3 9.3 0 0 1 0 13.4"/>'),
-  };
-  const DO = [['nominate', t('Nominate colleagues.', 'يرشّحون زملاءهم.')], ['story', t('Tell other people’s stories.', 'يروون قصص الآخرين.')], ['consent', t('Protect consent and fairness.', 'يصونون الموافقة والإنصاف.')]];
-  const DONT = [['self', t('Nominate themselves.', 'يرشّحون أنفسهم.')], ['podium', t('Rank people or pick winners.', 'يرتّبون الناس أو يختارون فائزين.')], ['broadcast', t('Turn it into a broadcast.', 'يحوّلونها إلى بثّ من طرف واحد.')]];
-  // a small badge on each tile: a tick (do) or a cross (don't)
-  const TICK = '<svg class="ld-bdg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 12.4l3.6 3.6 7.4-7.9"/></svg>';
-  const CROSS = '<svg class="ld-bdg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8l8 8M16 8l-8 8"/></svg>';
-  const list = (items, d0, badge) => items.map(([i, tx], k) => `<li class="ld-li" data-in="1" style="--d:${(d0 + k * .1).toFixed(2)}s"><span class="ld-mk">${ICONS[i]}${badge}</span>${tx}</li>`).join('');
-
   Deck.scene({
     id: 'leaders',
     title: t('Leaders go first', 'القادة يبادرون أولًا'),
-    act: 3,
+    act: 4,
     bg: 'navy',
-    transition: 'chapter',
-    cues: t(['Leaders go first · sponsor, leaders, managers', 'Leaders spotlight others, never themselves'], ['القادة يبادرون أولًا · الراعي والقادة والمدراء', 'القادة يسلّطون الضوء على غيرهم، لا على أنفسهم']),
-    holds: [22, 16],
-    notes: t([
-      'Inspiration is role-modelled, not announced. So leaders go first. Our sponsor opens the campaign with the story of a colleague who inspired them. Every department leader nominates at least one colleague a quarter and thanks featured colleagues in person. Managers give stories five minutes in every monthly meeting.',
-      'And one rule keeps it honest: leaders spotlight others, never themselves. No self-nomination, no rankings, no broadcast. Consent and fairness come first. That is the leadership behaviour we want the campaign to model.',
-    ], [
-      'الإلهام يُمارَس بالقدوة ولا يُعلَن. لذلك يبادر القادة أولًا. يفتتح راعينا الحملة بقصة زميل ألهمه. ويرشّح كل قائد إدارة زميلًا واحدًا على الأقل كل ربع سنة، ويشكر شخصيًا الزملاء الذين تُبرَز قصصهم. ويخصّص المدراء للقصص خمس دقائق في كل اجتماع شهري.',
-      'وقاعدة واحدة تحفظ نزاهتها: القادة يسلّطون الضوء على غيرهم، لا على أنفسهم. لا ترشيح للذات، ولا تصنيفات، ولا بثّ من طرف واحد. الموافقة والإنصاف أولًا. هذا هو السلوك القيادي الذي نريد أن تجسّده الحملة.',
-    ]),
+    transition: 'push',
+    cues: t(['Leaders go first · sponsor, leaders, managers'], ['القادة يبادرون أولًا · الراعي والقادة والمدراء']),
+    holds: [24],
+    notes: [
+      'Inspiration is role-modelled, not announced. So leaders go first. Our sponsor opens the campaign with the story of a colleague who inspired them. Every department leader nominates at least one colleague a quarter and thanks featured colleagues in person. Managers give stories five minutes in every monthly meeting. And one rule keeps it honest: leaders spotlight others, never themselves.',
+    ],
     field: [
       { dim: .32, lit: .04, litFrom: [1400, 900], travel: .3, warm: .1, offset: [70, 160], links: .5, wave: .5, streaks: .1, sparkle: 1.1, drift: 1,
         calm: [[100, 120, 1100, 350, .8], [100, 360, 1010, 940, .85], [1010, 360, 1800, 940, .3]] },
-      { lit: .07, warm: .3, offset: [20, 190], travel: .22,
-        calm: [[100, 120, 1760, 290, .8], [100, 380, 1300, 800, .88], [1300, 380, 1800, 940, .5]] },
     ],
     html: `
       <i class="ld-wash w1"><b></b></i><i class="ld-wash w2"><b></b></i>
@@ -216,7 +182,6 @@
         <div class="kicker a-wipe" data-in="0" style="--d:.1s">${t('Leadership involvement', 'مشاركة القيادة')}</div>
         <div class="ld-hbox">
           <h1 class="ld-h ld-h0" data-in="0" data-out="1" data-split style="--d:.16s;--wstep:.07s">${t('Leaders go first.', 'القادة يبادرون أولًا.')}</h1>
-          <h2 class="ld-h ld-h1" data-in="1" data-split data-spark="1" data-spark-at="r" data-spark-delay=".7" style="--d:.2s;--wstep:.045s">${t('Leaders <em class="hl">spotlight</em> <em class="hl">others,</em> never themselves.', 'القادة <em class="hl">يسلّطون</em> <em class="hl">الضوء</em> <em class="hl">على</em> <em class="hl">غيرهم،</em> لا على أنفسهم.')}</h2>
         </div>
         <p class="ld-sub" data-in="0" data-out="1" style="--d:.44s">${t('Inspiration is role-modelled, not announced.', 'الإلهام قدوةٌ تُمارَس، لا شعارٌ يُعلَن.')}</p>
       </div>
@@ -230,14 +195,7 @@
         ${nodes3}${nodes2}${team}
       </div>
 
-      <!-- stop 1: a team, and the light a leader casts on them -->
-      <div class="ld-win" aria-hidden="true" style="left:${WIN.x}px;top:${WIN.y}px;width:${WIN.w}px;height:${WIN.h}px">
-        <div class="ld-ph" style="background-image:linear-gradient(180deg, rgba(3, 8, 16, .5), rgba(3, 8, 16, .06) 46%, rgba(3, 12, 22, .3)), url('assets/photos/team-ops.jpg')"></div>
-        <i class="ld-veil"></i>
-        <i class="ld-beam"></i>
-      </div>
-
-      <!-- the sponsor: the source of the cascade; at stop 1 it goes dark and becomes the lamp -->
+      <!-- the sponsor: the source of the cascade -->
       <div class="ld-root" aria-hidden="true" style="left:${TX}px;top:${Y[0]}px;--rx:${ROOT1[0]}px;--ry:${ROOT1[1]}px">
         <i class="ld-halo"><b></b><b class="h2"></b></i>
         <i class="ld-bloom"></i>
@@ -255,18 +213,6 @@
         <span class="ld-tlab a-fade" data-in="0" style="--d:.82s">${t('Teams', 'الفرق')}</span>
       </div>
 
-      <!-- stop 1: leaders spotlight others, never themselves -->
-      <div class="ld-lists">
-        <div class="ld-list do">
-          <div class="ld-lh a-wipe" data-in="1" style="--d:.42s"><i></i>${t('Leaders do', 'ما يفعله القادة')}</div>
-          <ul>${list(DO, .5, TICK)}</ul>
-        </div>
-        <i class="ld-div a-wipe-down" data-in="1" style="--d:.5s;--dur:1s"><b></b></i>
-        <div class="ld-list dont">
-          <div class="ld-lh a-wipe" data-in="1" style="--d:.62s"><i></i>${t('Leaders don’t', 'ما لا يفعله القادة')}</div>
-          <ul>${list(DONT, .7, CROSS)}</ul>
-        </div>
-      </div>
     `,
     step(n, prev, ctx) {
       const el = ctx.el;
@@ -281,13 +227,6 @@
         lv.style.width = Math.max(0, x1 - x0) + 'px';
         lv.style.setProperty('--lw', Math.max(0, x1 - x0) + 'px');   // the running lights travel it on transforms
       });
-      // Arabic: the header is flipped back as one block about its left edge (it has no width), so the
-      // engine's layout position of the headline is mirrored; the light rests past the headline's end
-      if (Deck.rtl) {
-        const head = ctx.$('.ld-head'), hb = ctx.$('.ld-hbox'), h1 = ctx.$('.ld-h1');
-        const x0 = head.offsetLeft - (hb.offsetLeft + h1.offsetLeft + h1.offsetWidth);
-        h1.dataset.sparkXy = Math.round(x0 + h1.offsetWidth + 34) + ',' + Math.round(head.offsetTop + hb.offsetTop + h1.offsetTop + h1.offsetHeight / 2);
-      }
       // one-shot lights (the links' leading lights, the root's flare) play only on a live
       // click; their resting state is invisible, so a jump or a step back shows the same frame
       el.classList.remove('ld-live');

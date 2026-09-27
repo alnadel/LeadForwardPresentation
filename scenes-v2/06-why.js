@@ -163,9 +163,9 @@
   Deck.scene({
     id: 'why',
     title: t('Why it matters', 'لماذا يهمّ ذلك'),
-    act: 1,
+    act: 3,
     bg: 'night',
-    transition: 'push',
+    transition: 'chapter',
     cues: t(['Becomes organisational value when the story is shared · the flow · retention caveat', 'Aligned by design · our purpose · the six values · three outcomes, over Riyadh'],
       ['يتحوّل إلى قيمة مؤسسية حين تُشارَك القصة · التدفق · تنبيه الاحتفاظ بالموظفين', 'متّسق بالتصميم · غايتنا · القيم الست · ثلاث نتائج، فوق الرياض']),
     holds: [11, 11],

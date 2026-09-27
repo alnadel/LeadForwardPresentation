@@ -1,4 +1,4 @@
-/* Behind a Better Life — presentation engine (v2: the condensed, cinematic cut).
+/* Impact Makers — presentation engine (v2: the condensed, cinematic cut).
 
    v2 adds on top of v1:
    · scene TRANSITIONS — transition: 'dolly' | 'push' | 'rise' | 'chapter' | 'iris'
@@ -46,9 +46,9 @@
   if (Deck.rtl) document.documentElement.lang = 'ar';
   Deck.t = (en, ar) => (Deck.rtl && ar != null ? ar : en);
   const T = Deck.t;
-  Deck.ACTS = T(['The moment', 'The case', 'The campaign', 'Leading it', 'The plan'], ['اللحظة', 'المبرّرات', 'الحملة', 'القيادة', 'الخطة']);
+  Deck.ACTS = T(['The story', 'The need', 'The solution', 'The value', 'The plan'], ['القصة', 'الحاجة', 'الحل', 'القيمة', 'الخطة']);
   // pace targets for the speaker view: minutes elapsed by the end of each act
-  Deck.ACT_TARGETS = [1.5, 6.25, 10.25, 12, 15];   // minutes: when each act should be finished (v3 timing)
+  Deck.ACT_TARGETS = [2, 5.75, 9.5, 11, 15];   // minutes: when each act should be finished (Impact Makers timing)
   Deck.VERSION = 'v2';
   // The two colleagues who knew (03 · One night, stop 3). Scene 17 starts the
   // nomination chain from exactly these field positions. Stage px.
@@ -662,7 +662,7 @@
   /* ── overview ──────────────────────────────────────────────────────── */
   function buildOverview() {
     const o = $('#overview');
-    o.innerHTML = '<h2>' + T('Behind a Better Life · scenes', 'خلف حياة أفضل · المشاهد') + '</h2><div class="grid"></div>' +
+    o.innerHTML = '<h2>' + T('Impact Makers · scenes', 'صنّاع الأثر · المشاهد') + '</h2><div class="grid"></div>' +
       (Deck.rtl ? '<div class="keys"><b>←</b> <b>Space</b> <b>PgDn</b> المحطة التالية &nbsp; <b>→</b> <b>PgUp</b> رجوع &nbsp; <b>S</b> عرض المتحدث &nbsp; <b>B</b> شاشة سوداء &nbsp; <b>F</b> ملء الشاشة &nbsp; <b>H</b> إخفاء التقدم &nbsp; <b>C</b> تباين جهاز العرض &nbsp; <b>L</b> الوضع الخفيف &nbsp; <b>G</b> هذه النظرة العامة &nbsp; اكتب رقمًا ثم <b>Enter</b> للانتقال</div>' : '') +
       (Deck.rtl ? '' : '<div class="keys"><b>→</b> <b>Space</b> <b>PgDn</b> next stop &nbsp; <b>←</b> <b>PgUp</b> back &nbsp; <b>]</b> <b>[</b> next / previous scene &nbsp; <b>S</b> speaker view &nbsp; <b>B</b> blackout &nbsp; <b>F</b> fullscreen &nbsp; <b>H</b> hide progress &nbsp; <b>C</b> projector contrast &nbsp; <b>A</b> autoplay &nbsp; <b>L</b> lite mode &nbsp; <b>T</b> tech check &nbsp; <b>G</b> this overview &nbsp; type a number + <b>Enter</b> to jump</div>');
     const grid = $('.grid', o);
@@ -755,7 +755,7 @@
   Deck.startTime = () => startTime;
   Deck.resetTimer = () => { startTime = Date.now(); };
 
-  const PRESENTER_HTML = (Deck.rtl ? `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>عرض المتحدث — خلف حياة أفضل</title>` : `<!doctype html><html><head><meta charset="utf-8"><title>Speaker view — Behind a Better Life (v2)</title>`) + `
+  const PRESENTER_HTML = (Deck.rtl ? `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>عرض المتحدث — صنّاع الأثر</title>` : `<!doctype html><html><head><meta charset="utf-8"><title>Speaker view — Impact Makers</title>`) + `
 <style>
 *{box-sizing:border-box}html,body{margin:0;height:100%;background:#0B0F17;color:#E9EEF5;font-family:Somar,'Segoe UI',Arial,sans-serif}
 body{display:grid;grid-template-columns:1fr 300px;grid-template-rows:auto 1fr auto;height:100vh}
@@ -942,7 +942,7 @@ var s=window.deck&&deck.startTime();var e=s?Math.floor((Date.now()-s)/1000):0;do
     });
     const begin = () => {
       edges();
-      if (Deck.rtl) { S.forEach((r) => rtlLeaves(r.el)); document.title = 'خلف حياة أفضل — تحكم · Lead Forward 2026'; }
+      if (Deck.rtl) { S.forEach((r) => rtlLeaves(r.el)); document.title = 'صنّاع الأثر — تحكم · Lead Forward 2026'; }
       const q = location.search, gate = !h && (/[?&]gate\b/.test(q) || (!navigator.webdriver && !/[?&]nogate\b/.test(q)));
       const start = () => {
         if (h) go(h.i, h.st, { instant: true });

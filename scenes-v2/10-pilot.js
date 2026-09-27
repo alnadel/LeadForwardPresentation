@@ -8,27 +8,16 @@
    and the full cycle hanging from the span of the whole quarter. A story light walks
    the quarter month by month; each month and each commitment lights as it is reached,
    and quarter end flashes as it arrives.
-   Stop 2 is how we'll judge it: the KPI panel. Five glass tiles hang from a compact
-   measurement rail; each shows its measure, its baseline and the proposed target
-   (the key numbers; reach and the visibility gap count from their exact baselines,
-   8% and 56%, to the target). The story light drives along the rail and each tile's
-   target reads as it passes. A caption flags the targets as proposals, "what we
-   need" is a quiet strip, and the decision is the hero while the fork of outcomes
-   draws after it.
-   Pictures: each commitment carries its own raised key (a form, the cycle, a
-   dashboard); each KPI tile carries a small honest chart: reach as a 0–100% bar from
-   8% to the proposed 25%, the visibility gap as a 0–100% bar from 56% down past 40%,
-   participation as department dots lighting, engagement as a story reaching people,
-   sentiment as a small gauge whose needle moves up (no invented figures).
+   (The former stop 2, the KPI panel, was removed; the targets and "scale, adjust or stop"
+   now live in the stop-1 notes.)
+   Pictures: each commitment carries its own raised key (a form, the cycle, a dashboard).
    GPU: the room is one photo layer (its light leak painted in), one dim layer (the veil,
-   with the two shades that fade in over it) and the video wall; the stop-1 and stop-2
-   groups are visibility: hidden while they are off stage, so they hold no layers.
+   with the two shades that fade in over it) and the video wall; the stop-1
+   group is visibility: hidden while it is off stage, so they hold no layers.
    All state is keyed off .st-n, so back navigation lands on the same frame.
    Audience first — stop 0: the headline. Stop 1: "one quarterly cycle" (lit in the line
    and on the quarter's span) and the three commitment titles; their descriptions are
-   fine print. Stop 2: the decision, "scale, adjust or stop." (largest, brightest,
-   the spark), then the five targets; measures, baselines, caption and needs are
-   readable support. */
+   fine print. */
 (function () {
   const t = Deck.t;
   /* ── the quarter: one tangible object — three month blocks side by side on a glass plate, seen
@@ -82,76 +71,6 @@
     return `<svg class="pl-mlit m${k}" viewBox="${b.join(' ')}" style="left:${b[0]}px;top:${b[1]}px;width:${b[2]}px;height:${b[3]}px;--k:${k}" aria-hidden="true"><polygon points="${qpts([[m.a + 4, 4, QT], [m.b - 4, 4, QT], [m.b - 4, QD - 4, QT], [m.a + 4, QD - 4, QT]])}"/></svg>`;
   }).join('');
   const CT = 356, CH = 170, CB = CT + CH, C2T = 772, BY = 728;   // the upper commitments' top, height and bottom (where their drops start), the lower one's top, the span's line
-  /* ── the KPI panel: five tiles under a compact measurement rail ── */
-  const RAIL_Y = 320;                            // the rail runs along the tiles' top edges
-  const KX = 144, KW = 312, KG = 18;             // tile left, width and gap (5 × 312 + 4 × 18 = 1632)
-  const CW = KW - 48;                            // a tile's chart width (264)
-  const KPIS = [
-    { k: t('Participation', 'المشاركة'), m: t('Nominations from every department', 'ترشيحات من كل الإدارات'), b: '—', t: t('every department', 'كل الإدارات'), c: 'dots' },
-    { k: t('Engagement', 'التفاعل'), m: t('Colleagues reading at least one story', 'زملاء يقرؤون قصة واحدة على الأقل'), b: t('measured from month 1', 'يُقاس من الشهر 1'), t: t('most colleagues', 'أغلب الزملاء'), c: 'people' },
-    { k: t('Sentiment', 'الانطباع'), m: t('“My work is seen”: pulse, 3 questions', '«عملي مرئي»: استطلاع نبض، 3 أسئلة'), b: t('baseline at launch', 'خط الأساس عند الإطلاق'), t: t('up by quarter end', 'ارتفاع بنهاية الربع'), c: 'gauge' },
-    { k: t('Recognition reach', 'مدى وصول التقدير'), m: t('Re-survey (same question)', 'إعادة الاستبيان (السؤال نفسه)'), b: 8, t: 25, c: 'bar' },
-    { k: t('Visibility gap', 'فجوة الظهور'), m: t('Re-survey (same question)', 'إعادة الاستبيان (السؤال نفسه)'), b: 56, t: 40, pre: t('below', 'أقل من'), c: 'bar' },
-  ];
-  // the story light's path runs x -60 → 1980: one quick pass with the build, then
-  // a slow lap every 10 s while the presenter talks, with a second story half a
-  // lap behind, so each tile reads twice a cycle (keep in step with .pl-car)
-  const X0 = -60, X1 = 1980, FIRST_AT = 0.5, FIRST = 1, SLOW = 10;
-  const frac = (x) => (x - X0) / (X1 - X0);
-  const r2 = (v) => Math.round(v * 100) / 100;
-  // the readout cycle blinks at 0% and 50%, once for each light; the far tiles
-  // start it half a lap early so they also catch the second light's first pass
-  const cycleAt = (x) => {
-    const tf = FIRST_AT + frac(x) * FIRST, ts = FIRST_AT + FIRST + frac(x) * SLOW;
-    return r2(ts - SLOW / 2 >= tf + 1.05 ? ts - SLOW / 2 : ts);
-  };
-  // the charts (a tile's chart box is CW × 56). Bars use a true 0–100% scale; the proposed
-  // target is drawn dashed. Only the survey's exact figures appear.
-  const px = (v) => r2(v / 100 * CW);
-  const chart = (x) => {
-    if (x.c === 'bar') {             // reach: 8% → 25% · the visibility gap: 56% → below 40%
-      const b = px(x.b), t = px(x.t);
-      // the target bar starts at the baseline's length and moves to the target with the count-up
-      return `<svg class="pl-bar" viewBox="0 0 ${CW} 56" aria-hidden="true">
-        <rect class="pl-trk" x="0" y="4" width="${CW}" height="13" rx="3.5"/><rect class="pl-trk" x="0" y="24" width="${CW}" height="13" rx="3.5"/>
-        <rect class="pl-base" x="0" y="4" height="13" rx="3.5" style="width:${b}px"/>
-        <rect class="pl-tgt" x="0.8" y="24.8" height="11.4" rx="3" style="--w0:${b}px;--w1:${r2(t - 1.6)}px"/>
-        <text class="pl-bl" x="${r2(b + 8)}" y="11">${x.b}%</text><text class="pl-tl" x="${r2(t + 8)}" y="31">${x.pre ? x.pre + ' ' + (Deck.rtl ? '\u200E' : '') : ''}${x.t}%</text>
-        <text class="pl-ax" x="0" y="53">0</text><text class="pl-ax e" x="${CW}" y="53">100%</text>
-      </svg>`;
-    }
-    if (x.c === 'dots')              // participation: a dot per department lights (illustrative)
-      return `<div class="pl-dots">${Array.from({ length: 20 }, (_, k) => `<i style="--k:${(k % 10) + Math.floor(k / 10) * .5}"></i>`).join('')}</div>`;
-    if (x.c === 'people')            // engagement: a story reaches colleagues
-      return `<div class="pl-ppl"><span class="pl-story"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="5" width="30" height="38" rx="4"/><path d="M15 14h18M15 21h18M15 28h11"/><path d="M16 36.5l2 2 4-4.2"/></svg></span><svg class="pl-flow" viewBox="0 0 96 8" aria-hidden="true"><path d="M2 4H94" pathLength="100"/></svg>${Deck.icon('users-connected', 'pl-pi')}</div>`;
-    // sentiment: a gauge; the needle moves up from launch to quarter end (no scale, no figure)
-    return `<svg class="pl-gauge" viewBox="0 0 ${CW} 56" aria-hidden="true">
-      <path class="pl-g-trk" d="M94 52A38 38 0 0 1 170 52"/><path class="pl-g-arc" d="M94 52A38 38 0 0 1 170 52" pathLength="100"/>
-      <path class="pl-g-up" d="M109 12.2A46 46 0 0 1 150.7 10M145.8 10.95 150.7 10 148.1 5.7" pathLength="100"/>
-      <line class="pl-g-was" x1="132" y1="52" x2="132" y2="22"/>
-      <g class="pl-g-nd"><line x1="132" y1="52" x2="132" y2="20"/></g><circle class="pl-g-hub" cx="132" cy="52" r="4.5"/>
-    </svg>`;
-  };
-  const kpi = (x, i) => {
-    const cx = KX + i * (KW + KG) + KW / 2, num = typeof x.t === 'number';
-    const base = typeof x.b === 'number' ? `<b class="pl-kb-n">${x.b}%</b>` : `<span class="pl-kb-t">${x.b}</span>`;
-    // each target carries a glow-only copy of itself (.pl-kt-g) that brightens as the light passes
-    // (in Arabic the figure and its % are one left-to-right unit, so "below 40%" reads as 40%, like the other tiles)
-    const nu = (h) => (Deck.rtl ? `<span dir="ltr">${h}</span>` : h);
-    const target = num
-      ? `<span class="pl-kt-v n">${x.pre ? `<small>${x.pre}</small>` : ''}${nu(`<span class="num" data-count="${x.t}" data-from="${x.b}" data-delay="${r2(.95 + i * .06)}" data-dur="1">${x.t}</span>%`)}<span class="pl-kt-g" aria-hidden="true">${x.pre ? `<small>${x.pre}</small>` : ''}${nu(`<span class="num">${x.t}</span>%`)}</span></span>`
-      : `<span class="pl-kt-v">${x.t}<span class="pl-kt-g" aria-hidden="true">${x.t}</span></span>`;
-    return `
-    <div class="pl-k glass a-unfold" data-in="2" style="--tf:${r2(FIRST_AT + frac(cx) * FIRST)}s;--ts:${cycleAt(cx)}s">
-      <i class="pl-k-pip"></i><i class="pl-k-beam"></i>
-      <div class="pl-k-h"><b class="pl-k-no">${String(i + 1).padStart(2, '0')}</b><span class="pl-k-name">${x.k}</span></div>
-      <p class="pl-k-m">${x.m}</p>
-      <div class="pl-ch pl-ch-${x.c}">${chart(x)}</div>
-      <div class="pl-kb"><span class="pl-k-l">${t('Baseline', 'خط الأساس')}</span>${base}</div>
-      <div class="pl-kt"><span class="pl-k-l t">${t('Target', 'المستهدف')}</span>${target}</div>
-    </div>`;
-  };
-
   /* ── the commitments' pictures (outline, currentColor, round caps; 48-unit box) ── */
   const CICON = {
     form: '<rect x="9" y="4" width="30" height="40" rx="4.5"/><path d="M15 11.5h18"/><rect x="15" y="18" width="6.5" height="6.5" rx="1.6"/><path d="M26 21.2h7"/><path d="M16.4 21.4l1.5 1.5 2.5-2.9"/><rect x="15" y="28.5" width="6.5" height="6.5" rx="1.6"/><path d="M26 31.8h7"/><path d="M19 39.5h10"/>',
@@ -164,43 +83,25 @@
   const blips = Array.from({ length: 24 }, (_, i) => `<b style="--x:${(i * 41) % 97}%;--y:${4 + (i * 59) % 32}%;--w:${16 + (i * 7) % 30}px;--t:${2.2 + (i % 5) * .8}s;--dl:${-i * .37}s"></b>`).join('');
   const dust = Array.from({ length: 18 }, (_, i) => `<i style="left:${Math.round((4 + (i * 137) % 92) * 19.2)}px;top:${Math.round((58 + (i * 71) % 40) * 10.8)}px;--t:${11 + (i % 6) * 2.2}s;--dl:${-i * 1.3}s;--dx:${(i % 2 ? 1 : -1) * (24 + (i * 13) % 50)}px;--dy:${-150 - (i * 29) % 180}px"></i>`).join('');
 
-  const HERO = t('scale, adjust or stop.', 'التوسّع أو التعديل أو الإيقاف.');
-  const HERO_Y = 826;   // top of the decision's hero line (keep in step with .pl-final in 10-pilot.css)
-  // after "stop." the pilot's path forks three ways: one recommendation, three possible outcomes
-  // (box: stage FX,FY · FW×140; the stem starts just after the spark; every branch is drawn
-  // equal, so none is favoured)
-  const FX = t(1026, 1320), FY = HERO_Y - 10, FW = t(740, 456), FN = FW - 30, FB = t(250, 160);   // Arabic: a longer line, a shorter fork
-  const FORK = [`M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 32, ${FN} 32`, `M30 76 H${FN}`, `M30 76 H${FB} C ${FB + 110} 76, ${FB + 190} 120, ${FN} 120`];
-  const fork = FORK.map((d, i) => `<path class="pl-fb" d="${d}" pathLength="100" style="--i:${i}"/>`).join('');
-  const forkLights = FORK.map((d, i) => `<i class="pl-fl" style="offset-path:path('${d}');--i:${i}"><b class="light sm"></b></i>`).join('');
-  const forkNodes = [32, 76, 120].map((y, i) => `<i class="pl-fn" style="left:${FN}px;top:${y}px;--i:${i}"></i>`).join('');
-
   Deck.scene({
     id: 'pilot',
     title: t('Proof before scale', 'الإثبات قبل التوسّع'),
     act: 4,
     bg: 'night',
     transition: 'rise',
-    cues: t(['Proof before scale.', 'One quarterly cycle · three commitments', 'How we’ll measure impact · five KPIs, baseline → proposed target · scale, adjust or stop'],
-      ['الإثبات قبل التوسّع.', 'دورة ربع سنوية واحدة · ثلاثة التزامات', 'كيف نقيس الأثر · خمسة مؤشرات، من خط الأساس ← إلى المستهدف المقترح · التوسّع أو التعديل أو الإيقاف']),
-    holds: [6, 12, 14],
-    notes: t([
+    cues: t(['Proof before scale.', 'One quarterly cycle · three commitments'], ['الإثبات قبل التوسّع.', 'دورة ربع سنوية واحدة · ثلاثة التزامات']),
+    holds: [6, 18],
+    notes: [
       'Impact measurement. We do not start by scaling; we start with proof. Pause, and let it sit. What follows is how one quarter proves the idea, and how we will know whether it worked.',
-      'We start with one quarterly cycle and measure what changes. This is one quarter, month one to month three: open nominations to peers and leaders at the start, run one full cycle — capture, curate, feature, reinforce — within the quarter, and report what changed on a quarterly dashboard at quarter end.',
-      'We measure impact through participation from every department, colleagues reading, a sentiment pulse, and a quarter-end re-survey: reach from 8% to 25%, the visibility gap from 56% to below 40%, as proposed targets. After one quarter, the data decides: scale, adjust or stop.',
-    ], [
-      'قياس الأثر. لا نبدأ بالتوسّع؛ بل نبدأ بالإثبات. توقّف قليلًا ودع الفكرة تستقر. ما يلي هو كيف يُثبت ربع سنة واحد الفكرة، وكيف سنعرف إن كانت قد نجحت.',
-      'نبدأ بدورة ربع سنوية واحدة ونقيس ما يتغيّر. هذا ربع سنة واحد، من الشهر الأول إلى الشهر الثالث: نفتح باب الترشيح للزملاء والقادة في البداية، وننفّذ دورة كاملة — رصد، انتقاء، إبراز، ترسيخ — خلال الربع، ونعرض ما تغيّر على لوحة مؤشرات ربع سنوية في نهاية الربع.',
-      'نقيس الأثر من خلال مشاركة كل الإدارات، وقراءة الزملاء للقصص، واستطلاع نبض للانطباع، وإعادة الاستبيان في نهاية الربع: مدى وصول التقدير من 8% إلى 25%، وفجوة الظهور من 56% إلى أقل من 40%، كمستهدفات مقترحة. بعد ربع سنة واحد، البيانات تقرّر: التوسّع أو التعديل أو الإيقاف.',
-    ]),
+      'We start with one quarterly cycle and measure what changes. This is one quarter, month one to month three: open nominations to peers and leaders at the start, run one full cycle — capture, curate, feature, reinforce — within the quarter, and report what changed on a quarterly dashboard at quarter end. We measure participation from every department, colleagues reading, a sentiment pulse, and the same survey questions again: recognition reach from 8% towards 25%, the visibility gap from 56% to below 40%. After one quarter, the data decides: scale, adjust or stop.',
+    ],
     field: [
       { dim: .3, lit: .03, travel: .25, offset: [-60, -200], litFrom: [960, 300], links: .4, wave: .4, streaks: .14, sparkle: 1, calm: [[100, 110, 1500, 380, .85]] },
       { dim: .22, travel: .1, links: .3, calm: [[100, 110, 1800, 960, .88]] },
-      { calm: [[80, 110, 1840, 960, .88]] },
     ],
     html: `
       <!-- the room: one photo layer (the light leak is painted in with it), the video wall, and one
-           dim layer (the veil, with the shades that land over it at stops 1 and 2) -->
+           dim layer (the veil, with the shade that lands over it at stop 1) -->
       <div class="pl-cam">
         <div class="pl-plate">
           <div class="photo pl-photo" style="background-image:url('assets/photos/team-ops.jpg')"></div>
@@ -208,7 +109,7 @@
           <div class="pl-wall"><i class="pl-wglow"></i>${blips}<em class="pl-wscan"></em><em class="pl-wsweep"></em></div>
         </div>
       </div>
-      <div class="pl-dim"><i class="fill pl-veil"></i><i class="fill pl-shade-1 a-fade" data-in="1" style="--dur:1.2s"></i><i class="fill pl-shade-2 a-fade" data-in="2" style="--dur:1s"></i></div>
+      <div class="pl-dim"><i class="fill pl-veil"></i><i class="fill pl-shade-1 a-fade" data-in="1" style="--dur:1.2s"></i></div>
       <div class="pl-cove"></div>
       <div class="amb-dust pl-dust">${dust}</div>
 
@@ -218,8 +119,8 @@
 
       <!-- stop 1 · one quarter, three commitments (the group is hidden while off stage) -->
       <div class="pl-g1">
-      <p class="lead pl-sub" data-in="1" data-out="2" style="--d:.15s">${t('Start with <b class="pl-key">one quarterly cycle</b> and measure what changes.', 'نبدأ <b class="pl-key">بدورة ربع سنوية واحدة</b> ونقيس ما يتغيّر.')}</p>
-      <div class="pl-plan" data-out="2">
+      <p class="lead pl-sub" data-in="1" style="--d:.15s">${t('Start with <b class="pl-key">one quarterly cycle</b> and measure what changes.', 'نبدأ <b class="pl-key">بدورة ربع سنوية واحدة</b> ونقيس ما يتغيّر.')}</p>
+      <div class="pl-plan">
         <i class="pl-qdark" style="left:${QVX}px;top:${QYG}px"></i>
         <i class="pl-qglow" style="left:${QVX}px;top:${QYG - 10}px"></i>
         <!-- the quarter: a glass plate and three month blocks, in perspective -->
@@ -269,37 +170,11 @@
       </div>
       </div>
 
-      <!-- stop 2 · how we'll judge it: the KPI panel (the group is hidden while off stage) -->
-      <div class="pl-g2">
-      <div class="kicker pl-judge a-wipe" data-in="2" style="--d:.15s">${t('How we’ll measure impact', 'كيف نقيس الأثر')}</div>
-      <div class="pl-rail a-wipe" data-in="2" style="top:${RAIL_Y}px;--d:.2s;--dur:1s"></div>
-      <div class="pl-car" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light lg"></i></div>
-      <div class="pl-car c2" style="top:${RAIL_Y}px" aria-hidden="true"><b class="pl-tail"></b><i class="light"></i></div>
-      <div class="pl-kpis" data-stagger style="left:${KX}px;top:${RAIL_Y}px;--stagger:.07s;--d:.28s">${KPIS.map(kpi).join('')}</div>
-      <p class="pl-cap a-fade" data-in="2" style="--d:1s;--dur:.8s">${t('Proposed targets, confirmed at launch.', 'مستهدفات مقترحة، تُؤكَّد عند الإطلاق.')}</p>
-      <div class="pl-need glass a-unfold" data-in="2" style="--d:.78s">
-        <span class="label pl-need-l">${t('What it takes', 'متطلبات التنفيذ')}</span>
-        <p class="pl-need-t">${t('An executive sponsor <i>·</i> curation time from HR and Internal Communications <i>·</i> our existing channels', 'راعٍ تنفيذي <i>·</i> وقت للانتقاء من الموارد البشرية والاتصال الداخلي <i>·</i> قنواتنا القائمة')}</p>
-      </div>
-      <h2 class="pl-final" data-in="2" data-split style="--d:.62s;--wstep:.03s">${t('After one quarter, the data decides:', 'بعد ربع سنة واحد، البيانات تقرّر:')}</h2>
-      <div class="pl-herow" data-spark="2" data-spark-delay=".8" style="top:${HERO_Y}px">
-        <p class="pl-hglow" data-split aria-hidden="true">${HERO}</p>
-        <p class="pl-hero" data-in="2" data-split style="--d:.86s;--wstep:.07s">${HERO}</p>
-      </div>
-      <div class="pl-fork" aria-hidden="true" style="left:${FX}px;top:${FY}px;width:${FW}px">
-        <svg viewBox="0 0 ${FW} 140" style="width:${FW}px">${fork}</svg>
-        ${forkLights}${forkNodes}
-      </div>
-      </div>
-      <svg class="pl-defs" aria-hidden="true"><defs><linearGradient id="plGaugeG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C9A6D3"/><stop offset=".55" stop-color="#25C7BC"/><stop offset="1" stop-color="#03FFCB"/></linearGradient></defs></svg>
     `,
     step(n, prev, ctx) {
       // the spark rests just after the full stop, at the x-height of the display line
       const t = ctx.$('.pl-title');
       if (t && t.offsetWidth) t.dataset.sparkXy = Math.round(t.offsetLeft + t.offsetWidth + 54) + ',' + Math.round(t.offsetTop + t.offsetHeight * .64);
-      // …and at stop 2 just after "stop.", where the fork of outcomes begins
-      const hw = ctx.$('.pl-herow'), h = ctx.$('.pl-hero');
-      if (hw && h && h.offsetWidth) hw.dataset.sparkXy = Math.round(hw.offsetLeft + h.offsetWidth + 42) + ',' + Math.round(hw.offsetTop + h.offsetHeight * .58);
     },
   });
 })();

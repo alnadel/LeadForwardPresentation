@@ -13,12 +13,8 @@
    flares and each card's top edge catches the light as it passes), a light keeps running
    the ALWAYS stretch, the phone floats, the spotlight video plays, the email card's edge
    light turns, and a glow breathes behind it.
-   Stop 1: "Designed with what colleagues asked for." The map steps away; four rows
-   read as sentences — each exact number carries its own small chart (123 of 158 as a
-   waffle of 158 colleagues; 47%, 32% and 49% as rings), the finding follows in quiet
-   type, and a leader line carries each one across to the design decision it produced.
-   Ambient: a light runs each leader line in turn and a glow breathes behind each number
-   (the numbers never change while parked).
+   (The former stop 1, "Designed with what colleagues asked for", was removed; the survey
+   findings behind the design now live in the notes.)
    GPU: every container is sized to what it holds; glows are drawn small and scaled up;
    each mark and card edge flares for both story lights from one animation; each stop's
    content turns visibility:hidden once it has faded, so its layers go away.
@@ -124,58 +120,20 @@
       </div>`;
   }).join('');
 
-  /* ── stop 1 · finding → decision, each number with its own chart ── */
-  // 123 of 158: a waffle of 158 colleagues (16 across, ten rows; the first 123 filled)
-  const waffle = (() => {
-    let on = '', off = '';
-    for (let i = 0; i < 158; i++) {
-      const r = `<rect x="${(i % 16) * 8}" y="${Math.floor(i / 16) * 8}" width="6" height="6" rx="1.4"/>`;
-      if (i < 123) on += r; else off += r;
-    }
-    return `<svg class="cm-waf" viewBox="0 0 126 78" aria-hidden="true"><g class="off">${off}</g><g class="on">${on}</g></svg>`;
-  })();
-  // a share as a ring (pathLength 100, so the arc is exactly the figure)
-  const ring = (v) => `<svg class="cm-ring" viewBox="0 0 88 88" style="--v:${v}" aria-hidden="true"><circle class="tr" cx="44" cy="44" r="38"/><circle class="arc" cx="44" cy="44" r="38" pathLength="100" transform="rotate(-90 44 44)"/></svg>`;
-  const PAIRS = [
-    { n: '123', s: '<span class="cm-of">/ 158</span>', c: waffle, f: t('prefer email', 'يفضّلون البريد الإلكتروني'), d: t('The monthly story email leads.', 'بريد القصة الشهري في الصدارة.') },
-    { n: '47', s: '<span class="cm-pc">%</span>', c: ring(47), f: t('want a monthly rhythm', 'يريدون إيقاعًا شهريًا'), d: t('One story a month.', 'قصة واحدة كل شهر.') },
-    { n: '32', s: '<span class="cm-pc">%</span>', c: ring(32), f: t('want to nominate anonymously', 'يريدون الترشيح دون ذكر أسمائهم'), d: t('An anonymous option on the form.', 'خيار للترشيح دون اسم في النموذج.') },
-    { n: '49', s: '<span class="cm-pc">%</span>', c: ring(49), f: t('want to approve their story', 'يريدون الموافقة على قصتهم'), d: t('Nothing is shared without the colleague’s approval.', 'لا يُنشر شيء دون موافقة الزميل.') },
-  ];
-  const ROW0 = 408, PITCH = 128, NUM_R = 560;       // row centres; the numbers' right edge
-  const rows = PAIRS.map((p, i) => {
-    const d = .38 + i * .14;
-    return `
-      <div class="cm-row r${i}" style="top:${ROW0 + i * PITCH}px;--k:${i}">
-        <i class="cm-nglow" style="left:${NUM_R - 272}px"><b></b></i>
-        <div class="cm-num a-pop" data-in="1" style="right:${-NUM_R}px;--d:${d.toFixed(2)}s"${i === 0 ? ' data-spark="1" data-spark-at="t" data-spark-delay=".5"' : ''}><span class="cm-ch">${p.c}</span><span class="num">${p.n}</span>${p.s}</div>
-        <p class="cm-find a-fade" data-in="1" style="left:${NUM_R + 26}px;--d:${(d + .12).toFixed(2)}s">${p.f}</p>
-        <i class="cm-lead" style="--d:${(d + .22).toFixed(2)}s"><b></b></i>
-        <i class="cm-arrive"></i>
-        <p class="cm-dec a-left" data-in="1" style="--d:${(d + .3).toFixed(2)}s">${p.d}</p>
-      </div>`;
-  }).join('');
-
   Deck.scene({
     id: 'comms',
     title: t('Where the stories travel', 'مسارات القصص'),
-    act: 3,
+    act: 4,
     bg: 'navy',
     transition: 'push',
-    cues: t(['Where the stories travel · cadence and channels', 'Designed with what colleagues asked for'], ['مسارات القصص · الإيقاع والقنوات', 'صُمّمت وفق ما أراده الزملاء']),
-    holds: [22, 16],
-    notes: t([
-      'Where do the stories travel? On channels we already have. The intranet story wall is always open. A story email goes out every month, and email is what 123 of 158 colleagues prefer. Teams give stories five minutes a month. Each quarter brings a short video and a town-hall spotlight, and once a year a story collection. Every story is in Arabic and English.',
-      'We designed it with what colleagues told us. Email first. A monthly rhythm, which 47% asked for. An anonymous nomination option for the 32% who want one. And the 49% who want to approve their story get exactly that: nothing is shared without approval.',
-    ], [
-      'أين تنتقل القصص؟ عبر قنوات لدينا بالفعل. جدار القصص على الشبكة الداخلية مفتوح دائمًا. ويُرسَل بريد القصة كل شهر، والبريد هو ما يفضّله 123 من 158 زميلًا. وتخصّص الفرق للقصص خمس دقائق كل شهر. وكل ربع سنة يأتي فيديو قصير وتسليط للضوء في اللقاء العام، ومرة في السنة مجموعة القصص السنوية. وكل قصة متاحة بالعربية والإنجليزية.',
-      'صمّمناها وفق ما أخبرنا به الزملاء. البريد أولًا. وإيقاع شهري طلبه 47%. وخيار للترشيح دون ذكر الاسم لـ 32% ممن يريدونه. أما الـ 49% الذين يريدون الموافقة على قصتهم فلهم ذلك تمامًا: لا يُنشر شيء دون موافقتهم.',
-    ]),
+    cues: t(['Where the stories travel · cadence and channels'], ['مسارات القصص · الإيقاع والقنوات']),
+    holds: [26],
+    notes: [
+      'Where do the stories travel? On channels we already have. The intranet story wall is always open. A story email goes out every month, and email is what 123 of 158 colleagues prefer. Teams give stories five minutes a month. Each quarter brings a short video and a town-hall spotlight, and once a year a story collection. Every story is in Arabic and English. And it is designed with what colleagues told us: a monthly rhythm, which 47% asked for; an anonymous nomination option for the 32% who want one; and, for the 49% who want a say in their story, nothing is shared without the colleague’s approval.',
+    ],
     field: [
       { dim: .3, lit: .03, litFrom: null, travel: .35, warm: .05, offset: [-220, -40], links: .5, wave: .55, streaks: .12, sparkle: 1.2, drift: 1,
         calm: [[100, 120, 1300, 270, .8], [100, 300, 1800, 720, .82], [100, 720, 1800, 930, .85]] },
-      { offset: [-120, 130], travel: .25, warm: .12,
-        calm: [[100, 120, 1760, 270, .8], [100, 300, 1800, 920, .88]] },
     ],
     html: `
       <i class="cm-wash w1"><b></b></i><i class="cm-wash w2"><b></b></i>
@@ -184,7 +142,6 @@
         <div class="kicker a-wipe" data-in="0" style="--d:.05s">${t('Communication plan', 'خطة التواصل')}</div>
         <div class="cm-hbox">
           <h2 class="h2 cm-h cm-h0" data-in="0" data-out="1" data-split style="--d:.12s">${t('Where the stories travel.', 'مسارات القصص.')}</h2>
-          <h2 class="h2 cm-h cm-h1" data-in="1" data-split style="--d:.14s;--wstep:.045s">${t('Designed with what <em class="hl">colleagues</em> <em class="hl">asked</em> <em class="hl">for.</em>', 'صُمّمت وفق <em class="hl">ما</em> <em class="hl">أراده</em> <em class="hl">الزملاء.</em>')}</h2>
         </div>
       </div>
 
@@ -206,29 +163,13 @@
         </div>
       </div>
 
-      <!-- stop 1 · designed with what colleagues asked for -->
-      <div class="cm-pairs">
-        <div class="cm-cap a-fade" data-in="1" style="--d:.3s"><span class="c1">${t('Finding', 'النتيجة')}</span><span class="c2">${t('Design decision', 'قرار التصميم')}</span></div>
-        <div class="cm-panel glass a-fade" data-in="1" style="--d:.26s;--dur:1s"></div>
-        ${rows}
-        <p class="cm-src a-fade" data-in="1" style="--d:1.1s">${t('Source: Tahakom internal survey, 158 responses.', 'المصدر: الاستبيان الداخلي في تحكم، 158 إجابة.')}</p>
-      </div>
     `,
     step(n, prev, ctx) {
-      // leader lines: from the end of each finding to its decision
-      ctx.$$('.cm-row').forEach((row) => {
-        const f = row.querySelector('.cm-find'), ld = row.querySelector('.cm-lead');
-        if (!f || !ld || !f.offsetWidth) return;
-        const x0 = f.offsetLeft + f.offsetWidth + 26;
-        ld.style.left = x0 + 'px';
-        ld.style.width = Math.max(0, 1098 - x0) + 'px';
-      });
       // one-shot lights (the line's leading light, the chip's flare) only on a live click
       const el = ctx.el;
-      el.classList.remove('cm-live', 'cm-live1');
+      el.classList.remove('cm-live');
       void el.offsetWidth;
       if (!ctx.instant && n === 0 && prev === -1) el.classList.add('cm-live');
-      if (!ctx.instant && n === 1 && prev === 0) el.classList.add('cm-live1');
       // the chip's ring has ended (at opacity 0) by then; dropping the class releases its layer
       if (el.classList.contains('cm-live')) ctx.after(3600, () => el.classList.remove('cm-live'));
     },
