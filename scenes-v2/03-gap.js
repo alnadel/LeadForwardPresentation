@@ -142,15 +142,11 @@
     transition: 'chapter',
     cues: t(['Inspiration is not always visible · good work happens', 'Visibility stays local · learning does not travel', 'We close the gap · the initiative'], ['الإلهام لا يظهر دائمًا · العمل الجيد يحدث', 'الظهور يبقى محليًا · التعلّم لا ينتقل', 'نسدّ الفجوة · المبادرة']),
     holds: [8, 10, 9],
-    notes: t([
-      'Inspiration is happening at Tahakom every day, but it is not always visible. Each shape is one team, and each light is good work: colleagues who help, solve problems and go the extra mile.',
-      'But visibility stays local: the team or manager notices, and it stops at the wall. And learning does not travel: useful behaviours are not shared across departments, so the story fades halfway.',
-      'The contributions exist; the gap is making them visible, recognised and shared. Behind a Better Life closes that gap through real employee stories: a story-to-impact campaign, which the rest of this case sets out.',
-    ], [
-      'الإلهام يحدث في تحكم كل يوم، لكنه لا يظهر دائمًا. كل شكل يمثّل فريقًا، وكل ضوء يمثّل عملًا جيدًا: زملاء يساعدون، ويحلّون المشكلات، ويبذلون جهدًا إضافيًا.',
-      'لكن الظهور يبقى محليًا: يلاحظه الفريق أو المدير، ثم يتوقف عند الجدار. والتعلّم لا ينتقل: السلوكيات المفيدة لا تُشارَك بين الإدارات، فتخبو القصة في منتصف الطريق.',
-      'الإسهامات موجودة؛ والفجوة في إظهارها وتقديرها ومشاركتها. و«خلف حياة أفضل» تسدّ هذه الفجوة عبر قصص حقيقية من الموظفين: حملة من القصة إلى الأثر، تعرضها بقية مبرّرات المبادرة.',
-    ]),
+    notes: [
+      'Sara is not the exception. Inspiration is happening at Tahakom every day, but it is not always visible. Each shape is one team, and each light is good work: colleagues who help, solve problems and go the extra mile.',
+      'But visibility stays local: the team or manager notices, and it stops at the wall. And learning does not travel: useful behaviours are not shared across departments, so the story fades halfway — just like Sara’s.',
+      'The contributions exist; the gap is making them visible, recognised and shared. Impact Makers closes that gap through real employee stories: a story-to-impact campaign, which the rest of this case sets out.',
+    ],
     field: [
       { dim: .34, lit: 0, travel: .12, warm: 0, offset: [150, -80], links: .45, wave: .45, streaks: .1, sparkle: .9, calm: [[100, 120, 1820, 290, .7], [100, 300, 1820, 560, .6], [100, 560, 1820, 960, .35]] },
       { wave: .6, sparkle: 1.1 },
@@ -197,7 +193,7 @@
            the payoff and the initiative are what the room takes away -->
       <div class="gp-close">
         <p class="gp-c1" data-in="2" style="--d:.3s">${t('Meaningful contributions exist — the gap is making them visible, recognised and shared across Tahakom.', 'الإسهامات المؤثرة موجودة\u00A0— والفجوة في إظهارها وتقديرها ومشاركتها على مستوى تحكم.')}</p>
-        <p class="gp-c2" data-in="2" data-split style="--d:.5s">${t('Behind a Better Life closes that gap through <em class="hl">real employee stories.</em>', '«خلف حياة أفضل» تسدّ هذه الفجوة عبر <em class="hl">قصص حقيقية من الموظفين.</em>')}</p>
+        <p class="gp-c2" data-in="2" data-split style="--d:.5s">Impact Makers closes that gap through <em class="hl">real employee stories.</em></p>
         <div class="gp-ask-w a-unfold" data-in="2" style="--d:.7s;--dur:.9s">
           <div class="glass live gp-ask amb-sheen">
             <span class="gp-ask-lt" data-spark="2" data-spark-at="c" data-spark-delay="1.05"><b></b></span>

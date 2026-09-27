@@ -1,5 +1,5 @@
-/* 01 · Open (v2) — the title opens out of the question's light (iris) over the
-   night operations centre; the video wall is alive with data; at stop 1 the story
+/* 01 · Open — "Impact Makers". The title opens out of the story's light (iris), right
+   after the opening story, over the night operations centre; the video wall is alive with data; at stop 1 the story
    light is born at the key line.
    Stop 0 · key: the title (Arabic and the kicker support it). The iris reveals a
    glow at its origin that dissipates while the plate settles out of a bright focus
@@ -11,21 +11,18 @@
   const BIRTH = [159, 900];   // the light's birthplace: the centre of .op-light (keep in step with .op-line in 01-open.css)
   Deck.scene({
     id: 'open',
-    title: t('Behind a Better Life', 'خلف حياة أفضل'),
+    title: 'Impact Makers',
     act: 0,
     bg: 'night',
-    transition: 'iris',       // the title opens out of the light resting under the question
+    transition: 'iris',       // the title opens out of the story's light
     irisBurst: 1400,
     chrome: { mark: false, progress: false },
     cues: t(['Title', 'Tagline · the light is born'], ['العنوان', 'الشعار · يولد الضوء']),
     holds: [5, 7],
-    notes: t([
-      'Hold that thought — we will come back to it. Now introduce yourselves: the team, Lead Forward 2026, Behind a Better Life. Say the purpose up front: in fifteen minutes, the need, the design, and how we would measure the impact.',
-      'Real stories. Visible values. Repeatable impact. One person’s story can light the way for others — that light is the thread through everything that follows.',
-    ], [
-      'احتفظوا بهذه الفكرة، فسنعود إليها. والآن قدّموا أنفسكم: الفريق، وLead Forward 2026، و«خلف حياة أفضل». واذكروا الغاية من البداية: في خمس عشرة دقيقة نعرض الحاجة، والتصميم، وكيف سنقيس الأثر.',
-      'قصص حقيقية. قيم ظاهرة. أثر قابل للتكرار. قصة شخص واحد يمكن أن تنير الطريق للآخرين، وهذا الضوء هو الخيط الذي يربط كل ما سيأتي.',
-    ]),
+    notes: [
+      'That was Sara. Hold on to her — we will come back to her at the end. Now introduce yourselves: the team, Lead Forward 2026, Impact Makers. Say the purpose up front: in fifteen minutes, the need, the design, and how we would measure the impact.',
+      'Real stories. Visible values. Repeatable impact. Tahakom is full of impact makers like Sara; one person’s story can light the way for others — and that light is the thread through everything that follows.',
+    ],
     field: [
       { dim: .5, lit: 0, travel: .3, offset: [0, 0], links: .45, wave: .5, streaks: .16, sparkle: 1.4, calm: [[100, 90, 1120, 980, .72]] },
       { dim: .72, lit: .02, travel: .6, litFrom: [300, 900], links: .7, streaks: .22 },
@@ -52,11 +49,8 @@
 
       <div class="op-logo a-materialize" data-in="0" style="--d:.2s;--dur:1.6s">${Deck.logo()}</div>
       <div class="kicker op-kicker a-wipe" data-in="0" style="--d:.9s">${t('Lead Forward 2026 · Capstone · Inspire Others', 'Lead Forward 2026 · المشروع الختامي · إلهام الآخرين')}</div>
-      ${t(`<h1 class="display op-title" data-in="0" data-split style="--d:1.05s">Behind a<br>Better Life</h1>
-      <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" data-glow="خلف حياة أفضل" style="--d:1.9s;--dur:1.4s">خلف حياة أفضل</div>`,
-      // Arabic: the Arabic name is the title; the English name is the support line under it
-      `<h1 class="display op-title" data-in="0" data-split style="--d:1.05s">خلف<br>حياة أفضل</h1>
-      <div class="op-ar op-en a-blur" data-in="0" lang="en" data-glow="Behind a Better Life" style="--d:1.9s;--dur:1.4s">Behind a Better Life</div>`)}
+      <h1 class="display op-title" data-in="0" data-split style="--d:1.05s">Impact<br>Makers</h1>
+      <div class="op-ar ar a-blur" data-in="0" lang="ar" dir="rtl" data-glow="صنّاع الأثر" style="--d:1.9s;--dur:1.4s">صنّاع الأثر</div>
 
       <!-- the birth of the story light: motes gather, then it ignites with a flare -->
       <div class="op-birth" style="left:${BIRTH[0]}px;top:${BIRTH[1]}px"><i class="op-bloom"></i><i class="op-flare"></i>${Array.from({ length: 12 }, (_, i) => `<b style="--a:${i * 30 + 8}deg;--r:${120 + (i * 47) % 90}px;--k:${i}"></b>`).join('')}</div>

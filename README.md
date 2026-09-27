@@ -1,20 +1,19 @@
-# Behind a Better Life — Lead Forward 2026
+# Impact Makers — Lead Forward 2026
 
 A presenter-driven animated deck. Each click plays the next build and then **stops**. While it is stopped, the scene keeps moving (the colleague field twinkles and drifts, lights travel, photographs push in slowly), so you can talk for as long as you need. Click again to move on.
 
 It merges two earlier cuts: the **Story Cycle** film (Nouf and Faisal) and the **Executive Cut** (the final PowerPoint content). It runs fully offline in Chrome or Edge.
 
 ## To present: copy the `Present` folder and double-click
-**`Present/`** is everything you need, and nothing else. It holds the English deck and the full **Arabic** deck (right to left), each with its own launchers. Everything is fully offline, with no libraries, fonts folder or assets to carry: the fonts, photographs and code are all inside each HTML file.
+**`Present/`** is everything you need, and nothing else. It is three files, fully offline, with no libraries, fonts folder or assets to carry: the fonts, photographs and code are all inside the one HTML file.
 
 | File | What it does |
 | --- | --- |
-| `Present (Windows).bat` | **Double-click to present in English.** Opens the deck full screen in its own clean Chrome (or Edge) window. |
-| `Present (Mac).command` | **Double-click to present in English** on a Mac. The first time, if macOS says it cannot verify the file, right-click it and choose **Open**. |
-| `Present Arabic (Windows).bat` · `Present Arabic (Mac).command` | **The same for the Arabic deck** (العرض باللغة العربية). |
-| `Behind-a-Better-Life.html` · `Behind-a-Better-Life-Arabic.html` | The decks themselves. Double-clicking one also works: it opens in your default browser, and the first key or click goes full screen and begins. |
+| `Present (Windows).bat` | **Double-click to present.** Opens the deck full screen in its own clean Chrome (or Edge) window. |
+| `Present (Mac).command` | **Double-click to present** on a Mac. The first time, if macOS says it cannot verify the file, right-click it and choose **Open**. |
+| `Impact-Makers.html` | The deck itself. Double-clicking it also works: it opens in your default browser, and the first key or click goes full screen and begins. |
 
-The Arabic deck is the same presentation: every slide, speaker note, the chrome and the speaker view are in Arabic, and the layouts run right to left. It uses the same keys. It is built from the same source: every scene string is written as `Deck.t(english, arabic)`, and `index-v2.html?lang=ar` shows it while editing (`python3 tools/build.py index-v2.html Present/Behind-a-Better-Life-Arabic.html --lang ar`).
+The Arabic version is paused while the English deck changes. The source still supports it (`Deck.t(english, arabic)`, `index-v2.html?lang=ar`, `tools/build.py … --lang ar`), but the new and changed scenes have no Arabic text yet.
 
 The deck opens on black with a quiet "press any key or click to begin". Press **S** first if you want the speaker view on your laptop. Then press any key (or the clicker) and the talk begins with the question. Keep the files together in one folder; if you received a .zip, extract it first.
 

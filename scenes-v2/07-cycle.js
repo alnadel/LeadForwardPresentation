@@ -207,13 +207,10 @@
     transition: 'iris',
     cues: t(['What is new · the road that stops, the loop that keeps going', 'The cycle · four steps · it repeats'], ['ما الجديد · طريق يتوقف، وحلقة تستمر', 'الدورة · أربع خطوات · تتكرر']),
     holds: [9, 15],
-    notes: t([
-      'Most recognition stops at the award. Ours keeps going: a story leads to behaviour, which inspires more stories.',
+    notes: [
+      'Tahakom already recognises the best stories with awards — and most recognition stops at the award. Ours keeps going: a story leads to behaviour, which inspires more stories.',
       'Four steps, one quarter. Capture: a peer or leader nominates. Curate: facts checked, consent given, one value linked. Feature: a short story on our channels. Reinforce: the contributor is recognised and the takeaway is shared. Then it repeats.',
-    ], [
-      'معظم التقدير يتوقف عند الجائزة. أمّا تقديرنا فيستمر: القصة تقود إلى سلوك، والسلوك يُلهم قصصًا أكثر.',
-      'أربع خطوات في ربع سنة. رصد: يرشّح زميل أو قائد. انتقاء: نتحقق من الوقائع، ونأخذ الموافقة، ونربط القصة بقيمة واحدة. إبراز: قصة قصيرة عبر قنواتنا. ترسيخ: نقدّر صاحب المساهمة ونشارك الدرس المستفاد. ثم تتكرر الدورة.',
-    ]),
+    ],
     field: [
       { dim: .3, lit: .02, travel: .22, offset: [150, -70], litFrom: null, links: .5, wave: .5, streaks: .14, sparkle: 1, calm: [[100, 120, 1500, 380, .85], [120, 400, 1760, 960, .55]] },
       { dim: .48, lit: .09, litFrom: [CX, CY], travel: .65, links: .8, wave: .85, streaks: .26, sparkle: 2.8,

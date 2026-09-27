@@ -169,13 +169,10 @@
     cues: t(['Becomes organisational value when the story is shared · the flow · retention caveat', 'Aligned by design · our purpose · the six values · three outcomes, over Riyadh'],
       ['يتحوّل إلى قيمة مؤسسية حين تُشارَك القصة · التدفق · تنبيه الاحتفاظ بالموظفين', 'متّسق بالتصميم · غايتنا · القيم الست · ثلاث نتائج، فوق الرياض']),
     holds: [11, 11],
-    notes: t([
-      'Why does this matter to Tahakom? Recognition happens to one person. Value happens when the story is shared: people feel seen, the behaviour spreads, and the culture gets stronger. Retention may follow over time, but it is not a promise of the pilot.',
+    notes: [
+      'So what is it worth to Tahakom? Recognition happens to one person. Value happens when the story is shared: people feel seen, the behaviour spreads, and the culture gets stronger. Sara’s crossing becomes a practice other teams can use. Retention may follow over time, but it is not a promise of the pilot.',
       'And it is aligned by design. We are not inventing new values. Every story shows how daily work serves our purpose, Urban Intelligence for a Better Life, and makes one of our six values visible in action.',
-    ], [
-      'لماذا يهمّ هذا تحكم؟ التقدير يحدث لشخص واحد، أما القيمة فتتحقق حين تُشارَك القصة: يشعر الناس بأن جهدهم مرئي، وينتشر السلوك، وتقوى الثقافة. قد يتحسّن الاحتفاظ بالموظفين مع الوقت، لكنه ليس وعدًا من التجربة.',
-      'وهو متّسق بالتصميم. لا نبتكر قيمًا جديدة. كل قصة تُظهر كيف يخدم العمل اليومي غايتنا، ذكاء حضري لحياة أفضل، وتجعل إحدى قيمنا الست مرئية في العمل.',
-    ]),
+    ],
     field: [
       { dim: .3, lit: 0, travel: .3, offset: [170, -80], warm: .1, links: .5, wave: .5, streaks: .12, sparkle: 1.1,
         calm: [[100, 120, 1800, 410, .85], [110, 480, 640, 860, .75], [1190, 420, 1810, 920, .75]] },
